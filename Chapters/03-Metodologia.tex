@@ -1,0 +1,40 @@
+\chapter{Metodología}
+\label{ch:metodologia}
+
+\section{Visión General de la Metodología}
+\label{sec:vision_general}
+% Explicación del flujo completo: preentrenamiento del VAE, optimización multiobjetivo en espacio latente y evaluación de candidatos.
+
+\section{Ajuste de Hiperparámetros Mediante Generación de Fármacos Genéricos}
+\label{sec:ajuste_hiperparametros}
+
+\subsection{Variables Optimizadas}
+\label{subsec:var_optimizadas}
+% Definición de los hiperparámetros del VAE (arquitectura, dimensión latente, learning rate) y parámetros de las metaheurísticas (tamaño de población, operadores de cruce/mutación).
+
+\subsection{Funciones Objetivo}
+\label{subsec:fo_genericos}
+% Definición de las funciones de evaluación para el ajuste general: QED, SA score y Fsp3.
+
+\section{Diseño de Inhibidores de la Proteína MRP1}
+\label{sec:diseno_inhibidores_mrp1}
+% Resumen de la experimentación: proceso completo de generación dirigida mediante optimización latente guiada por docking y propiedades farmacológicas.
+
+\subsection{Preparación de la Proteína}
+\label{subsec:prep_proteina}
+% Obtención de la estructura 3D de MRP1 (PDB), remoción de aguas/ligandos, adición de hidrógenos y definición de la caja de docking (grid box).
+
+\subsection{Funciones Objetivo}
+\label{subsec:fo_mrp1}
+% Formulación multiobjetivo específica: Afinidad de unión (AutoDock Vina), QED, SA y Fsp3.
+
+\section{Configuración Experimental}
+\label{sec:configuracion_experimental}
+
+\subsection{Representación de la Solución}
+\label{subsec:rep_solucion}
+% Espacio de búsqueda continuo (vectores latentes) y su decodificación a estructuras químicas (SELFIES/SMILES).
+
+\subsection{Conjunto de Datos y Preprocesamiento}
+\label{subsec:datasets}
+% Datasets ZINC20 y ChEMBL, filtrado de sales, estandarización de moléculas y partición de datos.

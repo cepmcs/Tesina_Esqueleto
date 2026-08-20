@@ -29,10 +29,6 @@
 
 %%% Front Matter %%%
 \include{Matter/00-Cover}
-\include{Matter/01-Front-Page}
-
-%%% Copyright Statement %%%
-\include{Matter/02-Copyright}
 
 %%% Roman Numeration %%%
 \pagenumbering{roman}
@@ -46,8 +42,8 @@
 %%% Acknowledgements %%%
 \include{Matter/04-Acknowledgements}
 
-%%% Abstract %%%
-\include{Chapters/00-Abstract}
+%%% Abstract / Resumen %%%
+\include{Chapters/00-Resumen}
 
 %%% Table of Contents, List of Figures and List of Tables %%%
 \bookmarktocentry\tableofcontents
@@ -61,25 +57,15 @@
 %%% Arabic Numeration %%%
 \pagenumbering{arabic}
 
-%%% Chapters (**Insert Yours Here**) %%%
-\include{Chapters/01-Introduction}
-\include{Chapters/02-Hypothe&Objectives}
-\include{Chapters/03-Mat&Meth}
-
-%%% Chapters of your thesis %%%%
-
-\include{Chapters/04-Chapter_1}
-\include{Chapters/05-Chapter_2}
-
-%%% Discusión %%%
-
-\include{Chapters/06-Discussion}
-
-%%% Conclusiones %%%
-
-\include{Chapters/07-Conclusions}
+%%% Chapters %%%
+\include{Chapters/01-Introduccion}
+\include{Chapters/02-Marco-Teorico}
+\include{Chapters/03-Metodologia}
+\include{Chapters/04-Resultados}
+\include{Chapters/05-Conclusiones}
 
 %%% Bibliography %%%
+\nocite{*}
 \ifthenelse{\equal{\LanguageOption}{spanish}}{%
     \renewcommand{\refname}{Bibliografía}%
 }{%

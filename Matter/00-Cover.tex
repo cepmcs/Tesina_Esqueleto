@@ -1,94 +1,77 @@
 % ----------------------------------------
-% Definición del fondo 
+% Portada estilo UNCUYO - Fondo Celeste Liso
 % ----------------------------------------
-  \newcommand\BackgroundPicCover{%
-    \put(0,0){%
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill
-        \centering
-        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{Figures/Theme/BG_UMU_v2.pdf}%
-        \vfill
-      }%
-    }%
-  } %
+\definecolor{uncuyoceleste}{RGB}{42, 108, 160}
 
-\AddToShipoutPictureBG*{\BackgroundPicCover}
-
-% ----------------------------------------
-% Portada con cambio según LanguageOption
-% ----------------------------------------
-\newgeometry{
-  top=1.5cm, bottom=1.77cm,
-  left=2cm, right=1.5cm,
-  bindingoffset=0cm
+\newcommand\BackgroundPicCoverUNCUYO{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % Fondo celeste liso
+    \fill[uncuyoceleste] (current page.south west) rectangle (current page.north east);
+  \end{tikzpicture}%
 }
+
+\newgeometry{
+  top=2.2cm, bottom=2cm,
+  left=2cm, right=2cm
+}
+
 \begin{titlepage}
-  \AddToShipoutPictureBG*{\BackgroundPicCover}
+  \AddToShipoutPictureBG*{\BackgroundPicCoverUNCUYO}
   \begingroup
-    \plexsans %  Aplica IBM Plex Sans solo localmente
-
-    % Color de texto según opción de portada
     \color{white}
-    
-    \vspace*{\fill}  % empuje vertical
+    \centering
 
-    % Selección de portada en inglés vs español
-    \ifthenelse{\equal{\LanguageOption}{english}}{%
-      % ======= PORTADA EN INGLÉS =======
-      {\noindent\bfseries\fontsize{12}{14}\selectfont DOCTORAL THESIS\par}
-      \vspace{0.5cm}
-      {\noindent\raggedright\itshape\fontsize{22}{24}\selectfont \titleesp\par}
-      \vspace{2cm}
-
-      \noindent
-      \begin{minipage}[t]{0.40\textwidth}
-        \raggedright
-        {\itshape\fontsize{14}{20}\selectfont \thetitle\par}
-      \end{minipage}%
-      \begin{minipage}[t]{0.4\textwidth}
-        \raggedright
-        \begin{tabbing}
-          \hspace{4cm}\=\kill
-          \textbf{\fontsize{12}{10}\selectfont AUTHOR:}\> \GetFirstAuthor \\[0.3cm]
-          \textbf{\fontsize{12}{10}\selectfont SUPERVISORS:}\> \GetSupervisor   \\
-                                              \> \GetCoSupervisor    \\
-                                              \> \GetSecCoSupervisor
-        \end{tabbing}
-      \end{minipage}%
-      \begin{minipage}[t]{0.1\textwidth}
-        \vspace{1.5cm}
-        \raggedleft
-        {\fontsize{13}{16}\selectfont \the\year \par}
-      \end{minipage}
+    % ======= ENCABEZADO INSTITUCIONAL =======
+    \IfFileExists{Figures/Logo_UNCUYO.pdf}{%
+      \includegraphics[height=1.5cm]{Figures/Logo_UNCUYO.pdf}\par
+      \vspace{0.8cm}
     }{%
-      % ======= PORTADA EN ESPAÑOL =======
-      {\noindent\bfseries\fontsize{12}{14}\selectfont TESIS DOCTORAL\par}
-      \vspace{0.5cm}
-      {\noindent\raggedright\itshape\fontsize{22}{24}\selectfont \titleesp\par}
-      \vspace{2cm}
-
-      \noindent
-      
-      \begin{minipage}[t]{0.4\textwidth}
-        \raggedright
-        \begin{tabbing}
-          \hspace{4cm}\=\kill
-          \textbf{\fontsize{12}{10}\selectfont AUTOR:}\> \GetFirstAuthor \\[0.3cm]
-          \textbf{\fontsize{12}{10}\selectfont DIRECTORES:}\> \GetSupervisor   \\
-                                              \> \GetCoSupervisor    \\
-                                              \> \GetSecCoSupervisor
-        \end{tabbing}
-      \end{minipage}%
-      \begin{minipage}[t]{0.45\textwidth}
-        \vspace{2cm}
-        \raggedleft
-        {\fontsize{13}{16}\selectfont \the\year \par}
-      \end{minipage}
+      \IfFileExists{Figures/Logo_UNCUYO.png}{%
+        \includegraphics[height=1.5cm]{Figures/Logo_UNCUYO.png}\par
+        \vspace{0.8cm}
+      }{%
+        {\fontsize{13}{16}\selectfont\textbf{UNCUYO}} \hspace{0.4cm} {\large\textbf{\textbar}} \hspace{0.4cm} {\fontsize{11}{14}\selectfont\textbf{FACULTAD DE INGENIERÍA}}\par
+        \vspace{0.15cm}
+        {\fontsize{9}{11}\selectfont UNIVERSIDAD NACIONAL DE CUYO}\par
+        \vspace{1.2cm}
+      }%
     }
-    % Fin condicional LanguageOption
 
-    \vspace{1cm}
+    \vspace{0.5cm}
+
+    % ======= SUBTÍTULO / CARRERA =======
+    {\fontsize{15}{18}\selectfont\textbf{TESINA FINAL DE GRADO}\par}
+    \vspace{0.35cm}
+    {\fontsize{13}{16}\selectfont Licenciatura en Ciencias de la Computación\par}
+
+    \vspace{1.2cm}
+
+    % ======= TÍTULO DE LA TESINA =======
+    \noindent\rule{\linewidth}{1.2pt}\\[-0.55em]
+    \noindent\rule{\linewidth}{0.4pt}
+    \vspace{0.8cm}
+
+    {\fontsize{18}{24}\selectfont\bfseries \titleesp\par}
+
+    \vspace{0.8cm}
+    \noindent\rule{\linewidth}{0.4pt}\\[-0.55em]
+    \noindent\rule{\linewidth}{1.2pt}
+
+    \vspace{1.5cm}
+
+    % ======= AUTOR Y TUTORES =======
+    {\fontsize{13}{19}\selectfont
+      \textit{Autor:} \GetFirstAuthor\\[0.35cm]
+      \textit{Tutor:} \GetSupervisor\\[0.35cm]
+      \textit{Co-Tutor:} \GetCoSupervisor\par
+    }
+
+    \vspace*{\fill}
+
+    % ======= FECHA / LUGAR =======
+    {\fontsize{12}{15}\selectfont \ifcase\month\or Enero\or Febrero\or Marzo\or Abril\or Mayo\or Junio\or Julio\or Agosto\or Septiembre\or Octubre\or Noviembre\or Diciembre\fi\ \number\year \par}
+
+    \vspace{0.5cm}
   \endgroup
 \end{titlepage}
 \restoregeometry
-\MediaOptionLogicBlank

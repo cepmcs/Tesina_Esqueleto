@@ -33,9 +33,9 @@
 \vspace*{\fill}  % empuje vertical
 
     % Selección de portada en inglés vs español
-\ifthenelse{\equal{\LanguageOption}{english}}{%
+    \ifthenelse{\equal{\LanguageOption}{english}}{%
       % ======= PORTADA EN INGLÉS =======
-      {\noindent\bfseries\fontsize{12}{14}\selectfont DOCTORAL THESIS\par}
+      {\noindent\bfseries\fontsize{12}{14}\selectfont UNDERGRADUATE THESIS\par}
       \vspace{0.5cm}
       {\noindent\raggedright\itshape\fontsize{22}{24}\selectfont \titleesp\par}
       \vspace{2cm}
@@ -45,38 +45,36 @@
         \raggedright
         {\itshape\fontsize{14}{20}\selectfont \thetitle\par}
       \end{minipage}%
-      \begin{minipage}[t]{0.4\textwidth}
+      \begin{minipage}[t]{0.45\textwidth}
         \raggedright
         \begin{tabbing}
-          \hspace{4cm}\=\kill
+          \hspace{3.5cm}\=\kill
           \textbf{\fontsize{12}{10}\selectfont AUTHOR:}\> \GetFirstAuthor \\[0.3cm]
-          \textbf{\fontsize{12}{10}\selectfont SUPERVISORS:}\> \GetSupervisor   \\
-                                              \> \GetCoSupervisor    \\
-                                              \> \GetSecCoSupervisor
+          \textbf{\fontsize{12}{10}\selectfont TUTOR:}\> \GetSupervisor   \\[0.3cm]
+          \textbf{\fontsize{12}{10}\selectfont CO-TUTOR:}\> \GetCoSupervisor
         \end{tabbing}
       \end{minipage}%
-      \begin{minipage}[t]{0.1\textwidth}
+      \begin{minipage}[t]{0.15\textwidth}
         \vspace{1.5cm}
         \raggedleft
         {\fontsize{13}{16}\selectfont \the\year \par}
       \end{minipage}
     }{%
       % ======= PORTADA EN ESPAÑOL =======
-      {\noindent\bfseries\fontsize{12}{14}\selectfont TESIS DOCTORAL\par}
+      {\noindent\bfseries\fontsize{12}{14}\selectfont TESINA FINAL DE GRADO\par}
       \vspace{0.5cm}
       {\noindent\raggedright\itshape\fontsize{22}{24}\selectfont \titleesp\par}
       \vspace{2cm}
 
       \noindent
       
-      \begin{minipage}[t]{0.4\textwidth}
+      \begin{minipage}[t]{0.55\textwidth}
         \raggedright
         \begin{tabbing}
-          \hspace{4cm}\=\kill
+          \hspace{3.5cm}\=\kill
           \textbf{\fontsize{12}{10}\selectfont AUTOR:}\> \GetFirstAuthor \\[0.3cm]
-          \textbf{\fontsize{12}{10}\selectfont DIRECTORES:}\> \GetSupervisor   \\
-                                              \> \GetCoSupervisor    \\
-                                              \> \GetSecCoSupervisor
+          \textbf{\fontsize{12}{10}\selectfont TUTOR:}\> \GetSupervisor   \\[0.3cm]
+          \textbf{\fontsize{12}{10}\selectfont CO-TUTOR:}\> \GetCoSupervisor
         \end{tabbing}
       \end{minipage}%
       \begin{minipage}[t]{0.45\textwidth}
@@ -85,7 +83,7 @@
         {\fontsize{13}{16}\selectfont \the\year \par}
       \end{minipage}
     }
-   % Fin condicional LanguageOption
+    % Fin condicional LanguageOption
 
     \vspace{1cm}
   \endgroup

@@ -86,6 +86,7 @@
 
 %%% Load Master Class %%%
 \LoadClass[a4paper,11pt,twoside,openright]{report}
+\raggedbottom
 
 %%% Load Babel Package (Language) %%%
 \expandafter\RequirePackage\expandafter[\LanguageOption]{babel}

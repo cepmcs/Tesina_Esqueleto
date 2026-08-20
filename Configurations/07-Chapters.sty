@@ -26,3 +26,14 @@
     {\crimsonfont\addfontfeature{LetterSpace=6}\fontsize{28}{32}\MakeUppercase}%
 }{}
 
+\titlespacing*{\chapter}{0pt}{0pt}{25pt}
+\titlespacing*{\section}{0pt}{2ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus 1ex minus .2ex}{0.8ex plus .2ex}
+
+% Permitir saltos de página limpios y fluidos entre encabezados consecutivos
+\pretocmd{\section}{\par\penalty0}{}{}
+\pretocmd{\subsection}{\par\penalty0}{}{}
+\pretocmd{\subsubsection}{\par\penalty0}{}{}
+
+
+

@@ -13,5 +13,11 @@
 } % Caption font style.
 \captionsetup[table]{skip=4pt}
 
+% Asegurar "Tabla" e "Índice de tablas" en español (no "Cuadro")
+\addto\captionsspanish{%
+    \renewcommand{\tablename}{Tabla}%
+    \renewcommand{\listtablename}{Índice de tablas}%
+}
+
 %%% Lists %%%
 \setlist{noitemsep} % Customise spacing around and inside lists.
