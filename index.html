@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tesina Final de Grado | Carlos Eduardo Perez Melendez</title>
+  <meta name="description" content="Diseño y Evaluación de algoritmos metaheurísticos multiobjetivo y modelos generativos para el diseño de fármacos aplicados al cáncer colorrectal.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2a6ca0;
+      --primary-dark: #1e4f77;
+      --primary-light: #448bc5;
+      --surface: #ffffff;
+      --bg: #f3f6f9;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar / Header */
+    header {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .institution {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
+
+    .doc-title {
+      font-size: 1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 60vw;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: #ffffff;
+      color: var(--primary-dark);
+    }
+
+    .btn-primary:hover {
+      background-color: #f8fafc;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .btn-secondary {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #525659;
+    }
+
+    object, iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Mobile Fallback Card */
+    .fallback-card {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--surface);
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 90%;
+      width: 420px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .fallback-card h2 {
+      font-size: 1.25rem;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .fallback-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0.6rem 1rem;
+      }
+      .doc-title {
+        max-width: 50vw;
+        font-size: 0.9rem;
+      }
+      .btn-secondary {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <span class="institution">UNCUYO &bull; Facultad de Ingeniería</span>
+      <span class="doc-title" title="Diseño y Evaluación de algoritmos metaheurísticos multiobjetivo y modelos generativos para el diseño de fármacos aplicados al cáncer colorrectal">
+        Tesina Final de Grado &bull; Carlos Perez
+      </span>
+    </div>
+    <div class="actions">
+      <a href="UMUthesis.pdf" target="_blank" class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        Nueva Pestaña
+      </a>
+      <a href="UMUthesis.pdf" download="Tesina_Carlos_Perez.pdf" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Descargar PDF
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <object data="UMUthesis.pdf" type="application/pdf">
+      <iframe src="UMUthesis.pdf">
+        <div class="fallback-card" style="display: block;">
+          <h2>Tesina Final de Grado</h2>
+          <p>Tu dispositivo o navegador no soporta la vista previa integrada de PDFs. Puedes abrirlo o descargarlo directamente:</p>
+          <a href="UMUthesis.pdf" download="Tesina_Carlos_Perez.pdf" class="btn btn-primary" style="background: var(--primary); color: white;">
+            Descargar Documento (PDF)
+          </a>
+        </div>
+      </iframe>
+    </object>
+  </main>
+
+</body>
+</html>
