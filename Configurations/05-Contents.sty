@@ -1,6 +1,21 @@
 %%% Custom ToC Entries %%%
+\addto\captionsspanish{%
+    \renewcommand{\contentsname}{Tabla de Contenidos}%
+    \renewcommand{\listfigurename}{Índice de Figuras}%
+    \renewcommand{\listtablename}{Índice de Tablas}%
+    \renewcommand{\tablename}{Tabla}%
+    \renewcommand{\acronymname}{Siglas}%
+    \renewcommand{\glossaryname}{Glosario}%
+}
+\renewcommand{\contentsname}{Tabla de Contenidos}
+\renewcommand{\listfigurename}{Índice de Figuras}
+\renewcommand{\listtablename}{Índice de Tablas}
+\providecommand{\acronymname}{Siglas}
+\providecommand{\glossaryname}{Glosario}
+
 \newcommand{\bookmarktocentry}{\pdfbookmark[0]{\contentsname}{toc}}
 \ProvideDocumentCommand\MakeLinkTarget{sO{}m}{}
+
 \patchcmd{\listoffigures}
 {\chapter*{\listfigurename}}
 {\chapter*{\listfigurename}\MakeLinkTarget*{listoffigures}%
@@ -17,19 +32,15 @@
 \providecommand*{\toclevel@frontmatter}{0}
 \providecommand*{\toclevel@backmatter}{0}
 
-\patchcmd{\l@frontmatter}{\bfseries}{\itshape}{}{}
-\patchcmd{\l@frontmatter}{\nobreak\hfil}{\upshape\nobreak\hfil}{}{}
-\patchcmd{\l@frontmatter}{1.0em}{3pt}{}{} 
-\patchcmd{\l@backmatter}{\bfseries}{\itshape}{}{}
-\patchcmd{\l@backmatter}{\nobreak\hfil}{\upshape\nobreak\hfil}{}{}
+% Mantener negritas para entradas de frontmatter y backmatter (Figuras, Tablas, Bibliografía, Glosario, Siglas)
 
-\defbibheading{bibintoc}{\chapter*{#1}\addcontentsline{toc}{backmatter}{\refname}}
+\defbibheading{bibintoc}{\chapter*{#1}\MakeLinkTarget*{bibliography}\addcontentsline{toc}{backmatter}{\refname}}
 
 \newcommand{\glossarytoc}{\MakeLinkTarget*{glossary}%
-\addcontentsline{toc}{frontmatter}{\glossaryname}}
+\addcontentsline{toc}{backmatter}{\glossaryname}}
 
 \newcommand{\acronymtoc}{\MakeLinkTarget*{acronym}%
-\addcontentsline{toc}{frontmatter}{\acronymname}}
+\addcontentsline{toc}{backmatter}{\acronymname}}
 
 % Align LoF and LoT entries to the corrected margin.
 \renewcommand*\l@figure{\@dottedtocline{1}{0em}{2.3em}} % Default: 1.5em/2.3em

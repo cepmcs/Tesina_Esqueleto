@@ -50,10 +50,6 @@
 \listoffigures
 \listoftables
 
-%%% Print: Glossary and Acronyms %%%
-%\glossarytoc\printnormalglossary
-\acronymtoc\printacronymglossary
-
 %%% Arabic Numeration %%%
 \pagenumbering{arabic}
 
@@ -64,15 +60,6 @@
 \include{Chapters/04-Resultados}
 \include{Chapters/05-Conclusiones}
 
-%%% Bibliography %%%
-\nocite{*}
-\ifthenelse{\equal{\LanguageOption}{spanish}}{%
-    \renewcommand{\refname}{Bibliografía}%
-}{%
-    \renewcommand{\refname}{Bibliography}%
-}
-\printbibliography[title={\refname},heading=bibintoc]
-
 %%% Appendices: Work that *YOU* Developed %%%
 \appendix
 \input{Matter/06-Appendices}
@@ -82,6 +69,19 @@
 %%% Annexes: Work that *YOU DID NOT* Develop %%%
 \input{Matter/07-Annexes}
 \input{Chapters/Annexes/00-AnnexA}
+
+%%% Bibliography %%%
+\nocite{*}
+\ifthenelse{\equal{\LanguageOption}{spanish}}{%
+    \renewcommand{\refname}{Bibliografía}%
+}{%
+    \renewcommand{\refname}{Bibliography}%
+}
+\printbibliography[title={\refname},heading=bibintoc]
+
+%%% Print: Glossary and Acronyms (Al final) %%%
+%\glossarytoc\printnormalglossary
+\acronymtoc\printacronymglossary
 
 %%% Back Page %%%
 \input{Matter/08-Back-Page}
