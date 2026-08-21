@@ -9,7 +9,14 @@ $out_dir = 'build';
 @default_files = ('UMUthesis.tex');
 
 # Limpieza adicional con latexmk -c / -C
-$clean_ext = 'bcf run.xml xdv acn acr alg glo ist synctex.gz pyg';
+$clean_ext = 'bcf run.xml xdv acn acr alg glo gls glg ist synctex.gz pyg';
+
+add_cus_dep('glo', 'gls', 0, 'run_makeglossaries');
+add_cus_dep('acn', 'acr', 0, 'run_makeglossaries');
+sub run_makeglossaries {
+    my $ret = system("makeglossaries -d build UMUthesis");
+    return $ret;
+}
 
 # Copia el PDF final a la raíz para fácil acceso
 $success_cmd = 'cp -u build/UMUthesis.pdf .';
