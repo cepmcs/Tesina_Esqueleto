@@ -1,0 +1,87 @@
+\documentclass[tikz, border=20pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
+
+% -------------------------------------------------------------
+% DEFINICIÓN OFICIAL DE LA PALETA OKABE-ITO (4 COLORES)
+% -------------------------------------------------------------
+
+% 1. Azul (Blue)
+\definecolor{figBlue}{HTML}{0072B2}
+\definecolor{figBlueTint}{HTML}{EBF3F9}
+
+% 2. Naranja (Orange)
+\definecolor{figOrange}{HTML}{E69F00}
+\definecolor{figOrangeTint}{HTML}{FEF6E9}
+
+% 3. Verde azulado (Bluish Green)
+\definecolor{figGreen}{HTML}{009E73}
+\definecolor{figGreenTint}{HTML}{EAF7F3}
+
+% 4. Bermellón (Vermilion)
+\definecolor{figVermilion}{HTML}{D55E00}
+\definecolor{figVermilionTint}{HTML}{FDF0EC}
+
+% Tonos neutros para bordes y texto
+\definecolor{darkText}{HTML}{1A202C}
+\definecolor{grayText}{HTML}{4A5568}
+\definecolor{cardBorder}{HTML}{E2E8F0}
+
+\begin{document}
+\begin{tikzpicture}[font=\sffamily]
+
+    % Título
+    \node[anchor=west, font=\bfseries\Large, text=darkText] at (0, 0.8) {Paleta de Colores para la Tesis (Okabe-Ito 4)};
+    \node[anchor=west, font=\small, text=grayText] at (0, 0.25) {Estándar científico accesible (Nature Methods): óptimo contraste y apto para daltonismo};
+
+    % Macro para dibujar una tarjeta de color
+    % Parámetros: x_pos, ColorTrazo, ColorRelleno, Nombre, HexTrazo, HexRelleno, RGB, Uso
+    \newcommand{\colorCard}[8]{%
+        \begin{scope}[shift={(#1, -3.3)}]
+            % Fondo de tarjeta
+            \draw[fill=white, draw=cardBorder, rounded corners=8pt, line width=1pt] (0, 0) rectangle (5.0, 2.9);
+            
+            % Círculo principal (Color trazo/línea)
+            \draw[draw=#2!30!white, fill=#2, line width=1.2pt] (0.8, 2.0) circle (0.55cm);
+            
+            % Círculo de relleno suave (Tint para fondo de cajas)
+            \draw[draw=#2, fill=#3, line width=1pt] (1.85, 2.0) circle (0.35cm);
+            
+            % Etiquetas de círculos
+            \node[font=\tiny\bfseries, text=white] at (0.8, 2.0) {Trazo};
+            \node[font=\tiny, text=darkText] at (1.85, 2.0) {Fondo};
+
+            % Nombre del color y código
+            \node[anchor=west, font=\bfseries\normalsize, text=darkText] at (2.45, 2.15) {#4};
+            \node[anchor=west, font=\scriptsize\ttfamily, text=#2] at (2.45, 1.75) {#5};
+
+            % Separador
+            \draw[cardBorder, line width=0.6pt] (0.3, 1.3) -- (4.7, 1.3);
+
+            % Datos técnicos y uso sugerido
+            \node[anchor=west, font=\scriptsize, text=grayText] at (0.3, 0.95) {RGB: \texttt{#7} \quad Fondo: \texttt{#6}};
+            \node[anchor=west, font=\scriptsize\bfseries, text=darkText] at (0.3, 0.45) {Uso: \textnormal{#8}};
+        \end{scope}
+    }
+
+    % 1. Azul
+    \colorCard{0.0}{figBlue}{figBlueTint}{Azul}{\#0072B2}{\#EBF3F9}{(0, 114, 178)}{Encoder, Entradas, Base/Control}
+
+    % 2. Naranja
+    \colorCard{5.3}{figOrange}{figOrangeTint}{Naranja}{\#E69F00}{\#FEF6E9}{(230, 159, 0)}{Espacio Latente, Acento, Críticos}
+
+    % 3. Verde azulado
+    \colorCard{10.6}{figGreen}{figGreenTint}{Verde}{\#009E73}{\#EAF7F3}{(0, 158, 115)}{Decoder, Entorno, Salidas/Buffer}
+
+    % 4. Bermellón
+    \colorCard{15.9}{figVermilion}{figVermilionTint}{Bermellón}{\#D55E00}{\#FDF0EC}{(213, 94, 0)}{Pérdida (Loss), Alertas, Novedad}
+
+    % Código de muestra para copiar y pegar en LaTeX
+    \node[anchor=west, font=\scriptsize\color{grayText}] at (0, -3.9) {
+        \textbf{Para definir en LaTeX:} \ \texttt{\textbackslash definecolor\{cAzul\}\{HTML\}\{0072B2\} \quad \textbackslash definecolor\{cNaranja\}\{HTML\}\{E69F00\} \quad \textbackslash definecolor\{cVerde\}\{HTML\}\{009E73\} \quad \textbackslash definecolor\{cBermellon\}\{HTML\}\{D55E00\}}
+    };
+
+\end{tikzpicture}
+\end{document}
