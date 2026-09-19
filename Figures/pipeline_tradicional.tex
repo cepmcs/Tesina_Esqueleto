@@ -1,0 +1,163 @@
+% =========================================================================
+% Figura: Pipeline tradicional de descubrimiento y desarrollo de fármacos
+% Inspirado en Chawla et al. (2024), Figura 1.1 y Hughes et al. (2011)
+% Paleta de colores accesible Okabe-Ito definida en Configurations/01-Colors.sty
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% -------------------------------------------------------------------------
+% Parámetros geométricos
+% -------------------------------------------------------------------------
+\def\w{3.4}      % Ancho de cada bloque
+\def\hArrow{1.15}% Altura de la flecha de compuestos
+\def\hBadge{0.72}% Altura del distintivo de la etapa
+\def\tip{0.45}   % Saliente de la punta de la flecha
+\def\wing{0.16}  % Aleta de la flecha
+
+% Coordenadas horizontales
+\def\xZero{0.00}
+\def\xOne{3.75}
+\def\xTwo{7.50}
+\def\xThree{11.25}
+\def\totalW{14.65}
+
+% =========================================================================
+% FILA 1: FLECHAS CON CANTIDAD DE COMPUESTOS (EMBUDO)
+% =========================================================================
+
+% --- Etapa 1: 10.000 compuestos (Azul) ---
+\filldraw[draw=figBlue, fill=figBlueTint, line width=1.1pt, rounded corners=1pt]
+    (\xZero, 0) -- (\xZero + \w - \tip, 0) -- (\xZero + \w - \tip, \wing) -- (\xZero + \w, -\hArrow/2) -- (\xZero + \w - \tip, -\hArrow - \wing) -- (\xZero + \w - \tip, -\hArrow) -- (\xZero, -\hArrow) -- cycle;
+\node[align=center, text=darkText] at (\xZero + \w/2 - 0.15, -\hArrow/2) {
+    {\fontsize{12}{14}\selectfont \textbf{10.000}}\\[1pt]
+    {\footnotesize compuestos iniciales}
+};
+
+% --- Etapa 2: 250 compuestos (Naranja) ---
+\filldraw[draw=figOrange, fill=figOrangeTint, line width=1.1pt, rounded corners=1pt]
+    (\xOne, 0) -- (\xOne + \w - \tip, 0) -- (\xOne + \w - \tip, \wing) -- (\xOne + \w, -\hArrow/2) -- (\xOne + \w - \tip, -\hArrow - \wing) -- (\xOne + \w - \tip, -\hArrow) -- (\xOne, -\hArrow) -- cycle;
+\node[align=center, text=darkText] at (\xOne + \w/2 - 0.15, -\hArrow/2) {
+    {\fontsize{12}{14}\selectfont \textbf{250}}\\[1pt]
+    {\footnotesize candidatos preclínicos}
+};
+
+% --- Etapa 3: 5 compuestos (Bermellón) ---
+\filldraw[draw=figVermilion, fill=figVermilionTint, line width=1.1pt, rounded corners=1pt]
+    (\xTwo, 0) -- (\xTwo + \w - \tip, 0) -- (\xTwo + \w - \tip, \wing) -- (\xTwo + \w, -\hArrow/2) -- (\xTwo + \w - \tip, -\hArrow - \wing) -- (\xTwo + \w - \tip, -\hArrow) -- (\xTwo, -\hArrow) -- cycle;
+\node[align=center, text=darkText] at (\xTwo + \w/2 - 0.15, -\hArrow/2) {
+    {\fontsize{12}{14}\selectfont \textbf{5}}\\[1pt]
+    {\footnotesize moléculas en clínica}
+};
+
+% --- Etapa 4: 1 fármaco (Verde azulado) ---
+\filldraw[draw=figGreen, fill=figGreenTint, line width=1.1pt, rounded corners=1pt]
+    (\xThree, 0) -- (\xThree + \w - \tip, 0) -- (\xThree + \w - \tip, \wing) -- (\xThree + \w, -\hArrow/2) -- (\xThree + \w - \tip, -\hArrow - \wing) -- (\xThree + \w - \tip, -\hArrow) -- (\xThree, -\hArrow) -- cycle;
+\node[align=center, text=darkText] at (\xThree + \w/2 - 0.15, -\hArrow/2) {
+    {\fontsize{12}{14}\selectfont \textbf{1}}\\[1pt]
+    {\footnotesize fármaco aprobado}
+};
+
+% =========================================================================
+% FILA 2: DISTINTIVOS CON EL NOMBRE DE CADA ETAPA
+% =========================================================================
+
+\node[
+    draw=figBlue,
+    fill=figBlueTint,
+    line width=0.9pt,
+    rounded corners=3pt,
+    minimum width=\w cm,
+    minimum height=\hBadge cm,
+    text width=\w cm - 0.2cm,
+    anchor=north west,
+    align=center,
+    inner sep=3pt
+] at (\xZero, -1.35) {
+    \textbf{\small\textcolor{figBlue}{Descubrimiento}}\\[1pt]
+    {\footnotesize\textcolor{figBlue}{temprano}}
+};
+
+\node[
+    draw=figOrange,
+    fill=figOrangeTint,
+    line width=0.9pt,
+    rounded corners=3pt,
+    minimum width=\w cm,
+    minimum height=\hBadge cm,
+    text width=\w cm - 0.2cm,
+    anchor=north west,
+    align=center,
+    inner sep=3pt
+] at (\xOne, -1.35) {
+    \textbf{\small\textcolor{figOrange!90!black}{Fase preclínica}}\\[1pt]
+    {\footnotesize\textcolor{grayText}{(\textit{in vitro} / \textit{in vivo})}}
+};
+
+\node[
+    draw=figVermilion,
+    fill=figVermilionTint,
+    line width=0.9pt,
+    rounded corners=3pt,
+    minimum width=\w cm,
+    minimum height=\hBadge cm,
+    text width=\w cm - 0.2cm,
+    anchor=north west,
+    align=center,
+    inner sep=3pt
+] at (\xTwo, -1.35) {
+    \textbf{\small\textcolor{figVermilion}{Fases clínicas}}\\[1pt]
+    {\footnotesize\textcolor{figVermilion}{(Fases I--III)}}
+};
+
+\node[
+    draw=figGreen,
+    fill=figGreenTint,
+    line width=0.9pt,
+    rounded corners=3pt,
+    minimum width=\w cm,
+    minimum height=\hBadge cm,
+    text width=\w cm - 0.2cm,
+    anchor=north west,
+    align=center,
+    inner sep=3pt
+] at (\xThree, -1.35) {
+    \textbf{\small\textcolor{figGreen!80!black}{Aprobación}}\\[1pt]
+    {\footnotesize\textcolor{figGreen!80!black}{regulatoria}}
+};
+
+% =========================================================================
+% FILA 3: BARRAS GLOBALES DE TIEMPO Y COSTO (MÉTRICAS DEL PROCESO COMPLETO)
+% Tonos neutros (slate/gris) para indicar alcance global y evitar confusión
+% con los colores de las etapas específicas.
+% =========================================================================
+\def\hBar{0.75}  % Altura más amplia para dar respiro al texto
+\def\tipBar{0.45}% Punta de la flecha
+\def\wingBar{0.14}% Aleta de la flecha
+
+% --- Barra 1: Tiempo acumulado (10 a 14 años) ---
+\filldraw[draw=grayText, fill=cardBorder!50, line width=1pt, rounded corners=1.5pt]
+    (0, -2.65) -- (\totalW - \tipBar, -2.65) -- (\totalW - \tipBar, -2.65 + \wingBar) -- (\totalW, -2.65 - \hBar/2) -- (\totalW - \tipBar, -2.65 - \hBar - \wingBar) -- (\totalW - \tipBar, -2.65 - \hBar) -- (0, -2.65 - \hBar) -- cycle;
+\node[text=darkText, align=center] at (\totalW/2 - 0.2, -2.65 - \hBar/2) {
+    \textbf{Duración acumulada:} 10 a 14 años de investigación y desarrollo
+};
+
+% --- Barra 2: Inversión requerida (> 1.000 millones de USD) ---
+\filldraw[draw=grayText, fill=cardBorder!50, line width=1pt, rounded corners=1.5pt]
+    (0, -3.75) -- (\totalW - \tipBar, -3.75) -- (\totalW - \tipBar, -3.75 + \wingBar) -- (\totalW, -3.75 - \hBar/2) -- (\totalW - \tipBar, -3.75 - \hBar - \wingBar) -- (\totalW - \tipBar, -3.75 - \hBar) -- (0, -3.75 - \hBar) -- cycle;
+\node[text=darkText, align=center] at (\totalW/2 - 0.2, -3.75 - \hBar/2) {
+    \textbf{Inversión acumulada:} Más de 1.000 millones de dólares (USD)
+};
+
+\end{tikzpicture}%
+}
+\caption[Pipeline tradicional de diseño y desarrollo de fármacos]{Pipeline tradicional de descubrimiento y desarrollo de fármacos, ilustrando la reducción progresiva de candidatos, tiempos e inversión requerida hasta la aprobación regulatoria. Adaptado de~\cite{chawla2024computational, hughes2011principles}.}
+\label{fig:pipeline_tradicional}
+\end{figure}

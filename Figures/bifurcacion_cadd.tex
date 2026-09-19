@@ -1,0 +1,189 @@
+% =========================================================================
+% Figura: Bifurcación de metodologías CADD (SBDD y LBDD) y convergencia en VS
+% Inspirado en Chawla et al. (2024) y Macalino et al. (2015)
+% Paleta de colores accesible Okabe-Ito definida en Configurations/01-Colors.sty
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% -------------------------------------------------------------------------
+% 1. NODO RAÍZ SUPERIOR: CADD
+% -------------------------------------------------------------------------
+\node[
+    draw=grayText!80,
+    fill=cardBorder!40,
+    rounded corners=5pt,
+    line width=1.2pt,
+    minimum width=4.6cm,
+    minimum height=1.0cm,
+    align=center,
+    text=darkText
+] (cadd) at (7.0, 5.6) {
+    {\fontsize{12}{14}\selectfont \textbf{CADD}}\\[2pt]
+    {\footnotesize\color{grayText} Diseño de Fármacos Asistido por Computadora}
+};
+
+% -------------------------------------------------------------------------
+% 2. BIFURCACIÓN PRINCIPAL: SBDD Y LBDD
+% -------------------------------------------------------------------------
+% Rama SBDD (Izquierda - Azul)
+\node[
+    draw=figBlue,
+    fill=figBlueTint,
+    rounded corners=4pt,
+    line width=1.2pt,
+    minimum width=4.8cm,
+    minimum height=0.9cm,
+    align=center,
+    text=darkText
+] (sbdd) at (3.6, 3.85) {
+    {\fontsize{11}{13}\selectfont \textbf{\color{figBlue} SBDD}}\\[1pt]
+    {\footnotesize (\textit{Structure-Based Drug Design})}
+};
+
+% Rama LBDD (Derecha - Naranja)
+\node[
+    draw=figOrange,
+    fill=figOrangeTint,
+    rounded corners=4pt,
+    line width=1.2pt,
+    minimum width=4.8cm,
+    minimum height=0.9cm,
+    align=center,
+    text=darkText
+] (lbdd) at (10.4, 3.85) {
+    {\fontsize{11}{13}\selectfont \textbf{\color{figOrange!90!black} LBDD}}\\[1pt]
+    {\footnotesize (\textit{Ligand-Based Drug Design})}
+};
+
+% Conexión bifurcada de CADD a SBDD y LBDD
+\draw[line width=1.1pt, draw=grayText, -{Stealth[length=5pt, width=4pt]}]
+    (cadd.south) -- ++(0, -0.45) -| (sbdd.north);
+\draw[line width=1.1pt, draw=grayText, -{Stealth[length=5pt, width=4pt]}]
+    (cadd.south) -- ++(0, -0.45) -| (lbdd.north);
+
+% -------------------------------------------------------------------------
+% 3. CAJAS DE METODOLOGÍAS / HERRAMIENTAS
+% -------------------------------------------------------------------------
+
+% --- Sub-cajas SBDD (2 cajas: Docking y Diseño de novo) ---
+\node[
+    draw=figBlue!70,
+    fill=white,
+    rounded corners=3pt,
+    line width=0.9pt,
+    minimum width=2.1cm,
+    minimum height=1.05cm,
+    align=center,
+    text=darkText,
+    font=\footnotesize
+] (box_docking) at (2.3, 2.05) {
+    \textbf{Docking}\\[2pt]\textbf{molecular}
+};
+
+\node[
+    draw=figBlue!70,
+    fill=white,
+    rounded corners=3pt,
+    line width=0.9pt,
+    minimum width=2.1cm,
+    minimum height=1.05cm,
+    align=center,
+    text=darkText,
+    font=\footnotesize
+] (box_denovo) at (4.9, 2.05) {
+    \textbf{Diseño}\\[2pt]\textbf{\textit{de novo}}
+};
+
+% Conexión de SBDD a sus 2 cajas
+\draw[line width=0.9pt, draw=figBlue!80, -{Stealth[length=4.5pt, width=3.5pt]}]
+    (sbdd.south) -- ++(0, -0.35) -| (box_docking.north);
+\draw[line width=0.9pt, draw=figBlue!80, -{Stealth[length=4.5pt, width=3.5pt]}]
+    (sbdd.south) -- ++(0, -0.35) -| (box_denovo.north);
+
+% --- Sub-caja LBDD (1 caja: QSAR) ---
+\node[
+    draw=figOrange!70,
+    fill=white,
+    rounded corners=3pt,
+    line width=0.9pt,
+    minimum width=2.6cm,
+    minimum height=1.05cm,
+    align=center,
+    text=darkText,
+    font=\footnotesize
+] (box_qsar) at (10.4, 2.05) {
+    \textbf{QSAR}
+};
+
+% Conexión de LBDD a su caja
+\draw[line width=0.9pt, draw=figOrange!80, -{Stealth[length=4.5pt, width=3.5pt]}]
+    (lbdd.south) -- (box_qsar.north);
+
+% -------------------------------------------------------------------------
+% 4. NODO COMÚN DE CONVERGENCIA: CRIBADO VIRTUAL (VS)
+% -------------------------------------------------------------------------
+\node[
+    draw=figGreen,
+    fill=figGreenTint,
+    rounded corners=5pt,
+    line width=1.2pt,
+    minimum width=5.6cm,
+    minimum height=0.95cm,
+    align=center,
+    text=darkText
+] (vs) at (7.0, 0.45) {
+    {\fontsize{11}{13}\selectfont \textbf{\color{figGreen!80!black} Cribado Virtual (VS)}}
+};
+
+% Colectores hacia el Cribado Virtual
+% Colector SBDD
+\draw[line width=0.9pt, draw=figBlue!70] (box_docking.south) -- ++(0,-0.25) coordinate (b_dock);
+\draw[line width=0.9pt, draw=figBlue!70] (box_denovo.south) -- ++(0,-0.25) coordinate (b_deno);
+\draw[line width=0.9pt, draw=figBlue!70] (b_dock) -- (b_deno);
+\draw[line width=1.1pt, draw=figBlue, -{Stealth[length=5pt, width=4pt]}]
+    ($(b_dock)!0.5!(b_deno)$) -- ++(0,-0.2) -| ($(vs.north)+(-1.6,0)$);
+
+% Colector LBDD
+\draw[line width=1.1pt, draw=figOrange, -{Stealth[length=5pt, width=4pt]}]
+    (box_qsar.south) -- ++(0,-0.45) -| ($(vs.north)+(1.6,0)$);
+
+% -------------------------------------------------------------------------
+% 5. FLECHA DE RETROALIMENTACIÓN (CORREDOR DEDICADO A LA DERECHA)
+% -------------------------------------------------------------------------
+\draw[
+    line width=1.1pt,
+    draw=grayText,
+    dashed,
+    rounded corners=10pt,
+    -{Stealth[length=6pt, width=4.5pt]}
+]
+    (vs.east) -- (14.2, 0.45) 
+    -- (14.2, 5.6) 
+    -- (cadd.east);
+
+\node[
+    fill=white,
+    draw=cardBorder,
+    line width=0.8pt,
+    inner sep=4pt,
+    rounded corners=3pt,
+    align=center,
+    font=\scriptsize\bfseries,
+    text=grayText
+] at (14.2, 3.0) {
+    Ciclo iterativo\\de optimización
+};
+
+\end{tikzpicture}%
+}
+\caption{Bifurcación de las estrategias de diseño de fármacos asistido por computadora (CADD) en métodos basados en estructura (SBDD) y basados en ligando (LBDD), convergiendo en el cribado virtual con retroalimentación iterativa. Adaptado de~\cite{chawla2024computational, macalino2015role}.}
+\label{fig:bifurcacion_cadd}
+\end{figure}

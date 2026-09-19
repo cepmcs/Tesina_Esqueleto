@@ -126,6 +126,7 @@
 \RequirePackage[normalem]{ulem} % A better underline.
 \RequirePackage{mfirstuc} % Capitalise words in a sentence.
 \RequirePackage{tikz} % Create high-quality graphics programmatically.
+\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric}
 \RequirePackage{psvectorian} % To include in-text ornamatentions. 
 \RequirePackage{blindtext} % Generate placeholder text.
 \RequirePackage{pdfpages} % allows to insert pdf files

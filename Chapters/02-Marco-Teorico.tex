@@ -6,13 +6,31 @@ En este capítulo se hace una revisión de los conceptos teóricos que dan base 
 \section{Diseño y Descubrimiento de Fármacos}
 \label{sec:diseno_farmacos}
 
+El descubrimiento de nuevos fármacos es un proceso mediante el cual se buscan, identifican, diseñan y validan nuevas moléculas con el objetivo de tratar enfermedades mediante la inhibición o activación de una proteína diana. Se trata de un proceso largo y costoso, que puede requerir entre 10 y 15 años de investigación y desarrollo, con una inversión que puede superar los 1.000 millones de dólares~\cite{hughes2011principles}.
+
+Frente a estos desafíos, en la actualidad el diseño de fármacos involucra con frecuencia el uso de herramientas computacionales. En términos generales, es posible distinguir dos perspectivas complementarias dentro de este campo: por un lado, el pipeline tradicional, basado en etapas sucesivas de identificación y validación de blancos, ensayos y optimización de candidatos; por otro lado, el diseño de fármacos asistido por computadora (CADD), que incorpora técnicas y métodos computacionales y de tecnologías de la información para acelerar y optimizar el proceso~\cite{zhang2025role}. A continuación, se describe el pipeline tradicional (subsección~\ref{subsec:pipeline_tradicional}) y luego se profundiza en el enfoque computacional (subsección~\ref{subsec:cadd}). 
+
 \subsection{Pipeline Tradicional}
 \label{subsec:pipeline_tradicional}
-% Explicación del proceso tradicional de descubrimiento, etapas clínicas, tiempos y costos.
+Históricamente, el descubrimiento de fármacos tiene su origen en pruebas de ensayo y error sobre extractos naturales o compuestos aislados, evaluados directamente en células o animales, sin un blanco molecular específico previamente definido~\cite{chawla2024computational}.
+
+La figura~\ref{fig:pipeline_tradicional} ilustra este proceso metódico y secuencial surgido con el desarrollo de la industria farmacéutica, el cual en términos generales se agrupa en tres fases: el descubrimiento del fármaco, el desarrollo preclínico y los ensayos clínicos en humanos, hasta alcanzar la aprobación regulatoria necesaria~\cite{biala2023research}.
+
+\input{Figures/pipeline_tradicional.tex}
+
+En primera instancia, el descubrimiento temprano de fármacos empieza con la identificación y validación del blanco terapéutico, es decir, la proteína, receptor o vía biológica cuya interacción con el fármaco se espera que tenga un efecto terapéutico. La idea de un blanco puede surgir tanto de la investigación académica y clínica como del sector comercial, y suele requerir años de evidencia de respaldo antes de justificar el inicio de un programa de descubrimiento~\cite{hughes2011principles}.
+
+En esta etapa se diseña un ensayo que mide si un compuesto interactúa con su diana. Este ensayo se aplica sobre grandes bibliotecas de compuestos mediante un cribado de alto rendimiento (HTS), un proceso automatizado que permite probar miles de moléculas en poco tiempo. Los compuestos que dan resultado favorable en este cribado son posteriormente evaluados y optimizados, modificando su estructura para mejorar su perfil farmacológico, hasta llegar a una molécula candidata~\cite{hughes2011principles}.
+
+Con la molécula candidata definida, se realiza el desarrollo preclínico, donde se estudia la seguridad y la toxicidad en pruebas \textit{in vitro} y con animales, antes de probarse en seres humanos. Si los resultados son satisfactorios, el compuesto avanza a los ensayos clínicos, evaluando la seguridad y la dosis en un grupo reducido de personas, midiendo su eficacia en pacientes y confirmándola finalmente en poblaciones más grandes~\cite{biala2023research}. Superada esta etapa, el fármaco pasa a la aprobación regulatoria, donde organismos como la ANMAT o la FDA autorizan su comercialización~\cite{biala2023research, duran2021regulatory}.
+
+Este recorrido completo explica por qué el desarrollo de fármacos puede extenderse entre 12 y 15 años y superar los 1.000 millones de dólares de inversión~\cite{hughes2011principles}. Miles de compuestos evaluados en las primeras etapas son rechazados posteriormente por distintos factores: falta de interacción con el objetivo, bajo perfil farmacológico, dificultad de síntesis, entre otros. Solo un número reducido llega a fases preclínicas y de aprobación, lo que evidencia la enorme tasa de descarte de candidatos en cada etapa~\cite{chawla2024computational}.
+
 
 \subsection{Diseño de Fármacos Asistido por Computadora (CADD)}
 \label{subsec:cadd}
-% Métodos computacionales basados en estructura (SBDD) y basados en ligando (LBDD).
+
+\input{Figures/bifurcacion_cadd.tex}
 
 \section{Representación de Moléculas}
 \label{sec:rep_moleculas}
