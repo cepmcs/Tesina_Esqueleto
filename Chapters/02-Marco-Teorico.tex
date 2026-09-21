@@ -20,7 +20,7 @@ La figura~\ref{fig:pipeline_tradicional} ilustra este proceso metódico y secuen
 
 En primera instancia, el descubrimiento temprano de fármacos empieza con la identificación y validación del blanco terapéutico, es decir, la proteína, receptor o vía biológica cuya interacción con el fármaco se espera que tenga un efecto terapéutico. La idea de un blanco puede surgir tanto de la investigación académica y clínica como del sector comercial, y suele requerir años de evidencia de respaldo antes de justificar el inicio de un programa de descubrimiento~\cite{hughes2011principles}.
 
-En esta etapa se diseña un ensayo que mide si un compuesto interactúa con su diana. Este ensayo se aplica sobre grandes bibliotecas de compuestos mediante un cribado de alto rendimiento (HTS), un proceso automatizado que permite probar miles de moléculas en poco tiempo. Los compuestos que dan resultado favorable en este cribado son posteriormente evaluados y optimizados, modificando su estructura para mejorar su perfil farmacológico, hasta llegar a una molécula candidata~\cite{hughes2011principles}.
+En esta etapa se diseña un ensayo que mide si un compuesto interactúa con su diana. Este ensayo se aplica sobre grandes bibliotecas de compuestos mediante un cribado de alto rendimiento, un proceso automatizado que permite probar miles de moléculas en poco tiempo. Los compuestos que dan resultado favorable en este cribado son posteriormente evaluados y optimizados, modificando su estructura para mejorar su perfil farmacológico, hasta llegar a una molécula candidata~\cite{hughes2011principles}.
 
 Con la molécula candidata definida, se realiza el desarrollo preclínico, donde se estudia la seguridad y la toxicidad en pruebas \textit{in vitro} y con animales, antes de probarse en seres humanos. Si los resultados son satisfactorios, el compuesto avanza a los ensayos clínicos, evaluando la seguridad y la dosis en un grupo reducido de personas, midiendo su eficacia en pacientes y confirmándola finalmente en poblaciones más grandes~\cite{biala2023research}. Superada esta etapa, el fármaco pasa a la aprobación regulatoria, donde organismos como la ANMAT o la FDA autorizan su comercialización~\cite{biala2023research, duran2021regulatory}.
 
@@ -30,21 +30,49 @@ Este recorrido completo explica por qué el desarrollo de fármacos puede extend
 \subsection{Diseño de Fármacos Asistido por Computadora (CADD)}
 \label{subsec:cadd}
 
+El diseño de fármacos asistido por computadora (CADD) se originó en la década de 1960, cuando la capacidad de generar modelos moleculares tridimensionales por medios computacionales permitió superar las limitaciones de las representaciones bidimensionales de los compuestos. Desde entonces, evolucionó hasta dividirse en dos enfoques principales según la información disponible sobre el blanco terapéutico: el diseño basado en la estructura (SBDD), que parte de la estructura tridimensional del blanco, y el diseño basado en el ligando (LBDD), que se basa en un conjunto de compuestos con actividad biológica ya conocida contra ese blanco~\cite{chawla2024computational}.
+
 \input{Figures/bifurcacion_cadd.tex}
+
+En el diseño basado en la estructura, el blanco se obtiene mediante cristalografía de rayos X, resonancia magnética nuclear (RMN) o, en ausencia de datos experimentales, mediante modelado por homología a partir de una proteína homóloga. Este diseño presenta dos técnicas principales, el diseño de novo, que construye ligandos nuevos dentro de las restricciones del sitio de unión, y el acoplamiento molecular, que evalúa cómo encajan distintos compuestos en ese sitio y califica su afinidad mediante funciones de puntuación~\cite{macalino2015role}. En el diseño basado en el ligando, se asume que las moléculas con estructuras semejantes tienden a exhibir actividades biológicas similares, su metodología más extendida es el modelado QSAR, el cual correlaciona variaciones estructurales con la actividad biológica observada~\cite{chawla2024computational}.
+
+Como se observa en la figura~\ref{fig:bifurcacion_cadd}, el cribado virtual converge con ambos enfoques, ya que puede orientarse a partir de la estructura del blanco o de los ligandos de referencia. Asimismo, este proceso no se restringe a predecir afinidades de unión, sino que cumple un papel esencial al filtrar candidatos según su perfil ADMET (absorción, distribución, metabolismo, excreción y toxicidad), descartando compuestos con baja viabilidad~\cite{macalino2015role}. En años recientes, estas herramientas han incorporado distintas metodologías, tales como redes neuronales profundas para mejorar la capacidad predictiva, así como estrategias híbridas que integran SBDD y LBDD dentro de un mismo flujo de trabajo~\cite{chawla2024computational}.
 
 \section{Representación de Moléculas}
 \label{sec:rep_moleculas}
 
 \subsection{SMILES (Simplified Molecular Input Line Entry System)}
 \label{subsec:smiles}
-% Notación SMILES, ventajas y limitaciones de validez sintáctica.
+
+La notación SMILES es una representación lineal ampliamente usada para describir la estructura bidimensional de las moléculas mediante cadenas de texto~\cite{weininger1988smiles}. Cada átomo se representa por su símbolo químico y los enlaces por caracteres especiales. Su sintaxis captura la conectividad molecular, qué átomos están enlazados entre sí, utilizando paréntesis y dígitos para ciclos. Esta notación es concisa, legible y compatible con la mayoría de las bases de datos químicas (PubChem, ChEMBL, ZINC), lo que facilita su integración en flujos de trabajo computacionales.
+
+\input{Figures/smiles_aspirina.tex}
+
+Como se observa en la figura~\ref{fig:smiles_aspirina}, la estructura de la aspirina se divide en tres partes dentro de la secuencia SMILES. A la izquierda se presenta el grafo bidimensional y a la derecha su correspondencia en texto, donde las ramificaciones se indican con paréntesis y el anillo aromático se delimita con números que abren y cierran el ciclo.
+
+SMILES se ha consolidado como la representación estándar en modelos generativos de moléculas basados en secuencias, análogos a los modelos de lenguaje. Arquitecturas basadas en redes neuronales pueden aprender las reglas químicas implícitas en las cadenas SMILES y generar nuevas estructuras válidas~\cite{Kong2022SMILES, Segler2018Generating, Olivecrona2017Molecular}. Se ha demostrado además que el uso de SMILES aleatorizados mejora la diversidad y calidad de las moléculas generadas al ampliar el espacio químico de entrenamiento~\cite{ArusPous2019RandomizedSMILES}.
+
+Sin embargo, SMILES presenta limitaciones. Su sintaxis es sensible a pequeños errores que pueden producir moléculas inválidas o distintas. Además, una misma molécula puede tener múltiples representaciones válidas, lo que complica su comparación directa. 
 
 \subsection{SELFIES (Self-Referencing Embedded Strings)}
 \label{subsec:selfies}
-% Representación SELFIES, garantía del 100% de validez sintáctica química.
+
+SELFIES es una representación lineal alternativa a SMILES, diseñada para ser robusta en términos de validez química. Introducida por Krenn et al. entre 2019 y 2020, su objetivo fue eliminar los errores sintácticos comunes de SMILES. En SELFIES, cada símbolo (token) de la cadena corresponde a un elemento químico o una relación estructural, y la gramática está restringida de manera que cualquier secuencia SELFIES decodifica una molécula válida. Es decir, no existen ``SELFIES inválidos'', y hasta una cadena aleatoria genera una estructura respetando las valencias permitidas~\cite{Krenn2019SELFIES}.
+
+\input{Figures/selfies_aspirina.tex}
+
+Como se observa en la figura~\ref{fig:selfies_aspirina}, la misma molécula se representa mediante una secuencia de símbolos entre corchetes. Cada parte de la estructura se define con instrucciones directas, donde las ramas y el cierre del anillo indican de forma exacta los enlaces necesarios para mantener la validez molecular.
+
+La principal ventaja de SELFIES es esta robustez, lo que resulta crucial en modelos generativos. Si se emplea en un VAE, RNN o GAN, prácticamente todas las moléculas generadas serán químicamente válidas, eliminando la necesidad de filtrar salidas inválidas como ocurre con SMILES~\cite{Krenn2019SELFIES}. Esto permite a los algoritmos enfocarse en optimizar propiedades en lugar de aprender reglas gramaticales. SELFIES puede representar las mismas moléculas que SMILES, evitando combinaciones inválidas.
+
+Entre sus limitaciones, las cadenas SELFIES pueden ser menos intuitivas para químicos, ser más largas que su SMILES equivalente y no reflejar de manera simple ciertas transformaciones moleculares. Al igual que SMILES, no incorpora información 3D ni conformacional, y la validez de la secuencia no garantiza que la molécula sea fácil de sintetizar o realista~\cite{Krenn2019SELFIES}.
 
 \section{Métricas de Evaluación y Propiedades Moleculares}
 \label{sec:metricas_evaluacion}
+
+\subsection{Reglas de Lipinski y Propiedades Fisicoquímicas}
+\label{subsec:lipinski}
+% Regla de los 5 de Lipinski (LogP, Peso Molecular, HBD, HBA, TPSA).
 
 \subsection{QED (Quantitative Estimate of Drug-likeness)}
 \label{subsec:qed}
@@ -57,10 +85,6 @@ Este recorrido completo explica por qué el desarrollo de fármacos puede extend
 \subsection{Fracción de Carbonos \texorpdfstring{$sp^3$}{sp3} (Fsp3)}
 \label{subsec:fsp3}
 % Grado de saturación tridimensional y complejidad molecular.
-
-\subsection{Reglas de Lipinski y Propiedades Fisicoquímicas}
-\label{subsec:lipinski}
-% Regla de los 5 de Lipinski (LogP, Peso Molecular, HBD, HBA, TPSA).
 
 \subsection{Métodos de Docking Molecular y Afinidad de Unión}
 \label{subsec:docking}

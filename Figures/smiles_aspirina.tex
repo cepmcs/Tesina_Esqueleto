@@ -1,0 +1,170 @@
+% =========================================================================
+% Figura: Representación de moléculas en SMILES (Aspirina 2D vs. SMILES)
+% Paleta de colores accesible Okabe-Ito definida en Configurations/01-Colors.sty
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% =========================================================================
+% CONTENEDOR PRINCIPAL
+% =========================================================================
+\draw[draw=cardBorder, fill=white, rounded corners=10pt, line width=0.9pt] 
+    (-0.5, -0.2) rectangle (15.8, 6.9);
+
+% =========================================================================
+% PANEL IZQUIERDO: ESTRUCTURA 2D (GRAFO MOLECULAR)
+% =========================================================================
+\node[anchor=north west, font=\bfseries\small, text=darkText] at (-0.1, 6.55) {Grafo 2D};
+\node[anchor=north west, font=\scriptsize, text=grayText] at (-0.1, 6.15) {Molécula de aspirina};
+
+% Coordenadas del anillo bencénico (Centro en (2.2, 2.9), R = 1.18 cm)
+\coordinate (C1) at (3.22, 3.49); % C1 (ramificación 1)
+\coordinate (C6) at (2.20, 4.08);
+\coordinate (C5) at (1.18, 3.49);
+\coordinate (C4) at (1.18, 2.31);
+\coordinate (C3) at (2.20, 1.72);
+\coordinate (C2) at (3.22, 2.31); % C2 (ramificación 2)
+
+% Coordenadas ramificación lateral 1 (arriba a la derecha)
+\coordinate (O_est)  at (3.98, 4.18);
+\coordinate (C_act)  at (4.80, 4.85);
+\coordinate (O_carb) at (4.80, 5.92);
+\coordinate (C_met)  at (5.85, 4.28);
+
+% Coordenadas ramificación lateral 2 (abajo a la derecha)
+\coordinate (C_acd)  at (4.15, 1.76);
+\coordinate (O_acd)  at (5.08, 2.30);
+\coordinate (OH_acd) at (4.15, 0.62);
+
+% --- HALOS COLOREADOS DETRÁS DE CADA FRAGMENTO ---
+% 1. Halo Ramificación lateral (Naranja)
+\filldraw[fill=figOrangeTint, draw=figOrange, line width=1.2pt, dashed, rounded corners=8pt]
+    (3.55, 3.65) -- (3.55, 6.30) -- (6.45, 6.30) -- (6.45, 3.65) -- cycle;
+
+% 2. Halo Ciclo del grafo (Azul)
+\filldraw[fill=figBlueTint, draw=figBlue, line width=1.2pt, dashed, rounded corners=8pt]
+    (0.70, 1.25) -- (0.70, 4.55) -- (3.48, 4.55) -- (3.48, 1.25) -- cycle;
+
+% 3. Halo Ramificación terminal (Verde)
+\filldraw[fill=figGreenTint, draw=figGreen, line width=1.2pt, dashed, rounded corners=8pt]
+    (3.65, 0.15) -- (3.65, 2.55) -- (5.60, 2.55) -- (5.60, 0.15) -- cycle;
+
+% --- ENLACES Y ÁTOMOS 2D ---
+% Anillo (Kekulé con enlaces dobles alternados)
+\draw[line width=1.5pt, draw=darkText] (C1) -- (C6) -- (C5) -- (C4) -- (C3) -- (C2) -- cycle;
+\draw[line width=1.1pt, draw=darkText] ($(C2)!0.15!(C1) + (-0.14, 0)$) -- ($(C1)!0.15!(C2) + (-0.14, 0)$);
+\draw[line width=1.1pt, draw=darkText] ($(C5)!0.15!(C6) + (0.07, -0.12)$) -- ($(C6)!0.15!(C5) + (0.07, -0.12)$);
+\draw[line width=1.1pt, draw=darkText] ($(C3)!0.15!(C4) + (-0.07, 0.12)$) -- ($(C4)!0.15!(C3) + (-0.07, 0.12)$);
+
+% Índices '1' de cierre de ciclo
+\node[font=\fontsize{6.5}{7.5}\selectfont\bfseries, text=white, circle, fill=figBlue, inner sep=1pt] at ($(C1)+(-0.35, 0)$) {1};
+\node[font=\fontsize{6.5}{7.5}\selectfont\bfseries, text=white, circle, fill=figBlue, inner sep=1pt] at ($(C2)+(-0.35, 0)$) {1};
+
+% Ramificación lateral 1
+\draw[line width=1.5pt, draw=darkText] (C1) -- (O_est) -- (C_act);
+\draw[line width=1.3pt, draw=darkText] ($(C_act)+(-0.06,0)$) -- ($(O_carb)+(-0.06,0)$);
+\draw[line width=1.3pt, draw=darkText] ($(C_act)+(0.06,0)$) -- ($(O_carb)+(0.06,0)$);
+\draw[line width=1.5pt, draw=darkText] (C_act) -- (C_met);
+
+\node[font=\footnotesize\bfseries, text=darkText, fill=figOrangeTint, inner sep=1.5pt, rounded corners=1pt] at (O_est) {O};
+\node[font=\footnotesize\bfseries, text=darkText, fill=figOrangeTint, inner sep=1.5pt, rounded corners=1pt] at (O_carb) {O};
+\node[font=\footnotesize\bfseries, text=darkText, fill=figOrangeTint, inner sep=1.5pt, rounded corners=1pt] at (C_met) {CH$_3$};
+
+% Ramificación terminal 2
+\draw[line width=1.5pt, draw=darkText] (C2) -- (C_acd);
+\draw[line width=1.3pt, draw=darkText] ($(C_acd)+(0.05, 0.07)$) -- ($(O_acd)+(0.05, 0.07)$);
+\draw[line width=1.3pt, draw=darkText] ($(C_acd)+(-0.05, -0.07)$) -- ($(O_acd)+(-0.05, -0.07)$);
+\draw[line width=1.5pt, draw=darkText] (C_acd) -- (OH_acd);
+
+\node[font=\footnotesize\bfseries, text=darkText, fill=figGreenTint, inner sep=1.5pt, rounded corners=1pt] at (O_acd) {O};
+\node[font=\footnotesize\bfseries, text=darkText, fill=figGreenTint, inner sep=1.5pt, rounded corners=1pt] at (OH_acd) {OH};
+
+% =========================================================================
+% PANEL DERECHO: STRING SMILES (SERIALIZACIÓN LINEAL)
+% =========================================================================
+\node[anchor=north west, font=\bfseries\small, text=darkText] at (8.5, 6.55) {Secuencia SMILES};
+\node[anchor=north west, font=\scriptsize, text=grayText] at (8.5, 6.15) {Serialización lineal del grafo};
+
+% Cápsula SMILES completa destacada
+\node[
+    draw=cardBorder,
+    fill=cardBorder!15,
+    rounded corners=6pt,
+    line width=0.8pt,
+    inner sep=6pt,
+    anchor=north west
+] (smiles_bar) at (8.5, 5.65) {
+    {\fontsize{14}{17}\selectfont\ttfamily
+    \colorbox{figOrangeTint}{\textbf{\color{figOrange}CC(=O)O}}%
+    \colorbox{figBlueTint}{\textbf{\color{figBlue}c1ccccc1}}%
+    \colorbox{figGreenTint}{\textbf{\color{figGreen}C(=O)O}}%
+    }
+};
+
+% 3 Bloques visuales correspondientes a cada fragmento del grafo
+% Bloque 1: Ramificación lateral (Naranja)
+\node[
+    draw=figOrange,
+    fill=figOrangeTint,
+    rounded corners=5pt,
+    line width=1.1pt,
+    anchor=north west,
+    minimum width=6.5cm,
+    inner sep=5pt
+] (box_est) at (8.5, 4.30) {
+    \makebox[2.4cm][l]{{\fontsize{12}{14}\selectfont\ttfamily\textbf{\color{figOrange}CC(=O)O}}}%
+    {\small\textbf{\color{darkText}Ramificación lateral}}
+};
+
+% Bloque 2: Estructura cíclica (Azul)
+\node[
+    draw=figBlue,
+    fill=figBlueTint,
+    rounded corners=5pt,
+    line width=1.1pt,
+    anchor=north west,
+    minimum width=6.5cm,
+    inner sep=5pt
+] (box_rng) at (8.5, 2.95) {
+    \makebox[2.4cm][l]{{\fontsize{12}{14}\selectfont\ttfamily\textbf{\color{figBlue}c1ccccc1}}}%
+    {\small\textbf{\color{darkText}Estructura cíclica} (\texttt{1...1})}
+};
+
+% Bloque 3: Ramificación terminal (Verde)
+\node[
+    draw=figGreen,
+    fill=figGreenTint,
+    rounded corners=5pt,
+    line width=1.1pt,
+    anchor=north west,
+    minimum width=6.5cm,
+    inner sep=5pt
+] (box_acd) at (8.5, 1.60) {
+    \makebox[2.4cm][l]{{\fontsize{12}{14}\selectfont\ttfamily\textbf{\color{figGreen}C(=O)O}}}%
+    {\small\textbf{\color{darkText}Ramificación terminal}}
+};
+
+% =========================================================================
+% FLECHAS DE CONEXIÓN ENTRE FRAGMENTO 2D Y BLOQUE SMILES
+% =========================================================================
+\draw[figOrange, line width=1.5pt, -{Stealth[length=6pt, width=4.5pt]}]
+    (6.45, 5.0) to[out=5, in=175] (box_est.west);
+
+\draw[figBlue, line width=1.5pt, -{Stealth[length=6pt, width=4.5pt]}]
+    (3.48, 3.15) to[out=10, in=175] (box_rng.west);
+
+\draw[figGreen, line width=1.5pt, -{Stealth[length=6pt, width=4.5pt]}]
+    (5.60, 1.45) to[out=-5, in=185] (box_acd.west);
+
+\end{tikzpicture}%
+}
+\caption{Representación de la molécula de aspirina en notación SMILES y correspondencia con su grafo 2D.}
+\label{fig:smiles_aspirina}
+\end{figure}

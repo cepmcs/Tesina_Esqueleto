@@ -6,7 +6,7 @@
 
 \begin{figure}[htbp]
 \centering
-\resizebox{0.95\linewidth}{!}{%
+\resizebox{0.80\linewidth}{!}{%
 \begin{tikzpicture}[
     font=\sffamily,
     >=Stealth,
@@ -155,35 +155,8 @@
 \draw[line width=1.1pt, draw=figOrange, -{Stealth[length=5pt, width=4pt]}]
     (box_qsar.south) -- ++(0,-0.45) -| ($(vs.north)+(1.6,0)$);
 
-% -------------------------------------------------------------------------
-% 5. FLECHA DE RETROALIMENTACIÓN (CORREDOR DEDICADO A LA DERECHA)
-% -------------------------------------------------------------------------
-\draw[
-    line width=1.1pt,
-    draw=grayText,
-    dashed,
-    rounded corners=10pt,
-    -{Stealth[length=6pt, width=4.5pt]}
-]
-    (vs.east) -- (14.2, 0.45) 
-    -- (14.2, 5.6) 
-    -- (cadd.east);
-
-\node[
-    fill=white,
-    draw=cardBorder,
-    line width=0.8pt,
-    inner sep=4pt,
-    rounded corners=3pt,
-    align=center,
-    font=\scriptsize\bfseries,
-    text=grayText
-] at (14.2, 3.0) {
-    Ciclo iterativo\\de optimización
-};
-
 \end{tikzpicture}%
 }
-\caption{Bifurcación de las estrategias de diseño de fármacos asistido por computadora (CADD) en métodos basados en estructura (SBDD) y basados en ligando (LBDD), convergiendo en el cribado virtual con retroalimentación iterativa. Adaptado de~\cite{chawla2024computational, macalino2015role}.}
+\caption{Bifurcación de las estrategias de diseño de fármacos asistido por computadora (CADD) en métodos basados en estructura (SBDD) y basados en ligando (LBDD), convergiendo en el cribado virtual. Adaptado de~\cite{chawla2024computational, macalino2015role}.}
 \label{fig:bifurcacion_cadd}
 \end{figure}

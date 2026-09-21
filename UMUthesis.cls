@@ -132,6 +132,8 @@
 \RequirePackage{pdfpages} % allows to insert pdf files
 \RequirePackage{lipsum} % Include loreipsun text
 \RequirePackage{emptypage} % Include empty page for openright
+\RequirePackage{float} % Improved interface for floating objects like [H]
+\RequirePackage[section]{placeins} % Prevent floats from crossing section boundaries
 
 
 
