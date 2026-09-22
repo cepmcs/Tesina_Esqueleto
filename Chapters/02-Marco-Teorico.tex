@@ -41,6 +41,8 @@ Como se observa en la figura~\ref{fig:bifurcacion_cadd}, el cribado virtual conv
 \section{Representación de Moléculas}
 \label{sec:rep_moleculas}
 
+El diseño de fármacos asistido por computadora requiere describir eficientemente la estructura de las moléculas para que los algoritmos puedan procesarlas y analizarlas. En este contexto, existen diversos formatos, que van desde conformaciones tridimensionales y grafos moleculares hasta secuencias lineales. Estas últimas describen la estructura del compuesto mediante una cadena de texto, lo cual facilita su almacenamiento, indexación y procesamiento. Entre las notaciones lineales más extendidas se destacan SMILES y SELFIES, ambas abordadas en este trabajo. 
+
 \subsection{SMILES (Simplified Molecular Input Line Entry System)}
 \label{subsec:smiles}
 
@@ -70,17 +72,54 @@ Entre sus limitaciones, las cadenas SELFIES pueden ser menos intuitivas para qu�
 \section{Métricas de Evaluación y Propiedades Moleculares}
 \label{sec:metricas_evaluacion}
 
+En el diseño de fármacos asistido por computadora, la calidad de las moléculas generadas no depende de una única característica; para que un compuesto sea viable como candidato a fármaco, debe cumplir con una serie de propiedades para asegurar un perfil farmacológico adecuado. Estas propiedades abarcan desde características fisicoquímicas hasta su viabilidad de síntesis y afinidad de unión con el objetivo terapéutico. 
+
 \subsection{Reglas de Lipinski y Propiedades Fisicoquímicas}
 \label{subsec:lipinski}
 % Regla de los 5 de Lipinski (LogP, Peso Molecular, HBD, HBA, TPSA).
+
+Uno de los primeros criterios para estimar si un compuesto químico puede cumplir alguna función farmacológica o actividad biológica es la Regla de los Cinco (\textit{Rule of Five})~\cite{Lipinski1997Solubility}, propuesta en 1997 a partir de un análisis retrospectivo de las propiedades fisicoquímicas de fármacos que habían alcanzado con éxito ensayos clínicos de fase II. La regla establece que una molécula con buena biodisponibilidad oral debe cumplir con las siguientes condiciones:
+
+\begin{itemize}
+    \item Peso Molecular $\leq 500$ g/mol
+    \item Coeficiente de partición octanol-agua (LogP) $\leq 5$
+    \item Número de aceptores de enlace de hidrógeno $\leq 10$
+    \item Número de donadores de enlace de hidrógeno $\leq 5$
+\end{itemize}
+
+Esta regla se convirtió en un filtro en las primeras etapas del cribado virtual y diseño de fármacos; sin embargo, no es una regla absoluta, ya que existen fármacos que no cumplen con estas condiciones y son exitosos. Por ello, suele complementarse con métricas más detalladas para evaluar el perfil del compuesto. 
 
 \subsection{QED (Quantitative Estimate of Drug-likeness)}
 \label{subsec:qed}
 % Cuantificación de la similitud a fármaco.
 
+El Quantitative Estimate of Drug-likeness (QED) es una métrica que permite evaluar la probabilidad de que una molécula sea un fármaco viable a partir del análisis de las propiedades fisicoquímicas de una colección de fármacos aprobados~\cite{Bickerton2012QED}. El QED toma un valor entre 0 y 1, donde un valor cercano a 1 indica una mayor probabilidad de que la molécula sea un fármaco viable.
+
+El QED se construye a partir de ocho propiedades moleculares relevantes en el diseño de fármacos: 
+
+\begin{itemize}
+    \item Peso molecular (MW)
+    \item Coeficiente de partición octanol-agua (ALOGP)
+    \item Número de donadores de enlace de hidrógeno (HBD)
+    \item Número de aceptores de enlace de hidrógeno (HBA)
+    \item Área de superficie polar (PSA)
+    \item Número de enlaces rotables (ROTB)
+    \item Número de anillos aromáticos (AROM)
+    \item Número de alertas estructurales (ALERTS)
+\end{itemize}
+
+Cada una de estas propiedades se transforma mediante una función de deseabilidad, derivada de la distribución de estas propiedades en fármacos aprobados; el QED final se calcula como la media geométrica ponderada de estas ocho funciones de deseabilidad.
+
+QED se ha convertido en una de las métricas más utilizadas en los pipelines de diseño de fármacos, debido a que, a diferencia de los filtros discretos como Lipinski, genera una puntuación suave y continua~\cite{Xia2024MolecularOptimization}.
+
 \subsection{Accesibilidad Sintética (SA Score)}
 \label{subsec:sa}
 % Facilidad y viabilidad de síntesis en laboratorio.
+
+La accesibilidad sintética es un criterio que evalúa la dificultad de síntesis de una molécula. Esta propiedad constituye un filtro común en el diseño de fármacos asistido por computadora, ya que permite que un compuesto prometedor pueda fabricarse de forma viable y eficiente, afectando directamente tanto la etapa de diseño y optimización de moléculas como la viabilidad de su posterior implementación experimental.
+
+Para cuantificar la accesibilidad sintética se suele utilizar el SA Score~\cite{Ertl2009SAScore}; esta métrica asigna a cada molécula un valor entre 1 (fácil de sintetizar) y 10 (difícil de sintetizar). Dicho valor se calcula a partir del número de fragmentos moleculares y la complejidad de las conexiones entre ellos. En la optimización molecular suele emplearse junto con el QED, donde el QED optimiza la deseabilidad farmacológica y el SA Score la viabilidad práctica de obtenerla~\cite{Xia2024MolecularOptimization}.
+
 
 \subsection{Fracción de Carbonos \texorpdfstring{$sp^3$}{sp3} (Fsp3)}
 \label{subsec:fsp3}
