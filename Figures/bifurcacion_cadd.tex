@@ -25,7 +25,7 @@
     minimum height=1.0cm,
     align=center,
     text=darkText
-] (cadd) at (7.0, 5.6) {
+] (cadd) at (7.0, 5.95) {
     {\fontsize{12}{14}\selectfont \textbf{CADD}}\\[2pt]
     {\footnotesize\color{grayText} Diseño de Fármacos Asistido por Computadora}
 };
@@ -43,7 +43,7 @@
     minimum height=0.9cm,
     align=center,
     text=darkText
-] (sbdd) at (3.6, 3.85) {
+] (sbdd) at (3.6, 4.15) {
     {\fontsize{11}{13}\selectfont \textbf{\color{figBlue} SBDD}}\\[1pt]
     {\footnotesize (\textit{Structure-Based Drug Design})}
 };
@@ -58,16 +58,20 @@
     minimum height=0.9cm,
     align=center,
     text=darkText
-] (lbdd) at (10.4, 3.85) {
+] (lbdd) at (10.4, 4.15) {
     {\fontsize{11}{13}\selectfont \textbf{\color{figOrange!90!black} LBDD}}\\[1pt]
     {\footnotesize (\textit{Ligand-Based Drug Design})}
 };
 
-% Conexión bifurcada de CADD a SBDD y LBDD
+% Conexión bifurcada de CADD a SBDD y LBDD con bifurcación equidistante
+\path (cadd.south) -- (sbdd.north) coordinate[midway] (cadd_mid);
+\coordinate (cadd_split) at (cadd.south |- cadd_mid);
+\draw[line width=1.1pt, draw=grayText]
+    (cadd.south) -- (cadd_split);
 \draw[line width=1.1pt, draw=grayText, -{Stealth[length=5pt, width=4pt]}]
-    (cadd.south) -- ++(0, -0.45) -| (sbdd.north);
+    (cadd_split) -| (sbdd.north);
 \draw[line width=1.1pt, draw=grayText, -{Stealth[length=5pt, width=4pt]}]
-    (cadd.south) -- ++(0, -0.45) -| (lbdd.north);
+    (cadd_split) -| (lbdd.north);
 
 % -------------------------------------------------------------------------
 % 3. CAJAS DE METODOLOGÍAS / HERRAMIENTAS
@@ -84,7 +88,7 @@
     align=center,
     text=darkText,
     font=\footnotesize
-] (box_docking) at (2.3, 2.05) {
+] (box_docking) at (2.3, 2.20) {
     \textbf{Docking}\\[2pt]\textbf{molecular}
 };
 
@@ -98,15 +102,19 @@
     align=center,
     text=darkText,
     font=\footnotesize
-] (box_denovo) at (4.9, 2.05) {
+] (box_denovo) at (4.9, 2.20) {
     \textbf{Diseño}\\[2pt]\textbf{\textit{de novo}}
 };
 
 % Conexión de SBDD a sus 2 cajas
+\path (sbdd.south) -- (box_docking.north) coordinate[pos=0.45] (sbdd_mid);
+\coordinate (sbdd_split) at (sbdd.south |- sbdd_mid);
+\draw[line width=0.9pt, draw=figBlue!80]
+    (sbdd.south) -- (sbdd_split);
 \draw[line width=0.9pt, draw=figBlue!80, -{Stealth[length=4.5pt, width=3.5pt]}]
-    (sbdd.south) -- ++(0, -0.35) -| (box_docking.north);
+    (sbdd_split) -| (box_docking.north);
 \draw[line width=0.9pt, draw=figBlue!80, -{Stealth[length=4.5pt, width=3.5pt]}]
-    (sbdd.south) -- ++(0, -0.35) -| (box_denovo.north);
+    (sbdd_split) -| (box_denovo.north);
 
 % --- Sub-caja LBDD (1 caja: QSAR) ---
 \node[
@@ -119,7 +127,7 @@
     align=center,
     text=darkText,
     font=\footnotesize
-] (box_qsar) at (10.4, 2.05) {
+] (box_qsar) at (10.4, 2.20) {
     \textbf{QSAR}
 };
 
@@ -139,21 +147,26 @@
     minimum height=0.95cm,
     align=center,
     text=darkText
-] (vs) at (7.0, 0.45) {
+] (vs) at (7.0, 0.35) {
     {\fontsize{11}{13}\selectfont \textbf{\color{figGreen!80!black} Cribado Virtual (VS)}}
 };
 
-% Colectores hacia el Cribado Virtual
+% Colectores hacia el Cribado Virtual con altura suficiente para las flechas
+\coordinate (vs_in_sbdd) at ($(vs.north)+(-1.6,0)$);
+\coordinate (vs_in_lbdd) at ($(vs.north)+(1.6,0)$);
+\coordinate (vs_turn_level) at ($(vs.north)+(0, 0.40)$);
+
 % Colector SBDD
 \draw[line width=0.9pt, draw=figBlue!70] (box_docking.south) -- ++(0,-0.25) coordinate (b_dock);
 \draw[line width=0.9pt, draw=figBlue!70] (box_denovo.south) -- ++(0,-0.25) coordinate (b_deno);
 \draw[line width=0.9pt, draw=figBlue!70] (b_dock) -- (b_deno);
+\coordinate (b_mid) at ($(b_dock)!0.5!(b_deno)$);
 \draw[line width=1.1pt, draw=figBlue, -{Stealth[length=5pt, width=4pt]}]
-    ($(b_dock)!0.5!(b_deno)$) -- ++(0,-0.2) -| ($(vs.north)+(-1.6,0)$);
+    (b_mid) -- (b_mid |- vs_turn_level) -- (vs_in_sbdd |- vs_turn_level) -- (vs_in_sbdd);
 
 % Colector LBDD
 \draw[line width=1.1pt, draw=figOrange, -{Stealth[length=5pt, width=4pt]}]
-    (box_qsar.south) -- ++(0,-0.45) -| ($(vs.north)+(1.6,0)$);
+    (box_qsar.south) -- (box_qsar.south |- vs_turn_level) -- (vs_in_lbdd |- vs_turn_level) -- (vs_in_lbdd);
 
 \end{tikzpicture}%
 }
