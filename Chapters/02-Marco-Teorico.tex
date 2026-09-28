@@ -125,44 +125,362 @@ Para cuantificar la accesibilidad sintética se suele utilizar el SA Score~\cite
 \label{subsec:fsp3}
 % Grado de saturación tridimensional y complejidad molecular.
 
+La fracción de carbonos $F_{sp^3}$ es una métrica que evalúa la proporción de carbonos saturados respecto al número total de átomos de carbono. 
+
+$$F_{sp^3} = \frac{\text{Número de carbonos } sp^3}{\text{Número total de carbonos}}$$
+
+Sus valores oscilan entre 0 para moléculas completamente planas y 1 para moléculas totalmente saturadas.
+
+Esta métrica fue propuesta en el trabajo ``Escape from Flatland''~\cite{Lovering2009Flatland}, donde se observó que las moléculas candidatas a fármacos que tendían a ser excesivamente planas mostraban tasas menores de éxito clínico. A través de un análisis de bases de datos de compuestos en distintas etapas se encontró una correlación positiva entre el grado de saturación Fsp3 y la probabilidad de que un compuesto avance a fases clínicas avanzadas. Asimismo, se encontró una correlación positiva entre el Fsp3 y la solubilidad acuosa. Un trabajo posterior~\cite{Lovering2013Flatland2} expandió este análisis, relacionando nuevamente la saturación sp3 con la promiscuidad farmacológica, es decir, la tendencia de una molécula a interactuar con dianas biológicas no deseadas, por lo que a mayor complejidad tridimensional, las moléculas tienden a reducir la promiscuidad y con ello el riesgo de efectos adversos fuera de la diana.
+
 \subsection{Métodos de Docking Molecular y Afinidad de Unión}
 \label{subsec:docking}
 % Fundamentos de acoplamiento molecular y cálculo de energía libre de unión con AutoDock Vina.
 
+El docking molecular es una técnica computacional que permite estimar la afinidad de una molécula pequeña hacia una diana, usualmente una proteína. Esta herramienta se utiliza para predecir la fuerza de dicha unión, conocida como afinidad de unión, y la orientación tridimensional de la molécula dentro del sitio de unión de la proteína.
+
+En la figura~\ref{fig:docking_molecular} se muestra un diagrama esquemático con las etapas principales del proceso de docking molecular.
+
+\input{Figures/docking_molecular.tex}
+
+Una herramienta de docking consiste en general de dos componentes, un algoritmo de búsqueda que explora el espacio de poses del ligando dentro del sitio de unión, y de una función de puntuación que evalúa cada pose y estima la energía de unión de cada pose y permite ordenarlas \cite{Pagadala2017docking}. Existen distintas implementaciones que combinan estos componentes, cada una con su propia metodología de búsqueda y de puntuación.
+
+Entre esas herramientas se encuentra AutoDock Vina \cite{Trott2010Vina}, que combina un algoritmo de búsqueda local iterativo con una función de puntuación híbrida, usando información de estructuras de complejos proteína-ligando ya conocidos y de afinidades medidas en experimentos. El docking demanda recursos computacionales considerables cuando se tiene una gran cantidad de ligandos que evaluar, para reducir este costo existen implementaciones aceleradas por GPU, entre ellas Uni-dock \cite{Yu2023UniDock} que permite procesar moléculas en lotes. El resultado de la función de puntuación se da como una energía de unión estimada ($\Delta G$) en kcal/mol \cite{Pagadala2017docking} en la que un valor más negativo indica una unión más favorable.
+
 \section{Modelos Generativos Aplicados al Diseño de Fármacos}
 \label{sec:modelos_generativos}
+
+Los métodos basados en inteligencia artificial pueden mejorar enormemente el proceso de diseño de fármacos, en especial los modelos generativos los cuales son capaces de aprender representaciones del espacio químico para generar nuevos compuestos con propiedades deseadas. Al apoyarse en técnicas de aprendizaje profundo, estos modelos no evalúan únicamente las moléculas conocidas, sino que aprenden las reglas y patrones de la representación molecular para generar nuevos compuestos. Entre estos modelos los Autoencoders Variacionales destacan por su capacidad de estructurar un espacio latente navegable.
 
 \subsection{Autoencoders Variacionales (VAE)}
 \label{subsec:vae}
 % Arquitectura encoder-latente-decoder, regularización KL, reconstrucción y muestreo en espacio continuo.
 
+Los Autoencoders Variacionales (VAE) son una arquitectura de aprendizaje profundo de tipo generativo~\cite{kingma2013auto}. Su estructura se basa en dos redes neuronales conectadas: un codificador que procesa los datos y un decodificador que intenta reconstruirlos.
+
+Para entender su funcionamiento específico, es necesario contrastarlos con los autoencoders tradicionales. Un autoencoder tradicional toma un dato de entrada y lo comprime en un vector fijo en el espacio latente. El problema de este enfoque es que, por sí solo, no puede generar directamente ejemplos nuevos a partir de la distribución de los datos~\cite{bishop2024deep}.
+
+El VAE trata con este problema modificando la naturaleza del espacio latente. En lugar de codificar la entrada como un punto fijo, la red predice una distribución estadística, definida por una media y una desviación estándar~\cite{kingma2013auto}. En la figura~\ref{fig:esquema_vae} se ilustra este flujo, desde la estimación de $\mu$ y $\sigma$ hasta la reconstrucción de la entrada a partir de $z$.
+
+\input{Figures/esquema_vae.tex}
+
+En el diseño de fármacos, la entrada $x$ es una molécula representada como una cadena de texto (SMILES o SELFIES). El codificador convierte esa cadena en una distribución sobre el espacio latente, de la que se toma una muestra $z$, y el decodificador convierte $z$ de nuevo en una cadena. Como este espacio es continuo, se pueden generar moléculas nuevas decodificando vectores aleatorios, perturbando moléculas conocidas o interpolando entre ellas, y también aplicar métodos de optimización para buscar moléculas con mejores propiedades~\cite{GBWHLDSA18}.
+
+El entrenamiento de los VAE presenta un desafío técnico, para generar datos el modelo necesita tomar una muestra aleatoria de esa distribución estadística, pero fijar el vector latente a un valor muestreado bloquea la propagación del error hacia el codificador, por lo que sus pesos no se pueden actualizar~\cite{bishop2024deep}. Para solucionarlo se emplea el «truco de reparametrización»~\cite{kingma2013auto}, que obtiene el vector latente $z$ mediante una ecuación que separa la aleatoriedad de los parámetros aprendibles:
+
+\begin{equation}
+z = \mu + \sigma \odot \epsilon
+\end{equation}
+
+donde $\mu$ y $\sigma$ son la media y la desviación estándar que predice el codificador, $\odot$ es el producto elemento a elemento y $\epsilon$ es un ruido aleatorio externo que debe seguir una distribución normal estándar. De esta forma, la red puede usar la aleatoriedad para generar variedad, pero mantiene una conexión matemática directa que le permite propagar los gradientes hacia el codificador.
+
+\textbf{Función de pérdida.} Para que el modelo generativo aprenda correctamente, no basta con medir la precisión con la que reconstruye los datos de entrada. Es fundamental asegurar también que el espacio latente posea una estructura estadística coherente que permita la generación de nuevas muestras. Para lograr esto, se utiliza una función de pérdida con dos términos:
+
+\begin{equation}
+\mathcal{L} = \mathcal{L}_{recon} + \beta \cdot \mathcal{D}_{KL}\left(q_{\phi}(z|x) \,\|\, p(z)\right)
+\end{equation}
+
+donde $q_{\phi}(z|x)$ es la distribución que predice el codificador y $p(z)$ es una distribución normal estándar $\mathcal{N}(0, I)$~\cite{kingma2013auto}. Cuando $\beta = 1$, esta función corresponde al negativo del ELBO (\textit{Evidence Lower Bound}), la cota inferior de la verosimilitud que el VAE busca maximizar~\cite{kingma2013auto, bishop2024deep}; el coeficiente $\beta$ permite ponderar la divergencia KL. En la práctica, este peso puede variar durante el entrenamiento: en \textit{Chemical VAE}, por ejemplo, la pérdida variacional se introduce con un calendario sigmoide (\textit{annealing})~\cite{GBWHLDSA18}.
+
+Esta ecuación actúa como un mecanismo de balance entre dos objetivos contrapuestos durante el entrenamiento:
+
+\begin{itemize}
+    \item \textbf{Pérdida de reconstrucción ($\mathcal{L}_{recon}$):} Es el primer término de la ecuación. Su función es comparar el dato generado por el decodificador con el dato original de entrada. Cuanto mayor sea la diferencia o el error en la recuperación de la información, mayor será este valor. Su objetivo es forzar a la red a mantener la fidelidad respecto a los datos reales.
+    \item \textbf{Divergencia de Kullback-Leibler ($\mathcal{D}_{KL}$):} Es el segundo término y actúa como un regularizador~\cite{kingma2013auto} ponderado por el coeficiente $\beta$. Mide la discrepancia entre la distribución aprendida por el codificador y la distribución a priori. Este término funciona como un componente variacional que organiza el espacio latente. Su objetivo principal es forzar a que la distribución que aprende el modelo se parezca lo más posible a la distribución normal estándar, creando un espacio continuo y ordenado.
+\end{itemize}
+
+El objetivo final de esta función es encontrar un equilibrio óptimo: reconstruir los datos con alta precisión sin perder la capacidad de generar nuevas muestras válidas al interpolar en el espacio latente.
+
 \section{Optimización Multi-Objetivo}
 \label{sec:opt_multiobjetivo}
+
+La optimización molecular requiere equilibrar múltiples propiedades que suelen competir entre sí, tales como maximizar la afinidad hacia una diana, mientras se preserva la facilidad de síntesis o la similitud a fármacos. Al no existir una solución única que satisfaga todos los criterios, la optimización multiobjetivo aborda este desafío identificando las mejores soluciones de compromiso.
 
 \subsection{Aproximaciones Basadas en la Frontera de Pareto}
 \label{subsec:pareto}
 % Concepto de dominancia de Pareto, soluciones no dominadas y frentes de Pareto.
 
+La optimización de soluciones en la naturaleza frecuentemente requiere explorar espacios de búsqueda vastos y de alta dimensionalidad, donde los métodos exactos resultan inviables. Estos problemas raramente se pueden reducir a un único objetivo a optimizar, sino que presentan múltiples metas u objetivos en conflicto.
+
+La solución óptima para estos problemas no es una simple solución, sino que es un conjunto de soluciones definidas como soluciones óptimas de Pareto, donde no es posible mejorar un objetivo específico sin que ello conlleve al deterioro de otro. Es decir, estas soluciones representan un compromiso entre diferentes objetivos en conflicto por lo que la finalidad es encontrar este conjunto óptimo, y consecuentemente la Frontera de Pareto~\cite{talbi2009metaheuristics}.
+
+\textbf{Problema de optimización multiobjetivo.} Un problema de optimización multiobjetivo puede definirse como~\cite{talbi2009metaheuristics}:
+
+\begin{equation}
+\label{eq:pom}
+\begin{cases}
+\text{Min } F(x) = (f_1(x), f_2(x), \ldots, f_n(x)) \\
+\text{s.c. } x \in S
+\end{cases}
+\end{equation}
+
+Donde $F(x)$ es el vector de los $n$ objetivos a optimizar ($n \geq 2$), mientras que $x$ y $S$ mantienen las definiciones de variables de decisión y espacio factible ya establecidas. En este contexto, la búsqueda se orienta a encontrar un equilibrio entre los distintos criterios de aptitud en conflicto.
+
+Los objetivos que deben maximizarse se transforman en objetivos de minimización invirtiendo su signo, de modo que la formulación~\eqref{eq:pom} abarca ambos sentidos de optimización~\cite{talbi2009metaheuristics}.
+
+\textbf{Dominancia de Pareto.} Un vector objetivo $u = (u_1, \ldots, u_n)$ se dice que domina a $v = (v_1, \ldots, v_n)$ (denotado por $u \prec v$) si y solo si ninguna componente de $v$ es menor que la componente correspondiente de $u$ y al menos una componente de $u$ es estrictamente menor~\cite{talbi2009metaheuristics}:
+
+\begin{equation}
+\label{eq:dominancia_pareto}
+\forall i \in \{1, \ldots, n\} : u_i \leq v_i \wedge \exists i \in \{1, \ldots, n\} : u_i < v_i
+\end{equation}
+
+\textbf{Dominancia Débil ($u \preceq v$).} $u$ domina débilmente a $v$ si~\cite{talbi2009metaheuristics}:
+
+\begin{equation}
+\label{eq:dominancia_debil}
+\forall i \in \{1, \ldots, n\}, \quad u_i \leq v_i
+\end{equation}
+
+\textbf{Dominancia restringida.} Cuando el problema de optimización multiobjetivo incorpora restricciones, la comparación entre soluciones debe contemplar además su factibilidad. Bajo el principio de \textit{dominancia restringida}, una solución $x_i$ domina a una solución $x_j$ si se verifica alguna de las siguientes condiciones~\cite{deb2002nsga2}:
+
+\begin{enumerate}
+    \item $x_i$ es factible y $x_j$ no lo es.
+    \item Ambas soluciones son infactibles, pero $x_i$ presenta una menor violación de restricciones.
+    \item Ambas soluciones son factibles y $x_i$ domina a $x_j$ en el sentido de la ecuación~\eqref{eq:dominancia_pareto}.
+\end{enumerate}
+
+Este criterio permite incorporar restricciones sin recurrir a funciones de penalización, que exigirían el ajuste de parámetros adicionales~\cite{deb2002nsga2}.
+
+\textbf{Optimalidad de Pareto.} Una solución $x^* \in S$ es \textit{Pareto óptima} si para cada $x \in S$, $F(x)$ no domina a $F(x^*)$, es decir, $F(x) \nprec F(x^*)$~\cite{talbi2009metaheuristics}.
+
+En general, la búsqueda en un problema mono-objetivo conduce al hallazgo de una única solución óptima global. Un problema de optimización multiobjetivo puede tener un conjunto de soluciones conocido como el \textit{conjunto Pareto óptimo}. La imagen de este conjunto en el espacio de objetivos se denomina el frente de Pareto~\cite{talbi2009metaheuristics}.
+
+\textbf{Frente de Pareto.} Para un problema de optimización multiobjetivo $(F, S)$ dado y su conjunto óptimo de Pareto $P^*$, el \textbf{frente de Pareto} se define como~\cite{talbi2009metaheuristics}:
+
+\begin{equation}
+\label{eq:frente_pareto}
+PF^* = \{F(x) \mid x \in P^*\}
+\end{equation}
+
+El frente de Pareto es la imagen del conjunto óptimo de Pareto en el espacio de los objetivos, y su obtención constituye el propósito central de la optimización multiobjetivo. Dado que este frente puede ser sumamente extenso, se busca una aproximación finita que garantice tanto la convergencia hacia la frontera teórica como una distribución uniforme de las soluciones sobre la misma~\cite{talbi2009metaheuristics}.
+
+En la figura~\ref{fig:frontera_pareto} se ilustra la representación de soluciones dominadas y soluciones pertenecientes al frente de Pareto en un espacio bidimensional.
+
+\input{Figures/frontera_pareto.tex}
+
+
 \subsection{Indicadores de Rendimiento Multiobjetivo}
 \label{subsec:indicadores_multiobjetivo}
 % Hipervolumen (HV), Esparcimiento (Spread), Distancia Generacional Invertida (IGD).
+
+La evaluación de metaheurísticas multiobjetivo representa un desafío particular: el resultado del proceso de optimización no es una única solución, sino un conjunto de soluciones que aproxima el frente de Pareto. Por lo tanto, para evaluar el rendimiento de diferentes algoritmos es necesario comparar conjuntos enteros de soluciones no dominadas.
+
+No existe un estándar único para evaluar las soluciones; los indicadores de calidad o métricas de desempeño se clasifican según sus propiedades y según el objetivo que evalúan~\cite{talbi2009metaheuristics}:
+
+\begin{itemize}
+    \item \textbf{Indicadores de convergencia:} Evalúan la eficacia de las soluciones en términos de su cercanía al frente de Pareto óptimo (teórico). Ejemplos destacados incluyen la Distancia Generacional (GD), que calcula la distancia promedio entre el conjunto aproximado y un conjunto de referencia exacto, y el Indicador $\epsilon$, que determina el factor mínimo de traslación necesario para que una aproximación domine a otra.
+    \item \textbf{Indicadores de diversidad:} Miden la uniformidad y extensión de la distribución de las soluciones obtenidas a lo largo del frente. Indicadores como el Espaciado (\textit{Spread}) o la Entropía penalizan los frentes donde las soluciones se agrupan excesivamente en una sola región del espacio de objetivos. Suelen tener un costo computacional mayor que los indicadores de convergencia.
+    \item \textbf{Indicadores híbridos:} Evalúan simultáneamente tanto la convergencia como la diversidad del conjunto de soluciones. El estándar actual en la literatura es el Hipervolumen (HV), un indicador unario que calcula el volumen del espacio de objetivos que es débilmente dominado por el conjunto de aproximación respecto a un punto de referencia predefinido~\cite{talbi2009metaheuristics}.
+\end{itemize}
+
+A partir de esta clasificación, los indicadores de rendimiento considerados en este trabajo para evaluar el desempeño de las metaheurísticas son los siguientes:
+
+\textbf{Hipervolumen (HV).} Mide el volumen de la región del espacio de objetivos que domina el conjunto de soluciones obtenido, acotada por un punto de referencia. Cuanto mayor es ese volumen, mejor es el conjunto tanto en convergencia como en diversidad, de modo que resume ambos aspectos en un único valor. Su ventaja práctica es que no exige conocer el frente de Pareto óptimo, sino únicamente el punto de referencia.
+
+\textbf{Distancia generacional invertida modificada (IGD$^+$).} Promedia la distancia que separa a cada punto de un conjunto de referencia de la solución más próxima del conjunto obtenido, contabilizando solo las componentes en las que esa solución es peor. Valores bajos indican que el frente obtenido se aproxima al de referencia.
+
+\textbf{Indicador $\epsilon$ aditivo.} Expresa cuánto habría que desplazar el conjunto obtenido para que llegue a dominar débilmente al de referencia. Cuanto menor es ese desplazamiento, más próximos están ambos frentes, y un valor no positivo significa que el conjunto obtenido ya lo domina.
+
+\textbf{Espaciamiento (\textit{Spacing}).} Refleja con qué uniformidad se reparten las soluciones a lo largo del frente, a partir de la dispersión de las distancias entre soluciones vecinas. Valores bajos corresponden a frentes donde las soluciones están espaciadas de manera regular, sin acumulaciones ni huecos.
+
+\textbf{Tamaño del frente de Pareto.} Cuenta las soluciones no dominadas obtenidas, esto es, cuántas alternativas de compromiso distintas llega a ofrecer el algoritmo. Por sí solo no permite juzgar la calidad del frente.
+
+Los dos indicadores basados en distancias, IGD$^+$ y el indicador $\epsilon$ aditivo, necesitan un conjunto de referencia que aproxime el frente de Pareto óptimo. Como en el diseño de moléculas ese frente no se conoce, dicho conjunto se construye de forma empírica~\cite{liyao2019quality}.
 
 \subsection{Metaheurísticas Consideradas en las Experimentaciones}
 \label{subsec:metaheuristicas}
 % Algoritmos genéticos, PSO, algoritmos evolutivos multiobjetivo aplicados a la búsqueda en espacio latente.
 
+Esta tesina de grado considera cinco algoritmos metaheurísticos multiobjetivo para la experimentación, todos ellos operan sobre el espacio latente continuo del autoencoder variacional.
+
+\textbf{NSGA-II (Non-dominated Sorting Genetic Algorithm II).} Es el algoritmo evolutivo multiobjetivo de referencia y se apoya en la profundidad de dominancia. En cada generación ordena la población en frentes sucesivos de no dominancia mediante un procedimiento de ordenamiento rápido. Los empates dentro de un mismo frente se resuelven con la \textit{distancia de apiñamiento} (\textit{crowding distance}), que mide qué tan poblado está el entorno de cada individuo y favorece a los que se encuentran en regiones menos densas. Estos dos mecanismos, junto con una estrategia elitista, le permiten mantener a la vez convergencia y diversidad~\cite{deb2002nsga2}.
+
+\textbf{NSGA-III.} Conserva el esquema anterior, pero reemplaza la distancia de apiñamiento por un mecanismo de nichos basado en puntos de referencia distribuidos sobre un hiperplano normalizado. Cada solución se asocia al punto de referencia más cercano y sobreviven primero las soluciones asociadas a los puntos con menos representantes. De esta forma se logra una cobertura uniforme del frente incluso cuando crece el número de objetivos, situación en la que la distancia de apiñamiento pierde capacidad de discriminación~\cite{deb2014nsga3}.
+
+\textbf{MOEA/D (Multiobjective Evolutionary Algorithm Based on Decomposition).} Descompone el problema multiobjetivo en un conjunto de subproblemas escalares, definidos por vectores de pesos, y los optimiza de forma simultánea. Cada subproblema se resuelve usando solo la información de sus subproblemas vecinos. La distribución de las soluciones sobre el frente depende de cómo se distribuyan los vectores de pesos, y no de un mecanismo explícito de preservación de la diversidad~\cite{zhang2007moead}.
+
+\textbf{CMOPSO (Competitive Mechanism Based Multi-objective Particle Swarm Optimizer).} Pertenece a la familia de la optimización por enjambre de partículas. El rendimiento de los optimizadores convencionales de esta familia depende en gran medida de las mejores soluciones globales y personales guardadas en un archivo externo. CMOPSO, en cambio, selecciona en cada generación un conjunto de partículas élite del propio enjambre, según el frente de no dominancia y la distancia de apiñamiento, y actualiza cada partícula mediante una competencia por pares entre dos élites elegidas al azar: gana la que forma el ángulo menor con la partícula~\cite{zhang2018competitive}.
+
+\textbf{AGE-MOEA (Adaptive Geometry Estimation Based MOEA).} Parte de que el desempeño de los algoritmos multiobjetivo depende de la geometría del frente de Pareto, que puede ser una hipersuperficie euclídea, esférica o hiperbólica. Sobre el esquema de NSGA-II, reemplaza la distancia de apiñamiento por un puntaje de supervivencia que combina diversidad y proximidad mediante una norma $L_p$ adaptativa. La estimación de dicha geometría se realiza mediante un procedimiento de complejidad $O(n \times N)$, donde $n$ es el número de objetivos y $N$ el tamaño de la población. De este modo mantiene un rendimiento competitivo ante frentes de geometrías diversas, donde los algoritmos que suponen una geometría fija tienden a degradarse~\cite{panichella2019adaptive}.
+
 \section{Proteína 1 de Resistencia a Múltiples Fármacos (MRP1)}
 \label{sec:mrp1}
 % Función biológica de transportadores ABC, mecanismo de expulsión de quimioterápicos en cáncer colorrectal y relevancia de la inhibición de MRP1.
 
-\section{Trabajos Relacionados (Estado del Arte)}
+MRP1 (Proteína 1 de Resistencia a Múltiples Fármacos) es una proteína transportadora de la familia ABC (ATP-Binding Cassette) que usa energía del ATP para expulsar fármacos desde el interior de las células hacia el exterior~\cite{cole_targeting_2014, lu_mrp1_2015}. Al reducir la concentración del fármaco dentro de una célula tumoral, provoca resistencia al mismo. Esta proteína reconoce un conjunto de quimioterápicos, lo que explica la resistencia a fármacos que produce su sobreexpresión~\cite{cole_targeting_2014, lu_mrp1_2015}.
+
+En el cáncer colorrectal existe evidencia experimental sobre el papel de MRP1 en la resistencia a fármacos como el 5-fluorouracilo y el oxaliplatino~\cite{cao2017role}, además de que MRP1 funciona como biomarcador de resistencia al irinotecán~\cite{marin2022expression}. Se encontró que al reducir su producción en células tumorales resistentes, la sensibilidad a ambos fármacos se restablece y la muerte celular de las mismas vuelve a activarse. MRP1 contribuye entonces a la resistencia del cáncer colorrectal, lo que la convierte en un blanco terapéutico de interés~\cite{cao2017role}.
+
+Si bien MRP1 cumple funciones fisiológicas importantes en tejidos sanos, su sobreexpresión en tumores colorrectales representa una barrera terapéutica relevante, por lo que diseñar inhibidores que reduzcan su actividad en células tumorales es un desafío significativo.
+
+Se conoce la estructura tridimensional de MRP1 y el sitio donde se aloja la molécula que transporta~\cite{johnson_structural_2017}. En la Figura~\ref{fig:estructura_mrp1} se observa la conformación tridimensional de esta proteína (código PDB: 8VUX). Dicho sitio de unión está dividido en dos partes, una con carga positiva y otra hidrofóbica (que repele el agua), y varios de sus aminoácidos cambian de posición cuando una molécula se une. Esa flexibilidad explica por qué la proteína reconoce ligandos tan distintos entre sí, y a la vez ofrece un blanco delimitado contra el cual evaluar moléculas candidatas mediante acoplamiento molecular~\cite{johnson_structural_2017}.
+
+\input{Figures/estructura_mrp1.tex}
+
+\section{Trabajos Relacionados}
 \label{sec:trabajos_relacionados}
+
+En este trabajo se propone un enfoque híbrido, en el que mediante un modelo generativo y metaheurísticas multiobjetivo se busca, en una primera instancia, optimizar el diseño y búsqueda de moléculas con propiedades farmacológicas para, posteriormente, enfocarse en candidatos capaces de acoplarse a la proteína MRP1. Por lo tanto, esta sección revisa los antecedentes de modelos generativos para el diseño molecular, la optimización del espacio latente mediante metaheurísticas y, finalmente, los inhibidores conocidos de la proteína MRP1.
 
 \subsection{Diseño de Fármacos Mediante Redes Generativas y VAEs}
 \label{subsec:art_vaes}
 
+En esta subsección se revisan los principales modelos generativos aplicados al diseño de moléculas. La Tabla~\ref{tab:modelos} resume las características de cada uno: el conjunto de datos con el que fue entrenado, la arquitectura sobre la que se construye, la representación molecular que emplea y el año de publicación. La Tabla~\ref{tab:evaluacion} reúne, para esos mismos modelos, las métricas de calidad de generación que reporta cada trabajo, es decir, la validez, la unicidad y la novedad de las moléculas producidas.
+
+% --- TABLA 1 ---
+\begin{table}[htbp]
+    \centering
+    \caption{Modelos generativos para diseño molecular.}
+    \label{tab:modelos}
+    \begin{tabularx}{\textwidth}{l l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X c}
+        \toprule
+        \textbf{Modelo} & \textbf{Dataset} & \textbf{Arquitectura} & \textbf{Representación molecular} & \textbf{Año} \\
+        \midrule
+        Chemical VAE & QM9 / ZINC & VAE (CNN Enc / GRU Dec) & SMILES & 2018 \\
+        MolGAN & QM9 & Implicit GAN (Relational GCN + RL) & Grafo molecular & 2018 \\
+        MOLER & ZINC & Reward shaping sobre JTVAE & Grafo molecular & 2022 \\
+        D-MolVAE & QM9 / ZINC & Graph-based VAE & Grafo molecular & 2022 \\
+        PS-VAE & ZINC250K / QM9 & Junction Tree VAE & Subgrafos (Grafos) & 2022 \\
+        PCF-VAE & MOSES & VAE (RNN) & GenSMILES & 2025 \\
+        FRATTVAE & MOSES & Graph Transformer VAE & Grafo molecular & 2025 \\
+        RGCVAE & QM9 / ZINC & Relational Graph VAE & Grafo molecular & 2025 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+% --- TABLA 2 ---
+\begin{table}[htbp]
+    \centering
+    \caption{Métricas de evaluación de los modelos generativos.}
+    \label{tab:evaluacion}
+    \begin{tabular}{l l c c c}
+        \toprule
+        \textbf{Modelo} & \textbf{Dataset} & \textbf{Validez (\%)} & \textbf{Unicidad (\%)} & \textbf{Novedad (\%)} \\
+        \midrule
+        Chemical VAE & ZINC & 73.00--79.00 & -- & -- \\
+        MolGAN & QM9 & 98.10 & 10.40 & 94.20 \\
+        MOLER & ZINC & -- & -- & -- \\
+        D-MolVAE & QM9 & 100.00 & 98.66 & 95.85 \\
+        PS-VAE & ZINC250K & 100.00 & 99.70 & 99.70 \\
+        PCF-VAE & MOSES & 98.01 & 100.00 & 93.77 \\
+        FRATTVAE & MOSES & 100.00 & 99.97 & 97.42 \\
+        RGCVAE & QM9 & 99.90 & 94.00 & 96.40 \\
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.3cm}
+    \footnotesize \textit{Nota:} el guion (--) indica que el trabajo original no reporta dicha métrica.
+\end{table}
+
+En~\cite{GBWHLDSA18}, Gómez-Bombarelli et al. presentan el \textit{Chemical Variational Autoencoder} (Chemical VAE), uno de los primeros modelos en mapear representaciones moleculares discretas (SMILES) a un espacio latente continuo. Entrenado con los conjuntos QM9 y ZINC, permitió explorar y optimizar moléculas mediante operaciones continuas en dicho espacio. Aunque introdujo una base sólida para modelos generativos posteriores, su principal limitación radica en la generación de moléculas inválidas debido a la rigidez sintáctica de SMILES. En sus experimentos, el modelo alcanzó una validez del 73--79\% al decodificar puntos cercanos a moléculas reales.
+
+En~\cite{DeCaoKipf2018MolGAN}, De Cao y Kipf presentan MolGAN, un modelo generativo adversario que opera directamente sobre grafos moleculares pequeños. El modelo genera de manera simultánea los átomos y los enlaces e incorpora, junto con el entrenamiento adversario, una red de recompensa basada en aprendizaje por refuerzo para guiar la generación hacia mejores propiedades químicas (p.~ej., QED, $\log P$ y sintetizabilidad). Está orientado a moléculas de tamaño reducido (entrenado en QM9). Sus principales limitaciones radican en una baja unicidad debido al colapso de modos y dificultades de escalabilidad a grafos mayores. En QM9 reporta una validez del 98.10\%, una unicidad del 10.40\% y una novedad del 94.20\%.
+
+Fu et al.~\cite{Fu2022MOLER} proponen MOLER, un esquema de optimización condicionada que incorpora recompensas a nivel molecular para guiar modelos generativos basados en grafos (acoplable a arquitecturas como JTVAE, VJTNN y CORE). El método añade términos de recompensa y penalización orientados a maximizar la similitud con el compuesto de partida y penalizar la desviación de tamaño, manteniendo así la proximidad estructural mientras se optimiza una propiedad objetivo (QED, afinidad DRD2 o $\log P$). En sus evaluaciones, MOLER incrementa consistentemente la tasa de éxito y la mejora de propiedades respecto de las líneas base (hasta $\sim$20\%) con bajo costo computacional y alta novedad. Como limitaciones, está concebido para optimización local en lugar de generación totalmente \textit{de novo}, no reporta validez ni unicidad bajo protocolos estandarizados (como MOSES o GuacaMol) y su desempeño depende de la calibración de los pesos de similitud y tamaño.
+
+Du et al.~\cite{DGMWSZ22} introducen \textit{D-MolVAE}, un autoencoder variacional sobre grafos moleculares enfocado en el aprendizaje de representaciones desentrelazadas (\textit{disentangled representation learning}). Esta arquitectura permite aislar factores latentes asociados a distintas propiedades químicas, generando moléculas válidas, únicas y novedosas con una mayor interpretabilidad del espacio latente. Como limitación, el modelo se enfoca en propiedades globales y el desacoplamiento latente se realiza de manera no supervisada, lo que restringe el control determinista sobre propiedades dirigidas específicas.
+
+Kong et al.~\cite{Kong2022} proponen \textit{PS-VAE} (\textit{Principal Subgraph Variational Auto-Encoder}), un marco generativo que introduce el concepto de «subgrafos principales»: motivos estructurales recurrentes extraídos automáticamente del conjunto de datos mediante un algoritmo de minería \textit{merge-and-update}, prescindiendo de vocabularios predefinidos manualmente. El modelo sigue un procedimiento en dos etapas: primero emplea un VAE con decodificador autorregresivo (GRU) para generar una secuencia de subgrafos y, posteriormente, ensambla dichos fragmentos prediciendo las conexiones interfragmentarias mediante una red neuronal de grafos (GNN). Este enfoque preserva la valencia química y reduce la dependencia del orden de permutación. En el benchmark GuacaMol sobre ZINC250K, PS-VAE alcanza una validez del 100\% (respaldada por verificación de valencias en inferencia), con 99.70\% de unicidad y 99.70\% de novedad. Como contrapartida, la granularidad a nivel de subgrafos dificulta modificaciones atómicas mínimas en tareas de optimización molecular altamente restringidas.
+
+Bhadwal et al.~\cite{BKK25} desarrollan \textit{PCF-VAE} (\textit{Posterior Collapse-Free Variational Autoencoder}), una arquitectura condicional orientada a mitigar el problema del colapso del espacio latente (\textit{posterior collapse}). El modelo utiliza la representación \textit{GenSMILES}, la cual simplifica las reglas sintácticas convencionales de SMILES e incrementa la tasa de estructuras químicamente viables. Adicionalmente, implementa una función de pérdida con ponderación dinámica y una capa de control de diversidad estructural. En el benchmark MOSES, reporta una validez del 98.01\%, una unicidad del 100.00\% y una novedad del 93.77\%. No obstante, niveles elevados de diversidad inducen estructuras químicamente inestables, y el desempeño global permanece condicionado a los hiperparámetros de regularización y al preprocesamiento de GenSMILES.
+
+Inukai et al.~\cite{inukai2025frattvae} presentan \textit{FRATTVAE} (\textit{Fragment Tree-Transformer based VAE}), un modelo generativo que representa cada molécula como una estructura de árbol en la que los nodos corresponden a fragmentos moleculares. Sobre dicha representación, se aplica una codificación posicional en árbol que preserva las relaciones jerárquicas y un mecanismo de autoatención tipo Transformer para capturar dependencias de largo alcance entre fragmentos. Este diseño busca resolver las limitaciones de los modelos basados en cadenas lineales ante compuestos de alta complejidad topológica. Evaluado en el benchmark MOSES, reporta una validez del 100.00\%, una unicidad del 99.97\% y una novedad del 97.42\%. Entre sus limitaciones, el espacio de generación depende estrechamente de las reglas de fragmentación adoptadas y el costo computacional de la atención en árbol es considerable frente a modelos recurrentes tradicionales.
+
+Rigoni et al.~\cite{rigoni2025rgcvae} proponen \textit{RGCVAE} (\textit{Relational Graph Conditioned Variational Autoencoder}), un modelo generativo para grafos moleculares que incorpora en su codificador una red \textit{Relational Graph Isomorphism Network} (RGIN). Esta red es capaz de capturar atributos relacionales complejos, tales como órdenes de enlace y estereoquímica tridimensional. La decodificación se ejecuta en dos pasos paralelizables: primero se seleccionan los tipos atómicos conforme a restricciones de valencia y luego se predicen simultáneamente las conexiones entre ellos. Este esquema agiliza los tiempos de convergencia y asegura una elevada precisión de reconstrucción. No obstante, el modelo manifiesta sensibilidad al equilibrio de hiperparámetros: priorizar excesivamente la exactitud de reconstrucción reduce la diversidad y unicidad de las moléculas generadas en conjuntos complejos como ZINC.
+
 \subsection{Optimización del Espacio Latente Mediante Metaheurísticas}
 \label{subsec:art_metaheuristicas}
 
+En esta subsección se revisan los principales métodos metaheurísticos que operan sobre el espacio latente de modelos generativos moleculares. La Tabla~\ref{tab:metaheuristicas} resume las características de cada uno: la descripción del método y el modelo generativo sobre el que actúa, la configuración experimental empleada, las métricas de evaluación reportadas y el blanco terapéutico u objetivo de optimización abordado.
+
+\begin{landscape}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{xltabular}{\linewidth}{@{} l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+    \caption{Optimización del espacio latente mediante metaheurísticas en diseño de fármacos.}
+    \label{tab:metaheuristicas} \\
+    \toprule
+    \textbf{Método (Año)} & \textbf{Descripción} & \textbf{Configuraciones} & \textbf{Métricas} & \textbf{Target / Objetivo} \\
+    \midrule
+    \endfirsthead
+
+    \multicolumn{5}{c}{\tablename\ \thetable\ -- \textit{Continuación}} \\[4pt]
+    \toprule
+    \textbf{Método (Año)} & \textbf{Descripción} & \textbf{Configuraciones} & \textbf{Métricas} & \textbf{Target / Objetivo} \\
+    \midrule
+    \endhead
+
+    \midrule
+    \multicolumn{5}{r}{\footnotesize\textit{Continúa en la siguiente página...}} \\
+    \endfoot
+
+    \bottomrule
+    \endlastfoot
+
+    MSO (2019) & 
+    \textit{Particle Swarm Optimization} (PSO) sobre un espacio latente continuo construido a partir de representaciones SMILES. & 
+    50 o 200 partículas; 100 o 200 iteraciones. Puntos de inicio: benceno o ChEMBL. & 
+    Continuas: afinidad a blanco, QED, $\log P$ penalizado, SA y solubilidad. Binarias: filtros de toxicidad y peso molecular. & 
+    Optimización mono y multiobjetivo para compuestos contra los blancos EGFR y BACE1. \\
+    \midrule
+    ADEL (2022) & 
+    \textit{Deep Evolutionary Learning} (DEL) sobre el espacio latente continuo de un autoencoder adversarial (AAE) entrenado con secuencias SMILES, con reentrenamiento iterativo incorporando nuevas moléculas generadas. & 
+    Población de 20\,000 individuos, 10 generaciones. & 
+    Continuas: QED, $\log P$, SAS y afinidad de unión (\textit{docking}). Binarias: validez, novedad y unicidad. & 
+    Optimización multiobjetivo (QED, $\log P$ y SAS). Filtrado de la última población para cribado virtual contra CA9. \\
+    \midrule
+    LEOMol (2024) & 
+    Algoritmos evolutivos (GA y evolución diferencial) en el espacio latente continuo de un VAE que utiliza representación SELFIES. & 
+    Población de 20 individuos, 20 generaciones, tasa de cruce de 0.8 y mutación de 0.4. & 
+    Continuas: $\log P$, QED, peso molecular y similitud de Tanimoto. Binarias: restricción de toxicidad. & 
+    Optimización maximizando propiedades fisicoquímicas ($\log P$, QED). \\
+    \midrule
+    Transformer + MO (2024) & 
+    MOEA/DD, GrEA, HypE, KnEA, A-NSGA-III y NMPSO sobre un espacio latente continuo basado en SELFIES. & 
+    Predicción ADMET con MTL-BERT y \textit{docking} con QuickVina2-GPU. & 
+    Continuas: afinidad, SA, $\log P$ y toxicidad aguda ($\text{LD}_{50}$). Binarias: validez, unicidad, novedad y filtros de toxicidad (ClinTox). & 
+    Optimización de solubilidad y biodisponibilidad minimizando toxicidad, SAS y afinidad al receptor LPA1. \\
+    \midrule
+    MOMO (2024) & 
+    Marco de optimización multiobjetivo basado en dominancia de Pareto para guiar la búsqueda evolutiva en el espacio latente de un modelo codificador-decodificador entrenado con secuencias SMILES. & 
+    Población inicial perturbada con ruido gaussiano. Operadores: selección por torneo binario, cruce lineal combinado y mutación ($p = 0.5$). & 
+    Continuas: QED, similitud de Tanimoto, eficiencia del ligando (LE), puntuación de \textit{docking}, actividad DRD2, inhibición de GSK3$\beta$ y SA. & 
+    Optimización simultánea multiobjetivo (de 2 a 4 propiedades). Evaluación contra blancos biológicos 1SYH y 4LDE. \\
+    \midrule
+    MO-LSO (2024) & 
+    Optimización multiobjetivo en el espacio latente continuo de un JT-VAE mediante reentrenamiento iterativo ponderado por eficiencia de Pareto. & 
+    Entrenamiento inicial con ZINC. Reentrenamiento iterativo ajustado por parámetro de peso ($k$). Exploración latente por muestreo aleatorio. & 
+    Continuas: $\log P$, SAS, similitud a productos naturales (NP score) y probabilidad de inhibición de DRD2 mediante aprendizaje automático. & 
+    Optimización multiobjetivo simultánea (hasta 3 propiedades) para maximizar $\log P$, NP score e inhibición de DRD2, y minimizar SAS. \\
+    \midrule
+    Paddy (2025) & 
+    Algoritmo evolutivo basado en el \textit{Paddy field algorithm}, aplicado sobre el espacio latente continuo de un JT-VAE. & 
+    Operadores evolutivos inspirados en la dispersión de plantas de arrozal, con tasa de dispersión adaptativa que regula la proximidad y número de nuevas soluciones. & 
+    Continuas: $\log P$, SA, número de ciclos con más de 6 átomos y similitud de Tversky. & 
+    Optimización de múltiples parámetros integrados en una función objetivo. \\
+\end{xltabular}
+\end{landscape}
+
+Winter et al.~\cite{WMS+19} proponen \textit{Molecule Swarm Optimization} (MSO), un método que combina una representación continua del espacio químico con el algoritmo metaheurístico de optimización por enjambre de partículas (PSO). El modelo utiliza un espacio latente preentrenado mediante una arquitectura codificador-decodificador que procesa representaciones SMILES, lo que permite desacoplar la generación de moléculas del proceso de optimización multiobjetivo. Su principal innovación radica en el empleo de PSO para explorar dicho espacio latente, lo que reduce drásticamente el costo computacional y permite manejar con eficiencia la alta dimensionalidad del espacio de búsqueda. MSO logró generar moléculas con alta afinidad predicha hacia los blancos biológicos EGFR y BACE1. Como limitaciones, los autores señalan que al depender de modelos predictivos de relación estructura-actividad cuantitativa (QSAR) para evaluar la función objetivo, el algoritmo puede ser conducido hacia regiones fuera del dominio de aplicabilidad o generar moléculas con artefactos estructurales si no se imponen restricciones adecuadas durante la optimización.
+
+Abouchekeir et al.~\cite{AVM+22} presentan \textit{ADEL} (\textit{Adversarial Deep Evolutionary Learning}), un marco que combina autoencoders adversariales (AAE) y algoritmos evolutivos para el diseño de fármacos. A diferencia de enfoques previos, emplea redes recurrentes (LSTM) junto con un discriminador para estructurar de forma más regular el espacio latente de cadenas SMILES. Posteriormente, aplica el algoritmo genético multiobjetivo NSGA-II para operar mediante cruce y mutación sobre los vectores latentes, refinando el modelo de manera iterativa al incorporar las nuevas soluciones generadas a la población de entrenamiento. En sus evaluaciones, ADEL generó compuestos que optimizan simultáneamente múltiples propiedades fisicoquímicas (QED, $\log P$ y accesibilidad sintética), identificando moléculas con favorable energía de unión en simulaciones de acoplamiento molecular contra el biomarcador tumoral CA9. Como limitación metodológica, la optimización evolutiva se restringe a descriptores generales, delegando la selectividad hacia el blanco a una etapa posterior de filtrado sobre la última población.
+
+El modelo \textit{LEOMol}, introducido por Siddartha Reddy et al.~\cite{NGM+24}, aborda el diseño de fármacos integrando un autoencoder variacional con algoritmos genéticos y evolución diferencial. Al adoptar la representación robusta SELFIES, el sistema garantiza un 100\% de validez química en todas las estructuras decodificadas. Su principal ventaja radica en explorar el espacio latente mediante operadores estocásticos poblacionales en lugar de métodos basados en gradientes continuos, lo que facilita optimizar funciones de aptitud complejas evaluadas con herramientas quimioinformáticas estándar. En sus experimentos, demostró alta eficacia para generar compuestos que satisfacen múltiples criterios concurrentes, destacando la generación de moléculas exentas de toxicidad. No obstante, el algoritmo presenta dificultades para converger hacia soluciones viables cuando se le exige preservar una elevada similitud estructural con respecto a un compuesto de partida.
+
+Aksamit et al.~\cite{Aksamit2024} proponen un marco de trabajo que integra la arquitectura Transformer con algoritmos metaheurísticos de muchos objetivos (\textit{many-objective optimization}) para el diseño molecular. Este enfoque busca optimizar simultáneamente perfiles farmacocinéticos ADMET y la afinidad de unión estimada mediante acoplamiento molecular. Empleando el modelo ReLSO para proyectar las moléculas en un espacio latente continuo basado en SELFIES, el estudio evalúa y compara el desempeño de diversas metaheurísticas (tales como MOEA/DD, GrEA, HypE, KnEA, A-NSGA-III y NMPSO) en la búsqueda de ligandos dirigidos al receptor LPA1. Como principal limitación, los autores destacan el elevado costo computacional derivado de evaluar el acoplamiento molecular en cada evaluación de aptitud, lo que restringe la sintonización exhaustiva de los hiperparámetros del optimizador.
+
+Xia et al.~\cite{XZZ+24} desarrollan \textit{MOMO} (\textit{Multiobjective Molecule Optimization}), un marco metodológico que guía la búsqueda evolutiva en el espacio químico fundamentándose en el principio de dominancia de Pareto. El método utiliza un codificador-decodificador preentrenado sobre secuencias SMILES para mapear las estructuras moleculares a vectores continuos, sobre los cuales aplica selección por torneo binario, cruce lineal combinado y perturbaciones de mutación. Su fortaleza radica en superar el rendimiento de algoritmos convencionales del estado del arte, reportando mejoras notables en tasa de éxito, novedad e hipervolumen en problemas de optimización de dos a cuatro propiedades simultáneas (incluyendo afinidad contra dianas 1SYH y 4LDE). Como debilidad, el modelo manifiesta susceptibilidad a producir ciertas estructuras químicamente poco realistas si no se imponen restricciones de valencia y filtros estructurales rigurosos durante la fase de decodificación.
+
+Abeer et al.~\cite{Abeer2024} introducen \textit{MO-LSO} (\textit{Multi-Objective Latent Space Optimization}), un método que optimiza el espacio latente de modelos preentrenados tipo JT-VAE a través de un esquema de reentrenamiento iterativo ponderado por la eficiencia de Pareto de las moléculas muestreadas. Esta estrategia permite equilibrar compromisos entre propiedades fisicoquímicas contrapuestas, generando moléculas de alta calidad (como potenciales inhibidores del receptor DRD2) incluso a partir de conjuntos de datos iniciales desprovistos de ligandos activos. Como contrapartida, el procedimiento iterativo tiende a concentrar las soluciones en regiones localizadas del espacio químico, reduciendo la diversidad estructural de los compuestos finales, a lo que se suma el incremento del costo computacional derivado de los ciclos sucesivos de reentrenamiento.
+
+Beck et al.~\cite{Beck2025} presentan \textit{Paddy}, un algoritmo de optimización evolutiva inspirado en la dispersión reproductiva de las plantas de arrozal (\textit{paddy field algorithm}), diseñado para explorar sistemas y espacios químicos complejos. A diferencia de los algoritmos genéticos convencionales que dependen de operadores de recombinación cromosómica, Paddy propaga soluciones en el espacio latente de un modelo JT-VAE mediante mutaciones gaussianas reguladas por la densidad local de las soluciones y su aptitud. Esto proporciona una exploración rápida y flexible del espacio paramétrico continuo. Sin embargo, en su formulación para optimización molecular monoproyectada sobre una única función escalar agregada, el método tiende a simplificar las relaciones de compromiso no lineales inherentes a la optimización multiobjetivo de propiedades farmacológicas.
+
+
 \subsection{Diseño de Fármacos Inhibidores de la Proteína MRP1}
 \label{subsec:art_mrp1}
+
+El diseño de inhibidores de MRP1 se basó durante décadas en probar, mediante campañas de cribado masivo de la industria farmacéutica, compuestos ya conocidos por otras propiedades (como el verapamilo o la ciclosporina A) y una amplia variedad de productos naturales. Ninguno de estos compuestos llegó a aprobarse como fármaco~\cite{stefan2019}. En paralelo, desde que se resolvió por cristalografía de rayos X una parte de MRP1 en 2006, varios trabajos computacionales combinaron esa estructura parcial con modelos por homología del resto de la proteína para buscar inhibidores mediante virtual screening y acoplamiento molecular. Rungsardthong et al.~\cite{rungsardthong2012} identificaron 20 compuestos candidatos dirigidos a esa parte, y Dhasmana et al.~\cite{dhasmana2018} propusieron el citrato de potasio como el mejor candidato de una biblioteca de fármacos aprobados por la FDA. 
+
+La estructura completa de MRP1, resuelta por criomicroscopía electrónica (una técnica que permite ver la forma de una proteína a partir de miles de copias congeladas) en 2017, reveló por primera vez otra parte de la proteína: la zona donde se une a los fármacos que va a expulsar, distinta de la que usaron los trabajos anteriores. Belhadj et al.~\cite{belhadj2024} utilizan esa estructura para caracterizar ZW-1226, un compuesto que mediante acoplamiento molecular ocupa esa zona de enganche, y que en líneas celulares revierte la resistencia mediada por MRP1 a dos fármacos de quimioterapia. 

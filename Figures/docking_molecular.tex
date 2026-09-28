@@ -1,0 +1,189 @@
+% =========================================================================
+% Figura: Esquema conceptual del proceso de Docking Molecular
+% Estilo abierto y minimalista con flujo continuo (Okabe-Ito)
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% =========================================================================
+% ETAPA 1: PREPARACIÓN
+% =========================================================================
+\node[align=center, text=darkText] at (1.7, 2.1) {
+    {\fontsize{11}{13}\selectfont\textbf{1. Preparación}}\\[2pt]
+    {\footnotesize\color{grayText} Receptor y ligando}
+};
+
+% Ligando (izquierda) - representación molecular ball-and-stick
+\coordinate (L_c) at (0.85, 0.15);
+\coordinate (L_1) at (0.45, 0.25);
+\coordinate (L_2) at (0.65, 0.70);
+\coordinate (L_3) at (1.25, 0.35);
+\coordinate (L_4) at (0.65, -0.40);
+\coordinate (L_5) at (1.15, -0.30);
+
+\draw[line width=1.0pt, draw=darkText] (L_c) -- (L_1);
+\draw[line width=1.0pt, draw=darkText] (L_c) -- (L_2);
+\draw[line width=1.0pt, draw=darkText] (L_c) -- (L_3);
+\draw[line width=1.0pt, draw=darkText] (L_c) -- (L_4);
+\draw[line width=1.0pt, draw=darkText] (L_c) -- (L_5);
+
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.7pt] (L_1) circle (0.10cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.7pt] (L_2) circle (0.10cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.7pt] (L_3) circle (0.10cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.7pt] (L_4) circle (0.10cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.7pt] (L_5) circle (0.10cm);
+\filldraw[draw=darkText, fill=figOrange, line width=0.8pt] (L_c) circle (0.15cm);
+
+\node[font=\footnotesize\bfseries, text=darkText] at (0.85, -1.45) {Ligando};
+
+% Receptor (derecha)
+\filldraw[draw=figGreen!80!black, fill=figGreenTint, line width=1.0pt]
+    plot[smooth cycle, tension=0.6] coordinates {
+        (2.5, 1.0) (2.85, 0.85) (3.0, 0.50) (2.85, 0.15) (3.0, -0.25) (2.7, -0.60) (2.3, -0.50) (2.1, -0.10) (2.2, 0.30) (2.05, 0.70)
+    };
+\draw[draw=figGreen!70!black, line width=0.6pt] (2.4, 0.60) to[out=-60, in=120] (2.55, 0.00);
+
+\node[font=\footnotesize\bfseries, text=darkText] at (2.55, -1.45) {Receptor};
+
+% Flecha 1 -> 2
+\draw[line width=1.1pt, draw=grayText!70, -{Stealth[length=5pt, width=3.5pt]}] (3.35, 0.15) -- (4.05, 0.15);
+
+% =========================================================================
+% ETAPA 2: BÚSQUEDA CONFORMACIONAL
+% =========================================================================
+\node[align=center, text=darkText] at (5.7, 2.1) {
+    {\fontsize{11}{13}\selectfont\textbf{2. Búsqueda}}\\[2pt]
+    {\footnotesize\color{grayText} Muestreo de poses}
+};
+
+% Receptor con cavidad (proporción original)
+\filldraw[draw=figGreen!80!black, fill=figGreenTint, line width=1.0pt]
+    plot[smooth cycle, tension=0.6] coordinates {
+        (6.1, 1.20) (6.65, 1.00) (6.95, 0.50) (6.85, 0.00) (6.95, -0.50) (6.45, -0.90) (5.8, -0.75) (5.5, -0.25)
+        (6.0, -0.05) (6.05, 0.35) (5.85, 0.60) (5.45, 0.75) (5.75, 1.15)
+    };
+
+% Ligando entrando a la cavidad
+\coordinate (D_c) at (5.25, 0.20);
+\coordinate (D_1) at (4.8, 0.35);
+\coordinate (D_2) at (5.55, 0.55);
+\coordinate (D_3) at (5.7, 0.15);
+\coordinate (D_4) at (5.15, -0.25);
+
+\draw[line width=0.9pt, draw=darkText] (D_c) -- (D_1);
+\draw[line width=0.9pt, draw=darkText] (D_c) -- (D_2);
+\draw[line width=0.9pt, draw=darkText] (D_c) -- (D_3);
+\draw[line width=0.9pt, draw=darkText] (D_c) -- (D_4);
+
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.6pt] (D_1) circle (0.09cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.6pt] (D_2) circle (0.09cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.6pt] (D_3) circle (0.09cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.6pt] (D_4) circle (0.09cm);
+\filldraw[draw=darkText, fill=figOrange, line width=0.7pt] (D_c) circle (0.13cm);
+
+% Flecha curva de rotación
+\draw[line width=0.8pt, draw=figOrange!90!black, -{Stealth[length=4pt, width=3pt]}, dashed]
+    ([shift=(40:0.52cm)]5.25, 0.20) arc (40:300:0.52cm);
+
+\node[font=\footnotesize\bfseries, text=darkText] at (5.7, -1.45) {Exploración};
+
+% Flecha 2 -> 3
+\draw[line width=1.1pt, draw=grayText!70, -{Stealth[length=5pt, width=3.5pt]}] (7.25, 0.15) -- (7.95, 0.15);
+
+% =========================================================================
+% ETAPA 3: PUNTUACIÓN (SCORING)
+% =========================================================================
+\node[align=center, text=darkText] at (9.6, 2.1) {
+    {\fontsize{11}{13}\selectfont\textbf{3. Puntuación}}\\[2pt]
+    {\footnotesize\color{grayText} Estimación de afinidad}
+};
+
+% Poses en miniatura + barras de energía (elevadas para liberar la base)
+% Pose 1 (superior)
+\filldraw[draw=figGreen!80!black, fill=figGreenTint, line width=0.6pt]
+    plot[smooth cycle, tension=0.6] coordinates {
+        (8.7, 1.15) (9.05, 1.05) (9.2, 0.75) (9.05, 0.45) (8.6, 0.40) (8.4, 0.60) (8.6, 0.80) (8.45, 1.00)
+    };
+\filldraw[draw=darkText, fill=figOrange, line width=0.5pt] (8.6, 0.80) circle (0.06cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.4pt] (8.75, 0.92) circle (0.05cm);
+\draw[line width=0.5pt, draw=darkText] (8.6, 0.80) -- (8.75, 0.92);
+
+\filldraw[draw=figBlue!60, fill=figBlue!40, rounded corners=2pt, line width=0.6pt]
+    (9.45, 0.70) rectangle (10.45, 0.92);
+
+% Pose 2 (media - óptima)
+\filldraw[draw=figGreen!80!black, fill=figGreenTint, line width=0.6pt]
+    plot[smooth cycle, tension=0.6] coordinates {
+        (8.7, 0.35) (9.05, 0.25) (9.2, -0.05) (9.05, -0.35) (8.6, -0.40) (8.4, -0.20) (8.6, 0.00) (8.45, 0.20)
+    };
+\filldraw[draw=darkText, fill=figOrange, line width=0.5pt] (8.65, 0.00) circle (0.06cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.4pt] (8.5, -0.15) circle (0.05cm);
+\draw[line width=0.5pt, draw=darkText] (8.65, 0.00) -- (8.5, -0.15);
+
+\filldraw[draw=figBlue, fill=figBlue, rounded corners=2pt, line width=0.6pt]
+    (9.45, -0.02) rectangle (10.95, 0.20);
+
+% Pose 3 (inferior)
+\filldraw[draw=figGreen!80!black, fill=figGreenTint, line width=0.6pt]
+    plot[smooth cycle, tension=0.6] coordinates {
+        (8.7, -0.45) (9.05, -0.55) (9.2, -0.85) (9.05, -1.15) (8.6, -1.20) (8.4, -1.00) (8.6, -0.80) (8.45, -0.60)
+    };
+\filldraw[draw=darkText, fill=figOrange, line width=0.5pt] (8.6, -0.80) circle (0.06cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.4pt] (8.75, -0.92) circle (0.05cm);
+\draw[line width=0.5pt, draw=darkText] (8.6, -0.80) -- (8.75, -0.92);
+
+\filldraw[draw=figBlue!60, fill=figBlue!25, rounded corners=2pt, line width=0.6pt]
+    (9.45, -0.82) rectangle (10.15, -0.60);
+
+\node[font=\footnotesize\bfseries, text=darkText] at (9.6, -1.45) {Evaluación $\Delta G$};
+
+% Flecha 3 -> 4
+\draw[line width=1.1pt, draw=grayText!70, -{Stealth[length=5pt, width=3.5pt]}] (11.45, 0.15) -- (12.25, 0.15);
+
+% =========================================================================
+% ETAPA 4: SELECCIÓN
+% =========================================================================
+\node[align=center, text=darkText] at (13.6, 2.1) {
+    {\fontsize{11}{13}\selectfont\textbf{4. Selección}}\\[2pt]
+    {\footnotesize\color{grayText} Pose óptima}
+};
+
+% Receptor con proporción y cavidad original (equidistante con las demás etapas)
+\filldraw[draw=figGreen!80!black, fill=figGreenTint, line width=1.0pt]
+    plot[smooth cycle, tension=0.6] coordinates {
+        (13.55, 1.20) (14.10, 1.00) (14.40, 0.50) (14.30, 0.00) (14.40, -0.50) (13.90, -0.90) (13.25, -0.75) (12.95, -0.25)
+        (13.45, -0.05) (13.50, 0.35) (13.30, 0.60) (12.90, 0.75) (13.20, 1.15)
+    };
+
+% Ligando acoplado en el sitio activo 
+\coordinate (S_c) at (13.35, 0.25);
+\coordinate (S_1) at (13.05, 0.50);
+\coordinate (S_2) at (13.65, 0.55);
+\coordinate (S_3) at (13.50, -0.10);
+\coordinate (S_4) at (12.95, 0.10);
+
+\draw[line width=0.9pt, draw=darkText] (S_c) -- (S_1);
+\draw[line width=0.9pt, draw=darkText] (S_c) -- (S_2);
+\draw[line width=0.9pt, draw=darkText] (S_c) -- (S_3);
+\draw[line width=0.9pt, draw=darkText] (S_c) -- (S_4);
+
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.6pt] (S_1) circle (0.09cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.6pt] (S_2) circle (0.09cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.6pt] (S_3) circle (0.09cm);
+\filldraw[draw=darkText, fill=figOrangeTint, line width=0.6pt] (S_4) circle (0.09cm);
+\filldraw[draw=darkText, fill=figOrange, line width=0.7pt] (S_c) circle (0.13cm);
+
+\node[font=\footnotesize\bfseries, text=darkText] at (13.6, -1.45) {Mejor pose};
+
+\end{tikzpicture}%
+}
+\caption{Diagrama esquemático del proceso de docking molecular.}
+\label{fig:docking_molecular}
+\end{figure}

@@ -101,6 +101,7 @@
 \RequirePackage{booktabs} % Professional table styling.
 \RequirePackage{multirow} % Support for multirow cells in tables.
 \RequirePackage{longtable} % Tables spanning multiple pages.
+\RequirePackage{pdflscape} % Landscape environment for wide tables and figures.
 \RequirePackage{caption} % Customisation of captions.
 \RequirePackage{enumitem} % Customisation of lists.
 \RequirePackage{amsmath} % Advanced mathematical expressions.

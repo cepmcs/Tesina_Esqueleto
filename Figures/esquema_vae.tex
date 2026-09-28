@@ -1,0 +1,125 @@
+% =========================================================================
+% Figura: Esquema simple del funcionamiento de un Autoencoder Variacional (VAE)
+% Basado fielmente en el diagrama de referencia canónico:
+% Input (x) -> Encoder -> [mu, sigma] -> z -> Decoder -> Reconstructed Input (x')
+% Paleta de colores accesible Okabe-Ito definida en Configurations/01-Colors.sty
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.92\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% -------------------------------------------------------------------------
+% 1. ENTRADA (INPUT) x
+% -------------------------------------------------------------------------
+\node[align=center, text=darkText] at (0.8, 2.15) {
+    {\fontsize{11}{13}\selectfont\textbf{Entrada}}\\[1pt]
+    {\footnotesize\color{grayText} (\textit{Input})}
+};
+
+\draw[draw=grayText!70, fill=cardBorder!25, rounded corners=5pt, line width=1.1pt]
+    (0.0, -1.6) rectangle (1.6, 1.6);
+\node[font=\fontsize{16}{18}\selectfont\bfseries, text=darkText] at (0.8, 0) {$\mathbf{x}$};
+
+% Flecha Entrada -> Codificador
+\draw[line width=1.1pt, draw=grayText!90!black, -{Stealth[length=5pt, width=3.5pt]}]
+    (1.6, 0) -- (2.4, 0);
+
+% -------------------------------------------------------------------------
+% 2. CODIFICADOR (ENCODER)
+% -------------------------------------------------------------------------
+\filldraw[
+    draw=figBlue,
+    fill=figBlueTint,
+    rounded corners=5pt,
+    line width=1.2pt
+] (2.4, -1.7) -- (5.2, -1.0) -- (5.2, 1.0) -- (2.4, 1.7) -- cycle;
+
+\node[align=center, text=darkText] at (3.8, 0) {
+    {\fontsize{11}{13}\selectfont\textbf{\color{figBlue!90!black} Codificador}}\\[3pt]
+    {\footnotesize\color{grayText} (\textit{Encoder})}
+};
+
+% Conexión bifurcada de Codificador a mu y sigma
+\draw[line width=1.1pt, draw=grayText!90!black] (5.2, 0) -- (5.8, 0);
+\draw[line width=1.1pt, draw=grayText!90!black] (5.8, -0.9) -- (5.8, 0.9);
+\draw[line width=1.1pt, draw=grayText!90!black, -{Stealth[length=4.5pt, width=3pt]}] (5.8, 0.9) -- (6.4, 0.9);
+\draw[line width=1.1pt, draw=grayText!90!black, -{Stealth[length=4.5pt, width=3pt]}] (5.8, -0.9) -- (6.4, -0.9);
+
+% -------------------------------------------------------------------------
+% 3. PARÁMETROS LATENTES: \mu Y \sigma
+% -------------------------------------------------------------------------
+% Caja \mu
+\draw[draw=figOrange, fill=figOrangeTint, rounded corners=4pt, line width=1.1pt]
+    (6.4, 0.4) rectangle (8.2, 1.4);
+\node[font=\fontsize{15}{17}\selectfont\bfseries, text=darkText] at (7.3, 0.9) {$\boldsymbol{\mu}$};
+
+% Caja \sigma
+\draw[draw=figOrange, fill=figOrangeTint, rounded corners=4pt, line width=1.1pt]
+    (6.4, -1.4) rectangle (8.2, -0.4);
+\node[font=\fontsize{15}{17}\selectfont\bfseries, text=darkText] at (7.3, -0.9) {$\boldsymbol{\sigma}$};
+
+% Conexión convergente de mu y sigma a z
+\draw[line width=1.1pt, draw=grayText!90!black] (8.2, 0.9) -- (8.8, 0.9);
+\draw[line width=1.1pt, draw=grayText!90!black] (8.2, -0.9) -- (8.8, -0.9);
+\draw[line width=1.1pt, draw=grayText!90!black] (8.8, -0.9) -- (8.8, 0.9);
+\draw[line width=1.1pt, draw=grayText!90!black, -{Stealth[length=4.5pt, width=3pt]}] (8.8, 0) -- (9.4, 0);
+
+% -------------------------------------------------------------------------
+% 4. VECTOR LATENTE z
+% -------------------------------------------------------------------------
+\draw[draw=figOrange!90!black, fill=figOrangeTint, rounded corners=4pt, line width=1.2pt]
+    (9.4, -0.6) rectangle (11.0, 0.6);
+\node[font=\fontsize{15}{17}\selectfont\bfseries, text=darkText] at (10.2, 0) {$\mathbf{z}$};
+
+% Ecuación de reparametrización debajo de z
+\node[align=center, text=darkText] at (10.2, -1.65) {
+    {\fontsize{11}{13}\selectfont $\mathbf{z} = \boldsymbol{\mu} + \boldsymbol{\sigma}\boldsymbol{\epsilon}$}\\[3pt]
+    {\footnotesize\color{grayText} $\boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$}
+};
+
+% Flecha z -> Decodificador
+\draw[line width=1.1pt, draw=grayText!90!black, -{Stealth[length=5pt, width=3.5pt]}]
+    (11.0, 0) -- (11.8, 0);
+
+% -------------------------------------------------------------------------
+% 5. DECODIFICADOR (DECODER)
+% -------------------------------------------------------------------------
+\filldraw[
+    draw=figGreen,
+    fill=figGreenTint,
+    rounded corners=5pt,
+    line width=1.2pt
+] (11.8, -1.0) -- (14.6, -1.7) -- (14.6, 1.7) -- (11.8, 1.0) -- cycle;
+
+\node[align=center, text=darkText] at (13.2, 0) {
+    {\fontsize{11}{13}\selectfont\textbf{\color{figGreen!80!black} Decodificador}}\\[3pt]
+    {\footnotesize\color{grayText} (\textit{Decoder})}
+};
+
+% Flecha Decodificador -> Salida
+\draw[line width=1.1pt, draw=grayText!90!black, -{Stealth[length=5pt, width=3.5pt]}]
+    (14.6, 0) -- (15.4, 0);
+
+% -------------------------------------------------------------------------
+% 6. ENTRADA RECONSTRUIDA (RECONSTRUCTED INPUT) x'
+% -------------------------------------------------------------------------
+\node[align=center, text=darkText] at (16.2, 2.15) {
+    {\fontsize{11}{13}\selectfont\textbf{Reconstrucción}}\\[1pt]
+    {\footnotesize\color{grayText} (\textit{Output} $\mathbf{x}'$)}
+};
+
+\draw[draw=grayText!70, fill=cardBorder!25, rounded corners=5pt, line width=1.1pt]
+    (15.4, -1.6) rectangle (17.0, 1.6);
+\node[font=\fontsize{16}{18}\selectfont\bfseries, text=darkText] at (16.2, 0) {$\mathbf{x}'$};
+
+\end{tikzpicture}%
+}
+\caption[Diagrama esquemático del funcionamiento de un Autoencoder Variacional (VAE)]{Diagrama esquemático del funcionamiento de un Autoencoder Variacional (VAE). Adaptado de~\cite{kim2024exploring}.}
+\label{fig:esquema_vae}
+\end{figure}

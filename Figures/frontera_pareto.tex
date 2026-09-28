@@ -1,0 +1,107 @@
+% =========================================================================
+% Figura: Soluciones de Pareto y soluciones dominadas en el espacio de objetivos
+% =========================================================================
+
+\begin{figure}[H]
+\centering
+\resizebox{0.60\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% -------------------------------------------------------------------------
+% 1. EJES COORDENADOS (Con indicación explícita de minimización)
+% -------------------------------------------------------------------------
+% Eje horizontal f1
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (8.8, 0);
+\node[below=8pt, font=\fontsize{10}{12}\selectfont, text=darkText]
+    at (4.4, 0) {\textbf{Objetivo $f_1$} (minimizar)};
+
+% Eje vertical f2
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (0, 6.6);
+\node[font=\fontsize{10}{12}\selectfont, text=darkText, rotate=90]
+    at (-0.65, 3.3) {\textbf{Objetivo $f_2$} (minimizar)};
+
+% -------------------------------------------------------------------------
+% 2. LEYENDA (Frente de Pareto y Soluciones dominadas)
+% -------------------------------------------------------------------------
+\begin{scope}[shift={(3.8, 4.6)}]
+    \draw[draw=grayText!70, fill=white, rounded corners=5pt, line width=1.0pt]
+        (0, 0) rectangle (4.7, 1.45);
+    
+    % Frente de Pareto (Línea + punto azul)
+    \draw[line width=1.1pt, draw=figBlue] (0.20, 1.0) -- (0.60, 1.0);
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.8pt]
+        (0.40, 1.0) circle (0.12cm);
+    \node[anchor=west, text=darkText, font=\fontsize{9}{11}\selectfont]
+        at (0.72, 1.0) {\textbf{Frente de Pareto}};
+    
+    % Soluciones dominadas (Punto naranja)
+    \filldraw[draw=figOrange!90!black, fill=figOrange, line width=0.8pt]
+        (0.40, 0.45) circle (0.12cm);
+    \node[anchor=west, text=darkText, font=\fontsize{9}{11}\selectfont]
+        at (0.72, 0.45) {\textbf{Soluciones dominadas}};
+\end{scope}
+
+% -------------------------------------------------------------------------
+% 3. SOLUCIONES DOMINADAS (Bolitas color naranja)
+% -------------------------------------------------------------------------
+\newcommand{\drawDominated}[2]{%
+    \filldraw[draw=figOrange!90!black, fill=figOrange, line width=0.8pt]
+        (#1, #2) circle (0.12cm);%
+}
+
+\drawDominated{0.65}{5.60}
+\drawDominated{1.10}{4.95}
+\drawDominated{1.30}{4.30}
+\drawDominated{1.75}{4.60}
+\drawDominated{2.10}{4.10}
+\drawDominated{1.95}{2.25}
+\drawDominated{3.00}{1.95}
+\drawDominated{3.25}{1.65}
+\drawDominated{3.80}{1.40}
+\drawDominated{4.55}{1.00}
+\drawDominated{5.50}{0.75}
+\drawDominated{6.70}{0.50}
+
+% -------------------------------------------------------------------------
+% 4. FRENTE DE PARETO (Trazo continuo + Bolitas color azul)
+% -------------------------------------------------------------------------
+% Línea que une y delimita la frontera no dominada
+\draw[draw=figBlue, line width=1.1pt]
+    (0.25, 6.00) -- (0.50, 5.30) -- (0.70, 4.80) -- (0.90, 4.50) --
+    (1.05, 3.80) -- (1.15, 3.00) -- (1.30, 2.40) -- (1.90, 1.95) --
+    (2.75, 1.85) -- (3.05, 1.45) -- (3.75, 1.05) -- (4.35, 0.85) --
+    (5.25, 0.60) -- (6.25, 0.40) -- (6.65, 0.32) -- (7.35, 0.20);
+
+\newcommand{\drawPareto}[2]{%
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.8pt]
+        (#1, #2) circle (0.12cm);%
+}
+
+\drawPareto{0.25}{6.00}
+\drawPareto{0.50}{5.30}
+\drawPareto{0.70}{4.80}
+\drawPareto{0.90}{4.50}
+\drawPareto{1.05}{3.80}
+\drawPareto{1.15}{3.00}
+\drawPareto{1.30}{2.40}
+\drawPareto{1.90}{1.95}
+\drawPareto{2.75}{1.85}
+\drawPareto{3.05}{1.45}
+\drawPareto{3.75}{1.05}
+\drawPareto{4.35}{0.85}
+\drawPareto{5.25}{0.60}
+\drawPareto{6.25}{0.40}
+\drawPareto{6.65}{0.32}
+\drawPareto{7.35}{0.20}
+
+\end{tikzpicture}%
+}
+\caption{Frente de Pareto (soluciones no dominadas) y soluciones dominadas en el espacio de objetivos ($f_1$ y $f_2$ a minimizar). El frente delimita el límite óptimo de compromiso entre ambos criterios, adaptado de~\cite{talbi2009metaheuristics}.}
+\label{fig:frontera_pareto}
+\end{figure}
