@@ -1,6 +1,60 @@
 \chapter{Metodología}
 \label{ch:metodologia}
 
+%%% =========================================================================
+%%% SECCIONES TRASLADADAS TEMPORALMENTE DESDE EL MARCO TEÓRICO (PENDIENTES DE REUBICAR)
+%%% =========================================================================
+
+\section{Indicadores de Rendimiento Multiobjetivo}
+\label{sec:indicadores_multiobjetivo}
+\label{subsec:indicadores_multiobjetivo}
+% Hipervolumen (HV), Esparcimiento (Spread), Distancia Generacional Invertida (IGD).
+
+La evaluación de metaheurísticas multiobjetivo representa un desafío particular: el resultado del proceso de optimización no es una única solución, sino un conjunto de soluciones que aproxima el frente de Pareto. Por lo tanto, para evaluar el rendimiento de diferentes algoritmos es necesario comparar conjuntos enteros de soluciones no dominadas.
+
+No existe un estándar único para evaluar las soluciones; los indicadores de calidad o métricas de desempeño se clasifican según sus propiedades y según el objetivo que evalúan~\cite{talbi2009metaheuristics}:
+
+\begin{itemize}
+    \item \textbf{Indicadores de convergencia:} Evalúan la eficacia de las soluciones en términos de su cercanía al frente de Pareto óptimo (teórico). Ejemplos destacados incluyen la Distancia Generacional (GD), que calcula la distancia promedio entre el conjunto aproximado y un conjunto de referencia exacto, y el Indicador $\epsilon$, que determina el factor mínimo de traslación necesario para que una aproximación domine a otra.
+    \item \textbf{Indicadores de diversidad:} Miden la uniformidad y extensión de la distribución de las soluciones obtenidas a lo largo del frente. Indicadores como el Espaciado (\textit{Spread}) o la Entropía penalizan los frentes donde las soluciones se agrupan excesivamente en una sola región del espacio de objetivos. Suelen tener un costo computacional mayor que los indicadores de convergencia.
+    \item \textbf{Indicadores híbridos:} Evalúan simultáneamente tanto la convergencia como la diversidad del conjunto de soluciones. El estándar actual en la literatura es el Hipervolumen (HV), un indicador unario que calcula el volumen del espacio de objetivos que es débilmente dominado por el conjunto de aproximación respecto a un punto de referencia predefinido~\cite{talbi2009metaheuristics}.
+\end{itemize}
+
+A partir de esta clasificación, los indicadores de rendimiento considerados en este trabajo para evaluar el desempeño de las metaheurísticas son los siguientes:
+
+\textbf{Hipervolumen (HV).} Mide el volumen de la región del espacio de objetivos que domina el conjunto de soluciones obtenido, acotada por un punto de referencia. Cuanto mayor es ese volumen, mejor es el conjunto tanto en convergencia como en diversidad, de modo que resume ambos aspectos en un único valor. Su ventaja práctica es que no exige conocer el frente de Pareto óptimo, sino únicamente el punto de referencia.
+
+\textbf{Distancia generacional invertida modificada (IGD$^+$).} Promedia la distancia que separa a cada punto de un conjunto de referencia de la solución más próxima del conjunto obtenido, contabilizando solo las componentes en las que esa solución es peor. Valores bajos indican que el frente obtenido se aproxima al de referencia.
+
+\textbf{Indicador $\epsilon$ aditivo.} Expresa cuánto habría que desplazar el conjunto obtenido para que llegue a dominar débilmente al de referencia. Cuanto menor es ese desplazamiento, más próximos están ambos frentes, y un valor no positivo significa que el conjunto obtenido ya lo domina.
+
+\textbf{Espaciamiento (\textit{Spacing}).} Refleja con qué uniformidad se reparten las soluciones a lo largo del frente, a partir de la dispersión de las distancias entre soluciones vecinas. Valores bajos corresponden a frentes donde las soluciones están espaciadas de manera regular, sin acumulaciones ni huecos.
+
+\textbf{Tamaño del frente de Pareto.} Cuenta las soluciones no dominadas obtenidas, esto es, cuántas alternativas de compromiso distintas llega a ofrecer el algoritmo. Por sí solo no permite juzgar la calidad del frente.
+
+Los dos indicadores basados en distancias, IGD$^+$ y el indicador $\epsilon$ aditivo, necesitan un conjunto de referencia que aproxime el frente de Pareto óptimo. Como en el diseño de moléculas ese frente no se conoce, dicho conjunto se construye de forma empírica~\cite{liyao2019quality}.
+
+\section{Metaheurísticas Consideradas en las Experimentaciones}
+\label{sec:metaheuristicas}
+\label{subsec:metaheuristicas}
+% Algoritmos genéticos, PSO, algoritmos evolutivos multiobjetivo aplicados a la búsqueda en espacio latente.
+
+Esta tesina de grado considera cinco algoritmos metaheurísticos multiobjetivo para la experimentación, todos ellos operan sobre el espacio latente continuo del autoencoder variacional.
+
+\textbf{NSGA-II (Non-dominated Sorting Genetic Algorithm II).} Es el algoritmo evolutivo multiobjetivo de referencia y se apoya en la profundidad de dominancia. En cada generación ordena la población en frentes sucesivos de no dominancia mediante un procedimiento de ordenamiento rápido. Los empates dentro de un mismo frente se resuelven con la \textit{distancia de apiñamiento} (\textit{crowding distance}), que mide qué tan poblado está el entorno de cada individuo y favorece a los que se encuentran en regiones menos densas. Estos dos mecanismos, junto con una estrategia elitista, le permiten mantener a la vez convergencia y diversidad~\cite{deb2002nsga2}.
+
+\textbf{NSGA-III.} Conserva el esquema anterior, pero reemplaza la distancia de apiñamiento por un mecanismo de nichos basado en puntos de referencia distribuidos sobre un hiperplano normalizado. Cada solución se asocia al punto de referencia más cercano y sobreviven primero las soluciones asociadas a los puntos con menos representantes. De esta forma se logra una cobertura uniforme del frente incluso cuando crece el número de objetivos, situación en la que la distancia de apiñamiento pierde capacidad de discriminación~\cite{deb2014nsga3}.
+
+\textbf{MOEA/D (Multiobjective Evolutionary Algorithm Based on Decomposition).} Descompone el problema multiobjetivo en un conjunto de subproblemas escalares, definidos por vectores de pesos, y los optimiza de forma simultánea. Cada subproblema se resuelve usando solo la información de sus subproblemas vecinos. La distribución de las soluciones sobre el frente depende de cómo se distribuyan los vectores de pesos, y no de un mecanismo explícito de preservación de la diversidad~\cite{zhang2007moead}.
+
+\textbf{CMOPSO (Competitive Mechanism Based Multi-objective Particle Swarm Optimizer).} Pertenece a la familia de la optimización por enjambre de partículas. El rendimiento de los optimizadores convencionales de esta familia depende en gran medida de las mejores soluciones globales y personales guardadas en un archivo externo. CMOPSO, en cambio, selecciona en cada generación un conjunto de partículas élite del propio enjambre, según el frente de no dominancia y la distancia de apiñamiento, y actualiza cada partícula mediante una competencia por pares entre dos élites elegidas al azar: gana la que forma el ángulo menor con la partícula~\cite{zhang2018competitive}.
+
+\textbf{AGE-MOEA (Adaptive Geometry Estimation Based MOEA).} Parte de que el desempeño de los algoritmos multiobjetivo depende de la geometría del frente de Pareto, que puede ser una hipersuperficie euclídea, esférica o hiperbólica. Sobre el esquema de NSGA-II, reemplaza la distancia de apiñamiento por un puntaje de supervivencia que combina diversidad y proximidad mediante una norma $L_p$ adaptativa. La estimación de dicha geometría se realiza mediante un procedimiento de complejidad $O(n \times N)$, donde $n$ es el número de objetivos y $N$ el tamaño de la población. De este modo mantiene un rendimiento competitivo ante frentes de geometrías diversas, donde los algoritmos que suponen una geometría fija tienden a degradarse~\cite{panichella2019adaptive}.
+
+%%% =========================================================================
+%%% FIN DE SECCIONES TRASLADADAS
+%%% =========================================================================
+
 \section{Visión General de la Metodología}
 \label{sec:vision_general}
 % Explicación del flujo completo: preentrenamiento del VAE, optimización multiobjetivo en espacio latente y evaluación de candidatos.

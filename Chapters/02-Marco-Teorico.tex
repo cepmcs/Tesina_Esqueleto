@@ -1,80 +1,52 @@
 \chapter{Marco Teórico}
 \label{ch:marco_teorico}
 
-En este capítulo se hace una revisión de los conceptos teóricos que dan base a esta tesina de grado. Se abordan temas como el diseño de fármacos asistido por computadora, las formas de representar moléculas, las métricas de evaluación y el acoplamiento molecular. También se explica el funcionamiento de los autoencoders variacionales y los métodos de optimización multiobjetivo para buscar soluciones en espacios latentes. Finalmente, se describe el rol de la proteína MRP1 en el cáncer colorrectal y se resume el estado del arte en relación con el diseño computacional de fármacos.
+En este capítulo se hace una revisión de los conceptos teóricos que dan base a esta tesina de grado. Se abordan temas como el diseño de fármacos asistido por computadora, las formas de representar moléculas, las métricas de evaluación y el acoplamiento molecular. También se explica el funcionamiento de los autoencoders variacionales y los métodos de optimización multiobjetivo para buscar soluciones en espacios latentes. Finalmente, se describe el rol de la proteína \gls{mrp1} en el cáncer colorrectal y se resume el estado del arte en relación con el diseño computacional de fármacos.
 
-\section{Diseño y Descubrimiento de Fármacos}
+\section{Diseño de fármacos asistido por computadora (CADD)}
 \label{sec:diseno_farmacos}
 
-El descubrimiento de nuevos fármacos es un proceso mediante el cual se buscan, identifican, diseñan y validan nuevas moléculas con el objetivo de tratar enfermedades mediante la inhibición o activación de una proteína diana. Se trata de un proceso largo y costoso, que puede requerir entre 10 y 15 años de investigación y desarrollo, con una inversión que puede superar los 1.000 millones de dólares~\cite{hughes2011principles}.
+El descubrimiento de nuevos fármacos es un proceso mediante el cual se buscan, identifican, diseñan y validan nuevas moléculas con el objetivo de tratar enfermedades mediante la inhibición o modulación de una proteína diana. Se trata de un proceso largo y costoso, que puede requerir entre 10 y 15 años de investigación y desarrollo, con una inversión que puede superar los 1.000 millones de dólares~\cite{hughes2011principles}.
 
-Frente a estos desafíos, en la actualidad el diseño de fármacos involucra con frecuencia el uso de herramientas computacionales. En términos generales, es posible distinguir dos perspectivas complementarias dentro de este campo: por un lado, el pipeline tradicional, basado en etapas sucesivas de identificación y validación de blancos, ensayos y optimización de candidatos; por otro lado, el diseño de fármacos asistido por computadora (CADD), que incorpora técnicas y métodos computacionales y de tecnologías de la información para acelerar y optimizar el proceso~\cite{zhang2025role}. A continuación, se describe el pipeline tradicional (subsección~\ref{subsec:pipeline_tradicional}) y luego se profundiza en el enfoque computacional (subsección~\ref{subsec:cadd}). 
+En la actualidad, es posible distinguir dos perspectivas complementarias dentro de este campo: por un lado, el pipeline tradicional, basado en etapas sucesivas de identificación y validación de blancos, ensayos y optimización de candidatos; por otro lado, el \gls{cadd}, que incorpora técnicas y métodos computacionales y de tecnologías de la información para acelerar y optimizar el proceso~\cite{zhang2025role}.
 
-\subsection{Pipeline Tradicional}
-\label{subsec:pipeline_tradicional}
-Históricamente, el descubrimiento de fármacos tiene su origen en pruebas de ensayo y error sobre extractos naturales o compuestos aislados, evaluados directamente en células o animales, sin un blanco molecular específico previamente definido~\cite{chawla2024computational}.
-
-La figura~\ref{fig:pipeline_tradicional} ilustra este proceso metódico y secuencial surgido con el desarrollo de la industria farmacéutica, el cual en términos generales se agrupa en tres fases: el descubrimiento del fármaco, el desarrollo preclínico y los ensayos clínicos en humanos, hasta alcanzar la aprobación regulatoria necesaria~\cite{biala2023research}.
+Históricamente, el descubrimiento de fármacos tiene su origen en pruebas de ensayo y error sobre extractos naturales o compuestos aislados, evaluados directamente en células o animales, sin un blanco molecular específico previamente definido~\cite{chawla2024computational}. Tradicionalmente, este proceso sigue un flujo secuencial estructurado en tres fases principales: el descubrimiento temprano, el desarrollo preclínico y los ensayos clínicos en humanos, tal como se ilustra en la figura~\ref{fig:pipeline_tradicional}~\cite{biala2023research, hughes2011principles}.
 
 \input{Figures/pipeline_tradicional.tex}
 
-En primera instancia, el descubrimiento temprano de fármacos empieza con la identificación y validación del blanco terapéutico, es decir, la proteína, receptor o vía biológica cuya interacción con el fármaco se espera que tenga un efecto terapéutico. La idea de un blanco puede surgir tanto de la investigación académica y clínica como del sector comercial, y suele requerir años de evidencia de respaldo antes de justificar el inicio de un programa de descubrimiento~\cite{hughes2011principles}.
+Este recorrido explica por qué el desarrollo de fármacos puede extenderse por más de una década y superar los 1.000 millones de dólares de inversión~\cite{hughes2011principles}. Miles de compuestos evaluados en las primeras etapas son rechazados posteriormente por distintos factores: falta de interacción con el objetivo, bajo perfil farmacológico, dificultad de síntesis, entre otros. Solo un número reducido llega a fases preclínicas y de aprobación, lo que evidencia la enorme tasa de descarte de candidatos en cada etapa~\cite{chawla2024computational}.
 
-En esta etapa se diseña un ensayo que mide si un compuesto interactúa con su diana. Este ensayo se aplica sobre grandes bibliotecas de compuestos mediante un cribado de alto rendimiento, un proceso automatizado que permite probar miles de moléculas en poco tiempo. Los compuestos que dan resultado favorable en este cribado son posteriormente evaluados y optimizados, modificando su estructura para mejorar su perfil farmacológico, hasta llegar a una molécula candidata~\cite{hughes2011principles}.
-
-Con la molécula candidata definida, se realiza el desarrollo preclínico, donde se estudia la seguridad y la toxicidad en pruebas \textit{in vitro} y con animales, antes de probarse en seres humanos. Si los resultados son satisfactorios, el compuesto avanza a los ensayos clínicos, evaluando la seguridad y la dosis en un grupo reducido de personas, midiendo su eficacia en pacientes y confirmándola finalmente en poblaciones más grandes~\cite{biala2023research}. Superada esta etapa, el fármaco pasa a la aprobación regulatoria, donde organismos como la ANMAT o la FDA autorizan su comercialización~\cite{biala2023research, duran2021regulatory}.
-
-Este recorrido completo explica por qué el desarrollo de fármacos puede extenderse entre 12 y 15 años y superar los 1.000 millones de dólares de inversión~\cite{hughes2011principles}. Miles de compuestos evaluados en las primeras etapas son rechazados posteriormente por distintos factores: falta de interacción con el objetivo, bajo perfil farmacológico, dificultad de síntesis, entre otros. Solo un número reducido llega a fases preclínicas y de aprobación, lo que evidencia la enorme tasa de descarte de candidatos en cada etapa~\cite{chawla2024computational}.
-
-
-\subsection{Diseño de Fármacos Asistido por Computadora (CADD)}
-\label{subsec:cadd}
-
-El diseño de fármacos asistido por computadora (CADD) se originó en la década de 1960, cuando la capacidad de generar modelos moleculares tridimensionales por medios computacionales permitió superar las limitaciones de las representaciones bidimensionales de los compuestos. Desde entonces, evolucionó hasta dividirse en dos enfoques principales según la información disponible sobre el blanco terapéutico: el diseño basado en la estructura (SBDD), que parte de la estructura tridimensional del blanco, y el diseño basado en el ligando (LBDD), que se basa en un conjunto de compuestos con actividad biológica ya conocida contra ese blanco~\cite{chawla2024computational}.
+El \gls{cadd} se originó en la década de 1960, cuando la capacidad de generar modelos moleculares tridimensionales por medios computacionales permitió superar las limitaciones de las representaciones bidimensionales de los compuestos. Desde entonces, evolucionó hasta dividirse en dos enfoques principales según la información disponible sobre el blanco terapéutico: el \gls{sbdd}, que parte de la estructura tridimensional del blanco, y el \gls{lbdd}, que se basa en un conjunto de compuestos con actividad biológica ya conocida contra ese blanco~\cite{chawla2024computational}.
 
 \input{Figures/bifurcacion_cadd.tex}
 
-En el diseño basado en la estructura, el blanco se obtiene mediante cristalografía de rayos X, resonancia magnética nuclear (RMN) o, en ausencia de datos experimentales, mediante modelado por homología a partir de una proteína homóloga. Este diseño presenta dos técnicas principales, el diseño de novo, que construye ligandos nuevos dentro de las restricciones del sitio de unión, y el acoplamiento molecular, que evalúa cómo encajan distintos compuestos en ese sitio y califica su afinidad mediante funciones de puntuación~\cite{macalino2015role}. En el diseño basado en el ligando, se asume que las moléculas con estructuras semejantes tienden a exhibir actividades biológicas similares, su metodología más extendida es el modelado QSAR, el cual correlaciona variaciones estructurales con la actividad biológica observada~\cite{chawla2024computational}.
+En el diseño basado en la estructura, el blanco se obtiene experimentalmente mediante cristalografía de rayos X, \gls{rmn} o \gls{cryoem}, o bien por medios computacionales en ausencia de estructuras experimentales, ya sea mediante modelado por homología o mediante modelos de inteligencia artificial como AlphaFold~\cite{jumper2021highly}. Este diseño presenta dos técnicas principales, el diseño de novo, que construye ligandos nuevos dentro de las restricciones del sitio de unión, y el acoplamiento molecular, que evalúa cómo encajan distintos compuestos en ese sitio y califica su afinidad mediante funciones de puntuación~\cite{macalino2015role}. En el diseño basado en el ligando, se asume que las moléculas con estructuras semejantes tienden a exhibir actividades biológicas similares, su metodología más extendida es el modelado de \gls{qsar}, el cual correlaciona variaciones estructurales con la actividad biológica observada~\cite{chawla2024computational}.
 
-Como se observa en la figura~\ref{fig:bifurcacion_cadd}, el cribado virtual converge con ambos enfoques, ya que puede orientarse a partir de la estructura del blanco o de los ligandos de referencia. Asimismo, este proceso no se restringe a predecir afinidades de unión, sino que cumple un papel esencial al filtrar candidatos según su perfil ADMET (absorción, distribución, metabolismo, excreción y toxicidad), descartando compuestos con baja viabilidad~\cite{macalino2015role}. En años recientes, estas herramientas han incorporado distintas metodologías, tales como redes neuronales profundas para mejorar la capacidad predictiva, así como estrategias híbridas que integran SBDD y LBDD dentro de un mismo flujo de trabajo~\cite{chawla2024computational}.
+Como se observa en la figura~\ref{fig:bifurcacion_cadd}, el cribado virtual converge con ambos enfoques, ya que puede orientarse a partir de la estructura del blanco o de los ligandos de referencia. Asimismo, este proceso no se restringe a predecir afinidades de unión, sino que cumple un papel esencial al filtrar candidatos según su perfil de \gls{admet}, descartando compuestos con baja viabilidad~\cite{macalino2015role}. En años recientes, estas herramientas han incorporado distintas metodologías, tales como redes neuronales profundas para mejorar la capacidad predictiva, así como estrategias híbridas que integran \gls{sbdd} y \gls{lbdd} dentro de un mismo flujo de trabajo~\cite{chawla2024computational}.
 
-\section{Representación de Moléculas}
-\label{sec:rep_moleculas}
+\subsection{Representación de moléculas}
+\label{subsec:rep_moleculas}
 
-El diseño de fármacos asistido por computadora requiere describir eficientemente la estructura de las moléculas para que los algoritmos puedan procesarlas y analizarlas. En este contexto, existen diversos formatos, que van desde conformaciones tridimensionales y grafos moleculares hasta secuencias lineales. Estas últimas describen la estructura del compuesto mediante una cadena de texto, lo cual facilita su almacenamiento, indexación y procesamiento. Entre las notaciones lineales más extendidas se destacan SMILES y SELFIES, ambas abordadas en este trabajo. 
+El diseño de fármacos asistido por computadora requiere describir eficientemente la estructura de las moléculas para que los algoritmos puedan procesarlas y analizarlas. En este contexto, existen diversos formatos, que van desde conformaciones tridimensionales y grafos moleculares hasta secuencias lineales. Estas últimas describen la estructura del compuesto mediante una cadena de texto, lo cual facilita su almacenamiento, indexación y procesamiento. Entre las notaciones lineales más extendidas se destacan \gls{smiles} y \gls{selfies}, ambas abordadas en este trabajo. 
 
-\subsection{SMILES (Simplified Molecular Input Line Entry System)}
-\label{subsec:smiles}
+La notación \gls{smiles} es una representación lineal ampliamente usada para describir la estructura bidimensional de las moléculas mediante cadenas de texto~\cite{weininger1988smiles}. Cada átomo se representa por su símbolo químico y los enlaces por caracteres especiales. Su sintaxis captura la conectividad molecular, qué átomos están enlazados entre sí, utilizando paréntesis y dígitos para ciclos. Esta notación es concisa, legible y compatible con la mayoría de las bases de datos químicas (PubChem, ChEMBL, ZINC)~\cite{bolton2008pubchem, mendez2019chembl, irwin2020zinc20}, lo que facilita su integración en flujos de trabajo computacionales. \Gls{smiles} se ha consolidado como la representación estándar en modelos generativos de moléculas basados en secuencias, análogos a los modelos de lenguaje. Arquitecturas basadas en redes neuronales pueden aprender las reglas químicas implícitas en las cadenas \gls{smiles} y generar nuevas estructuras válidas~\cite{Kong2022SMILES, Segler2018Generating, Olivecrona2017Molecular}. Sin embargo, \gls{smiles} presenta limitaciones. Su sintaxis es sensible a pequeños errores que pueden producir moléculas inválidas o distintas. Además, una misma molécula puede tener múltiples representaciones válidas, lo que complica su comparación directa. 
 
-La notación SMILES es una representación lineal ampliamente usada para describir la estructura bidimensional de las moléculas mediante cadenas de texto~\cite{weininger1988smiles}. Cada átomo se representa por su símbolo químico y los enlaces por caracteres especiales. Su sintaxis captura la conectividad molecular, qué átomos están enlazados entre sí, utilizando paréntesis y dígitos para ciclos. Esta notación es concisa, legible y compatible con la mayoría de las bases de datos químicas (PubChem, ChEMBL, ZINC), lo que facilita su integración en flujos de trabajo computacionales.
+Como se observa en la figura~\ref{fig:smiles_aspirina}, la estructura de la aspirina se divide en tres partes dentro de la secuencia \gls{smiles}. A la izquierda se presenta el grafo bidimensional y a la derecha su correspondencia en texto, donde las ramificaciones se indican con paréntesis y el anillo aromático se delimita con números que abren y cierran el ciclo.
 
 \input{Figures/smiles_aspirina.tex}
 
-Como se observa en la figura~\ref{fig:smiles_aspirina}, la estructura de la aspirina se divide en tres partes dentro de la secuencia SMILES. A la izquierda se presenta el grafo bidimensional y a la derecha su correspondencia en texto, donde las ramificaciones se indican con paréntesis y el anillo aromático se delimita con números que abren y cierran el ciclo.
+\Gls{selfies} es una representación lineal alternativa a \gls{smiles}, diseñada para ser robusta en términos de validez química. Introducida por Krenn et al. entre 2019 y 2020, su objetivo fue eliminar los errores sintácticos comunes de \gls{smiles}. En \gls{selfies}, cada símbolo (token) de la cadena corresponde a un elemento químico o una relación estructural, y la gramática está restringida de manera que cualquier secuencia \gls{selfies} decodifica una molécula válida. Es decir, no existen ``SELFIES inválidos'', y hasta una cadena aleatoria genera una estructura respetando las valencias permitidas~\cite{Krenn2019SELFIES}. La principal ventaja de \gls{selfies} es esta robustez, que permite eliminar la necesidad de filtrar salidas inválidas de modelos generativos, como ocurre con \gls{smiles}~\cite{Krenn2019SELFIES}. Sin embargo, no está libre de limitaciones: las cadenas \gls{selfies} pueden ser menos intuitivas, más largas que su \gls{smiles} equivalente y no reflejar de manera simple ciertas transformaciones moleculares.
 
-SMILES se ha consolidado como la representación estándar en modelos generativos de moléculas basados en secuencias, análogos a los modelos de lenguaje. Arquitecturas basadas en redes neuronales pueden aprender las reglas químicas implícitas en las cadenas SMILES y generar nuevas estructuras válidas~\cite{Kong2022SMILES, Segler2018Generating, Olivecrona2017Molecular}. Se ha demostrado además que el uso de SMILES aleatorizados mejora la diversidad y calidad de las moléculas generadas al ampliar el espacio químico de entrenamiento~\cite{ArusPous2019RandomizedSMILES}.
-
-Sin embargo, SMILES presenta limitaciones. Su sintaxis es sensible a pequeños errores que pueden producir moléculas inválidas o distintas. Además, una misma molécula puede tener múltiples representaciones válidas, lo que complica su comparación directa. 
-
-\subsection{SELFIES (Self-Referencing Embedded Strings)}
-\label{subsec:selfies}
-
-SELFIES es una representación lineal alternativa a SMILES, diseñada para ser robusta en términos de validez química. Introducida por Krenn et al. entre 2019 y 2020, su objetivo fue eliminar los errores sintácticos comunes de SMILES. En SELFIES, cada símbolo (token) de la cadena corresponde a un elemento químico o una relación estructural, y la gramática está restringida de manera que cualquier secuencia SELFIES decodifica una molécula válida. Es decir, no existen ``SELFIES inválidos'', y hasta una cadena aleatoria genera una estructura respetando las valencias permitidas~\cite{Krenn2019SELFIES}.
+La figura~\ref{fig:selfies_aspirina} ilustra cómo se representa la misma molécula en formato \gls{selfies} mediante una secuencia de símbolos entre corchetes. Cada parte de la estructura se define con instrucciones directas, donde las ramas y el cierre del anillo indican de forma exacta los enlaces necesarios para mantener la validez molecular.
 
 \input{Figures/selfies_aspirina.tex}
 
-Como se observa en la figura~\ref{fig:selfies_aspirina}, la misma molécula se representa mediante una secuencia de símbolos entre corchetes. Cada parte de la estructura se define con instrucciones directas, donde las ramas y el cierre del anillo indican de forma exacta los enlaces necesarios para mantener la validez molecular.
+\subsection{Métricas de evaluación química y propiedades moleculares}
+\label{subsec:metricas_evaluacion}
 
-La principal ventaja de SELFIES es esta robustez, lo que resulta crucial en modelos generativos. Si se emplea en un VAE, RNN o GAN, prácticamente todas las moléculas generadas serán químicamente válidas, eliminando la necesidad de filtrar salidas inválidas como ocurre con SMILES~\cite{Krenn2019SELFIES}. Esto permite a los algoritmos enfocarse en optimizar propiedades en lugar de aprender reglas gramaticales. SELFIES puede representar las mismas moléculas que SMILES, evitando combinaciones inválidas.
+En el diseño de fármacos asistido por computadora, la calidad de las moléculas generadas no depende de una única característica, para que un compuesto sea viable como candidato a fármaco, debe cumplir con una serie de propiedades para asegurar un perfil farmacológico adecuado. Estas propiedades abarcan desde características fisicoquímicas hasta su viabilidad de síntesis y afinidad de unión con el objetivo terapéutico. 
 
-Entre sus limitaciones, las cadenas SELFIES pueden ser menos intuitivas para químicos, ser más largas que su SMILES equivalente y no reflejar de manera simple ciertas transformaciones moleculares. Al igual que SMILES, no incorpora información 3D ni conformacional, y la validez de la secuencia no garantiza que la molécula sea fácil de sintetizar o realista~\cite{Krenn2019SELFIES}.
-
-\section{Métricas de Evaluación y Propiedades Moleculares}
-\label{sec:metricas_evaluacion}
-
-En el diseño de fármacos asistido por computadora, la calidad de las moléculas generadas no depende de una única característica; para que un compuesto sea viable como candidato a fármaco, debe cumplir con una serie de propiedades para asegurar un perfil farmacológico adecuado. Estas propiedades abarcan desde características fisicoquímicas hasta su viabilidad de síntesis y afinidad de unión con el objetivo terapéutico. 
-
-\subsection{Reglas de Lipinski y Propiedades Fisicoquímicas}
+\subsubsection{Regla de Lipinski y propiedades fisicoquímicas}
 \label{subsec:lipinski}
 % Regla de los 5 de Lipinski (LogP, Peso Molecular, HBD, HBA, TPSA).
 
@@ -87,53 +59,56 @@ Uno de los primeros criterios para estimar si un compuesto químico puede cumpli
     \item Número de donadores de enlace de hidrógeno $\leq 5$
 \end{itemize}
 
-Esta regla se convirtió en un filtro en las primeras etapas del cribado virtual y diseño de fármacos; sin embargo, no es una regla absoluta, ya que existen fármacos que no cumplen con estas condiciones y son exitosos. Por ello, suele complementarse con métricas más detalladas para evaluar el perfil del compuesto. 
+Esta regla se convirtió en un filtro en las primeras etapas del cribado virtual y diseño de fármacos, sin embargo, no es una regla absoluta, ya que existen fármacos que no cumplen con estas condiciones y son exitosos. Por ello, suele complementarse con métricas más detalladas para evaluar el perfil del compuesto. 
 
-\subsection{QED (Quantitative Estimate of Drug-likeness)}
+\subsubsection{Estimación cuantitativa de atributos de fármacos (QED)}
 \label{subsec:qed}
 % Cuantificación de la similitud a fármaco.
 
-El Quantitative Estimate of Drug-likeness (QED) es una métrica que permite evaluar la probabilidad de que una molécula sea un fármaco viable a partir del análisis de las propiedades fisicoquímicas de una colección de fármacos aprobados~\cite{Bickerton2012QED}. El QED toma un valor entre 0 y 1, donde un valor cercano a 1 indica una mayor probabilidad de que la molécula sea un fármaco viable.
+La \gls{qed} es una métrica que permite evaluar la probabilidad de que una molécula sea un fármaco viable a partir del análisis de las propiedades fisicoquímicas de una colección de fármacos aprobados~\cite{Bickerton2012QED}. El \gls{qed} toma un valor entre 0 y 1, donde un valor cercano a 1 indica una mayor probabilidad de que la molécula sea un fármaco viable.
 
-El QED se construye a partir de ocho propiedades moleculares relevantes en el diseño de fármacos: 
+El \gls{qed} se construye a partir de ocho propiedades moleculares relevantes en el diseño de fármacos: 
 
 \begin{itemize}
-    \item Peso molecular (MW)
-    \item Coeficiente de partición octanol-agua (ALOGP)
-    \item Número de donadores de enlace de hidrógeno (HBD)
-    \item Número de aceptores de enlace de hidrógeno (HBA)
-    \item Área de superficie polar (PSA)
-    \item Número de enlaces rotables (ROTB)
-    \item Número de anillos aromáticos (AROM)
-    \item Número de alertas estructurales (ALERTS)
+    \item \Gls{mw}
+    \item \Gls{alogp}
+    \item Número de \gls{hbd}
+    \item Número de \gls{hba}
+    \item \Gls{psa}
+    \item Número de \gls{rotb}
+    \item Número de \gls{arom}
+    \item Número de \gls{alerts}
 \end{itemize}
 
-Cada una de estas propiedades se transforma mediante una función de deseabilidad, derivada de la distribución de estas propiedades en fármacos aprobados; el QED final se calcula como la media geométrica ponderada de estas ocho funciones de deseabilidad.
+Cada una de estas propiedades se transforma mediante una función de deseabilidad, derivada de la distribución de estas propiedades en fármacos aprobados, el \gls{qed} final se calcula como la media geométrica ponderada de estas ocho funciones.
 
-QED se ha convertido en una de las métricas más utilizadas en los pipelines de diseño de fármacos, debido a que, a diferencia de los filtros discretos como Lipinski, genera una puntuación suave y continua~\cite{Xia2024MolecularOptimization}.
+\Gls{qed} se ha convertido en una de las métricas más utilizadas en los pipelines de diseño de fármacos, debido a que, a diferencia de los filtros discretos como Lipinski, genera una puntuación suave y continua~\cite{Xia2024MolecularOptimization}.
 
-\subsection{Accesibilidad Sintética (SA Score)}
+\subsubsection{Accesibilidad sintética}
 \label{subsec:sa}
 % Facilidad y viabilidad de síntesis en laboratorio.
 
 La accesibilidad sintética es un criterio que evalúa la dificultad de síntesis de una molécula. Esta propiedad constituye un filtro común en el diseño de fármacos asistido por computadora, ya que permite que un compuesto prometedor pueda fabricarse de forma viable y eficiente, afectando directamente tanto la etapa de diseño y optimización de moléculas como la viabilidad de su posterior implementación experimental.
 
-Para cuantificar la accesibilidad sintética se suele utilizar el SA Score~\cite{Ertl2009SAScore}; esta métrica asigna a cada molécula un valor entre 1 (fácil de sintetizar) y 10 (difícil de sintetizar). Dicho valor se calcula a partir del número de fragmentos moleculares y la complejidad de las conexiones entre ellos. En la optimización molecular suele emplearse junto con el QED, donde el QED optimiza la deseabilidad farmacológica y el SA Score la viabilidad práctica de obtenerla~\cite{Xia2024MolecularOptimization}.
+Para cuantificar la accesibilidad sintética se suele utilizar la \gls{sas}~\cite{Ertl2009SAScore}; esta métrica asigna a cada molécula un valor entre 1 (fácil de sintetizar) y 10 (difícil de sintetizar). Dicho valor se calcula a partir del número de fragmentos moleculares y la complejidad de las conexiones entre ellos. En la optimización molecular suele emplearse junto con el \gls{qed}, donde el \gls{qed} optimiza la deseabilidad farmacológica y la \gls{sas} la viabilidad práctica de obtenerla~\cite{Xia2024MolecularOptimization}.
 
 
-\subsection{Fracción de Carbonos \texorpdfstring{$sp^3$}{sp3} (Fsp3)}
+\subsubsection{Fracción de carbonos \texorpdfstring{$sp^3$}{sp3}}
 \label{subsec:fsp3}
 % Grado de saturación tridimensional y complejidad molecular.
 
-La fracción de carbonos $F_{sp^3}$ es una métrica que evalúa la proporción de carbonos saturados respecto al número total de átomos de carbono. 
+La fracción de carbonos $F_{sp^3}$ es una métrica que evalúa la proporción de carbonos saturados respecto al número total de átomos de carbono:
 
-$$F_{sp^3} = \frac{\text{Número de carbonos } sp^3}{\text{Número total de carbonos}}$$
+\begin{equation}
+\label{eq:fsp3}
+F_{sp^3} = \frac{\text{Número de carbonos } sp^3}{\text{Número total de carbonos}}
+\end{equation}
 
 Sus valores oscilan entre 0 para moléculas completamente planas y 1 para moléculas totalmente saturadas.
 
 Esta métrica fue propuesta en el trabajo ``Escape from Flatland''~\cite{Lovering2009Flatland}, donde se observó que las moléculas candidatas a fármacos que tendían a ser excesivamente planas mostraban tasas menores de éxito clínico. A través de un análisis de bases de datos de compuestos en distintas etapas se encontró una correlación positiva entre el grado de saturación Fsp3 y la probabilidad de que un compuesto avance a fases clínicas avanzadas. Asimismo, se encontró una correlación positiva entre el Fsp3 y la solubilidad acuosa. Un trabajo posterior~\cite{Lovering2013Flatland2} expandió este análisis, relacionando nuevamente la saturación sp3 con la promiscuidad farmacológica, es decir, la tendencia de una molécula a interactuar con dianas biológicas no deseadas, por lo que a mayor complejidad tridimensional, las moléculas tienden a reducir la promiscuidad y con ello el riesgo de efectos adversos fuera de la diana.
 
-\subsection{Métodos de Docking Molecular y Afinidad de Unión}
+\subsubsection{Métodos de docking molecular y afinidad de unión}
 \label{subsec:docking}
 % Fundamentos de acoplamiento molecular y cálculo de energía libre de unión con AutoDock Vina.
 
@@ -145,34 +120,37 @@ En la figura~\ref{fig:docking_molecular} se muestra un diagrama esquemático con
 
 Una herramienta de docking consiste en general de dos componentes, un algoritmo de búsqueda que explora el espacio de poses del ligando dentro del sitio de unión, y de una función de puntuación que evalúa cada pose y estima la energía de unión de cada pose y permite ordenarlas \cite{Pagadala2017docking}. Existen distintas implementaciones que combinan estos componentes, cada una con su propia metodología de búsqueda y de puntuación.
 
-Entre esas herramientas se encuentra AutoDock Vina \cite{Trott2010Vina}, que combina un algoritmo de búsqueda local iterativo con una función de puntuación híbrida, usando información de estructuras de complejos proteína-ligando ya conocidos y de afinidades medidas en experimentos. El docking demanda recursos computacionales considerables cuando se tiene una gran cantidad de ligandos que evaluar, para reducir este costo existen implementaciones aceleradas por GPU, entre ellas Uni-dock \cite{Yu2023UniDock} que permite procesar moléculas en lotes. El resultado de la función de puntuación se da como una energía de unión estimada ($\Delta G$) en kcal/mol \cite{Pagadala2017docking} en la que un valor más negativo indica una unión más favorable.
+Entre esas herramientas se encuentra AutoDock Vina \cite{Trott2010Vina}, que combina un algoritmo de búsqueda local iterativo con una función de puntuación híbrida, usando información de estructuras de complejos proteína-ligando ya conocidos y de afinidades medidas en experimentos. El docking demanda recursos computacionales considerables cuando se tiene una gran cantidad de ligandos que evaluar, para reducir este costo existen implementaciones aceleradas por \gls{gpu}, entre ellas Uni-dock \cite{Yu2023UniDock} que permite procesar moléculas en lotes. El resultado de la función de puntuación se da como una energía de unión estimada ($\Delta G$) en kcal/mol \cite{Pagadala2017docking} en la que un valor más negativo indica una unión más favorable.
 
-\section{Modelos Generativos Aplicados al Diseño de Fármacos}
+\subsection{Técnicas computacionales aplicadas al diseño de fármacos}
+\label{subsec:tecnicas_computacionales}
 \label{sec:modelos_generativos}
 
-Los métodos basados en inteligencia artificial pueden mejorar enormemente el proceso de diseño de fármacos, en especial los modelos generativos los cuales son capaces de aprender representaciones del espacio químico para generar nuevos compuestos con propiedades deseadas. Al apoyarse en técnicas de aprendizaje profundo, estos modelos no evalúan únicamente las moléculas conocidas, sino que aprenden las reglas y patrones de la representación molecular para generar nuevos compuestos. Entre estos modelos los Autoencoders Variacionales destacan por su capacidad de estructurar un espacio latente navegable.
+Los métodos basados en inteligencia artificial pueden mejorar enormemente el proceso de diseño de fármacos, en especial los modelos generativos, los cuales son capaces de aprender representaciones del espacio químico para generar nuevos compuestos con propiedades deseadas. Al apoyarse en técnicas de aprendizaje profundo, estos modelos no evalúan únicamente las moléculas conocidas, sino que aprenden las reglas y patrones de la representación molecular para generar nuevos compuestos. Entre estos modelos, los Autoencoders Variacionales destacan por su capacidad de estructurar un espacio latente navegable. 
 
-\subsection{Autoencoders Variacionales (VAE)}
+Sin embargo, navegar este espacio latente para generar nuevos compuestos no es una tarea trivial, la optimización molecular requiere equilibrar propiedades que suelen competir entre sí, tales como maximizar la afinidad hacia una diana, mientras se preserva la facilidad de síntesis o la similitud a fármacos conocidos. Al no existir una solución que satisfaga todos estos criterios, la optimización multiobjetivo aborda este desafío identificando las mejores soluciones compromiso. 
+
+\subsubsection{Autoencoders variacionales (VAE)}
 \label{subsec:vae}
 % Arquitectura encoder-latente-decoder, regularización KL, reconstrucción y muestreo en espacio continuo.
 
-Los Autoencoders Variacionales (VAE) son una arquitectura de aprendizaje profundo de tipo generativo~\cite{kingma2013auto}. Su estructura se basa en dos redes neuronales conectadas: un codificador que procesa los datos y un decodificador que intenta reconstruirlos.
+Los \glspl{vae} son una arquitectura de aprendizaje profundo de tipo generativo~\cite{kingma2013auto}. Su estructura se basa en dos redes neuronales conectadas: un codificador que procesa los datos y un decodificador que intenta reconstruirlos.
 
-Para entender su funcionamiento específico, es necesario contrastarlos con los autoencoders tradicionales. Un autoencoder tradicional toma un dato de entrada y lo comprime en un vector fijo en el espacio latente. El problema de este enfoque es que, por sí solo, no puede generar directamente ejemplos nuevos a partir de la distribución de los datos~\cite{bishop2024deep}.
+Para entender su funcionamiento, es necesario contrastarlos con los autoencoders tradicionales. Un autoencoder tradicional toma un dato de entrada y lo comprime en un vector fijo en el espacio latente. El problema de este enfoque es que, por sí solo, no puede generar directamente ejemplos nuevos a partir de la distribución de los datos~\cite{bishop2024deep}.
 
-El VAE trata con este problema modificando la naturaleza del espacio latente. En lugar de codificar la entrada como un punto fijo, la red predice una distribución estadística, definida por una media y una desviación estándar~\cite{kingma2013auto}. En la figura~\ref{fig:esquema_vae} se ilustra este flujo, desde la estimación de $\mu$ y $\sigma$ hasta la reconstrucción de la entrada a partir de $z$.
+El \gls{vae} trata con este problema modificando la naturaleza del espacio latente. En lugar de codificar la entrada como un punto fijo, la red predice una distribución estadística, definida por una media y una desviación estándar~\cite{kingma2013auto}. En la figura~\ref{fig:esquema_vae} se ilustra este flujo, desde la estimación de $\mu$ y $\sigma$ hasta la reconstrucción de la entrada a partir de $z$.
 
 \input{Figures/esquema_vae.tex}
 
-En el diseño de fármacos, la entrada $x$ es una molécula representada como una cadena de texto (SMILES o SELFIES). El codificador convierte esa cadena en una distribución sobre el espacio latente, de la que se toma una muestra $z$, y el decodificador convierte $z$ de nuevo en una cadena. Como este espacio es continuo, se pueden generar moléculas nuevas decodificando vectores aleatorios, perturbando moléculas conocidas o interpolando entre ellas, y también aplicar métodos de optimización para buscar moléculas con mejores propiedades~\cite{GBWHLDSA18}.
+En el diseño de fármacos, la entrada $x$ es una molécula representada como una cadena de texto (\gls{smiles} o \gls{selfies}). El codificador convierte esa cadena en una distribución sobre el espacio latente, de la que se toma una muestra $z$, y el decodificador convierte $z$ de nuevo en una cadena. Como este espacio es continuo, se pueden generar moléculas nuevas decodificando vectores aleatorios, perturbando moléculas conocidas o interpolando entre ellas, y también aplicar métodos de optimización para buscar moléculas con mejores propiedades~\cite{GBWHLDSA18}.
 
-El entrenamiento de los VAE presenta un desafío técnico, para generar datos el modelo necesita tomar una muestra aleatoria de esa distribución estadística, pero fijar el vector latente a un valor muestreado bloquea la propagación del error hacia el codificador, por lo que sus pesos no se pueden actualizar~\cite{bishop2024deep}. Para solucionarlo se emplea el «truco de reparametrización»~\cite{kingma2013auto}, que obtiene el vector latente $z$ mediante una ecuación que separa la aleatoriedad de los parámetros aprendibles:
+El entrenamiento de los \glspl{vae} presenta un desafío técnico, para generar datos el modelo necesita tomar una muestra aleatoria de esa distribución estadística, pero fijar el vector latente a un valor muestreado bloquea la propagación del error hacia el codificador, por lo que sus pesos no se pueden actualizar~\cite{bishop2024deep}. Para solucionarlo se emplea el «truco de reparametrización»~\cite{kingma2013auto}, que obtiene el vector latente $z$ mediante una ecuación que separa la aleatoriedad de los parámetros aprendibles:
 
 \begin{equation}
 z = \mu + \sigma \odot \epsilon
 \end{equation}
 
-donde $\mu$ y $\sigma$ son la media y la desviación estándar que predice el codificador, $\odot$ es el producto elemento a elemento y $\epsilon$ es un ruido aleatorio externo que debe seguir una distribución normal estándar. De esta forma, la red puede usar la aleatoriedad para generar variedad, pero mantiene una conexión matemática directa que le permite propagar los gradientes hacia el codificador.
+Donde $\mu$ y $\sigma$ son la media y la desviación estándar que predice el codificador, $\odot$ es el producto elemento a elemento y $\epsilon$ es un ruido aleatorio externo que debe seguir una distribución normal estándar. De esta forma, la red puede usar la aleatoriedad para generar variedad, pero mantiene una conexión matemática directa que le permite propagar los gradientes hacia el codificador.
 
 \textbf{Función de pérdida.} Para que el modelo generativo aprenda correctamente, no basta con medir la precisión con la que reconstruye los datos de entrada. Es fundamental asegurar también que el espacio latente posea una estructura estadística coherente que permita la generación de nuevas muestras. Para lograr esto, se utiliza una función de pérdida con dos términos:
 
@@ -180,7 +158,7 @@ donde $\mu$ y $\sigma$ son la media y la desviación estándar que predice el co
 \mathcal{L} = \mathcal{L}_{recon} + \beta \cdot \mathcal{D}_{KL}\left(q_{\phi}(z|x) \,\|\, p(z)\right)
 \end{equation}
 
-donde $q_{\phi}(z|x)$ es la distribución que predice el codificador y $p(z)$ es una distribución normal estándar $\mathcal{N}(0, I)$~\cite{kingma2013auto}. Cuando $\beta = 1$, esta función corresponde al negativo del ELBO (\textit{Evidence Lower Bound}), la cota inferior de la verosimilitud que el VAE busca maximizar~\cite{kingma2013auto, bishop2024deep}; el coeficiente $\beta$ permite ponderar la divergencia KL. En la práctica, este peso puede variar durante el entrenamiento: en \textit{Chemical VAE}, por ejemplo, la pérdida variacional se introduce con un calendario sigmoide (\textit{annealing})~\cite{GBWHLDSA18}.
+Donde $q_{\phi}(z|x)$ es la distribución que predice el codificador y $p(z)$ es una distribución normal estándar $\mathcal{N}(0, I)$~\cite{kingma2013auto}. Cuando $\beta = 1$, esta función corresponde al negativo de la \gls{elbo}, la cota inferior que el \gls{vae} busca maximizar~\cite{kingma2013auto, bishop2024deep}; el coeficiente $\beta$ permite ponderar la divergencia KL. En la práctica, este peso puede variar durante el entrenamiento: en \textit{Chemical VAE}, por ejemplo, la pérdida variacional se introduce con un calendario sigmoide (\textit{annealing})~\cite{GBWHLDSA18}.
 
 Esta ecuación actúa como un mecanismo de balance entre dos objetivos contrapuestos durante el entrenamiento:
 
@@ -191,18 +169,14 @@ Esta ecuación actúa como un mecanismo de balance entre dos objetivos contrapue
 
 El objetivo final de esta función es encontrar un equilibrio óptimo: reconstruir los datos con alta precisión sin perder la capacidad de generar nuevas muestras válidas al interpolar en el espacio latente.
 
-\section{Optimización Multi-Objetivo}
+\subsubsection{Metaheurísticas multi-objetivo}
+\label{subsec:metaheuristicas_multiobjetivo}
 \label{sec:opt_multiobjetivo}
-
-La optimización molecular requiere equilibrar múltiples propiedades que suelen competir entre sí, tales como maximizar la afinidad hacia una diana, mientras se preserva la facilidad de síntesis o la similitud a fármacos. Al no existir una solución única que satisfaga todos los criterios, la optimización multiobjetivo aborda este desafío identificando las mejores soluciones de compromiso.
-
-\subsection{Aproximaciones Basadas en la Frontera de Pareto}
 \label{subsec:pareto}
-% Concepto de dominancia de Pareto, soluciones no dominadas y frentes de Pareto.
 
 La optimización de soluciones en la naturaleza frecuentemente requiere explorar espacios de búsqueda vastos y de alta dimensionalidad, donde los métodos exactos resultan inviables. Estos problemas raramente se pueden reducir a un único objetivo a optimizar, sino que presentan múltiples metas u objetivos en conflicto.
 
-La solución óptima para estos problemas no es una simple solución, sino que es un conjunto de soluciones definidas como soluciones óptimas de Pareto, donde no es posible mejorar un objetivo específico sin que ello conlleve al deterioro de otro. Es decir, estas soluciones representan un compromiso entre diferentes objetivos en conflicto por lo que la finalidad es encontrar este conjunto óptimo, y consecuentemente la Frontera de Pareto~\cite{talbi2009metaheuristics}.
+En estos problemas la solución óptima no es única, sino que es un conjunto de soluciones definidas como soluciones óptimas de Pareto, donde no es posible mejorar un objetivo específico sin que ello conlleve al deterioro de otro. Es decir, estas soluciones representan un compromiso entre diferentes objetivos en conflicto por lo que la finalidad es encontrar este conjunto óptimo, y consecuentemente la Frontera de Pareto~\cite{talbi2009metaheuristics}.
 
 \textbf{Problema de optimización multiobjetivo.} Un problema de optimización multiobjetivo puede definirse como~\cite{talbi2009metaheuristics}:
 
@@ -216,9 +190,9 @@ La solución óptima para estos problemas no es una simple solución, sino que e
 
 Donde $F(x)$ es el vector de los $n$ objetivos a optimizar ($n \geq 2$), mientras que $x$ y $S$ mantienen las definiciones de variables de decisión y espacio factible ya establecidas. En este contexto, la búsqueda se orienta a encontrar un equilibrio entre los distintos criterios de aptitud en conflicto.
 
-Los objetivos que deben maximizarse se transforman en objetivos de minimización invirtiendo su signo, de modo que la formulación~\eqref{eq:pom} abarca ambos sentidos de optimización~\cite{talbi2009metaheuristics}.
+Los objetivos a maximizar se transforman en problemas de minimización invirtiendo su signo, por lo que la formulación~\eqref{eq:pom} abarca ambos sentidos de optimización~\cite{talbi2009metaheuristics}.
 
-\textbf{Dominancia de Pareto.} Un vector objetivo $u = (u_1, \ldots, u_n)$ se dice que domina a $v = (v_1, \ldots, v_n)$ (denotado por $u \prec v$) si y solo si ninguna componente de $v$ es menor que la componente correspondiente de $u$ y al menos una componente de $u$ es estrictamente menor~\cite{talbi2009metaheuristics}:
+\textbf{Dominancia de Pareto.} Un vector objetivo $u = (u_1, \ldots, u_n)$ domina a $v = (v_1, \ldots, v_n)$ ($u \prec v$) si ninguna componente de $v$ es menor que la correspondiente de $u$ y al menos una es estrictamente menor~\cite{talbi2009metaheuristics}:
 
 \begin{equation}
 \label{eq:dominancia_pareto}
@@ -260,68 +234,30 @@ En la figura~\ref{fig:frontera_pareto} se ilustra la representación de solucion
 \input{Figures/frontera_pareto.tex}
 
 
-\subsection{Indicadores de Rendimiento Multiobjetivo}
-\label{subsec:indicadores_multiobjetivo}
-% Hipervolumen (HV), Esparcimiento (Spread), Distancia Generacional Invertida (IGD).
-
-La evaluación de metaheurísticas multiobjetivo representa un desafío particular: el resultado del proceso de optimización no es una única solución, sino un conjunto de soluciones que aproxima el frente de Pareto. Por lo tanto, para evaluar el rendimiento de diferentes algoritmos es necesario comparar conjuntos enteros de soluciones no dominadas.
-
-No existe un estándar único para evaluar las soluciones; los indicadores de calidad o métricas de desempeño se clasifican según sus propiedades y según el objetivo que evalúan~\cite{talbi2009metaheuristics}:
-
-\begin{itemize}
-    \item \textbf{Indicadores de convergencia:} Evalúan la eficacia de las soluciones en términos de su cercanía al frente de Pareto óptimo (teórico). Ejemplos destacados incluyen la Distancia Generacional (GD), que calcula la distancia promedio entre el conjunto aproximado y un conjunto de referencia exacto, y el Indicador $\epsilon$, que determina el factor mínimo de traslación necesario para que una aproximación domine a otra.
-    \item \textbf{Indicadores de diversidad:} Miden la uniformidad y extensión de la distribución de las soluciones obtenidas a lo largo del frente. Indicadores como el Espaciado (\textit{Spread}) o la Entropía penalizan los frentes donde las soluciones se agrupan excesivamente en una sola región del espacio de objetivos. Suelen tener un costo computacional mayor que los indicadores de convergencia.
-    \item \textbf{Indicadores híbridos:} Evalúan simultáneamente tanto la convergencia como la diversidad del conjunto de soluciones. El estándar actual en la literatura es el Hipervolumen (HV), un indicador unario que calcula el volumen del espacio de objetivos que es débilmente dominado por el conjunto de aproximación respecto a un punto de referencia predefinido~\cite{talbi2009metaheuristics}.
-\end{itemize}
-
-A partir de esta clasificación, los indicadores de rendimiento considerados en este trabajo para evaluar el desempeño de las metaheurísticas son los siguientes:
-
-\textbf{Hipervolumen (HV).} Mide el volumen de la región del espacio de objetivos que domina el conjunto de soluciones obtenido, acotada por un punto de referencia. Cuanto mayor es ese volumen, mejor es el conjunto tanto en convergencia como en diversidad, de modo que resume ambos aspectos en un único valor. Su ventaja práctica es que no exige conocer el frente de Pareto óptimo, sino únicamente el punto de referencia.
-
-\textbf{Distancia generacional invertida modificada (IGD$^+$).} Promedia la distancia que separa a cada punto de un conjunto de referencia de la solución más próxima del conjunto obtenido, contabilizando solo las componentes en las que esa solución es peor. Valores bajos indican que el frente obtenido se aproxima al de referencia.
-
-\textbf{Indicador $\epsilon$ aditivo.} Expresa cuánto habría que desplazar el conjunto obtenido para que llegue a dominar débilmente al de referencia. Cuanto menor es ese desplazamiento, más próximos están ambos frentes, y un valor no positivo significa que el conjunto obtenido ya lo domina.
-
-\textbf{Espaciamiento (\textit{Spacing}).} Refleja con qué uniformidad se reparten las soluciones a lo largo del frente, a partir de la dispersión de las distancias entre soluciones vecinas. Valores bajos corresponden a frentes donde las soluciones están espaciadas de manera regular, sin acumulaciones ni huecos.
-
-\textbf{Tamaño del frente de Pareto.} Cuenta las soluciones no dominadas obtenidas, esto es, cuántas alternativas de compromiso distintas llega a ofrecer el algoritmo. Por sí solo no permite juzgar la calidad del frente.
-
-Los dos indicadores basados en distancias, IGD$^+$ y el indicador $\epsilon$ aditivo, necesitan un conjunto de referencia que aproxime el frente de Pareto óptimo. Como en el diseño de moléculas ese frente no se conoce, dicho conjunto se construye de forma empírica~\cite{liyao2019quality}.
-
-\subsection{Metaheurísticas Consideradas en las Experimentaciones}
-\label{subsec:metaheuristicas}
-% Algoritmos genéticos, PSO, algoritmos evolutivos multiobjetivo aplicados a la búsqueda en espacio latente.
-
-Esta tesina de grado considera cinco algoritmos metaheurísticos multiobjetivo para la experimentación, todos ellos operan sobre el espacio latente continuo del autoencoder variacional.
-
-\textbf{NSGA-II (Non-dominated Sorting Genetic Algorithm II).} Es el algoritmo evolutivo multiobjetivo de referencia y se apoya en la profundidad de dominancia. En cada generación ordena la población en frentes sucesivos de no dominancia mediante un procedimiento de ordenamiento rápido. Los empates dentro de un mismo frente se resuelven con la \textit{distancia de apiñamiento} (\textit{crowding distance}), que mide qué tan poblado está el entorno de cada individuo y favorece a los que se encuentran en regiones menos densas. Estos dos mecanismos, junto con una estrategia elitista, le permiten mantener a la vez convergencia y diversidad~\cite{deb2002nsga2}.
-
-\textbf{NSGA-III.} Conserva el esquema anterior, pero reemplaza la distancia de apiñamiento por un mecanismo de nichos basado en puntos de referencia distribuidos sobre un hiperplano normalizado. Cada solución se asocia al punto de referencia más cercano y sobreviven primero las soluciones asociadas a los puntos con menos representantes. De esta forma se logra una cobertura uniforme del frente incluso cuando crece el número de objetivos, situación en la que la distancia de apiñamiento pierde capacidad de discriminación~\cite{deb2014nsga3}.
-
-\textbf{MOEA/D (Multiobjective Evolutionary Algorithm Based on Decomposition).} Descompone el problema multiobjetivo en un conjunto de subproblemas escalares, definidos por vectores de pesos, y los optimiza de forma simultánea. Cada subproblema se resuelve usando solo la información de sus subproblemas vecinos. La distribución de las soluciones sobre el frente depende de cómo se distribuyan los vectores de pesos, y no de un mecanismo explícito de preservación de la diversidad~\cite{zhang2007moead}.
-
-\textbf{CMOPSO (Competitive Mechanism Based Multi-objective Particle Swarm Optimizer).} Pertenece a la familia de la optimización por enjambre de partículas. El rendimiento de los optimizadores convencionales de esta familia depende en gran medida de las mejores soluciones globales y personales guardadas en un archivo externo. CMOPSO, en cambio, selecciona en cada generación un conjunto de partículas élite del propio enjambre, según el frente de no dominancia y la distancia de apiñamiento, y actualiza cada partícula mediante una competencia por pares entre dos élites elegidas al azar: gana la que forma el ángulo menor con la partícula~\cite{zhang2018competitive}.
-
-\textbf{AGE-MOEA (Adaptive Geometry Estimation Based MOEA).} Parte de que el desempeño de los algoritmos multiobjetivo depende de la geometría del frente de Pareto, que puede ser una hipersuperficie euclídea, esférica o hiperbólica. Sobre el esquema de NSGA-II, reemplaza la distancia de apiñamiento por un puntaje de supervivencia que combina diversidad y proximidad mediante una norma $L_p$ adaptativa. La estimación de dicha geometría se realiza mediante un procedimiento de complejidad $O(n \times N)$, donde $n$ es el número de objetivos y $N$ el tamaño de la población. De este modo mantiene un rendimiento competitivo ante frentes de geometrías diversas, donde los algoritmos que suponen una geometría fija tienden a degradarse~\cite{panichella2019adaptive}.
-
-\section{Proteína 1 de Resistencia a Múltiples Fármacos (MRP1)}
+\section{Caso de estudio: Proteína 1 de resistencia a múltiples fármacos (MRP1)}
 \label{sec:mrp1}
 % Función biológica de transportadores ABC, mecanismo de expulsión de quimioterápicos en cáncer colorrectal y relevancia de la inhibición de MRP1.
 
-MRP1 (Proteína 1 de Resistencia a Múltiples Fármacos) es una proteína transportadora de la familia ABC (ATP-Binding Cassette) que usa energía del ATP para expulsar fármacos desde el interior de las células hacia el exterior~\cite{cole_targeting_2014, lu_mrp1_2015}. Al reducir la concentración del fármaco dentro de una célula tumoral, provoca resistencia al mismo. Esta proteína reconoce un conjunto de quimioterápicos, lo que explica la resistencia a fármacos que produce su sobreexpresión~\cite{cole_targeting_2014, lu_mrp1_2015}.
+El tratamiento del cáncer colorrectal avanzado se maneja principalmente con regímenes de quimioterapia basados en fármacos citotóxicos como el \gls{5fu}, el oxaliplatino y el irinotecán. Sin embargo, la efectividad de estos fármacos se ve comprometida debido al desarrollo de \gls{mdr}, lo cual provoca recaídas en una elevada proporción de pacientes~\cite{abdallah2016, marin2022expression}.
 
-En el cáncer colorrectal existe evidencia experimental sobre el papel de MRP1 en la resistencia a fármacos como el 5-fluorouracilo y el oxaliplatino~\cite{cao2017role}, además de que MRP1 funciona como biomarcador de resistencia al irinotecán~\cite{marin2022expression}. Se encontró que al reducir su producción en células tumorales resistentes, la sensibilidad a ambos fármacos se restablece y la muerte celular de las mismas vuelve a activarse. MRP1 contribuye entonces a la resistencia del cáncer colorrectal, lo que la convierte en un blanco terapéutico de interés~\cite{cao2017role}.
+\Gls{mrp1} es una proteína transportadora de la familia \gls{abc} que usa energía del \gls{atp} para expulsar moléculas desde el interior de las células hacia el exterior~\cite{cole_targeting_2014, lu_mrp1_2015}. Entre estas moléculas se encuentran diversos fármacos quimioterápicos; al ser expulsados, se reduce su concentración intracelular y la célula tumoral adquiere resistencia a los mismos. Esta capacidad de reconocer y transportar activamente un amplio conjunto de quimioterápicos explica la resistencia farmacológica asociada a su sobreexpresión~\cite{cole_targeting_2014, lu_mrp1_2015}.
 
-Si bien MRP1 cumple funciones fisiológicas importantes en tejidos sanos, su sobreexpresión en tumores colorrectales representa una barrera terapéutica relevante, por lo que diseñar inhibidores que reduzcan su actividad en células tumorales es un desafío significativo.
+En el cáncer colorrectal existe evidencia experimental sobre el papel de \gls{mrp1} en la resistencia a los fármacos mencionados~\cite{cao2017role}, además de que \gls{mrp1} funciona como biomarcador de resistencia al irinotecán~\cite{marin2022expression}. Se encontró que al reducir su producción en células tumorales resistentes, la sensibilidad a dichos fármacos se restablece y la muerte celular de las mismas vuelve a activarse. \Gls{mrp1} contribuye entonces a la resistencia del cáncer colorrectal, lo que la convierte en un blanco terapéutico de interés~\cite{cao2017role}.
 
-Se conoce la estructura tridimensional de MRP1 y el sitio donde se aloja la molécula que transporta~\cite{johnson_structural_2017}. En la Figura~\ref{fig:estructura_mrp1} se observa la conformación tridimensional de esta proteína (código PDB: 8VUX). Dicho sitio de unión está dividido en dos partes, una con carga positiva y otra hidrofóbica (que repele el agua), y varios de sus aminoácidos cambian de posición cuando una molécula se une. Esa flexibilidad explica por qué la proteína reconoce ligandos tan distintos entre sí, y a la vez ofrece un blanco delimitado contra el cual evaluar moléculas candidatas mediante acoplamiento molecular~\cite{johnson_structural_2017}.
+Si bien \gls{mrp1} cumple funciones fisiológicas en tejidos sanos, su sobreexpresión en tumores colorrectales representa una barrera terapéutica, por lo que diseñar inhibidores que reduzcan su actividad en células tumorales es un desafío significativo.
+
+Se conoce la estructura tridimensional de \gls{mrp1} y el sitio donde se aloja el sustrato que transporta~\cite{johnson_structural_2017}. En la Figura~\ref{fig:estructura_mrp1} se observa la conformación tridimensional de esta proteína (código \gls{pdb}: 8VUX). Dicho sitio de unión está dividido en dos partes, una con carga positiva y otra hidrofóbica (que repele el agua), y varios de sus aminoácidos cambian de posición cuando una molécula se une. Esa flexibilidad explica por qué la proteína reconoce ligandos tan distintos entre sí, y a la vez ofrece un blanco delimitado contra el cual evaluar moléculas candidatas mediante acoplamiento molecular~\cite{johnson_structural_2017}.
 
 \input{Figures/estructura_mrp1.tex}
+
+El diseño de inhibidores de \gls{mrp1} se basó durante décadas en probar, mediante campañas de cribado masivo de la industria farmacéutica, compuestos ya conocidos por otras propiedades (como el verapamilo o la ciclosporina A) y una amplia variedad de productos naturales. Ninguno de estos compuestos llegó a aprobarse como fármaco~\cite{stefan2019}. En paralelo, desde que se resolvió por cristalografía de rayos X una parte de \gls{mrp1} en 2006, varios trabajos computacionales combinaron esa estructura parcial con modelos por homología del resto de la proteína para buscar inhibidores mediante virtual screening y acoplamiento molecular. Rungsardthong et al.~\cite{rungsardthong2012} identificaron 20 compuestos candidatos dirigidos a esa parte, y Dhasmana et al.~\cite{dhasmana2018} propusieron el citrato de potasio como el mejor candidato de una biblioteca de fármacos aprobados por la \gls{fda}. 
+
+La estructura completa de \gls{mrp1}, resuelta por \gls{cryoem} en 2017, reveló por primera vez otra parte de la proteína: la zona donde se une a los fármacos que va a expulsar, distinta de la que usaron los trabajos anteriores. Belhadj et al.~\cite{belhadj2024} utilizan esa estructura para caracterizar ZW-1226, un compuesto que mediante acoplamiento molecular ocupa esa zona de enganche, y que en líneas celulares revierte la resistencia mediada por \gls{mrp1} a dos fármacos de quimioterapia.
 
 \section{Trabajos Relacionados}
 \label{sec:trabajos_relacionados}
 
-En este trabajo se propone un enfoque híbrido, en el que mediante un modelo generativo y metaheurísticas multiobjetivo se busca, en una primera instancia, optimizar el diseño y búsqueda de moléculas con propiedades farmacológicas para, posteriormente, enfocarse en candidatos capaces de acoplarse a la proteína MRP1. Por lo tanto, esta sección revisa los antecedentes de modelos generativos para el diseño molecular, la optimización del espacio latente mediante metaheurísticas y, finalmente, los inhibidores conocidos de la proteína MRP1.
+En este trabajo se propone un enfoque híbrido, en el que mediante un modelo generativo y metaheurísticas multiobjetivo se busca, en una primera instancia, optimizar el diseño y búsqueda de moléculas con propiedades farmacológicas para, posteriormente, enfocarse en candidatos capaces de unirse a la proteína MRP1. Por lo tanto, esta sección revisa los antecedentes de modelos generativos para el diseño molecular y la optimización del espacio latente mediante metaheurísticas.
 
 \subsection{Diseño de Fármacos Mediante Redes Generativas y VAEs}
 \label{subsec:art_vaes}
@@ -387,7 +323,9 @@ Bhadwal et al.~\cite{BKK25} desarrollan \textit{PCF-VAE} (\textit{Posterior Coll
 
 Inukai et al.~\cite{inukai2025frattvae} presentan \textit{FRATTVAE} (\textit{Fragment Tree-Transformer based VAE}), un modelo generativo que representa cada molécula como una estructura de árbol en la que los nodos corresponden a fragmentos moleculares. Sobre dicha representación, se aplica una codificación posicional en árbol que preserva las relaciones jerárquicas y un mecanismo de autoatención tipo Transformer para capturar dependencias de largo alcance entre fragmentos. Este diseño busca resolver las limitaciones de los modelos basados en cadenas lineales ante compuestos de alta complejidad topológica. Evaluado en el benchmark MOSES, reporta una validez del 100.00\%, una unicidad del 99.97\% y una novedad del 97.42\%. Entre sus limitaciones, el espacio de generación depende estrechamente de las reglas de fragmentación adoptadas y el costo computacional de la atención en árbol es considerable frente a modelos recurrentes tradicionales.
 
-Rigoni et al.~\cite{rigoni2025rgcvae} proponen \textit{RGCVAE} (\textit{Relational Graph Conditioned Variational Autoencoder}), un modelo generativo para grafos moleculares que incorpora en su codificador una red \textit{Relational Graph Isomorphism Network} (RGIN). Esta red es capaz de capturar atributos relacionales complejos, tales como órdenes de enlace y estereoquímica tridimensional. La decodificación se ejecuta en dos pasos paralelizables: primero se seleccionan los tipos atómicos conforme a restricciones de valencia y luego se predicen simultáneamente las conexiones entre ellos. Este esquema agiliza los tiempos de convergencia y asegura una elevada precisión de reconstrucción. No obstante, el modelo manifiesta sensibilidad al equilibrio de hiperparámetros: priorizar excesivamente la exactitud de reconstrucción reduce la diversidad y unicidad de las moléculas generadas en conjuntos complejos como ZINC.
+Rigoni et al.~\cite{rigoni2025rgcvae} proponen \textit{RGCVAE} (\textit{Relational Graph Conditioned Variational Autoencoder}), un modelo generativo para grafos moleculares que incorpora en su codificador una red \textit{Relational Graph Isomorphism Network} (RGIN). Esta red es capaz de capturar atributos relacionales complejos, tales como órdenes de enlace y estereoquímica tridimensional. La decodificación se ejecuta en dos pasos paralelizables: primero se seleccionan los tipos atómicos conforme a restricciones de valencia y luego se predicen simultáneamente las conexiones entre ellos. Este esquema agiliza los tiempos de convergencia y asegura una alta precisión de reconstrucción. No obstante, el modelo muestra sensibilidad al equilibrio de hiperparámetros: priorizar la exactitud de reconstrucción reduce la diversidad y unicidad de las moléculas generadas en conjuntos complejos como ZINC.
+
+En resumen, los antecedentes recopilados muestran que los modelos generativos presentan distintas limitaciones según la representación y la arquitectura empleada, existiendo un balance entre la complejidad computacional y la validez química. Modelos generativos basados en representaciones tridimensionales conllevan una mayor carga de procesamiento, muchas veces requiriendo datasets reducidos debido a esta limitación. Esto motiva en este trabajo el desarrollo de un \gls{vae} sobre representaciones lineales, explorando distintas configuraciones con un benchmark común con el fin de evaluar la configuración que mejor favorezca la generación de candidatos a fármacos para su posterior optimización.
 
 \subsection{Optimización del Espacio Latente Mediante Metaheurísticas}
 \label{subsec:art_metaheuristicas}
@@ -467,7 +405,7 @@ Winter et al.~\cite{WMS+19} proponen \textit{Molecule Swarm Optimization} (MSO),
 
 Abouchekeir et al.~\cite{AVM+22} presentan \textit{ADEL} (\textit{Adversarial Deep Evolutionary Learning}), un marco que combina autoencoders adversariales (AAE) y algoritmos evolutivos para el diseño de fármacos. A diferencia de enfoques previos, emplea redes recurrentes (LSTM) junto con un discriminador para estructurar de forma más regular el espacio latente de cadenas SMILES. Posteriormente, aplica el algoritmo genético multiobjetivo NSGA-II para operar mediante cruce y mutación sobre los vectores latentes, refinando el modelo de manera iterativa al incorporar las nuevas soluciones generadas a la población de entrenamiento. En sus evaluaciones, ADEL generó compuestos que optimizan simultáneamente múltiples propiedades fisicoquímicas (QED, $\log P$ y accesibilidad sintética), identificando moléculas con favorable energía de unión en simulaciones de acoplamiento molecular contra el biomarcador tumoral CA9. Como limitación metodológica, la optimización evolutiva se restringe a descriptores generales, delegando la selectividad hacia el blanco a una etapa posterior de filtrado sobre la última población.
 
-El modelo \textit{LEOMol}, introducido por Siddartha Reddy et al.~\cite{NGM+24}, aborda el diseño de fármacos integrando un autoencoder variacional con algoritmos genéticos y evolución diferencial. Al adoptar la representación robusta SELFIES, el sistema garantiza un 100\% de validez química en todas las estructuras decodificadas. Su principal ventaja radica en explorar el espacio latente mediante operadores estocásticos poblacionales en lugar de métodos basados en gradientes continuos, lo que facilita optimizar funciones de aptitud complejas evaluadas con herramientas quimioinformáticas estándar. En sus experimentos, demostró alta eficacia para generar compuestos que satisfacen múltiples criterios concurrentes, destacando la generación de moléculas exentas de toxicidad. No obstante, el algoritmo presenta dificultades para converger hacia soluciones viables cuando se le exige preservar una elevada similitud estructural con respecto a un compuesto de partida.
+El modelo \textit{LEOMol}, introducido por Siddartha Reddy et al.~\cite{NGM+24}, aborda el diseño de fármacos integrando un autoencoder variacional con algoritmos genéticos y evolución diferencial. Al adoptar la representación robusta SELFIES, el sistema garantiza un 100\% de validez química. Su principal ventaja radica en explorar el espacio latente mediante operadores estocásticos poblacionales en lugar de métodos basados en gradientes continuos, lo que facilita optimizar funciones de aptitud complejas evaluadas con herramientas quimioinformáticas estándar. En sus experimentos, demostró alta eficacia para generar compuestos que satisfacen múltiples criterios concurrentes, destacando la generación de moléculas exentas de toxicidad. No obstante, el algoritmo presenta dificultades para converger hacia soluciones viables cuando se le exige preservar una elevada similitud estructural con respecto a un compuesto de partida.
 
 Aksamit et al.~\cite{Aksamit2024} proponen un marco de trabajo que integra la arquitectura Transformer con algoritmos metaheurísticos de muchos objetivos (\textit{many-objective optimization}) para el diseño molecular. Este enfoque busca optimizar simultáneamente perfiles farmacocinéticos ADMET y la afinidad de unión estimada mediante acoplamiento molecular. Empleando el modelo ReLSO para proyectar las moléculas en un espacio latente continuo basado en SELFIES, el estudio evalúa y compara el desempeño de diversas metaheurísticas (tales como MOEA/DD, GrEA, HypE, KnEA, A-NSGA-III y NMPSO) en la búsqueda de ligandos dirigidos al receptor LPA1. Como principal limitación, los autores destacan el elevado costo computacional derivado de evaluar el acoplamiento molecular en cada evaluación de aptitud, lo que restringe la sintonización exhaustiva de los hiperparámetros del optimizador.
 
@@ -476,11 +414,5 @@ Xia et al.~\cite{XZZ+24} desarrollan \textit{MOMO} (\textit{Multiobjective Molec
 Abeer et al.~\cite{Abeer2024} introducen \textit{MO-LSO} (\textit{Multi-Objective Latent Space Optimization}), un método que optimiza el espacio latente de modelos preentrenados tipo JT-VAE a través de un esquema de reentrenamiento iterativo ponderado por la eficiencia de Pareto de las moléculas muestreadas. Esta estrategia permite equilibrar compromisos entre propiedades fisicoquímicas contrapuestas, generando moléculas de alta calidad (como potenciales inhibidores del receptor DRD2) incluso a partir de conjuntos de datos iniciales desprovistos de ligandos activos. Como contrapartida, el procedimiento iterativo tiende a concentrar las soluciones en regiones localizadas del espacio químico, reduciendo la diversidad estructural de los compuestos finales, a lo que se suma el incremento del costo computacional derivado de los ciclos sucesivos de reentrenamiento.
 
 Beck et al.~\cite{Beck2025} presentan \textit{Paddy}, un algoritmo de optimización evolutiva inspirado en la dispersión reproductiva de las plantas de arrozal (\textit{paddy field algorithm}), diseñado para explorar sistemas y espacios químicos complejos. A diferencia de los algoritmos genéticos convencionales que dependen de operadores de recombinación cromosómica, Paddy propaga soluciones en el espacio latente de un modelo JT-VAE mediante mutaciones gaussianas reguladas por la densidad local de las soluciones y su aptitud. Esto proporciona una exploración rápida y flexible del espacio paramétrico continuo. Sin embargo, en su formulación para optimización molecular monoproyectada sobre una única función escalar agregada, el método tiende a simplificar las relaciones de compromiso no lineales inherentes a la optimización multiobjetivo de propiedades farmacológicas.
-
-
-\subsection{Diseño de Fármacos Inhibidores de la Proteína MRP1}
-\label{subsec:art_mrp1}
-
-El diseño de inhibidores de MRP1 se basó durante décadas en probar, mediante campañas de cribado masivo de la industria farmacéutica, compuestos ya conocidos por otras propiedades (como el verapamilo o la ciclosporina A) y una amplia variedad de productos naturales. Ninguno de estos compuestos llegó a aprobarse como fármaco~\cite{stefan2019}. En paralelo, desde que se resolvió por cristalografía de rayos X una parte de MRP1 en 2006, varios trabajos computacionales combinaron esa estructura parcial con modelos por homología del resto de la proteína para buscar inhibidores mediante virtual screening y acoplamiento molecular. Rungsardthong et al.~\cite{rungsardthong2012} identificaron 20 compuestos candidatos dirigidos a esa parte, y Dhasmana et al.~\cite{dhasmana2018} propusieron el citrato de potasio como el mejor candidato de una biblioteca de fármacos aprobados por la FDA. 
-
-La estructura completa de MRP1, resuelta por criomicroscopía electrónica (una técnica que permite ver la forma de una proteína a partir de miles de copias congeladas) en 2017, reveló por primera vez otra parte de la proteína: la zona donde se une a los fármacos que va a expulsar, distinta de la que usaron los trabajos anteriores. Belhadj et al.~\cite{belhadj2024} utilizan esa estructura para caracterizar ZW-1226, un compuesto que mediante acoplamiento molecular ocupa esa zona de enganche, y que en líneas celulares revierte la resistencia mediada por MRP1 a dos fármacos de quimioterapia. 
+ 
+En general, los trabajos revisados muestran la capacidad de las metaheurísticas para navegar espacios latentes, aunque en muchos casos la afinidad a una diana terapéutica se evalúa como un filtrado posterior y no como una función objetivo. De igual manera, son escasos los antecedentes que integran directamente el acoplamiento molecular en una optimización multiobjetivo frente a proteínas transportadoras como \gls{mrp1}. Asimismo, la mayoría de los estudios se limita a evaluar uno o dos algoritmos aislados, sin realizar una comparación sistemática entre ellos. Esto motiva en este trabajo de grado a evaluar la búsqueda en el espacio latente mediante un enfoque multiobjetivo, contrastando diferentes algoritmos representativos para optimizar simultáneamente la afinidad hacia \gls{mrp1} y propiedades farmacológicas deseadas.
