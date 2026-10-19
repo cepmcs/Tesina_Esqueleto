@@ -8,7 +8,7 @@ En este capítulo se describe la metodología empleada en esta tesina de grado. 
 
 % Explicación del flujo completo: preentrenamiento del VAE, optimización multiobjetivo en espacio latente y evaluación de candidatos.
 
-Se propone un esquema estructurado en dos etapas. La primera abarca el desarrollo y la evaluación comparativa de un \gls{vae}. La segunda consiste en la exploración de su espacio latente mediante metaheurísticas multiobjetivo para la generación de fármacos genéricos, con el fin de determinar la configuración con mejor desempeño y aplicarla posteriormente en la búsqueda de moléculas dirigidas a la diana terapéutica \gls{mrp1}.
+Se propone un esquema estructurado en dos etapas. La primera abarca el desarrollo y la evaluación comparativa de un \gls{vae}. La segunda consiste en la exploración de su espacio latente mediante metaheurísticas multiobjetivo para la generación de fármacos genéricos, con el fin de determinar la configuración con mejor desempeño y aplicarla posteriormente en la búsqueda de moléculas dirigidas a la diana \gls{mrp1}.
 
 En la primera etapa se entrena un \gls{vae} sobre el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. El propósito del modelo es comprimir la estructura química de los compuestos en un espacio latente continuo. Su evaluación se realiza bajo el protocolo y las métricas estándar de \gls{moses} para seleccionar la mejor combinación de representación molecular, arquitectura e hiperparámetros.
 
@@ -304,9 +304,9 @@ Una vez seleccionada la mejor configuración de las metaheurísticas, se aplica 
 
 \textbf{Preparación del receptor.} Se toma la cadena B de 8VUX como receptor y se eliminan el cGAMP, el hemisuccinato de colesterol y las moléculas de agua. Posteriormente se añaden los átomos de hidrógeno, se asignan los estados de protonación estándar de cada residuo y las cargas parciales, y se genera el archivo en formato PDBQT con Meeko~\cite{santosmartins2025meeko}. El receptor resultante comprende 1005 residuos y 9587 átomos, de los cuales 1658 son hidrógenos polares.
 
-\textbf{Identificación del sitio de unión.} Se procede a identificar los sitios drogables de 8VUX posteriormente a la separación de la proteína del ligando, con especial énfasis en TMD2 por su asociación con el sitio de unión del sustrato. Para ello se utiliza FPocketWeb~\cite{kochnev2022fpocketweb}, que arrojó como resultado una cavidad drogable en TMD2, el bolsillo número 78, con una drogabilidad reportada de 0.738 (probabilidad de drogabilidad elevada), y que además coincide con el sitio de unión del cGAMP. Como resultado, se selecciona el bolsillo 78 como sitio de unión probable de los quimioterápicos. Los demás bolsillos con elevada drogabilidad no se consideran porque corresponden a las cavidades donde se une el ATP para accionar el mecanismo de extracción de \gls{mrp1}.
+\textbf{Identificación del sitio de unión.} Se procede a identificar los sitios drogables de 8VUX posteriormente a la separación de la proteína del ligando, con énfasis en TMD2 por su asociación con el sitio de unión del sustrato. Para ello se utiliza FPocketWeb~\cite{kochnev2022fpocketweb}, que arrojó como resultado una cavidad drogable en TMD2, el bolsillo número 78, con una drogabilidad reportada de 0.738 (probabilidad de drogabilidad elevada), y que además coincide con el sitio de unión del cGAMP. Como resultado, se selecciona el bolsillo 78 como sitio de unión probable de los quimioterápicos. Los demás bolsillos con elevada drogabilidad no se consideran porque corresponden a las cavidades donde se une el ATP para accionar el mecanismo de extracción de \gls{mrp1}.
 
-\textbf{Docking ciego y elección de los aminoácidos flexibles.} Como no existe una estructura que cocristalice \gls{mrp1} con los quimioterápicos de interés, los aminoácidos relevantes se identifican de manera computacional. Para ello se utiliza AutoDock Vina~\cite{trott2010vina,eberhardt2021vina} en un docking ciego sobre el bolsillo 78, con el irinotecán como ligando de referencia (PubChem, CID 60838), con el objetivo de determinar las poses más probables y los aminoácidos con los que más interacciona. Vina se configuró con un centro en $(164.6835,\ 130.2140,\ 120.1165)$~Å y una caja de $29.2 \times 35.6 \times 35.0$~Å, que corresponde a la envolvente de las esferas alfa del bolsillo con un margen de 5~Å por lado, una exhaustividad de 32 y la generación de 100 poses.
+\textbf{Docking ciego y elección de los aminoácidos flexibles.} Como no existe una estructura que cocristalice \gls{mrp1} con los quimioterápicos de interés, los aminoácidos relevantes se identifican de manera computacional. Para ello se utiliza AutoDock Vina~\cite{trott2010vina,eberhardt2021vina} en un docking ciego sobre el bolsillo 78, con el irinotecán como ligando de referencia (PubChem, CID 60838), con el objetivo de determinar las poses más probables y los aminoácidos con los que más interacciona. Vina se configuró con un centro en $(164.6835,\ 130.2140,\ 120.1165)$~Å y una caja de $29.2 \times 35.6 \times 35.0$~Å, una exhaustividad de 32 y la generación de 100 poses.
 
 Para el irinotecán se obtuvo una puntuación de docking de $-12.060$~kcal/mol y 5 poses. Posteriormente se analizaron los aminoácidos situados a menos de 4~Å del ligando, con el fin de caracterizar las interacciones potenciales en la región de unión; los resultados se resumen en la Tabla~\ref{tab:frecuencia_residuos}.
 
@@ -374,8 +374,7 @@ El TRP1246 presenta 11 pares de átomos con distancias de 2.98 a 3.87~Å, concen
 
 \textbf{Caja de docking para la generación de candidatos.} Para los experimentos de diseño se configura una caja de docking con centro en $(166,\ 125,\ 124)$~Å y dimensiones de $25 \times 22 \times 25$~Å, determinada a partir de los aminoácidos con mayor prevalencia en la interacción del irinotecán con el sitio de unión.
 
-\textbf{Preparación de las moléculas candidatas.} Las secuencias lineales decodificadas por el \gls{vae} se convierten a su estructura tridimensional con RDKit~\cite{landrum2026rdkit} y se preparan con Meeko~\cite{santosmartins2025meeko}, que asigna los tipos de átomo, las cargas parciales y las torsiones activas. Los macrociclos y los anillos puenteados se mantienen rígidos.
-
+\textbf{Preparación de las moléculas candidatas.} Las secuencias lineales decodificadas por el \gls{vae} se convierten a su estructura tridimensional con RDKit~\cite{landrum2026rdkit} y se preparan con Meeko~\cite{santosmartins2025meeko}, que asigna los tipos de átomo, las cargas parciales y las torsiones activas.
 
 \subsection{Funciones Objetivo y Acoplamiento Molecular}
 \label{subsec:fo_mrp1}
@@ -413,5 +412,5 @@ En esta sección se describen las herramientas y tecnologías empleadas en el en
     \item \textbf{Uni-Dock (Versión 1.2.0):} Motor de acoplamiento molecular en \gls{gpu}, utilizado para evaluar la afinidad de unión contra \gls{mrp1}.
     \item \textbf{AutoDock Vina (Versión 1.2.7):} Utilizado en el docking ciego y con residuos flexibles para caracterizar el sitio de unión de \gls{mrp1}.
     \item \textbf{Meeko (Versión 0.8.0):} Utilizado para preparar receptores y ligandos en formato PDBQT para el acoplamiento molecular.
-    \item \textbf{FPocketWeb:} Utilizado para identificar y evaluar la drogabilidad de cavidades en la estructura de \gls{mrp1}.
+    \item \textbf{FPocket:} Utilizado para identificar y evaluar la drogabilidad de cavidades en la estructura de \gls{mrp1}.
 \end{itemize}
