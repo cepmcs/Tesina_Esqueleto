@@ -1,0 +1,92 @@
+% =========================================================================
+% Figura: Interpretación geométrica del indicador de Espaciamiento (Spacing)
+% Problema de minimización bidimensional
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.58\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% -------------------------------------------------------------------------
+% 1. EJES COORDENADOS (Minimización)
+% -------------------------------------------------------------------------
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (6.8, 0) node[below=5pt, midway, font=\fontsize{9.5}{12}\selectfont, text=darkText] {\textbf{Objetivo $f_1$} (minimizar)};
+
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (0, 5.7);
+\node[font=\fontsize{9.5}{12}\selectfont, text=darkText, rotate=90]
+    at (-0.65, 2.85) {\textbf{Objetivo $f_2$} (minimizar)};
+
+% -------------------------------------------------------------------------
+% 2. TRAYECTORIA DEL FRENTE APROXIMADO (Línea suave discontinua)
+% -------------------------------------------------------------------------
+\draw[draw=grayText!45, dashed, line width=0.8pt]
+    (0.9, 4.9) to[out=-70, in=150] (1.90, 3.20) to[out=-30, in=165] (4.00, 1.55) to[out=-15, in=175] (6.0, 0.9);
+
+% Coordenadas de las soluciones obtenidas A
+\coordinate (a1) at (1.20, 4.40);
+\coordinate (a2) at (1.90, 3.20);
+\coordinate (a3) at (2.85, 2.25);
+\coordinate (a4) at (4.00, 1.55);
+\coordinate (a5) at (5.40, 1.05);
+
+% -------------------------------------------------------------------------
+% 3. DISTANCIAS ENTRE SOLUCIONES CONSECUTIVAS d_i (Flechas dobles bermellón)
+% -------------------------------------------------------------------------
+\draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=4pt, width=2.8pt]}, shorten <=0.14cm, shorten >=0.14cm]
+    (a1) -- (a2) node[midway, above right=1pt, font=\fontsize{7.5}{9}\selectfont\bfseries, text=figVermilion!90!black] {$d_1$};
+
+\draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=4pt, width=2.8pt]}, shorten <=0.14cm, shorten >=0.14cm]
+    (a2) -- (a3) node[midway, above right=1pt, font=\fontsize{7.5}{9}\selectfont\bfseries, text=figVermilion!90!black] {$d_2$};
+
+\draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=4pt, width=2.8pt]}, shorten <=0.14cm, shorten >=0.14cm]
+    (a3) -- (a4) node[midway, above right=1pt, font=\fontsize{7.5}{9}\selectfont\bfseries, text=figVermilion!90!black] {$d_3$};
+
+\draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=4pt, width=2.8pt]}, shorten <=0.14cm, shorten >=0.14cm]
+    (a4) -- (a5) node[midway, above right=1pt, font=\fontsize{7.5}{9}\selectfont\bfseries, text=figVermilion!90!black] {$d_4$};
+
+% Dibujar soluciones A (círculos azules)
+\newcommand{\drawPointSpacing}[1]{%
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.9pt] (#1) circle (0.12cm);
+}
+\drawPointSpacing{a1}
+\drawPointSpacing{a2}
+\drawPointSpacing{a3}
+\drawPointSpacing{a4}
+\drawPointSpacing{a5}
+
+% -------------------------------------------------------------------------
+% 4. LEYENDA (Esquina superior derecha libre)
+% -------------------------------------------------------------------------
+\begin{scope}[shift={(2.90, 3.75)}]
+    \draw[draw=grayText!40, fill=white, rounded corners=3pt, line width=0.6pt]
+        (0, 0) rectangle (3.75, 1.30);
+
+    % Soluciones obtenidas A
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.6pt] (0.20, 1.00) circle (0.08cm);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText]
+        at (0.36, 1.00) {Soluciones obtenidas ($A$)};
+
+    % Distancia relativa d_i
+    \draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=3.5pt, width=2.4pt]}]
+        (0.08, 0.65) -- (0.32, 0.65);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText]
+        at (0.36, 0.65) {Distancia relativa ($d_i$)};
+
+    % Frente aproximado
+    \draw[draw=grayText!60, dashed, line width=0.7pt] (0.08, 0.30) -- (0.32, 0.30);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText]
+        at (0.36, 0.30) {Frente aproximado};
+\end{scope}
+
+\end{tikzpicture}%
+}
+\caption{Interpretación geométrica del indicador de espaciamiento (\textit{Spacing}) en un espacio de dos objetivos a minimizar. Mide la desviación estándar de las distancias euclídeas $d_i$ entre soluciones consecutivas a lo largo del frente aproximado. Valores próximos a cero indican una distribución uniforme sin acumulaciones ni discontinuidades.}
+\label{fig:indicador_espaciamiento}
+\end{figure}

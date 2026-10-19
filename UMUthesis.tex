@@ -20,9 +20,8 @@
 %%% Document Metadata %%%
 \input{Metadata/Metadata}
 
-%%% Loading of Glossary and Acronyms %%%
+%%% Loading of Acronyms %%%
 \makeglossaries
-\loadglsentries{Matter/04-Glossary}
 \loadglsentries[\acronymtype]{Matter/05-Acronyms}
 
 \begin{document}
@@ -32,9 +31,6 @@
 
 %%% Roman Numeration %%%
 \pagenumbering{roman}
-
-%%% Dedication %%%
-\include{Matter/03-Dedication}
 
 %%% Frase celebre %%%
 \include{Matter/04-Famous-phrase}
@@ -79,9 +75,8 @@
 }
 \printbibliography[title={\refname},heading=bibintoc]
 
-%%% Print: Glossary and Acronyms (Al final) %%%
+%%% Print: Acronyms (Al final) %%%
 \glsaddall
-\glossarytoc\printnormalglossary
 \acronymtoc\printacronymglossary
 
 %%% Back Page %%%

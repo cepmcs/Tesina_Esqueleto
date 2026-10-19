@@ -1,0 +1,290 @@
+% =========================================================================
+% Figura combinada (2x2): Indicadores de Rendimiento Multiobjetivo
+% (a) Hipervolumen (HV)
+% (b) Distancia Generacional Invertida Modificada (IGD+)
+% (c) Indicador épsilon aditivo (eps+)
+% (d) Espaciamiento (Spacing)
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+
+% -------------------------------------------------------------------------
+% FILA SUPERIOR: (a) HV  y  (b) IGD+
+% -------------------------------------------------------------------------
+\begin{subfigure}[b]{0.485\linewidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+% Ejes
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (6.8, 0) node[below=5pt, midway, font=\fontsize{9.5}{12}\selectfont, text=darkText] {\textbf{Objetivo $f_1$} (minimizar)};
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (0, 5.7);
+\node[font=\fontsize{9.5}{12}\selectfont, text=darkText, rotate=90]
+    at (-0.65, 2.85) {\textbf{Objetivo $f_2$} (minimizar)};
+
+% Región sombreada
+\filldraw[draw=figBlue!80, fill=figBlueTint, line width=1.0pt]
+    (1.0, 5.0) -- (1.0, 4.3) --
+    (1.8, 4.3) -- (1.8, 3.3) --
+    (2.8, 3.3) -- (2.8, 2.4) --
+    (4.0, 2.4) -- (4.0, 1.4) --
+    (5.1, 1.4) -- (5.1, 0.6) --
+    (5.8, 0.6) -- (5.8, 5.0) -- cycle;
+
+% Proyecciones
+\draw[draw=grayText!70, dashed, line width=0.7pt] (5.8, 0) -- (5.8, 5.0);
+\draw[draw=grayText!70, dashed, line width=0.7pt] (0, 5.0) -- (5.8, 5.0);
+\node[below=3pt, font=\fontsize{8.5}{10}\selectfont, text=grayText] at (5.8, 0) {$r_1$};
+\node[left=3pt, font=\fontsize{8.5}{10}\selectfont, text=grayText] at (0, 5.0) {$r_2$};
+
+% Texto central
+\node[text=figBlue!90!black, font=\fontsize{9.5}{12}\selectfont\bfseries, align=center] at (3.55, 4.15) {
+    Región dominada\\
+    \fontsize{8.5}{10.5}\selectfont Hipervolumen (\acrshort{hv})
+};
+
+% Soluciones
+\newcommand{\drawSolHV}[2]{\filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.9pt] (#1, #2) circle (0.12cm);}
+\drawSolHV{1.0}{4.3}
+\drawSolHV{1.8}{3.3}
+\drawSolHV{2.8}{2.4}
+\drawSolHV{4.0}{1.4}
+\drawSolHV{5.1}{0.6}
+
+% Punto de referencia r
+\filldraw[draw=figVermilion!90!black, fill=figVermilion, line width=0.9pt] (5.8, 5.0) circle (0.12cm);
+\node[above=3pt, font=\fontsize{9}{11}\selectfont\bfseries, text=figVermilion!90!black]
+    at (5.8, 5.0) {$\mathbf{r} = (r_1, r_2)$};
+
+% Leyenda
+\begin{scope}[shift={(0.25, 0.25)}]
+    \draw[draw=grayText!40, fill=white, rounded corners=3pt, line width=0.6pt]
+        (0, 0) rectangle (2.50, 1.15);
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.6pt] (0.22, 0.88) circle (0.07cm);
+    \node[anchor=west, font=\fontsize{6.8}{8}\selectfont, text=darkText] at (0.38, 0.88) {Soluciones ($A$)};
+    \filldraw[draw=figVermilion!90!black, fill=figVermilion, line width=0.6pt] (0.22, 0.58) circle (0.07cm);
+    \node[anchor=west, font=\fontsize{6.8}{8}\selectfont, text=darkText] at (0.38, 0.58) {Punto ref. ($\mathbf{r}$)};
+    \draw[draw=figBlue!80, fill=figBlueTint, line width=0.5pt] (0.14, 0.18) rectangle (0.30, 0.34);
+    \node[anchor=west, font=\fontsize{6.8}{8}\selectfont, text=darkText] at (0.38, 0.26) {Área dominada};
+\end{scope}
+\end{tikzpicture}%
+}
+\caption{Hipervolumen (\acrshort{hv})}
+\label{subfig:hipervolumen}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.485\linewidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+% Ejes
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (6.8, 0) node[below=5pt, midway, font=\fontsize{9.5}{12}\selectfont, text=darkText] {\textbf{Objetivo $f_1$} (minimizar)};
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (0, 5.7);
+\node[font=\fontsize{9.5}{12}\selectfont, text=darkText, rotate=90]
+    at (-0.65, 2.85) {\textbf{Objetivo $f_2$} (minimizar)};
+
+% Frente de referencia
+\draw[draw=figOrange!75, dashed, line width=1.0pt]
+    (0.9, 4.5) to[out=-70, in=150] (1.8, 2.7) to[out=-30, in=165] (3.8, 1.2) to[out=-15, in=175] (6.0, 0.65)
+    node[right=2pt, font=\fontsize{8.5}{10.5}\selectfont\bfseries, text=figOrange!90!black] {$PF_{\text{ref}}$};
+
+% Coordenadas
+\coordinate (z1) at (1.15, 3.8);
+\coordinate (z2) at (1.80, 2.7);
+\coordinate (z3) at (2.70, 1.8);
+\coordinate (z4) at (3.80, 1.2);
+\coordinate (z5) at (5.10, 0.8);
+
+\coordinate (a1) at (1.60, 4.3);
+\coordinate (a2) at (2.35, 3.2);
+\coordinate (a3) at (3.30, 2.2);
+\coordinate (a4) at (4.45, 1.6);
+\coordinate (a5) at (5.65, 1.2);
+
+% Flechas d+
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z1) -- (a1);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z2) -- (a2);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z3) -- (a3);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z4) -- (a4);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z5) -- (a5);
+
+% Puntos
+\newcommand{\drawZIGD}[1]{\filldraw[draw=figOrange!90!black, fill=figOrange, line width=0.8pt] (#1) circle (0.10cm);}
+\drawZIGD{z1}\drawZIGD{z2}\drawZIGD{z3}\drawZIGD{z4}\drawZIGD{z5}
+
+\newcommand{\drawAIGD}[1]{\filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.9pt] (#1) circle (0.12cm);}
+\drawAIGD{a1}\drawAIGD{a2}\drawAIGD{a3}\drawAIGD{a4}\drawAIGD{a5}
+
+% Leyenda
+\begin{scope}[shift={(2.90, 3.75)}]
+    \draw[draw=grayText!40, fill=white, rounded corners=3pt, line width=0.6pt]
+        (0, 0) rectangle (3.75, 1.30);
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.6pt] (0.20, 1.00) circle (0.08cm);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 1.00) {Soluciones obtenidas ($A$)};
+    \filldraw[draw=figOrange!90!black, fill=figOrange, line width=0.6pt] (0.20, 0.65) circle (0.07cm);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 0.65) {Puntos de referencia ($Z$)};
+    \draw[line width=1.0pt, draw=figVermilion, -{Stealth[length=4pt, width=2.8pt]}] (0.08, 0.30) -- (0.32, 0.30);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 0.30) {Distancia modificada ($d^+$)};
+\end{scope}
+\end{tikzpicture}%
+}
+\caption{Distancia generacional invertida modificada (\acrshort{igd}$^+$)}
+\label{subfig:igd_plus}
+\end{subfigure}
+
+\vspace{0.8em}
+
+% -------------------------------------------------------------------------
+% FILA INFERIOR: (c) Indicador épsilon  y  (d) Espaciamiento
+% -------------------------------------------------------------------------
+\begin{subfigure}[b]{0.485\linewidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+% Ejes
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (6.8, 0) node[below=5pt, midway, font=\fontsize{9.5}{12}\selectfont, text=darkText] {\textbf{Objetivo $f_1$} (minimizar)};
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (0, 5.7);
+\node[font=\fontsize{9.5}{12}\selectfont, text=darkText, rotate=90]
+    at (-0.65, 2.85) {\textbf{Objetivo $f_2$} (minimizar)};
+
+% Frente de referencia
+\draw[draw=figOrange!75, dashed, line width=1.0pt]
+    (0.9, 4.5) to[out=-70, in=150] (2.0, 2.5) to[out=-30, in=165] (3.8, 1.2) to[out=-15, in=175] (6.0, 0.65)
+    node[right=2pt, font=\fontsize{8.5}{10.5}\selectfont\bfseries, text=figOrange!90!black] {$PF_{\text{ref}}$};
+
+% Coordenadas Z
+\coordinate (z1) at (1.20, 3.70);
+\coordinate (z2) at (2.00, 2.50);
+\coordinate (z3) at (3.40, 1.40);
+\coordinate (z4) at (5.00, 0.85);
+
+% Coordenadas A
+\coordinate (a1) at (1.85, 4.35);
+\coordinate (a2) at (2.65, 3.15);
+\coordinate (a3) at (4.05, 2.05);
+\coordinate (a4) at (5.65, 1.50);
+
+% Trayectoria discontinua del frente obtenido A
+\draw[draw=figBlue!40, dashed, line width=0.8pt]
+    (1.5, 4.8) to[out=-70, in=150] (2.65, 3.15) to[out=-30, in=165] (4.45, 1.85) to[out=-15, in=175] (6.2, 1.3);
+
+% Componentes de traslacion épsilon en la solucion central a2 (por debajo de la diagonal)
+\draw[draw=grayText!60, dashed, line width=0.6pt]
+    (a2) -- (2.65, 2.50) node[midway, right=1pt, font=\fontsize{7}{8.5}\selectfont, text=darkText] {$\epsilon$};
+\draw[draw=grayText!60, dashed, line width=0.6pt]
+    (2.65, 2.50) -- (z2) node[midway, below=1pt, font=\fontsize{7}{8.5}\selectfont, text=darkText] {$\epsilon$};
+
+% Vectores de traslación
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=4.5pt, width=3.2pt]}] (a1) -- (z1);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=4.5pt, width=3.2pt]}] (a2) -- (z2);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=4.5pt, width=3.2pt]}] (a3) -- (z3);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=4.5pt, width=3.2pt]}] (a4) -- (z4);
+
+% Puntos Z
+\newcommand{\drawZEpsFig}[1]{\filldraw[draw=figOrange!90!black, fill=figOrange, line width=0.8pt] (#1) circle (0.10cm);}
+\drawZEpsFig{z1}\drawZEpsFig{z2}\drawZEpsFig{z3}\drawZEpsFig{z4}
+
+% Puntos A
+\newcommand{\drawAEpsFig}[1]{\filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.9pt] (#1) circle (0.12cm);}
+\drawAEpsFig{a1}\drawAEpsFig{a2}\drawAEpsFig{a3}\drawAEpsFig{a4}
+
+% Leyenda
+\begin{scope}[shift={(2.90, 3.75)}]
+    \draw[draw=grayText!40, fill=white, rounded corners=3pt, line width=0.6pt]
+        (0, 0) rectangle (3.75, 1.30);
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.6pt] (0.20, 1.00) circle (0.08cm);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 1.00) {Soluciones obtenidas ($A$)};
+    \filldraw[draw=figOrange!90!black, fill=figOrange, line width=0.6pt] (0.20, 0.65) circle (0.07cm);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 0.65) {Puntos de referencia ($Z$)};
+    \draw[line width=1.0pt, draw=figVermilion, -{Stealth[length=3.5pt, width=2.4pt]}] (0.08, 0.30) -- (0.32, 0.30);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 0.30) {Traslación ($\epsilon$ aditivo)};
+\end{scope}
+\end{tikzpicture}%
+}
+\caption{Indicador $\epsilon$ aditivo}
+\label{subfig:epsilon_aditivo}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.485\linewidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+% Ejes
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (6.8, 0) node[below=5pt, midway, font=\fontsize{9.5}{12}\selectfont, text=darkText] {\textbf{Objetivo $f_1$} (minimizar)};
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (0, 5.7);
+\node[font=\fontsize{9.5}{12}\selectfont, text=darkText, rotate=90]
+    at (-0.65, 2.85) {\textbf{Objetivo $f_2$} (minimizar)};
+
+% Trayectoria del frente aproximado
+\draw[draw=grayText!45, dashed, line width=0.8pt]
+    (0.9, 4.9) to[out=-70, in=150] (1.90, 3.20) to[out=-30, in=165] (4.00, 1.55) to[out=-15, in=175] (6.0, 0.9);
+
+% Coordenadas de las soluciones A
+\coordinate (a1) at (1.20, 4.40);
+\coordinate (a2) at (1.90, 3.20);
+\coordinate (a3) at (2.85, 2.25);
+\coordinate (a4) at (4.00, 1.55);
+\coordinate (a5) at (5.40, 1.05);
+
+% Distancias consecutivas d_i
+\draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=4pt, width=2.8pt]}, shorten <=0.14cm, shorten >=0.14cm]
+    (a1) -- (a2) node[midway, above right=1pt, font=\fontsize{7.5}{9}\selectfont\bfseries, text=figVermilion!90!black] {$d_1$};
+\draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=4pt, width=2.8pt]}, shorten <=0.14cm, shorten >=0.14cm]
+    (a2) -- (a3) node[midway, above right=1pt, font=\fontsize{7.5}{9}\selectfont\bfseries, text=figVermilion!90!black] {$d_2$};
+\draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=4pt, width=2.8pt]}, shorten <=0.14cm, shorten >=0.14cm]
+    (a3) -- (a4) node[midway, above right=1pt, font=\fontsize{7.5}{9}\selectfont\bfseries, text=figVermilion!90!black] {$d_3$};
+\draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=4pt, width=2.8pt]}, shorten <=0.14cm, shorten >=0.14cm]
+    (a4) -- (a5) node[midway, above right=1pt, font=\fontsize{7.5}{9}\selectfont\bfseries, text=figVermilion!90!black] {$d_4$};
+
+% Soluciones A (círculos azules)
+\newcommand{\drawPointSpacingFig}[1]{%
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.9pt] (#1) circle (0.12cm);
+}
+\drawPointSpacingFig{a1}
+\drawPointSpacingFig{a2}
+\drawPointSpacingFig{a3}
+\drawPointSpacingFig{a4}
+\drawPointSpacingFig{a5}
+
+% Leyenda
+\begin{scope}[shift={(2.90, 3.75)}]
+    \draw[draw=grayText!40, fill=white, rounded corners=3pt, line width=0.6pt]
+        (0, 0) rectangle (3.75, 1.30);
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.6pt] (0.20, 1.00) circle (0.08cm);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 1.00) {Soluciones obtenidas ($A$)};
+    \draw[line width=1.0pt, draw=figVermilion, <->, >={Stealth[length=3.5pt, width=2.4pt]}] (0.08, 0.65) -- (0.32, 0.65);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 0.65) {Distancia relativa ($d_i$)};
+    \draw[draw=grayText!60, dashed, line width=0.7pt] (0.08, 0.30) -- (0.32, 0.30);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText] at (0.36, 0.30) {Frente aproximado};
+\end{scope}
+\end{tikzpicture}%
+}
+\caption{Espaciamiento (\textit{Spacing})}
+\label{subfig:espaciamiento}
+\end{subfigure}
+
+\caption{Interpretación geométrica de los principales indicadores de rendimiento multiobjetivo evaluados en un espacio bidimensional a minimizar: (a) región dominada acotada por el punto de referencia $\mathbf{r}$ (\acrshort{hv}); (b) distancia mínima desde los puntos de referencia $Z$ a las soluciones aproximadas $A$ (\acrshort{igd}$^+$); (c) traslación requerida para dominar el frente de referencia (indicador $\epsilon$ aditivo); y (d) homogeneidad en la distribución espacial de las soluciones obtenidas (\textit{Spacing}).}
+\label{fig:indicadores_rendimiento}
+\end{figure}

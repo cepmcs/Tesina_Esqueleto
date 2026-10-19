@@ -18,60 +18,62 @@
 \begin{titlepage}
   \AddToShipoutPictureBG*{\BackgroundPicCoverUNCUYO}
   \begingroup
+    \plexsans % Tipografía sans institucional coherente con los logos
     \color{white}
     \centering
 
     % ======= ENCABEZADO INSTITUCIONAL =======
-    \IfFileExists{Figures/Logo_UNCUYO.pdf}{%
-      \includegraphics[height=1.5cm]{Figures/Logo_UNCUYO.pdf}\par
-      \vspace{0.8cm}
-    }{%
-      \IfFileExists{Figures/Logo_UNCUYO.png}{%
-        \includegraphics[height=1.5cm]{Figures/Logo_UNCUYO.png}\par
-        \vspace{0.8cm}
-      }{%
-        {\fontsize{13}{16}\selectfont\textbf{UNCUYO}} \hspace{0.4cm} {\large\textbf{\textbar}} \hspace{0.4cm} {\fontsize{11}{14}\selectfont\textbf{FACULTAD DE INGENIERÍA}}\par
-        \vspace{0.15cm}
-        {\fontsize{9}{11}\selectfont UNIVERSIDAD NACIONAL DE CUYO}\par
-        \vspace{1.2cm}
-      }%
-    }
-
-    \vspace{0.5cm}
+    \noindent
+    \begin{minipage}[c]{0.48\textwidth}
+      \raggedleft
+      \includegraphics[height=2.4cm]{Figures/Logo_UNCUYO.pdf}
+    \end{minipage}%
+    \hspace{0.6cm}%
+    \begin{minipage}[c]{0.48\textwidth}
+      \raggedright
+      \includegraphics[height=2.2cm]{Figures/Logo_Facultad_Ingenieria.png}
+    \end{minipage}\par
+    \vspace{2.8cm}
 
     % ======= SUBTÍTULO / CARRERA =======
-    {\fontsize{15}{18}\selectfont\textbf{TESINA FINAL DE GRADO}\par}
+    {\fontsize{15}{19}\selectfont\bfseries \GetThesisType\par}
     \vspace{0.35cm}
-    {\fontsize{13}{16}\selectfont Licenciatura en Ciencias de la Computación\par}
+    {\fontsize{13.5}{17}\selectfont \GetDegree\par}
 
-    \vspace{1.2cm}
+    \vspace{0.45cm}
 
     % ======= TÍTULO DE LA TESINA =======
-    \noindent\rule{\linewidth}{1.2pt}\\[-0.55em]
-    \noindent\rule{\linewidth}{0.4pt}
-    \vspace{0.8cm}
+    \noindent\rule{0.55\linewidth}{0.8pt}\par
+    \vspace{0.85cm}
 
-    {\fontsize{18}{24}\selectfont\bfseries \titleesp\par}
+    {\fontsize{21}{28}\selectfont\bfseries \titleesp\par}
 
-    \vspace{0.8cm}
-    \noindent\rule{\linewidth}{0.4pt}\\[-0.55em]
-    \noindent\rule{\linewidth}{1.2pt}
+    \vspace{0.85cm}
+    \noindent\rule{0.55\linewidth}{0.8pt}\par
 
-    \vspace{1.5cm}
+    \vspace{1.8cm}
 
     % ======= AUTOR Y TUTORES =======
-    {\fontsize{13}{19}\selectfont
-      \textit{Autor:} \GetFirstAuthor\\[0.35cm]
-      \textit{Tutor:} \GetSupervisor\\[0.35cm]
-      \textit{Co-Tutor:} \GetCoSupervisor\par
+    {\fontsize{14.5}{22}\selectfont
+      \begin{tabular}{r@{\hspace{0.5cm}}l}
+        \textbf{Autor:}    & \GetFirstAuthor \\[0.35cm]
+        \textbf{Tutor:}    & \GetSupervisor \\[0.35cm]
+        \textbf{Co-Tutor:} & \GetCoSupervisor
+      \end{tabular}\par
     }
 
     \vspace*{\fill}
 
-    % ======= FECHA / LUGAR =======
-    {\fontsize{12}{15}\selectfont \ifcase\month\or Enero\or Febrero\or Marzo\or Abril\or Mayo\or Junio\or Julio\or Agosto\or Septiembre\or Octubre\or Noviembre\or Diciembre\fi\ \number\year \par}
+    % ======= FECHA =======
+    {\fontsize{13}{16}\selectfont Noviembre \number\year \par}
 
     \vspace{0.5cm}
   \endgroup
 \end{titlepage}
 \restoregeometry
+
+% Hoja de respeto en blanco (reverso de cubierta)
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage

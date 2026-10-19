@@ -1,0 +1,98 @@
+% =========================================================================
+% Figura: Interpretación geométrica del indicador de Hipervolumen (HV)
+% Problema de minimización bidimensional
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.58\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% -------------------------------------------------------------------------
+% 1. EJES COORDENADOS (Minimización)
+% -------------------------------------------------------------------------
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (6.8, 0) node[below=5pt, midway, font=\fontsize{9.5}{12}\selectfont, text=darkText] {\textbf{Objetivo $f_1$} (minimizar)};
+
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (0, 5.7);
+\node[font=\fontsize{9.5}{12}\selectfont, text=darkText, rotate=90]
+    at (-0.65, 2.85) {\textbf{Objetivo $f_2$} (minimizar)};
+
+% -------------------------------------------------------------------------
+% 2. REGIÓN DEL HIPERVOLUMEN (Área sombreada escalonada)
+% Soluciones A:
+% a1=(1.0, 4.3), a2=(1.8, 3.3), a3=(2.8, 2.4), a4=(4.0, 1.4), a5=(5.1, 0.6)
+% Punto de referencia: r = (5.8, 5.0)
+% -------------------------------------------------------------------------
+\filldraw[draw=figBlue!80, fill=figBlueTint, line width=1.0pt]
+    (1.0, 5.0) -- (1.0, 4.3) --
+    (1.8, 4.3) -- (1.8, 3.3) --
+    (2.8, 3.3) -- (2.8, 2.4) --
+    (4.0, 2.4) -- (4.0, 1.4) --
+    (5.1, 1.4) -- (5.1, 0.6) --
+    (5.8, 0.6) -- (5.8, 5.0) -- cycle;
+
+% Líneas de proyección del punto de referencia
+\draw[draw=grayText!70, dashed, line width=0.7pt] (5.8, 0) -- (5.8, 5.0);
+\draw[draw=grayText!70, dashed, line width=0.7pt] (0, 5.0) -- (5.8, 5.0);
+\node[below=3pt, font=\fontsize{8.5}{10}\selectfont, text=grayText] at (5.8, 0) {$r_1$};
+\node[left=3pt, font=\fontsize{8.5}{10}\selectfont, text=grayText] at (0, 5.0) {$r_2$};
+
+% Texto central en el hipervolumen
+\node[text=figBlue!90!black, font=\fontsize{9.5}{12}\selectfont\bfseries, align=center] at (3.55, 4.15) {
+    Región dominada\\
+    \fontsize{8.5}{10.5}\selectfont Hipervolumen (\acrshort{hv})
+};
+
+% -------------------------------------------------------------------------
+% 3. SOLUCIONES OBTENIDAS A (Círculos azules)
+% -------------------------------------------------------------------------
+\newcommand{\drawSol}[2]{%
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.9pt] (#1, #2) circle (0.12cm);%
+}
+\drawSol{1.0}{4.3}
+\drawSol{1.8}{3.3}
+\drawSol{2.8}{2.4}
+\drawSol{4.0}{1.4}
+\drawSol{5.1}{0.6}
+
+% -------------------------------------------------------------------------
+% 4. PUNTO DE REFERENCIA r (Círculo rojo/naranja)
+% -------------------------------------------------------------------------
+\filldraw[draw=figVermilion!90!black, fill=figVermilion, line width=0.9pt] (5.8, 5.0) circle (0.12cm);
+\node[above=3pt, font=\fontsize{9}{11}\selectfont\bfseries, text=figVermilion!90!black]
+    at (5.8, 5.0) {$\mathbf{r} = (r_1, r_2)$};
+
+% -------------------------------------------------------------------------
+% 5. LEYENDA (Ubicada en la esquina inferior izquierda)
+% -------------------------------------------------------------------------
+\begin{scope}[shift={(0.25, 0.25)}]
+    \draw[draw=grayText!40, fill=white, rounded corners=3pt, line width=0.6pt]
+        (0, 0) rectangle (2.50, 1.15);
+
+    % Soluciones A
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.6pt] (0.22, 0.88) circle (0.07cm);
+    \node[anchor=west, font=\fontsize{6.8}{8}\selectfont, text=darkText]
+        at (0.38, 0.88) {Soluciones ($A$)};
+
+    % Punto de referencia r
+    \filldraw[draw=figVermilion!90!black, fill=figVermilion, line width=0.6pt] (0.22, 0.58) circle (0.07cm);
+    \node[anchor=west, font=\fontsize{6.8}{8}\selectfont, text=darkText]
+        at (0.38, 0.58) {Punto ref. ($\mathbf{r}$)};
+
+    % Región sombreada
+    \draw[draw=figBlue!80, fill=figBlueTint, line width=0.5pt] (0.14, 0.18) rectangle (0.30, 0.34);
+    \node[anchor=west, font=\fontsize{6.8}{8}\selectfont, text=darkText]
+        at (0.38, 0.26) {Área dominada};
+\end{scope}
+
+\end{tikzpicture}%
+}
+\caption{Interpretación geométrica del indicador de hipervolumen (\acrshort{hv}) en un espacio de dos objetivos a minimizar. El área sombreada delimita la región del espacio dominada por el conjunto de soluciones $A$ y acotada superiormente por el punto de referencia $\mathbf{r} = (r_1, r_2)$.}
+\label{fig:indicador_hipervolumen}
+\end{figure}

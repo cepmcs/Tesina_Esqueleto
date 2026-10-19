@@ -1,94 +1,417 @@
 \chapter{Metodología}
 \label{ch:metodologia}
 
-%%% =========================================================================
-%%% SECCIONES TRASLADADAS TEMPORALMENTE DESDE EL MARCO TEÓRICO (PENDIENTES DE REUBICAR)
-%%% =========================================================================
-
-\section{Indicadores de Rendimiento Multiobjetivo}
-\label{sec:indicadores_multiobjetivo}
-\label{subsec:indicadores_multiobjetivo}
-% Hipervolumen (HV), Esparcimiento (Spread), Distancia Generacional Invertida (IGD).
-
-La evaluación de metaheurísticas multiobjetivo representa un desafío particular: el resultado del proceso de optimización no es una única solución, sino un conjunto de soluciones que aproxima el frente de Pareto. Por lo tanto, para evaluar el rendimiento de diferentes algoritmos es necesario comparar conjuntos enteros de soluciones no dominadas.
-
-No existe un estándar único para evaluar las soluciones; los indicadores de calidad o métricas de desempeño se clasifican según sus propiedades y según el objetivo que evalúan~\cite{talbi2009metaheuristics}:
-
-\begin{itemize}
-    \item \textbf{Indicadores de convergencia:} Evalúan la eficacia de las soluciones en términos de su cercanía al frente de Pareto óptimo (teórico). Ejemplos destacados incluyen la Distancia Generacional (GD), que calcula la distancia promedio entre el conjunto aproximado y un conjunto de referencia exacto, y el Indicador $\epsilon$, que determina el factor mínimo de traslación necesario para que una aproximación domine a otra.
-    \item \textbf{Indicadores de diversidad:} Miden la uniformidad y extensión de la distribución de las soluciones obtenidas a lo largo del frente. Indicadores como el Espaciado (\textit{Spread}) o la Entropía penalizan los frentes donde las soluciones se agrupan excesivamente en una sola región del espacio de objetivos. Suelen tener un costo computacional mayor que los indicadores de convergencia.
-    \item \textbf{Indicadores híbridos:} Evalúan simultáneamente tanto la convergencia como la diversidad del conjunto de soluciones. El estándar actual en la literatura es el Hipervolumen (HV), un indicador unario que calcula el volumen del espacio de objetivos que es débilmente dominado por el conjunto de aproximación respecto a un punto de referencia predefinido~\cite{talbi2009metaheuristics}.
-\end{itemize}
-
-A partir de esta clasificación, los indicadores de rendimiento considerados en este trabajo para evaluar el desempeño de las metaheurísticas son los siguientes:
-
-\textbf{Hipervolumen (HV).} Mide el volumen de la región del espacio de objetivos que domina el conjunto de soluciones obtenido, acotada por un punto de referencia. Cuanto mayor es ese volumen, mejor es el conjunto tanto en convergencia como en diversidad, de modo que resume ambos aspectos en un único valor. Su ventaja práctica es que no exige conocer el frente de Pareto óptimo, sino únicamente el punto de referencia.
-
-\textbf{Distancia generacional invertida modificada (IGD$^+$).} Promedia la distancia que separa a cada punto de un conjunto de referencia de la solución más próxima del conjunto obtenido, contabilizando solo las componentes en las que esa solución es peor. Valores bajos indican que el frente obtenido se aproxima al de referencia.
-
-\textbf{Indicador $\epsilon$ aditivo.} Expresa cuánto habría que desplazar el conjunto obtenido para que llegue a dominar débilmente al de referencia. Cuanto menor es ese desplazamiento, más próximos están ambos frentes, y un valor no positivo significa que el conjunto obtenido ya lo domina.
-
-\textbf{Espaciamiento (\textit{Spacing}).} Refleja con qué uniformidad se reparten las soluciones a lo largo del frente, a partir de la dispersión de las distancias entre soluciones vecinas. Valores bajos corresponden a frentes donde las soluciones están espaciadas de manera regular, sin acumulaciones ni huecos.
-
-\textbf{Tamaño del frente de Pareto.} Cuenta las soluciones no dominadas obtenidas, esto es, cuántas alternativas de compromiso distintas llega a ofrecer el algoritmo. Por sí solo no permite juzgar la calidad del frente.
-
-Los dos indicadores basados en distancias, IGD$^+$ y el indicador $\epsilon$ aditivo, necesitan un conjunto de referencia que aproxime el frente de Pareto óptimo. Como en el diseño de moléculas ese frente no se conoce, dicho conjunto se construye de forma empírica~\cite{liyao2019quality}.
-
-\section{Metaheurísticas Consideradas en las Experimentaciones}
-\label{sec:metaheuristicas}
-\label{subsec:metaheuristicas}
-% Algoritmos genéticos, PSO, algoritmos evolutivos multiobjetivo aplicados a la búsqueda en espacio latente.
-
-Esta tesina de grado considera cinco algoritmos metaheurísticos multiobjetivo para la experimentación, todos ellos operan sobre el espacio latente continuo del autoencoder variacional.
-
-\textbf{NSGA-II (Non-dominated Sorting Genetic Algorithm II).} Es el algoritmo evolutivo multiobjetivo de referencia y se apoya en la profundidad de dominancia. En cada generación ordena la población en frentes sucesivos de no dominancia mediante un procedimiento de ordenamiento rápido. Los empates dentro de un mismo frente se resuelven con la \textit{distancia de apiñamiento} (\textit{crowding distance}), que mide qué tan poblado está el entorno de cada individuo y favorece a los que se encuentran en regiones menos densas. Estos dos mecanismos, junto con una estrategia elitista, le permiten mantener a la vez convergencia y diversidad~\cite{deb2002nsga2}.
-
-\textbf{NSGA-III.} Conserva el esquema anterior, pero reemplaza la distancia de apiñamiento por un mecanismo de nichos basado en puntos de referencia distribuidos sobre un hiperplano normalizado. Cada solución se asocia al punto de referencia más cercano y sobreviven primero las soluciones asociadas a los puntos con menos representantes. De esta forma se logra una cobertura uniforme del frente incluso cuando crece el número de objetivos, situación en la que la distancia de apiñamiento pierde capacidad de discriminación~\cite{deb2014nsga3}.
-
-\textbf{MOEA/D (Multiobjective Evolutionary Algorithm Based on Decomposition).} Descompone el problema multiobjetivo en un conjunto de subproblemas escalares, definidos por vectores de pesos, y los optimiza de forma simultánea. Cada subproblema se resuelve usando solo la información de sus subproblemas vecinos. La distribución de las soluciones sobre el frente depende de cómo se distribuyan los vectores de pesos, y no de un mecanismo explícito de preservación de la diversidad~\cite{zhang2007moead}.
-
-\textbf{CMOPSO (Competitive Mechanism Based Multi-objective Particle Swarm Optimizer).} Pertenece a la familia de la optimización por enjambre de partículas. El rendimiento de los optimizadores convencionales de esta familia depende en gran medida de las mejores soluciones globales y personales guardadas en un archivo externo. CMOPSO, en cambio, selecciona en cada generación un conjunto de partículas élite del propio enjambre, según el frente de no dominancia y la distancia de apiñamiento, y actualiza cada partícula mediante una competencia por pares entre dos élites elegidas al azar: gana la que forma el ángulo menor con la partícula~\cite{zhang2018competitive}.
-
-\textbf{AGE-MOEA (Adaptive Geometry Estimation Based MOEA).} Parte de que el desempeño de los algoritmos multiobjetivo depende de la geometría del frente de Pareto, que puede ser una hipersuperficie euclídea, esférica o hiperbólica. Sobre el esquema de NSGA-II, reemplaza la distancia de apiñamiento por un puntaje de supervivencia que combina diversidad y proximidad mediante una norma $L_p$ adaptativa. La estimación de dicha geometría se realiza mediante un procedimiento de complejidad $O(n \times N)$, donde $n$ es el número de objetivos y $N$ el tamaño de la población. De este modo mantiene un rendimiento competitivo ante frentes de geometrías diversas, donde los algoritmos que suponen una geometría fija tienden a degradarse~\cite{panichella2019adaptive}.
-
-%%% =========================================================================
-%%% FIN DE SECCIONES TRASLADADAS
-%%% =========================================================================
+En este capítulo se describe la metodología empleada en esta tesina de grado. Se explica el proceso de ajuste de hiperparámetros y evaluación de metaheurísticas multiobjetivo en el espacio latente del modelo generativo, seguido por la formulación del problema de diseño de inhibidores dirigidos contra la proteína \gls{mrp1} y la configuración experimental utilizada.
 
 \section{Visión General de la Metodología}
 \label{sec:vision_general}
+
 % Explicación del flujo completo: preentrenamiento del VAE, optimización multiobjetivo en espacio latente y evaluación de candidatos.
 
-\section{Ajuste de Hiperparámetros Mediante Generación de Fármacos Genéricos}
-\label{sec:ajuste_hiperparametros}
+Se propone un esquema estructurado en dos etapas. La primera abarca el desarrollo y la evaluación comparativa de un \gls{vae}. La segunda consiste en la exploración de su espacio latente mediante metaheurísticas multiobjetivo para la generación de fármacos genéricos, con el fin de determinar la configuración con mejor desempeño y aplicarla posteriormente en la búsqueda de moléculas dirigidas a la diana terapéutica \gls{mrp1}.
 
-\subsection{Variables Optimizadas}
-\label{subsec:var_optimizadas}
-% Definición de los hiperparámetros del VAE (arquitectura, dimensión latente, learning rate) y parámetros de las metaheurísticas (tamaño de población, operadores de cruce/mutación).
+En la primera etapa se entrena un \gls{vae} sobre el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. El propósito del modelo es comprimir la estructura química de los compuestos en un espacio latente continuo. Su evaluación se realiza bajo el protocolo y las métricas estándar de \gls{moses} para seleccionar la mejor combinación de representación molecular, arquitectura e hiperparámetros.
 
-\subsection{Funciones Objetivo}
-\label{subsec:fo_genericos}
-% Definición de las funciones de evaluación para el ajuste general: QED, SA score y Fsp3.
+En la segunda etapa se emplean algoritmos metaheurísticos multiobjetivo para explorar el espacio latente continuo del \gls{vae}. Este proceso se divide en dos fases:
 
-\section{Diseño de Inhibidores de la Proteína MRP1}
-\label{sec:diseno_inhibidores_mrp1}
-% Resumen de la experimentación: proceso completo de generación dirigida mediante optimización latente guiada por docking y propiedades farmacológicas.
+\begin{enumerate}
+    \item \textbf{Ajuste y evaluación en fármacos genéricos:} Se optimizan simultáneamente propiedades fisicoquímicas para comparar el desempeño de los algoritmos y calibrar sus parámetros mediante indicadores químicos y multiobjetivo.
+    \item \textbf{Diseño de inhibidores de \gls{mrp1}:} Primero se identifica el sitio de unión del sustrato. Con base en esto, se emplean las mejores configuraciones de los algoritmos para optimizar la afinidad hacia la diana, dirigiendo la búsqueda hacia moléculas con interacciones en ese sitio.
+\end{enumerate}
 
-\subsection{Preparación de la Proteína}
-\label{subsec:prep_proteina}
-% Obtención de la estructura 3D de MRP1 (PDB), remoción de aguas/ligandos, adición de hidrógenos y definición de la caja de docking (grid box).
+La figura~\ref{fig:pipeline_metodologia} resume este flujo de trabajo, combinando el \gls{vae} con las metaheurísticas para la búsqueda de moléculas candidatas.
 
-\subsection{Funciones Objetivo}
-\label{subsec:fo_mrp1}
-% Formulación multiobjetivo específica: Afinidad de unión (AutoDock Vina), QED, SA y Fsp3.
+\input{Figures/pipeline_metodologia.tex}
 
-\section{Configuración Experimental}
-\label{sec:configuracion_experimental}
+A partir de este esquema se analiza el rendimiento de los algoritmos y la calidad de las moléculas generadas, comparando además los frentes de Pareto obtenidos. Posteriormente en los experimentos dirigidos hacia la diana, se evalúa su afinidad de unión y la formación de interacciones en el sitio de interés. En las siguientes secciones se explica cada uno de estos pasos con mayor detalle.
 
-\subsection{Representación de la Solución}
-\label{subsec:rep_solucion}
-% Espacio de búsqueda continuo (vectores latentes) y su decodificación a estructuras químicas (SELFIES/SMILES).
+\section{Modelo Generativo (VAE)}
+\label{sec:modelo_generativo}
+\label{sec:vae_metodologia}
+
+En esta sección se describe el desarrollo y la evaluación del \gls{vae}. Se introduce el conjunto de datos y su preprocesamiento, la representación de las moléculas, el espacio de búsqueda de hiperparámetros explorado para el entrenamiento y las métricas utilizadas para evaluar la generación del modelo.
 
 \subsection{Conjunto de Datos y Preprocesamiento}
 \label{subsec:datasets}
-% Datasets ZINC20 y ChEMBL, filtrado de sales, estandarización de moléculas y partición de datos.
+% - Conjunto de datos MOSES (Molecular Sets), derivado de la base de datos ZINC (Clean Leads).
+% - Protocolo de preprocesamiento y filtrado de moléculas (peso molecular, anillos, heteroátomos, eliminación de sales y cargas).
+% - Partición estandarizada del conjunto de datos en entrenamiento, validación y prueba.
+
+Para el entrenamiento del modelo generativo se utiliza el conjunto de datos \gls{moses}~\cite{polykovskiy2020molecular}, obtenido a partir de la colección \textit{Clean Leads} de la base de datos pública ZINC~\cite{irwin2020zinc20}. Este conjunto reúne aproximadamente 1.93 millones de moléculas en formato \gls{smiles} con propiedades de compuestos tipo fármaco, previamente filtradas para descartar estructuras inestables, reactivas o con propiedades farmacológicas desfavorables.
+
+Para los experimentos se utilizan las particiones oficiales del conjunto de datos, utilizando el conjunto de entrenamiento ($\sim$1.58 millones de moléculas) para ajustar el modelo y el conjunto de prueba ($\sim$176 mil moléculas) para evaluar su desempeño.
+
+La figura~\ref{fig:muestras_moses} muestra seis moléculas seleccionadas al azar del conjunto de datos junto a su correspondiente notación \gls{smiles}.
+
+\input{Figures/muestras_moses.tex}
+
+\subsection{Representación y Decodificación Molecular}
+\label{subsec:rep_solucion}
+
+En este trabajo se exploran y comparan dos representaciones lineales: \gls{smiles} y \gls{selfies}. En el caso de \gls{smiles}, las cadenas se tokenizan mediante la expresión regular propuesta por Cretu et al.~\cite{cretu2023standardizing}, preservando átomos multicarácter (como $\text{Br}$ y $\text{Cl}$), enlaces, ramas y ciclos como unidades individuales. Para \gls{selfies}, la tokenización se realiza de forma nativa a partir de sus identificadores entre corchetes~\cite{Krenn2019SELFIES}. En ambas representaciones se incorporan los tokens de control de inicio (\texttt{[SOS]}), fin (\texttt{[EOS]}), símbolo desconocido (\texttt{[UNK]}) y relleno (\texttt{[PAD]}) para homogeneizar la longitud de las secuencias en los lotes de entrenamiento.
+
+El proceso de decodificación consiste en transformar un vector latente $\mathbf{z}$ muestreado en el espacio continuo nuevamente en una estructura química. A partir del vector $\mathbf{z}$, la red decodificadora genera la secuencia de manera autorregresiva token a token, iniciando con el delimitador \texttt{[SOS]} hasta emitir el token de finalización \texttt{[EOS]}.
+
+\subsection{Hiperparámetros del VAE}
+\label{subsec:hiperparametros_vae}
+\label{subsubsec:hiperparametros_vae}
+Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, el espacio de búsqueda de hiperparámetros se estructuró en dos fases secuenciales, totalizando 72 entrenamientos independientes:
+
+\begin{itemize}
+    \item \textbf{Fase 1 (Estructura base):} Se evaluaron 48 configuraciones combinando la representación molecular (\gls{smiles} y \gls{selfies}), el tipo de celda recurrente (\gls{gru} y \gls{lstm}), la cantidad de capas ocultas (1 y 2), la dimensión latente (64, 128 y 256) y las épocas de entrenamiento (100 y 300). La tasa de aprendizaje y el tamaño de lote se mantuvieron fijos en $1 \times 10^{-3}$ y 128.
+    \item \textbf{Fase 2 (Optimización):} Sobre los cuatro modelos representativos con mejor balance de la fase previa, se exploraron dos tasas de aprendizaje ($1 \times 10^{-3}$ y $1 \times 10^{-4}$) y tres tamaños de lote (64, 128 y 192), sumando 24 ejecuciones adicionales.
+\end{itemize}
+
+El cuadro~\ref{tab:espacio_busqueda_vae} resume las variables y los valores explorados en cada fase.
+
+\begin{table}[htbp]
+\centering
+\caption{Espacio de búsqueda de hiperparámetros del VAE dividido por fases.}
+\label{tab:espacio_busqueda_vae}
+\begin{tabular}{lllc}
+\toprule
+\textbf{Fase del Experimento} & \textbf{Variable} & \textbf{Valores Explorados} & \textbf{Total} \\
+\midrule
+\textbf{Fase 1: Base} & Representación & SMILES, SELFIES & \\
+(Fijos: LR $1 \times 10^{-3}$, & Arquitectura & GRU, LSTM & 48 \\
+Batch 128) & Capas ocultas & 1, 2 & \\
+ & Dimensión Latente & 64, 128, 256 & \\
+ & Épocas de Entrenamiento & 100, 300 & \\
+\midrule
+\textbf{Fase 2: Optimización} & Tasa de Aprendizaje (LR) & $1 \times 10^{-3}$, $1 \times 10^{-4}$ & \\
+(Mejores 4 Modelos de la Fase 1) & Tamaño de Lote (Batch) & 64, 128, 192 & 24 \\
+\midrule
+\multicolumn{3}{r}{\textbf{Total de ejecuciones:}} & \textbf{72} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Esquema de entrenamiento y regularización.} Todos los modelos se optimizaron mediante el algoritmo Adam. Para evitar el colapso del espacio latente, se aplicó un aumento gradual del peso de la divergencia KL, inspirado en la implementación \textit{Chemical VAE}~\cite{GBWHLDSA18} y en el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. En este esquema, el parámetro $\beta$ se incrementa linealmente desde 0 hasta un valor máximo de $0.3$ durante el primer 25\% de las épocas de entrenamiento.
+
+\subsection{Métricas de Evaluación del Modelo}
+\label{subsec:metricas_moses}
+
+Para evaluar y comparar el desempeño de los modelos de \gls{vae} entrenados sobre el conjunto de datos \gls{moses}~\cite{polykovskiy2020molecular}, se emplean las métricas estandarizadas del benchmark:
+
+\textbf{Validez.} Proporción de moléculas generadas que son químicamente viables, verificando que cada estructura respete las leyes de valencia y los criterios básicos de estabilidad química:
+\begin{equation}
+    \text{Validez} = \frac{\# \text{moléculas válidas}}{\# \text{moléculas generadas}}
+\end{equation}
+
+\textbf{Unicidad.} Evalúa la capacidad del modelo para generar estructuras distintas y evitar la repetición de moléculas:
+\begin{equation}
+    \text{Unicidad} = \frac{\text{set}(\# \text{moléculas generadas})}{\# \text{moléculas generadas}}
+\end{equation}
+
+\textbf{Novedad.} Porcentaje de moléculas generadas que no estaban presentes en el conjunto de entrenamiento, evaluando si el modelo generaliza o si memoriza las estructuras conocidas:
+\begin{equation}
+    \text{Novedad} = 1 - \frac{\# \text{moléculas generadas} \cap \# \text{moléculas de entrenamiento}}{\# \text{moléculas generadas}}
+\end{equation}
+
+\textbf{Filtros (\textit{Filters}).} Fracción de moléculas generadas que logran superar los filtros aplicados en el conjunto original, evaluando el cumplimiento de \acrshort{pains} (que descarta compuestos con falsos positivos por interferencia en ensayos biológicos) y \acrshort{mcf} (que elimina fragmentos reactivos, inestables o farmacológicamente desfavorables).
+
+\textbf{Distancia Fréchet ChemNet (\acrshort{fcd}).} Compara la distribución estadística de las moléculas generadas frente a las de referencia utilizando las activaciones de la red neuronal \textit{ChemNet}:
+\begin{equation}
+    \text{FCD}(G, R) = \|m_G - m_R\|^2 + \text{Tr} \left( C_G + C_R - 2(C_G C_R)^{1/2} \right)
+\end{equation}
+donde $m$ representa el vector de medias y $C$ la matriz de covarianza de las activaciones para los conjuntos generado ($G$) y real ($R$). Los autores de \gls{moses} destacan a \acrshort{fcd} como una de las métricas centrales del benchmark porque captura de forma conjunta la distribución de propiedades químicas y la relevancia biológica de los compuestos. Una puntuación cercana a cero indica que el modelo replica con precisión el perfil del conjunto de referencia.
+
+\textbf{Diversidad Interna ($\text{IntDiv}$).} Cuantifica la variedad química dentro del conjunto generado para detectar colapso de modos (\textit{mode collapse}):
+\begin{equation}
+    \text{IntDiv}_p(G) = 1 - \sqrt[p]{\frac{1}{|G^2|} \sum_{m_1, m_2 \in G} T(m_1, m_2)^p}
+\end{equation}
+donde $T(m_1, m_2)$ evalúa la similitud de Tanimoto entre pares de moléculas generadas. Un resultado cercano a 1 indica alta diversidad estructural.
+
+\textbf{Distancias de Wasserstein-1 (\gls{qed} y \gls{sas}).} Cuantifica la diferencia entre las distribuciones de los datos reales y los generados para la \gls{sas} y la \gls{qed}. Un valor cercano a cero indica que el modelo reproduce con precisión tanto los promedios como la dispersión de estas propiedades en el conjunto de referencia.
+
+\section{Optimización Multiobjetivo}
+\label{sec:optimizacion_multiobjetivo}
+
+Una vez entrenado el \gls{vae} y seleccionada su mejor configuración, su espacio latente continuo permite buscar moléculas mediante algoritmos de optimización multiobjetivo. En esta sección se presentan las cinco metaheurísticas evaluadas para explorar este espacio y los indicadores de rendimiento utilizados para comparar las soluciones obtenidas.
+
+\subsection{Metaheurísticas Seleccionadas}
+\label{subsec:metaheuristicas}
+\label{subsubsec:metaheuristicas}
+\label{sec:metaheuristicas}
+
+Se consideran cinco algoritmos metaheurísticos multiobjetivo para la experimentación, todos ellos operando sobre el espacio latente continuo del \gls{vae}:
+
+\textbf{\acrshort{nsga2} (Non-dominated Sorting Genetic Algorithm II).} Es el algoritmo evolutivo multiobjetivo de referencia y se apoya en la profundidad de dominancia. En cada generación ordena la población en frentes sucesivos de no dominancia mediante un procedimiento de ordenamiento rápido. Los empates dentro de un mismo frente se resuelven con la \textit{distancia de apiñamiento} (\textit{crowding distance}), que mide qué tan poblado está el entorno de cada individuo y favorece a los que se encuentran en regiones menos densas. Estos dos mecanismos, junto con una estrategia elitista, le permiten mantener a la vez convergencia y diversidad~\cite{deb2002nsga2}.
+
+\textbf{\acrshort{nsga3} (Non-dominated Sorting Genetic Algorithm III).} Conserva el esquema anterior, pero reemplaza la distancia de apiñamiento por un mecanismo de nichos basado en puntos de referencia distribuidos sobre un hiperplano normalizado. Cada solución se asocia al punto de referencia más cercano y sobreviven primero las soluciones asociadas a los puntos con menos representantes. De esta forma se logra una cobertura uniforme del frente incluso cuando crece el número de objetivos~\cite{deb2014nsga3}.
+
+\textbf{\acrshort{moead} (Multiobjective Evolutionary Algorithm Based on Decomposition).} Descompone el problema multiobjetivo en un conjunto de subproblemas escalares, definidos por vectores de pesos, y los optimiza de forma simultánea. Cada subproblema se resuelve usando solo la información de sus subproblemas vecinos. La distribución de las soluciones sobre el frente depende de cómo se distribuyan los vectores de pesos, y no de un mecanismo explícito de preservación de la diversidad~\cite{zhang2007moead}.
+
+\textbf{\acrshort{cmopso} (Competitive Mechanism Based Multi-objective Particle Swarm Optimizer).} Pertenece a la familia de la optimización por enjambre de partículas. El rendimiento de los optimizadores convencionales de esta familia depende en gran medida de las mejores soluciones globales y personales guardadas en un archivo externo. CMOPSO, en cambio, selecciona en cada generación un conjunto de partículas élite del propio enjambre, según el frente de no dominancia y la distancia de apiñamiento, y actualiza cada partícula mediante una competencia por pares entre dos élites elegidas al azar: gana la que forma el ángulo menor con la partícula~\cite{zhang2018competitive}.
+
+\textbf{\acrshort{agemoea} (Adaptive Geometry Estimation Based MOEA).} Parte de que el desempeño de los algoritmos multiobjetivo depende de la geometría del frente de Pareto, que puede ser una hipersuperficie euclídea, esférica o hiperbólica. Sobre el esquema de \acrshort{nsga2}, reemplaza la distancia de apiñamiento por un puntaje de supervivencia que combina diversidad y proximidad mediante una norma $L_p$ adaptativa. La estimación de dicha geometría se realiza mediante un procedimiento de complejidad $O(n \times N)$, donde $n$ es el número de objetivos y $N$ el tamaño de la población. De este modo mantiene un rendimiento competitivo ante frentes de geometrías diversas, donde los algoritmos que suponen una geometría fija tienden a degradarse~\cite{panichella2019adaptive}.
+
+% Parámetros de las metaheurísticas: tamaño de población, número de evaluaciones/generaciones, operadores continuos de cruce y mutación (o perturbación de velocidad/posición).
+
+\subsection{Indicadores de Rendimiento}
+\label{subsec:indicadores_multiobjetivo}
+\label{sec:indicadores_multiobjetivo}
+
+La evaluación de metaheurísticas multiobjetivo representa un desafío particular ya que el resultado del proceso de optimización no es una única solución, sino un conjunto de soluciones no dominadas. Por lo tanto para evaluar el rendimiento de diferentes algoritmos es necesario comparar conjuntos enteros de soluciones. No existe un estándar único para evaluar estas soluciones los indicadores de calidad o métricas de desempeño se clasifican según sus propiedades y según el objetivo que evalúan~\cite{talbi2009metaheuristics}:
+
+\begin{itemize}
+    \item \textbf{Indicadores de convergencia:} Evalúan la eficacia de las soluciones en términos de su cercanía al frente de Pareto óptimo. Ejemplos destacados incluyen la \gls{gd} y la \gls{igd}, que calculan la distancia promedio entre el conjunto aproximado y un conjunto de referencia, y el Indicador $\epsilon$, que determina el factor mínimo de traslación necesario para que una aproximación domine a otra.
+    \item \textbf{Indicadores de diversidad:} Miden la uniformidad y extensión de la distribución de las soluciones obtenidas a lo largo del frente. Indicadores como el Espaciado (\textit{Spread}) o la Entropía penalizan los frentes donde las soluciones se agrupan excesivamente en una sola región del espacio de objetivos. Suelen tener un costo computacional mayor que los indicadores de convergencia.
+    \item \textbf{Indicadores híbridos:} Evalúan tanto la convergencia como la diversidad del conjunto de soluciones. Tales como el \gls{hv}, un indicador que calcula el volumen del espacio de objetivos que es débilmente dominado por el conjunto de aproximación respecto a un punto de referencia~\cite{talbi2009metaheuristics}.
+\end{itemize}
+
+A partir de esta clasificación, los indicadores de rendimiento considerados en el marco metodologico son los siguientes:
+
+\textbf{Hipervolumen (\acrshort{hv}).} Mide el volumen de la región del espacio de objetivos que domina el conjunto de soluciones obtenido, acotada por un punto de referencia (Figura~\ref{fig:indicadores_rendimiento}a). Cuanto mayor es ese volumen, mejor es el conjunto tanto en convergencia como en diversidad, de modo que resume ambos aspectos. Su ventaja práctica es que no exige conocer el frente de Pareto óptimo, sino únicamente el punto de referencia.
+
+\textbf{Distancia generacional invertida modificada (\acrshort{igd}$^+$).} Promedia la distancia que separa a cada punto de un conjunto de referencia de la solución más próxima del conjunto obtenido, contabilizando solo las componentes en las que esa solución es peor (Figura~\ref{fig:indicadores_rendimiento}b). Valores bajos indican que el frente obtenido se aproxima al de referencia.
+
+\textbf{Indicador $\epsilon$ aditivo.} Expresa cuánto habría que desplazar el conjunto obtenido para que llegue a dominar débilmente al de referencia (Figura~\ref{fig:indicadores_rendimiento}c). Cuanto menor es ese desplazamiento, más próximos están ambos frentes, y un valor no positivo significa que el conjunto obtenido ya lo domina. A diferencia de la \acrshort{igd}$^+$, que evalúa la proximidad promedio, este indicador actúa como un criterio de peor caso determinado por la región más desfavorable del frente.
+
+\textbf{Espaciamiento (\textit{Spacing}).} Refleja con qué uniformidad se reparten las soluciones a lo largo del frente (Figura~\ref{fig:indicadores_rendimiento}d), a partir de la dispersión de las distancias entre soluciones vecinas. Valores bajos corresponden a frentes donde las soluciones están espaciadas de manera regular, sin acumulaciones ni huecos.
+
+\textbf{Tamaño del frente de Pareto.} Cuenta las soluciones no dominadas obtenidas, esto es, cuántas alternativas de compromiso distintas llega a ofrecer el algoritmo. Por sí solo no permite juzgar la calidad del frente.
+
+\input{Figures/indicadores_rendimiento.tex}
+
+Los dos indicadores basados en distancias, \acrshort{igd}$^+$ y el indicador $\epsilon$ aditivo, necesitan un conjunto de referencia que aproxime el frente de Pareto óptimo. Como en el diseño de moléculas ese frente no se conoce, dicho conjunto se construye de forma empírica~\cite{liyao2019quality}.
+
+\section{Generación de Fármacos Genéricos}
+\label{sec:farmacos_genericos}
+\label{sec:ajuste_hiperparametros}
+
+Una vez entrenado el modelo generativo y definidos los algoritmos de optimización, se aborda la búsqueda y generación de moléculas tipo fármaco sin una diana biológica específica. El objetivo es calibrar y comparar los algoritmos seleccionados, observando cómo se desempeñan al explorar el espacio latente del \gls{vae} mientras optimizan de forma simultánea propiedades fisicoquímicas y estructurales, como paso previo a la generación dirigida hacia la proteína \gls{mrp1}.
+
+En esta sección se describen las funciones objetivo a evaluar y se presenta el protocolo experimental utilizado para la comparación de los algoritmos.
+
+\subsection{Funciones Objetivo y Restricciones}
+\label{subsec:fo_genericos}
+\label{subsubsec:fo_genericos}
+Se optimizan simultáneamente dos funciones objetivo sobre el espacio latente continuo del \gls{vae}:
+
+\begin{itemize}
+    \item \textbf{\gls{qed} (\textit{Quantitative Estimate of Drug-likeness})~\cite{Bickerton2012QED}:} [Maximizar] Cuantifica la probabilidad de que una molécula presente propiedades farmacológicas adecuadas. Asigna una puntuación continua entre $0$ y $1$ mediante funciones de deseabilidad derivadas de múltiples descriptores fisicoquímicos. Se calcula utilizando la librería RDKit.
+    \item \textbf{\gls{sas} (\textit{Synthetic Accessibility Score})~\cite{Ertl2009SAScore}:} [Minimizar] Evalúa la dificultad teórica para sintetizar la molécula en un laboratorio químico. Asigna una puntuación continua en el rango $[1, 10]$, donde valores menores indican mayor accesibilidad sintética. Se calcula utilizando la librería RDKit.
+\end{itemize}
+
+\textbf{Restricción de complejidad estructural.} La fracción de carbonos con hibridación $sp^3$ ($F_{\text{sp3}}$) se define como:
+\begin{equation}
+    F_{\text{sp3}} = \frac{\text{número de carbonos } sp^3}{\text{número total de carbonos}}
+\end{equation}
+
+Se calcula con RDKit y se aplica como restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$) para alejar la búsqueda de estructuras planas. Una mayor proporción de carbonos saturados suele favorecer la solubilidad acuosa~\cite{Lovering2009Flatland} y disminuir tanto la promiscuidad biológica como la inhibición de citocromos CYP450~\cite{Lovering2013Flatland2}. Este límite coincide con los promedios observados en etapas iniciales de descubrimiento ($\sim 0.32\text{--}0.36$), intervalo a partir del cual la promiscuidad comienza a descender de forma sostenida~\cite{Lovering2013Flatland2}.
+
+Para gestionar esta restricción, los algoritmos emplean el criterio de dominancia restringida~\cite{deb2002nsga2}, donde las soluciones factibles siempre dominan a las infactibles, y entre infactibles se prioriza la de menor violación. Asimismo, si un vector latente decodifica en una estructura químicamente inválida según RDKit, se le asigna la máxima penalización en ambos objetivos y en la violación de restricción, forzando a la búsqueda a mantenerse dentro de las regiones viables del espacio latente.
+
+\subsection{Protocolo Experimental de Ajuste}
+\label{subsec:protocolo_ajuste}
+Para cada algoritmo se define un espacio de hiperparámetros que se explora mediante un barrido en grilla (\textit{grid search}). Los hiperparámetros se organizan en tres niveles: el reparto del presupuesto computacional (común a todos los algoritmos), los operadores y probabilidades de los algoritmos genéticos, y los parámetros propios de \acrshort{cmopso}.
+
+\subsubsection*{Presupuesto Computacional y Tamaño de Población}
+Se fija un presupuesto de 100\,000 evaluaciones por ejecución, repartido en tres combinaciones de tamaño de población y número de generaciones (Tabla~\ref{tab:presupuesto}). Esta elección permite evaluar el compromiso entre diversidad poblacional (más individuos) y profundidad de búsqueda (más generaciones) bajo un mismo costo computacional.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Combinaciones de tamaño de población y generaciones evaluadas. Todas mantienen un presupuesto fijo de 100\,000 evaluaciones.}
+\label{tab:presupuesto}
+\begin{tabular}{ccc}
+\toprule
+Población & Generaciones & Evaluaciones \\
+\midrule
+100 & 1\,000 & 100\,000 \\
+200 & 500   & 100\,000 \\
+400 & 250   & 100\,000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{Operadores e Hiperparámetros de los Algoritmos Genéticos}
+Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead} y \acrshort{agemoea}) comparten el mismo espacio de hiperparámetros, definido por el tipo de operador de cruce y mutación. Se evalúan los siguientes operadores:
+
+\begin{itemize}
+    \item \textbf{Cruce Binario Simulado (SBX):} Genera dos hijos a partir de dos padres imitando el comportamiento del cruce de un punto en codificación binaria, pero adaptado a variables reales.
+    \item \textbf{Cruce Centrado en Padres (PCX):} Genera cada hijo cerca del centroide de los padres seleccionados, desplazándolo ligeramente hacia uno de ellos y añadiendo una pequeña perturbación aleatoria en las demás direcciones.
+    \item \textbf{Mutación Polinomial (PM):} Perturba cada variable del individuo a partir de una distribución polinomial.
+    \item \textbf{Mutación Gaussiana:} Añade a cada variable un ruido aleatorio extraído de una distribución normal.
+\end{itemize}
+
+La Tabla~\ref{tab:hp_grid_ga} resume el espacio de hiperparámetros barrido para los algoritmos genéticos.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Espacio de hiperparámetros para los algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead}, \acrshort{agemoea}).}
+\label{tab:hp_grid_ga}
+\begin{tabular}{ll}
+\toprule
+Hiperparámetro & Valores evaluados \\
+\midrule
+Tipo de cruce & SBX, PCX \\
+Tipo de mutación & PM, Gaussiana \\
+Probabilidad de cruce ($p_c$) & 0.7, 0.9, 1.0 \\
+Probabilidad de mutación ($p_m$) & 0.004, 0.012, 0.031 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Las probabilidades de cruce ($0.7, 0.9, 1.0$) se centran en el valor canónico $p_c = 0.9$~\cite{deb2002nsga2}. Las probabilidades de mutación parten de la convención $p_m = 1/n$~\cite{deb2002nsga2}, que con $n = 256$ dimensiones da $p_m \approx 0.004$; los niveles $0.012$ y $0.031$ corresponden a perturbar unas 3 y 8 dimensiones por individuo.
+
+\subsubsection*{Hiperparámetros de \acrshort{cmopso}}
+A diferencia de los algoritmos genéticos, \acrshort{cmopso} no emplea operadores de cruce, sino una dinámica de enjambre de partículas donde la búsqueda se guía mediante competencias por pares entre partículas seleccionadas de un conjunto élite~\cite{zhang2018competitive}. Sin embargo, para preservar la diversidad del enjambre y evitar el estancamiento en óptimos locales, el algoritmo sí aplica un operador de mutación polinomial tras la actualización de posiciones. La Tabla~\ref{tab:hp_grid_cmopso} muestra los hiperparámetros explorados.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Espacio de hiperparámetros para \acrshort{cmopso}. Se evalúan todas las combinaciones del grid, resultando en $3 \times 3 \times 3 = 27$ configuraciones por tamaño de población, para un total de 81 configuraciones.}
+\label{tab:hp_grid_cmopso}
+\label{tab:hp_cmopso}
+\begin{tabular}{ll}
+\toprule
+Hiperparámetro & Valores evaluados \\
+\midrule
+Tamaño del conjunto élite ($\gamma$) & 5, 10, 25 \\
+Probabilidad de mutación polinomial ($p_m$) & 0.004, 0.012, 0.031 \\
+Tasa de velocidad máxima ($v_{\text{max}}$) & 0.1, 0.2, 0.35 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Aquí, $\gamma$ fija la cantidad de partículas que compiten para orientar la búsqueda y $v_{\text{max}}$ regula la velocidad máxima de desplazamiento.
+
+\subsubsection*{Etapas del Protocolo Experimental}
+El estudio comprende cuatro etapas. Se utiliza el hipervolumen como criterio principal para elegir las mejores configuraciones porque evalúa a la vez la convergencia y la diversidad de las soluciones, sin requerir un frente de referencia previo:
+
+\begin{enumerate}
+    \item \textbf{Estudio de hiperparámetros:} Se ejecutan 20 semillas independientes por configuración ($(108 \times 4 + 81) \times 20 = 10\,260$ ejecuciones en total). Para cada combinación de operadores (\texttt{pcx/pm}, \texttt{pcx/gauss}, \texttt{sbx/pm}, \texttt{sbx/gauss}) en los algoritmos genéticos y para \acrshort{cmopso}, se selecciona la mejor configuración interna basándose en el menor rango medio de hipervolumen entre las 20 semillas.
+    \item \textbf{Comparativa de operadores genéticos:} Fijando la mejor configuración de cada combinación de operadores, se analizan las cuatro variantes por algoritmo para evaluar el impacto del cruce y la mutación mediante pruebas estadísticas sobre el hipervolumen e indicadores químicos.
+    \item \textbf{Comparación final frente a \textit{baselines}:} Se toman las mejores configuraciones globales de los cinco algoritmos y se comparan entre sí y contra cuatro métodos de referencia (Aleatorio, Cribado MOSES, Escalador y GA de suma ponderada) sobre todos los indicadores multiobjetivo y químicos.
+    \item \textbf{Análisis del frente conjunto global y moléculas representativas:} Evaluación del frente no dominado conjunto obtenido a partir de las combinaciones de operadores (incorporando las familias de cruce PCX y SBX de todos los algoritmos genéticos y \acrshort{cmopso}) y análisis de las moléculas representativas.
+\end{enumerate}
+
+En total, el estudio comprende $10\,260$ ejecuciones independientes bajo un presupuesto fijo de 100\,000 evaluaciones por ejecución.
+
+
+\section{Diseño de Inhibidores de la Proteína MRP1}
+\label{sec:diseno_inhibidores_mrp1}
+
+Una vez seleccionada la mejor configuración de las metaheurísticas, se aplica el esquema a la proteína \gls{mrp1}. En esta sección se describe la preparación de la proteína y la identificación de su sitio de unión, la formulación de las funciones objetivo junto con el acoplamiento molecular, y el protocolo de generación de los candidatos.
+
+\subsection{Preparación de la Proteína y Sitio de Unión}
+\label{subsec:prep_proteina}
+
+\textbf{Estructura de referencia.} Como no existen estructuras en el \textit{Protein Data Bank} que contengan los quimioterápicos de interés unidos a \gls{mrp1}, se recurre a la literatura. Se utiliza la estructura 8VUX, correspondiente a ABCC1 (\gls{mrp1}) humano cocristalizado con cGAMP y determinada por microscopía crioelectrónica con una resolución de 3.54~Å~\cite{shinde2025structures}. El cGAMP (monofosfato de guanosina-adenosina cíclico) es un nucleótido cíclico mensajero que desempeña un papel clave en la inmunidad innata y en la respuesta contra infecciones y tumores. Si bien no es un quimioterapéutico, los autores del trabajo que reporta la estructura señalan que el sitio donde se une es el sitio de unión del sustrato de \gls{mrp1}, localizado en el dominio transmembrana TMD2~\cite{shinde2025structures}.
+
+\textbf{Preparación del receptor.} Se toma la cadena B de 8VUX como receptor y se eliminan el cGAMP, el hemisuccinato de colesterol y las moléculas de agua. Posteriormente se añaden los átomos de hidrógeno, se asignan los estados de protonación estándar de cada residuo y las cargas parciales, y se genera el archivo en formato PDBQT con Meeko~\cite{santosmartins2025meeko}. El receptor resultante comprende 1005 residuos y 9587 átomos, de los cuales 1658 son hidrógenos polares.
+
+\textbf{Identificación del sitio de unión.} Se procede a identificar los sitios drogables de 8VUX posteriormente a la separación de la proteína del ligando, con especial énfasis en TMD2 por su asociación con el sitio de unión del sustrato. Para ello se utiliza FPocketWeb~\cite{kochnev2022fpocketweb}, que arrojó como resultado una cavidad drogable en TMD2, el bolsillo número 78, con una drogabilidad reportada de 0.738 (probabilidad de drogabilidad elevada), y que además coincide con el sitio de unión del cGAMP. Como resultado, se selecciona el bolsillo 78 como sitio de unión probable de los quimioterápicos. Los demás bolsillos con elevada drogabilidad no se consideran porque corresponden a las cavidades donde se une el ATP para accionar el mecanismo de extracción de \gls{mrp1}.
+
+\textbf{Docking ciego y elección de los aminoácidos flexibles.} Como no existe una estructura que cocristalice \gls{mrp1} con los quimioterápicos de interés, los aminoácidos relevantes se identifican de manera computacional. Para ello se utiliza AutoDock Vina~\cite{trott2010vina,eberhardt2021vina} en un docking ciego sobre el bolsillo 78, con el irinotecán como ligando de referencia (PubChem, CID 60838), con el objetivo de determinar las poses más probables y los aminoácidos con los que más interacciona. Vina se configuró con un centro en $(164.6835,\ 130.2140,\ 120.1165)$~Å y una caja de $29.2 \times 35.6 \times 35.0$~Å, que corresponde a la envolvente de las esferas alfa del bolsillo con un margen de 5~Å por lado, una exhaustividad de 32 y la generación de 100 poses.
+
+Para el irinotecán se obtuvo una puntuación de docking de $-12.060$~kcal/mol y 5 poses. Posteriormente se analizaron los aminoácidos situados a menos de 4~Å del ligando, con el fin de caracterizar las interacciones potenciales en la región de unión; los resultados se resumen en la Tabla~\ref{tab:frecuencia_residuos}.
+
+\begin{table}[htbp]
+\centering
+\caption{Aminoácidos que con mayor frecuencia se ubicaron a menos de 4~Å del irinotecán en las poses generadas por Vina.}
+\label{tab:frecuencia_residuos}
+\begin{tabular}{clc}
+\toprule
+\textbf{Rank.} & \textbf{Aminoácido} & \textbf{Frecuencia} \\
+\midrule
+1  & ASN590  & 5/5 \\
+2  & TRP1246 & 5/5 \\
+3  & VAL554  & 4/5 \\
+4  & TYR1243 & 4/5 \\
+5  & THR1242 & 4/5 \\
+6  & MET1093 & 3/5 \\
+7  & PRO557  & 3/5 \\
+8  & ASN1100 & 3/5 \\
+9  & ARG1249 & 3/5 \\
+10 & PHE594  & 3/5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Como paso siguiente se realiza un docking sesgado, considerando como flexibles los cinco aminoácidos con mayor interacción (ASN590, TRP1246, VAL554, TYR1243 y THR1242). Se observa una reducción de la energía de unión del orden de $-1.180$~kcal/mol, por lo que se infiere que la interacción ligando/proteína mejora al flexibilizar los aminoácidos seleccionados.
+
+\textbf{Caracterización de la interacción.} La figura~\ref{fig:irinotecan_sitio} muestra cómo el irinotecán se inserta en la cavidad de \gls{mrp1}. El ligando se encuentra dentro de una cavidad delimitada por la superficie proteica, en lugar de estar expuesto al solvente, y la molécula parece extenderse a lo largo de un canal o surco. La figura~\ref{fig:irinotecan_residuos} muestra el top 5 de aminoácidos que más frecuentemente interactúan con el irinotecán y otros aminoácidos cercanos, indicando cómo se posiciona el ligando con respecto a los aminoácidos de interés. Al calcular las distancias entre cada aminoácido y los átomos del ligando se obtienen los valores de la Tabla~\ref{tab:distancias_residuos}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{Figures/tutor_cavidad.png}
+\caption{Irinotecán dentro de la cavidad de \gls{mrp1}. Las partes coloreadas en naranja corresponden a los residuos de interés.}
+\label{fig:irinotecan_sitio}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\textwidth]{Figures/tutor_residuos.png}
+\caption{Posición del irinotecán respecto de los cinco aminoácidos que más frecuentemente interactúan con él y de otros aminoácidos cercanos.}
+\label{fig:irinotecan_residuos}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Distancia entre los aminoácidos de interés y los átomos del irinotecán en la pose analizada.}
+\label{tab:distancias_residuos}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Residuo} & \textbf{Distancia mínima (\AA)} & \textbf{Pares de átomos $\le$ 4~\AA} \\
+\midrule
+TYR1243 & 2.79 & 11 \\
+TRP1246 & 2.98 & 11 \\
+ASN590  & 3.15 & 2 \\
+VAL554  & 3.17 & 10 \\
+PHE558  & 3.51 & 3 \\
+ARG593  & 3.61 & 7 \\
+THR1242 & 3.63 & 1 \\
+LEU596  & 8.51 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El TRP1246 presenta 11 pares de átomos con distancias de 2.98 a 3.87~Å, concentrados en el anillo indólico, lo que es compatible con un contacto de tipo aromático. En la TYR1243, el grupo hidroxilo se ubica a 2.79~Å de un carbono del ligando y a 3.28~Å de un nitrógeno, lo que corresponde a un contacto muy cercano. La VAL554 presenta contactos con el carbono CG1 entre 3.17 y 3.51~Å, compatibles con un entorno hidrofóbico, y la ASN590 ubica su oxígeno OD1 a 3.15~Å de un carbono del ligando, lo que indica proximidad pero no demuestra un puente de hidrógeno. La LEU596 se encuentra a 8.51~Å y no participa directamente en esta pose. En consecuencia, se toman TYR1243, TRP1246 y VAL554 como núcleo de la región de interacción, manteniendo ASN590 y ARG593 como residuos de interés para el reconocimiento del ligando, mientras que THR1242 y PHE558 contribuyen a delimitar la geometría de la cavidad sin asumirlos como anclajes esenciales.
+
+\textbf{Caja de docking para la generación de candidatos.} Para los experimentos de diseño se configura una caja de docking con centro en $(166,\ 125,\ 124)$~Å y dimensiones de $25 \times 22 \times 25$~Å, determinada a partir de los aminoácidos con mayor prevalencia en la interacción del irinotecán con el sitio de unión.
+
+\textbf{Preparación de las moléculas candidatas.} Las secuencias lineales decodificadas por el \gls{vae} se convierten a su estructura tridimensional con RDKit~\cite{landrum2026rdkit} y se preparan con Meeko~\cite{santosmartins2025meeko}, que asigna los tipos de átomo, las cargas parciales y las torsiones activas. Los macrociclos y los anillos puenteados se mantienen rígidos.
+
+
+\subsection{Funciones Objetivo y Acoplamiento Molecular}
+\label{subsec:fo_mrp1}
+
+Para el diseño dirigido hacia \gls{mrp1} se optimizan simultáneamente tres funciones objetivo sobre el espacio latente del \gls{vae}:
+
+\begin{itemize}
+    \item \textbf{Energía de unión:} [Minimizar] Energía libre de afinidad de unión de la molécula con \gls{mrp1}, estimada mediante acoplamiento molecular con la función de puntuación de AutoDock Vina~\cite{trott2010vina}. Se utiliza su implementación en \gls{gpu}, Uni-Dock~\cite{yu2023unidock}, que reproduce dicha función de puntuación y evalúa un lote de moléculas en paralelo.
+    \item \textbf{\gls{qed}:} [Maximizar] Definida en la sección~\ref{subsec:fo_genericos}.
+    \item \textbf{\gls{sas}:} [Minimizar] Definida en la sección~\ref{subsec:fo_genericos}.
+\end{itemize}
+
+Cada molécula se acopla con el receptor rígido descrito en la subsección~\ref{subsec:prep_proteina}, dentro de la caja de docking de los experimentos de diseño, con un modo de búsqueda balanceado y una semilla fija, y se toma la energía de la mejor pose como valor del objetivo.
+
+Se mantiene la restricción de complejidad estructural $F_{\text{sp3}} \ge 0.30$ descrita en la sección~\ref{subsec:fo_genericos}, evaluada bajo el mismo criterio de dominancia restringida. Si una molécula no puede prepararse o el acoplamiento no produce una pose, se le asigna la máxima penalización en el objetivo de energía ($+1.0$~kcal/mol). Para el cálculo del hipervolumen, la energía de unión se normaliza entre $-15.0$ y $+1.0$~kcal/mol.
+
+\subsection{Protocolo de Generación de Candidatos}
+\label{subsec:protocolo_mrp1}
+
+Se ejecuta la búsqueda dirigida en el espacio latente con las mejores configuraciones seleccionadas en la sección~\ref{sec:farmacos_genericos}, con el mismo presupuesto de 100\,000 evaluaciones por ejecución y 20 semillas independientes. El acoplamiento se realiza con el receptor rígido, dentro de la caja de docking definida en la subsección~\ref{subsec:prep_proteina}.
+
+Las moléculas generadas se evalúan en términos de \gls{qed}, \gls{sas}, afinidad, $F_{\text{sp3}}$ y características de unión. Adicionalmente, se evalúan la validez, la unicidad y la diversidad de las moléculas generadas.
+
+\section{Herramientas y Tecnologías de Implementación}
+\label{sec:herramientas_tecnologias}
+
+En esta sección se describen las herramientas y tecnologías empleadas en el entrenamiento y evaluación del modelo generativo, la exploración del espacio latente mediante optimización multiobjetivo y el acoplamiento molecular sobre la proteína \gls{mrp1}. Conda facilitó la gestión de dependencias y entornos virtuales de Python (Versión 3.12.3), utilizándose las siguientes herramientas y librerías principales:
+
+\begin{itemize}
+    \item \textbf{PyTorch (Versión 2.12.1):} Utilizado para construir y entrenar las redes neuronales recurrentes (GRU y LSTM) del \gls{vae}.
+    \item \textbf{pymoo (Versión 0.6.1.6):} Utilizado para ejecutar los algoritmos de optimización multiobjetivo, sus operadores y las métricas de rendimiento.
+    \item \textbf{RDKit (Versión 2026.03.3):} Utilizado para validar estructuras químicas, calcular propiedades moleculares (\gls{qed}, \gls{sas}, $F_{\text{sp3}}$) y generar conformaciones 3D.
+    \item \textbf{SELFIES (Versión 2.2.0):} Representación molecular basada en cadenas válidas, empleada como alternativa a \gls{smiles}.
+    \item \textbf{MOSES (Versión 0.3.1):} Benchmark para evaluar el modelo generativo y calcular métricas de distribución y calidad química.
+    \item \textbf{Uni-Dock (Versión 1.2.0):} Motor de acoplamiento molecular en \gls{gpu}, utilizado para evaluar la afinidad de unión contra \gls{mrp1}.
+    \item \textbf{AutoDock Vina (Versión 1.2.7):} Utilizado en el docking ciego y con residuos flexibles para caracterizar el sitio de unión de \gls{mrp1}.
+    \item \textbf{Meeko (Versión 0.8.0):} Utilizado para preparar receptores y ligandos en formato PDBQT para el acoplamiento molecular.
+    \item \textbf{FPocketWeb:} Utilizado para identificar y evaluar la drogabilidad de cavidades en la estructura de \gls{mrp1}.
+\end{itemize}

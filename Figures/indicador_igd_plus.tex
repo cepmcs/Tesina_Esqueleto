@@ -1,0 +1,106 @@
+% =========================================================================
+% Figura: Interpretación geométrica del indicador IGD+
+% Problema de minimización bidimensional
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.58\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm
+]
+
+% -------------------------------------------------------------------------
+% 1. EJES COORDENADOS (Minimización)
+% -------------------------------------------------------------------------
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (6.8, 0) node[below=5pt, midway, font=\fontsize{9.5}{12}\selectfont, text=darkText] {\textbf{Objetivo $f_1$} (minimizar)};
+
+\draw[line width=1.1pt, draw=darkText, ->, -{Stealth[length=6pt, width=4pt]}]
+    (0, 0) -- (0, 5.7);
+\node[font=\fontsize{9.5}{12}\selectfont, text=darkText, rotate=90]
+    at (-0.65, 2.85) {\textbf{Objetivo $f_2$} (minimizar)};
+
+% -------------------------------------------------------------------------
+% 2. FRENTE DE REFERENCIA (Curva suave y puntos de referencia Z en figOrange)
+% -------------------------------------------------------------------------
+\draw[draw=figOrange!75, dashed, line width=1.0pt]
+    (0.9, 4.5) to[out=-70, in=150] (1.8, 2.7) to[out=-30, in=165] (3.8, 1.2) to[out=-15, in=175] (6.0, 0.65)
+    node[right=2pt, font=\fontsize{8.5}{10.5}\selectfont\bfseries, text=figOrange!90!black] {$PF_{\text{ref}}$};
+
+% Coordenadas de los puntos de referencia Z (5 puntos bien distribuidos)
+\coordinate (z1) at (1.15, 3.8);
+\coordinate (z2) at (1.80, 2.7);
+\coordinate (z3) at (2.70, 1.8);
+\coordinate (z4) at (3.80, 1.2);
+\coordinate (z5) at (5.10, 0.8);
+
+% -------------------------------------------------------------------------
+% 3. CONJUNTO DE SOLUCIONES OBTENIDAS A (Círculos azules figBlue)
+% -------------------------------------------------------------------------
+\coordinate (a1) at (1.60, 4.3);
+\coordinate (a2) at (2.35, 3.2);
+\coordinate (a3) at (3.30, 2.2);
+\coordinate (a4) at (4.45, 1.6);
+\coordinate (a5) at (5.65, 1.2);
+
+% -------------------------------------------------------------------------
+% 4. DISTANCIAS MODIFICADAS d+ (Flechas bermellón figVermilion)
+% -------------------------------------------------------------------------
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z1) -- (a1);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z2) -- (a2);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z3) -- (a3);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z4) -- (a4);
+\draw[line width=1.1pt, draw=figVermilion, -{Stealth[length=5pt, width=3.5pt]}] (z5) -- (a5);
+
+% Dibujar puntos de referencia Z (círculos naranja figOrange)
+\newcommand{\drawZ}[1]{%
+    \filldraw[draw=figOrange!90!black, fill=figOrange, line width=0.8pt] (#1) circle (0.10cm);
+}
+\drawZ{z1}
+\drawZ{z2}
+\drawZ{z3}
+\drawZ{z4}
+\drawZ{z5}
+
+% Dibujar soluciones obtenidas A (círculos azules figBlue)
+\newcommand{\drawA}[1]{%
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.9pt] (#1) circle (0.12cm);
+}
+\drawA{a1}
+\drawA{a2}
+\drawA{a3}
+\drawA{a4}
+\drawA{a5}
+
+% -------------------------------------------------------------------------
+% 5. LEYENDA (Esquina superior derecha libre)
+% -------------------------------------------------------------------------
+\begin{scope}[shift={(2.90, 3.75)}]
+    \draw[draw=grayText!40, fill=white, rounded corners=3pt, line width=0.6pt]
+        (0, 0) rectangle (3.75, 1.30);
+
+    % Soluciones obtenidas A
+    \filldraw[draw=figBlue!90!black, fill=figBlue, line width=0.6pt] (0.20, 1.00) circle (0.08cm);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText]
+        at (0.36, 1.00) {Soluciones obtenidas ($A$)};
+
+    % Puntos de referencia Z
+    \filldraw[draw=figOrange!90!black, fill=figOrange, line width=0.6pt] (0.20, 0.65) circle (0.07cm);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText]
+        at (0.36, 0.65) {Puntos de referencia ($Z$)};
+
+    % Distancia modificada d+
+    \draw[line width=1.0pt, draw=figVermilion, -{Stealth[length=4pt, width=2.8pt]}]
+        (0.08, 0.30) -- (0.32, 0.30);
+    \node[anchor=west, font=\fontsize{6.5}{7.8}\selectfont, text=darkText]
+        at (0.36, 0.30) {Distancia modificada ($d^+$)};
+\end{scope}
+
+\end{tikzpicture}%
+}
+\caption{Interpretación geométrica del indicador de distancia generacional invertida modificada (\acrshort{igd}$^+$) en un espacio de dos objetivos a minimizar. Desde cada punto del frente de referencia ($Z$) se calcula la distancia más cercana ($d^+$) al conjunto de soluciones obtenidas ($A$).}
+\label{fig:indicador_igd_plus}
+\end{figure}
