@@ -1,0 +1,97 @@
+% =========================================================================
+% Figura: Codificación y tokenización en SMILES y SELFIES
+% Paleta de colores accesible Okabe-Ito (Configurations/01-Colors.sty)
+% =========================================================================
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.96\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    x=1cm, y=1cm,
+    tokCtrl/.style={draw=figOrange, fill=figOrangeTint, font=\fontsize{7.2}{8.2}\selectfont\ttfamily\bfseries, text=figOrange, inner sep=2.8pt, rounded corners=2.5pt, minimum height=0.62cm},
+    tokSmi/.style={draw=figBlue, fill=figBlueTint, font=\fontsize{7.8}{8.8}\selectfont\ttfamily\bfseries, text=figBlue, inner sep=2.8pt, rounded corners=2.5pt, minimum height=0.62cm},
+    tokSelf/.style={draw=figGreen, fill=figGreenTint, font=\fontsize{6.8}{7.8}\selectfont\ttfamily\bfseries, text=figGreen, inner sep=2.2pt, rounded corners=2.5pt, minimum height=0.62cm},
+    tokPad/.style={draw=cardBorder, fill=cardBorder!25, font=\fontsize{7.2}{8.2}\selectfont\ttfamily, text=grayText, inner sep=2.5pt, rounded corners=2.5pt, minimum height=0.62cm}
+]
+
+% =========================================================================
+% CONTENEDOR PRINCIPAL
+% =========================================================================
+\draw[draw=cardBorder, fill=white, rounded corners=8pt, line width=0.8pt] 
+    (-0.3, -0.2) rectangle (16.2, 4.8);
+
+% =========================================================================
+% BLOQUE SUPERIOR: SMILES
+% =========================================================================
+\draw[draw=cardBorder, fill=white, rounded corners=6pt, line width=0.6pt]
+    (0.0, 2.45) rectangle (15.9, 4.55);
+
+% Título y cadena
+\node[anchor=west, font=\bfseries\normalsize, text=darkText] at (0.3, 4.05) {Codificación SMILES};
+\node[anchor=east, draw=cardBorder, fill=cardBorder!15, rounded corners=3pt, inner sep=3pt] at (15.6, 4.05) {
+    {\fontsize{8.5}{9.5}\selectfont\ttfamily\textbf{\color{darkText}Cadena: Oc1ccc(}\textbf{\color{figBlue}Cl}\textbf{\color{darkText})cc1}}
+};
+
+% Secuencia de tokens
+\node[anchor=west, font=\small\bfseries, text=grayText] at (0.3, 3.1) {Tokens:};
+
+\begin{scope}[shift={(1.85, 3.1)}]
+    \node[tokCtrl, anchor=west] (s_sos) at (0, 0) {[SOS]};
+    \node[tokSmi, anchor=west]  (s_t1)  at ($(s_sos.east) + (0.08, 0)$) {O};
+    \node[tokSmi, anchor=west]  (s_t2)  at ($(s_t1.east)  + (0.05, 0)$) {c};
+    \node[tokSmi, anchor=west]  (s_t3)  at ($(s_t2.east)  + (0.05, 0)$) {1};
+    \node[tokSmi, anchor=west]  (s_t4)  at ($(s_t3.east)  + (0.05, 0)$) {c};
+    \node[tokSmi, anchor=west]  (s_t5)  at ($(s_t4.east)  + (0.05, 0)$) {c};
+    \node[tokSmi, anchor=west]  (s_t6)  at ($(s_t5.east)  + (0.05, 0)$) {c};
+    \node[tokSmi, anchor=west]  (s_t7)  at ($(s_t6.east)  + (0.05, 0)$) {(};
+    \node[tokSmi, anchor=west, draw=figBlue, line width=1.1pt] (s_t8) at ($(s_t7.east) + (0.05, 0)$) {Cl};
+    \node[tokSmi, anchor=west]  (s_t9)  at ($(s_t8.east)  + (0.05, 0)$) {)};
+    \node[tokSmi, anchor=west]  (s_t10) at ($(s_t9.east)  + (0.05, 0)$) {c};
+    \node[tokSmi, anchor=west]  (s_t11) at ($(s_t10.east) + (0.05, 0)$) {c};
+    \node[tokSmi, anchor=west]  (s_t12) at ($(s_t11.east) + (0.05, 0)$) {1};
+    \node[tokCtrl, anchor=west] (s_eos) at ($(s_t12.east) + (0.08, 0)$) {[EOS]};
+    \node[tokPad, anchor=west]  (s_p1)  at ($(s_eos.east) + (0.08, 0)$) {[PAD]};
+    \node[tokPad, anchor=west]  (s_p2)  at ($(s_p1.east)  + (0.05, 0)$) {[PAD]};
+    \node[anchor=west, font=\small\ttfamily, text=grayText] at ($(s_p2.east) + (0.08, 0)$) {$\dots$};
+\end{scope}
+
+% =========================================================================
+% BLOQUE INFERIOR: SELFIES
+% =========================================================================
+\draw[draw=cardBorder, fill=white, rounded corners=6pt, line width=0.6pt]
+    (0.0, 0.05) rectangle (15.9, 2.15);
+
+% Título y cadena
+\node[anchor=west, font=\bfseries\normalsize, text=darkText] at (0.3, 1.65) {Codificación SELFIES};
+\node[anchor=east, draw=cardBorder, fill=cardBorder!15, rounded corners=3pt, inner sep=3pt] at (15.6, 1.65) {
+    {\fontsize{7.5}{8.5}\selectfont\ttfamily\textbf{\color{darkText}Cadena: [O][C][=C][C][=C][Branch1][C][}\textbf{\color{figGreen}Cl}\textbf{\color{darkText}][=C][Ring1][=Branch1]}}
+};
+
+% Secuencia de tokens
+\node[anchor=west, font=\small\bfseries, text=grayText] at (0.3, 0.7) {Tokens:};
+
+\begin{scope}[shift={(1.85, 0.7)}]
+    \node[tokCtrl, anchor=west] (f_sos) at (0, 0) {[SOS]};
+    \node[tokSelf, anchor=west] (f_t1)  at ($(f_sos.east) + (0.06, 0)$) {[O]};
+    \node[tokSelf, anchor=west] (f_t2)  at ($(f_t1.east)  + (0.04, 0)$) {[C]};
+    \node[tokSelf, anchor=west] (f_t3)  at ($(f_t2.east)  + (0.04, 0)$) {[=C]};
+    \node[tokSelf, anchor=west] (f_t4)  at ($(f_t3.east)  + (0.04, 0)$) {[C]};
+    \node[tokSelf, anchor=west] (f_t5)  at ($(f_t4.east)  + (0.04, 0)$) {[=C]};
+    \node[tokSelf, anchor=west] (f_t6)  at ($(f_t5.east)  + (0.04, 0)$) {[Branch1]};
+    \node[tokSelf, anchor=west] (f_t7)  at ($(f_t6.east)  + (0.04, 0)$) {[C]};
+    \node[tokSelf, anchor=west, draw=figGreen, line width=1.1pt] (f_t8) at ($(f_t7.east) + (0.04, 0)$) {[Cl]};
+    \node[tokSelf, anchor=west] (f_t9)  at ($(f_t8.east)  + (0.04, 0)$) {[=C]};
+    \node[tokSelf, anchor=west] (f_t10) at ($(f_t9.east)  + (0.04, 0)$) {[Ring1]};
+    \node[tokSelf, anchor=west] (f_t11) at ($(f_t10.east) + (0.04, 0)$) {[=Branch1]};
+    \node[tokCtrl, anchor=west] (f_eos) at ($(f_t11.east) + (0.06, 0)$) {[EOS]};
+    \node[tokPad, anchor=west]  (f_p1)  at ($(f_eos.east) + (0.06, 0)$) {[PAD]};
+    \node[anchor=west, font=\small\ttfamily, text=grayText] at ($(f_p1.east) + (0.06, 0)$) {$\dots$};
+\end{scope}
+
+\end{tikzpicture}%
+}
+\caption{Ejemplo de secuencia y tokenización para una molécula en formatos SMILES y SELFIES, incorporando los tokens especiales de inicio (\texttt{[SOS]}), fin (\texttt{[EOS]}) y relleno (\texttt{[PAD]}).}
+\label{fig:codificacion_tokens}
+\end{figure}

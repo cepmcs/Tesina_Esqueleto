@@ -13,6 +13,49 @@
 ]
 
 % =========================================================================
+% 0. DELIMITACIÓN DE ETAPAS (CAJAS PUNTEADAS DE FONDO)
+% =========================================================================
+
+% --- Etapa 1: Modelo Generativo (Entrenamiento y evaluación del VAE) ---
+\draw[
+    draw=figBlue!70,
+    fill=figBlueTint!40,
+    rounded corners=8pt,
+    line width=1.2pt,
+    dashed
+] (-0.5, 3.1) rectangle (14.8, 7.3);
+
+\node[
+    fill=figBlue!15,
+    draw=figBlue!60,
+    rounded corners=3pt,
+    inner sep=3.5pt,
+    anchor=north west,
+    font=\footnotesize\bfseries,
+    text=figBlue!90!black
+] at (-0.2, 7.15) {Etapa 1: Desarrollo y evaluación del VAE};
+
+% --- Etapa 2: Optimización multiobjetivo y diseño de inhibidores ---
+\draw[
+    draw=figGreen!80!black,
+    fill=figGreenTint!35,
+    rounded corners=8pt,
+    line width=1.2pt,
+    dashed
+] (3.8, -5.0) rectangle (19.4, 2.9);
+
+\node[
+    fill=figGreen!20,
+    draw=figGreen!70!black,
+    rounded corners=3pt,
+    inner sep=3.5pt,
+    anchor=south west,
+    font=\footnotesize\bfseries,
+    text=figGreen!80!black,
+    align=left
+] at (4.1, -4.8) {Etapa 2: Optimización multiobjetivo\\y diseño de inhibidores};
+
+% =========================================================================
 % 1. NODOS DEL SISTEMA (SIN PARÉNTESIS Y CON ESPACIO AMPLIO)
 % =========================================================================
 
@@ -88,9 +131,9 @@
     {\fontsize{11}{14}\selectfont\textbf{generadas}}
 };
 
-% --- Fila 2 (y = 1.8): Evaluación Biológica ---
+% --- Fila 2 (y = 1.3): Evaluación Biológica ---
 
-% 6. Calcular Aptitud (Columna 5: centro en x = 13.2, y = 1.8)
+% 6. Calcular Aptitud (Columna 5: centro en x = 13.2, y = 1.3)
 \node[
     draw=figVermilion,
     fill=figVermilionTint,
@@ -100,28 +143,27 @@
     minimum height=1.8cm,
     align=center,
     text=darkText
-] (nodeAptitud) at (13.2, 1.8) {
+] (nodeAptitud) at (13.2, 1.3) {
     {\fontsize{11}{14}\selectfont\textbf{\color{figVermilion!90!black} Calcular}}\\[3pt]
     {\fontsize{11}{14}\selectfont\textbf{\color{figVermilion!90!black} aptitud}}
 };
 
-% 7. Proteína MRP1 (Columna 6: centro en x = 16.0, y = 1.8)
+% 7. Proteína MRP1 (Columna 6: centro en x = 16.6, y = 1.3)
 \node[
     draw=cardBorder!80,
     fill=white,
-    rounded corners=5pt,
-    line width=0.8pt,
-    inner sep=4pt
-] (imgMRP1) at (16.0, 1.8) {
-    \includegraphics[width=2.0cm, height=1.9cm, keepaspectratio]{Figures/mrp1_estructura.png}
-};
-\node[font=\footnotesize\bfseries, text=darkText, align=center] at (16.0, 3.20) {
-    Proteína MRP1\\[-1pt]{\scriptsize\color{grayText} PDB 8VUX}
+    rounded corners=6pt,
+    line width=0.9pt,
+    inner sep=4pt,
+    align=center
+] (imgMRP1) at (16.6, 1.3) {
+    {\fontsize{9.5}{12}\selectfont\textbf{Proteína MRP1}}\\[3pt]
+    \includegraphics[width=2.3cm, height=2.3cm, keepaspectratio]{Figures/mrp1_estructura_cropped.png}
 };
 
-% --- Fila 3 (y = -0.8): Optimización y Decisión ---
+% --- Fila 3 (y = -1.1): Optimización y Decisión ---
 
-% 8. Optimización Multiobjetivo (Columna 3: centro en x = 7.1, y = -0.8)
+% 8. Optimización Multiobjetivo (Columna 3: centro en x = 7.1, y = -1.1)
 \node[
     draw=figGreen,
     fill=figGreenTint,
@@ -131,12 +173,12 @@
     minimum height=1.8cm,
     align=center,
     text=darkText
-] (nodeMeta) at (7.1, -0.8) {
+] (nodeMeta) at (7.1, -1.1) {
     {\fontsize{10.5}{13.5}\selectfont\textbf{\color{figGreen!80!black} Optimización}}\\[2pt]
     {\fontsize{10.5}{13.5}\selectfont\textbf{\color{figGreen!80!black} multiobjetivo}}
 };
 
-% 9. Decisión ¿Condición de parada? (Columna 5: centro en x = 13.2, y = -0.8)
+% 9. Decisión ¿Condición de parada? (Columna 5: centro en x = 13.2, y = -1.1)
 \node[
     diamond,
     aspect=1.4,
@@ -146,14 +188,14 @@
     inner sep=3pt,
     align=center,
     text=darkText
-] (nodeCond) at (13.2, -0.8) {
+] (nodeCond) at (13.2, -1.1) {
     {\fontsize{9}{11}\selectfont\textbf{¿Condición}}\\[-1pt]
     {\fontsize{9}{11}\selectfont\textbf{de parada?}}
 };
 
-% --- Fila 4 (y = -3.2): Salida final ---
+% --- Fila 4 (y = -3.4): Salida final ---
 
-% 10. Mejores Moléculas (Columna 5: centro en x = 13.2, y = -3.2)
+% 10. Mejores Moléculas (Columna 5: centro en x = 13.2, y = -3.4)
 \node[
     draw=figVermilion!90!black,
     fill=figVermilionTint,
@@ -163,7 +205,7 @@
     minimum height=1.8cm,
     align=center,
     text=darkText
-] (nodeMejores) at (13.2, -3.2) {
+] (nodeMejores) at (13.2, -3.4) {
     {\fontsize{11}{14}\selectfont\textbf{\color{figVermilion!90!black} Mejores}}\\[2pt]
     {\fontsize{11}{14}\selectfont\textbf{\color{figVermilion!90!black} moléculas}}\\[3pt]
     {\scriptsize\color{grayText} Candidatas finales}
@@ -204,7 +246,7 @@
 % Decisión: Rama SÍ -> Mejores Moléculas (vertical hacia abajo con holgura limpia)
 \draw[line width=1.1pt, draw=darkText, -{Stealth[length=5pt, width=3.5pt]}]
     (nodeCond.south) -- (nodeMejores.north)
-    node[pos=0.45, right=4pt, font=\footnotesize\bfseries, text=darkText] {SÍ};
+    node[pos=0.32, right=5pt, font=\footnotesize\bfseries, text=darkText] {SÍ};
 
 % Decisión: Rama NO -> Optimización multiobjetivo (horizontal hacia la izquierda: longitud 3.1cm)
 \draw[line width=1.1pt, draw=darkText, -{Stealth[length=5pt, width=3.5pt]}]

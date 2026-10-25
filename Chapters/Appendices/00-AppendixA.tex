@@ -1,2 +1,111 @@
-\chapter{Showcasing the First Appendix}
-\guideinfo{Appendices contain supplementary material \textbf{created by the author} that enhances the reader’s understanding of the dissertation while not being essential for following the primary narrative. These sections often include detailed tables, figures, complex calculations, or materials like survey questions and interview transcripts produced in the course of the research. The appendices allow readers to explore the research in greater detail, offering a deeper insight into methods and findings without interrupting the main body of work.}
+\chapter{Resultados Experimentales de la Fase 1 del VAE}
+\label{apendice:vae_fase1}
+
+% TABLA 1: EXPERIMENTOS CON 100 (PÁGINA 1)
+% ==========================================
+\begin{longtable}{lccccccccc}
+\caption{Fase 1: Resultados Experimentales de Generación Molecular (100 Épocas)} \label{tab:log_experimentos_100} \\
+\toprule
+\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\endfirsthead
+
+\multicolumn{10}{c}%
+{{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
+\toprule
+\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{10}{r}{{Continúa en la siguiente página...}} \\
+\bottomrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+% --- EXPERIMENTOS SMILES ---
+SM-G 1 64 & 0.6048 & 0.9995 & \textbf{0.9976} & 0.9095 & 2.4573 & 0.8661 & 0.4919 & 0.0415 & 09:32:53\\
+SM-G 1 128 & 0.8330 & 0.9999 & 0.9924 & 0.9441 & 1.3965 & 0.8600 & 0.3246 & 0.0273 & 02:34:12\\
+SM-G 1 256 & 0.9145 & \textbf{1.0000} & 0.9811 & 0.9746 & 0.5655 & 0.8569 & 0.1594 & \textbf{0.0126} & 04:35:19\\
+SM-G 2 64 & 0.7483 & 1.0000 & 0.9947 & 0.9486 & 1.5919 & 0.8616 & 0.3767 & 0.0316 & 04:46:52\\
+SM-G 2 128 & 0.8931 & \textbf{1.0000} & 0.9830 & 0.9732 & 0.6699 & 0.8596 & 0.2336 & 0.0138 & 03:19:52\\
+SM-G 2 256 & \textbf{0.9449} & 0.9998 & 0.9685 & 0.9821 & 0.4700 & 0.8586 & \textbf{0.1150} & 0.0053 & 08:19:48\\
+SM-L 1 64 & 0.6317 & \textbf{1.0000} & 0.9966 & 0.9292 & 1.9910 & \textbf{0.8663} & 0.4769 & 0.0500 & 02:16:19\\
+SM-L 1 128 & 0.8287 & \textbf{1.0000} & 0.9903 & 0.9573 & 1.2077 & 0.8631 & 0.3358 & 0.0211 & 02:50:02\\
+SM-L 1 256 & 0.9224 & \textbf{1.0000} & 0.9769 & 0.9784 & 0.5341 & 0.8596 & 0.1834 & 0.0195 & 04:20:21\\
+SM-L 2 64 & 0.8161 & \textbf{1.0000} & 0.9892 & 0.9640 & 0.9826 & 0.8640 & 0.3079 & 0.0326 & 02:41:42\\
+SM-L 2 128 & 0.9082 & 0.9999 & 0.9840 & 0.9714 & 0.7658 & 0.8638 & 0.2393 & 0.0230 & 03:35:58\\
+SM-L 2 256 & 0.9434 & 0.9999 & 0.9618 & \textbf{0.9849} & \textbf{0.4125} & 0.8587 & 0.1410 & 0.0130 & 08:05:22\\
+\midrule
+% --- EXPERIMENTOS SELFIES ---
+SE-G 1 64 & \textbf{1.0000} & 0.9996 & \textbf{0.9999} & 0.5468 & 16.6096 & 0.8897 & 1.7459 & 0.1958 & 02:32:52\\
+SE-G 1 128 & \textbf{1.0000} & 0.9997 & 0.9973 & 0.6921 & 9.0081 & 0.8812 & 1.1759 & 0.1030 & 02:36:18\\
+SE-G 1 256 & \textbf{1.0000} & \textbf{0.9999} & 0.9879 & 0.8261 & 3.7491 & 0.8683 & 0.6360 & 0.0499 & 04:42:11\\
+SE-G 2 64 & \textbf{1.0000} & 0.9998 & 0.9987 & 0.6582 & 10.5668 & 0.8826 & 1.2688 & 0.1278 & 03:08:15\\
+SE-G 2 128 & \textbf{1.0000} & \textbf{0.9999} & 0.9906 & 0.8083 & 3.8895 & 0.8703 & 0.6685 & 0.0693 & 03:27:05\\
+SE-G 2 256 & \textbf{1.0000} & 0.9997 & 0.9833 & 0.8517 & 2.9528 & 0.8663 & 0.5592 & 0.0510 & 08:51:40\\
+SE-L 1 64& \textbf{1.0000} & 0.9979 & 0.9991 & 0.5904 & 12.1475 & \textbf{0.8831} & 1.3856 & 0.1770 & 02:10:52\\
+SE-L 1 128 & \textbf{1.0000} & \textbf{0.9999} & 0.9970 & 0.7151 & 8.0543 & 0.8799 & 1.0965 & 0.1100 & 02:53:50\\
+SE-L 1 256 & \textbf{1.0000} & \textbf{0.9999} & 0.9880 & 0.8311 & 3.4543 & 0.8716 & 0.6284 & 0.0625 & 04:15:32\\
+SE-L 2 64 & \textbf{1.0000} & \textbf{0.9999} & 0.9969 & 0.7140 & 7.6215 & 0.8817 & 1.0768 & 0.1182 & 02:43:37\\
+SE-L 2 128 & \textbf{1.0000} & \textbf{0.9999} & 0.9894 & 0.8231 & 3.6458 & 0.8719 & 0.6502 & 0.0658 & 03:32:51\\
+SE-L 2 256 & \textbf{1.0000} & 0.9997 & 0.8814 & \textbf{0.9277} & \textbf{0.7642} & 0.8609 & \textbf{0.2007} & \textbf{0.0196} & 08:59:13\\
+\end{longtable}
+
+\newpage
+
+% ==========================================
+% TABLA 2: EXPERIMENTOS CON 300 (PÁGINA 2)
+% ==========================================
+\begin{longtable}{lccccccccc}
+\caption{Fase 1: Resultados Experimentales de Generación Molecular (300 Épocas)} \label{tab:log_experimentos_300} \\
+\toprule
+\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\endfirsthead
+
+\multicolumn{10}{c}%
+{{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
+\toprule
+\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{10}{r}{{Continúa en la siguiente página...}} \\
+\bottomrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+% --- EXPERIMENTOS SMILES ---
+SM-G 1 64 & 0.5923 & 0.9999 & 0.9978 & 0.9040 & 2.5791 & 0.8661 & 0.5527 & 0.0430  & 10:53:24\\
+SM-G 1 128 & 0.8126 & \textbf{1.0000} & 0.9925 & 0.9493 & 1.4190 & 0.8637 & 0.3731 & 0.0191  & 10:44:32\\
+SM-G 1 256 & 0.2486 & 0.9998 & 0.9912 & 0.9170 & 5.5216 & 0.8603 & 0.5843 & 0.0340  &17:20:11\\ 
+SM-G 2 64 & 0.7617 & \textbf{1.0000} & 0.9939 & 0.9425 & 1.4415 & 0.8620 & 0.3546 & 0.0266  & 12:47:02\\
+SM-G 2 128 & 0.0034 & 0.7857 & \textbf{1.0000} & 0.4167 & 35.7960 & \textbf{0.9049} & 0.8052 & 0.3806 & 12:32:25\\
+SM-G 2 256 & 0.7879 & 0.9999 & 0.9844 & 0.9683 & 1.0484 & 0.8595 & 0.2054 & 0.0120  & 26:10:15\\
+SM-L 1 64 & 0.6735 & \textbf{1.0000} & 0.9966 & 0.9301 & 2.1199 & 0.8657 & 0.4946 & 0.0426  & 04:37:36 \\
+SM-L 1 128 & 0.8544 & \textbf{1.0000} & 0.9887 & 0.9641 & 1.0559 & 0.8617 & 0.3053 & 0.0163  & 04:48:36\\
+SM-L 1 256 & 0.9461 & 0.9999 & 0.9715 & 0.9807 & 0.4588 & 0.8593 & 0.1553 & \textbf{0.0114}  & 07:30:22\\
+SM-L 2 64 & 0.7832 & \textbf{1.0000} & 0.9938 & 0.9492 & 1.5143 & 0.8665 & 0.4109 & 0.0357  & 06:58:03\\
+SM-L 2 128 & 0.9091 & 0.9999 & 0.9815 & 0.9744 & 0.6738 & 0.8642 & 0.2312 & 0.0233  & 07:35:45\\
+SM-L 2 256 & \textbf{0.9514} & 1.0000 & 0.9559 & \textbf{0.9864} & \textbf{0.3214} & 0.8579 & \textbf{0.1129} & 0.0126  & 10:19:52\\
+\midrule
+% --- EXPERIMENTOS SELFIES ---
+SE-G 1 64 & \textbf{1.0000} & 0.9899 & 0.9998 & 0.5650 & 16.4825 & 0.8928 & 1.7408 & 0.2109  & 10:48:12\\
+SE-G 1 128  & \textbf{1.0000} & 0.9961 & \textbf{1.0000} & 0.4366 & 34.5677 & 0.8805 & 2.6126 & 0.2739  &06:51:58  \\
+SE-G 1 256 & \textbf{1.0000} & 0.3196 & \textbf{1.0000} & 0.7144 & 42.3145 & \textbf{0.9703} & 2.9268 & 0.4431  & 12:33:11\\
+SE-G 2 64 & \textbf{1.0000} & 0.9899 & 0.9998 & 0.5650 & 16.4825 & 0.8928 & 1.7408 & 0.2109  & 08:24:36\\
+SE-G 2 128 & \textbf{1.0000} & 0.9961 & \textbf{1.0000} & 0.4366 & 34.5677 & 0.8805 & 2.6126 & 0.2739  & 09:57:54\\
+SE-G 2 256 & \textbf{1.0000} & \textbf{1.0000} & 0.9887 & 0.8067 & 4.4307 & 0.8727 & 0.7486 & 0.0574  &14:03:36 \\
+SE-L 1 64 & \textbf{1.0000} & 0.9994 & 0.9996 & 0.5598 & 14.2082 & 0.8887 & 1.5028 & 0.1909 & 10:01:24\\
+SE-L 1 128 & \textbf{1.0000} & 0.9996 & 0.9961 & 0.7318 & 6.8969 & 0.8772 & 1.0110 & 0.0933  & 05:08:21\\
+SE-L 1 256 & \textbf{1.0000} & \textbf{1.0000} & 0.9803 & \textbf{0.8736} & \textbf{2.1698} & 0.8651 & \textbf{0.4525} & 0.0455  & 09:43:56\\
+SE-L 2 64 & \textbf{1.0000} & 0.9996 & 0.9976 & 0.7077 & 8.3676 & 0.8810 & 1.0930 & 0.1255  & 09:26:53\\
+SE-L 2 128 & \textbf{1.0000} & \textbf{1.0000} & 0.9856 & 0.8269 & 3.3049 & 0.8712 & 0.6277 & \textbf{0.0561}  & 05:20:24\\
+SE-L 2 256 & \textbf{1.0000} & 0.9965 & 0.9986 & 0.4967 & 15.0077 & 0.8935 & 1.5616 & 0.1972  & 10:57:46\\
+\end{longtable}
