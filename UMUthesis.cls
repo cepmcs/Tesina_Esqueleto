@@ -106,7 +106,7 @@
 \RequirePackage{enumitem} % Customisation of lists.
 \RequirePackage{amsmath} % Advanced mathematical expressions.
 \RequirePackage{amssymb} % Extended mathematical symbols.
-\RequirePackage[dvipsnames]{xcolor} % Extended color support.
+\RequirePackage[table,dvipsnames]{xcolor} % Extended color and table row color support.
 \RequirePackage{tcolorbox} % Creating colored and highlighted boxes.
 \RequirePackage{varwidth} % Allows variable-width boxes.
 \RequirePackage{titlesec} % Customisation of section and chapter titles.
