@@ -1088,23 +1088,18 @@ Las moléculas seleccionadas alcanzan valores de \gls{qed} superiores a $0.94$, 
 
 A nivel químico, las estructuras integran anillos aromáticos (como piridina, tiofeno o fenilos sustituidos) con heterociclos saturados (como piperazina, morfolina, piperidina y tetrahidropirano). Esta combinación permite cumplir holgadamente la cota de carbonos $sp^3$ sin recurrir a cadenas alifáticas extensas que perjudicarían la solubilidad o el \gls{qed}. De este modo, la restricción de tridimensionalidad guía la generación hacia arquitecturas equilibradas y accesibles sintéticamente, superando la tendencia a generar esqueletos planos y puramente aromáticos observada en optimizaciones sin restricción.
 
-\subsection{Limitaciones}
+\subsection{Discusión y Limitaciones}
+\label{subsec:discusion_limitaciones_genericos}
 
-Las funciones objetivo optimizadas (\gls{qed} y SA) y la restricción impuesta ($F_{\text{sp3}} \ge 0.30$) evalúan propiedades fisicoquímicas generales estimadas computacionalmente, sin medir la afinidad frente a una diana terapéutica particular, aspecto que se aborda en una etapa posterior incorporando acoplamiento molecular (\textit{docking}).
-
-Por otra parte, la formulación de $F_{\text{sp3}}$ como restricción de factibilidad en lugar de objetivo evita el sesgo hacia la sobresaturación alifática indiscriminada observado al maximizarlo directamente, asegurando únicamente un umbral mínimo de tridimensionalidad y solubilidad. No obstante, $F_{\text{sp3}}$ constituye una aproximación indirecta a la complejidad tridimensional real.
-
-Asimismo, al no existir un frente de Pareto teórico conocido para este espacio químico, la comparación entre algoritmos se fundamenta en un frente de referencia empírico construido a partir de las soluciones no dominadas factibles obtenidas.
-
-\subsection{Discusión}
-
-La incorporación de $F_{\text{sp3}} \ge 0.30$ como restricción de factibilidad corrige los efectos no deseados de su maximización en experimentos previos. La restricción de $F_{\text{sp3}}$ fuerza al modelo a evitar estructuras predominantemente planas y aromáticas asociadas a baja solubilidad y promiscuidad biológica~\cite{Lovering2009Flatland,Lovering2013Flatland2}, que se obtenían al solo maximizar \gls{qed} y SA sin ninguna restricción.
+La incorporación de $F_{\text{sp3}} \ge 0.30$ como restricción de factibilidad fuerza al modelo a evitar estructuras predominantemente planas y aromáticas asociadas a baja solubilidad y promiscuidad biológica~\cite{Lovering2009Flatland,Lovering2013Flatland2}, que se obtenían al solo maximizar \gls{qed} y SA sin ninguna restricción.
 
 Los resultados confirman la complementariedad estructural de los operadores, donde PCX actúa como motor de dispersión y novedad, extendiendo el frente hacia regiones de muy bajo SA y alta saturación, mientras que SBX y \acrshort{cmopso} concentran la búsqueda en regiones de alto \gls{qed} con alta validez química.
 
-La preferencia por probabilidades de mutación intermedias y altas ($p_m = 0.012$ y $0.031$) responde a la dimensionalidad del espacio latente, donde perturbaciones en una sola dimensión generan desplazamientos casi imperceptibles en la decodificación.
-
 En conjunto, estos resultados sugieren que formular la tridimensionalidad como una restricción ayuda a orientar la búsqueda sin sobrecargar la optimización. La combinación de operadores con dinámicas distintas permite explorar diferentes zonas del frente, aportando soluciones factibles que concilian de manera razonable la accesibilidad sintética y las propiedades tipo fármaco evaluadas.
+
+Asimismo, al no existir un frente de Pareto teórico conocido para este espacio químico, la comparación entre algoritmos se fundamenta en un frente de referencia empírico construido a partir de las soluciones no dominadas factibles obtenidas.
+
+Por último, las funciones objetivo optimizadas (\gls{qed} y SA) y la restricción impuesta ($F_{\text{sp3}} \ge 0.30$) evalúan propiedades fisicoquímicas generales estimadas computacionalmente, sin medir la afinidad frente a una diana terapéutica particular, aspecto que se aborda en una etapa posterior incorporando acoplamiento molecular (\textit{docking}).
 
 \section{Generación de Inhibidores de la Proteína MRP1}
 \label{sec:res_mrp1}
