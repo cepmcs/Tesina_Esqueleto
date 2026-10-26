@@ -1,7 +1,7 @@
 \chapter{Resultados y Discusión}
 \label{ch:resultados}
 
-En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se examinan los resultados del ajuste de hiperparámetros del modelo generativo (\gls{vae}) a través de sus dos fases experimentales y se compara el desempeño de la mejor configuración frente al estado del arte en el benchmark \gls{moses}. A continuación, se describen los resultados de la calibración de las metaheurísticas multiobjetivo en la generación de fármacos genéricos, analizando el impacto de los diferentes operadores. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando la afinidad de unión obtenida mediante acoplamiento molecular y las propiedades fisicoquímicas de las mejores moléculas candidatas.
+En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se examinan los resultados del ajuste de hiperparámetros del modelo generativo (\gls{vae}) a través de sus dos fases experimentales y se compara el desempeño de la mejor configuración frente al estado del arte en el benchmark \gls{moses}. A continuación, se describen los resultados de la generación de fármacos genéricos para el ajuste de hiperparámetros de las metaheurísticas multiobjetivo, analizando el impacto de los diferentes operadores. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando la afinidad de unión obtenida mediante acoplamiento molecular y las propiedades fisicoquímicas de las mejores moléculas candidatas.
 
 \section{Resultados del Modelo Generativo (VAE)}
 \label{sec:res_vae}
@@ -304,23 +304,803 @@ PCF-VAE & 0.9801 & 1.0000 & 0.9377 & 0.9900 & 0.2962 & 0.8587 & N/R & N/R\\
 
 Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance  frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0.1790, manteniendo al mismo tiempo una alta tasa de novedad (0.9434) y diversidad interna (0.8590). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0.0732), este comportamiento suele estar asociado a una caída en la novedad (0.8419), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} radica en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
 
-\section{Calibración de Metaheurísticas en Fármacos Genéricos}
+\section{Generación de Fármacos Genéricos y Evaluación de Metaheurísticas}
 \label{sec:res_genericos}
 
-\subsection{Ajuste de Hiperparámetros y Comparativa de Operadores}
+\subsection{Ajuste de Hiperparámetros de las Metaheurísticas}
 \label{subsec:res_metaheuristicas_hp}
-% Estudio de evaluaciones, tamaño de población y operadores genéticos (SBX/PCX, PM/Gauss, CMOPSO).
-% Comparación estadística del hipervolumen.
 
-\subsection{Análisis de Calidad de Generación de Moléculas}
+\subsubsection{Estudio de Hiperparámetros y Selección de Configuraciones}
+
+Para la selección de configuraciones y la comparación entre algoritmos, se utiliza el hipervolumen ($HV$) como métrica principal, ya que evalúa de forma conjunta la convergencia y la diversidad de las soluciones sin necesidad de contar con un frente de referencia previo. En función de este criterio, la Tabla~\ref{tab:hp_seleccionadas} presenta las configuraciones seleccionadas para cada algoritmo y combinación de operadores, evaluadas por el menor rango medio de hipervolumen en 20 semillas independientes.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Configuraciones seleccionadas: mejor configuración para cada combinación de operadores en los algoritmos genéticos y mejor configuración global en \acrshort{cmopso}, determinadas por el menor rango medio de hipervolumen a lo largo de las 20 semillas independientes.}
+\label{tab:hp_seleccionadas}
+\begin{tabular}{lllcc}
+\toprule
+Algoritmo & Operadores & Configuración & Rango medio & $\mu \pm \sigma$ \\
+\midrule
+\acrshort{nsga2} & pcx/pm & 200$\times$500 cx=1 mut=0.012 & 5.20 & 1.1250 $\pm$ 0.0039 \\
+ & pcx/gauss & 100$\times$1000 cx=1 mut=0.012 & 5.55 & 1.1258 $\pm$ 0.0046 \\
+ & sbx/pm & 100$\times$1000 cx=0.9 mut=0.031 & 9.35 & 1.1137 $\pm$ 0.0016 \\
+ & sbx/gauss & 100$\times$1000 cx=0.7 mut=0.031 & 6.70 & 1.1158 $\pm$ 0.0029 \\
+\midrule
+\acrshort{nsga3} & pcx/pm & 100$\times$1000 cx=1 mut=0.004 & 8.65 & 1.1214 $\pm$ 0.0032 \\
+ & pcx/gauss & 100$\times$1000 cx=1 mut=0.012 & 9.35 & 1.1213 $\pm$ 0.0036 \\
+ & sbx/pm & 400$\times$250 cx=1 mut=0.031 & 7.00 & 1.1151 $\pm$ 0.0022 \\
+ & sbx/gauss & 100$\times$1000 cx=0.9 mut=0.031 & 7.65 & 1.1163 $\pm$ 0.0029 \\
+\midrule
+\acrshort{moead} & pcx/pm & 200$\times$500 cx=0.9 mut=0.031 & 7.20 & 1.1128 $\pm$ 0.0039 \\
+ & pcx/gauss & 200$\times$500 cx=1 mut=0.031 & 7.70 & 1.1138 $\pm$ 0.0033 \\
+ & sbx/pm & 400$\times$250 cx=1 mut=0.031 & 7.60 & 1.1073 $\pm$ 0.0050 \\
+ & sbx/gauss & 200$\times$500 cx=1 mut=0.031 & 8.25 & 1.1079 $\pm$ 0.0055 \\
+\midrule
+\acrshort{agemoea} & pcx/pm & 400$\times$250 cx=1 mut=0.004 & 6.35 & 1.1208 $\pm$ 0.0028 \\
+ & pcx/gauss & 100$\times$1000 cx=1 mut=0.031 & 6.25 & 1.1216 $\pm$ 0.0037 \\
+ & sbx/pm & 400$\times$250 cx=1 mut=0.031 & 6.30 & 1.1132 $\pm$ 0.0024 \\
+ & sbx/gauss & 200$\times$500 cx=0.9 mut=0.031 & 6.75 & 1.1137 $\pm$ 0.0031 \\
+\midrule
+\acrshort{cmopso} & --- & 100$\times$1000 elite=10 mut=0.031 vel=0.1 & 26.00 & 1.1092 $\pm$ 0.0037 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A partir de los resultados de la Tabla~\ref{tab:hp_seleccionadas}, se observan las siguientes tendencias principales:
+\begin{enumerate}
+    \item \textbf{Escala de hipervolumen en el espacio restringido:} Al evaluar los objetivos \gls{qed} y SA bajo la restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$), los valores de hipervolumen se sitúan en el rango de $\sim 1.10\text{--}1.12$.
+
+    \item \textbf{Distribución del presupuesto de evaluaciones:} La mayoría de las configuraciones seleccionadas favorece esquemas con mayor número de generaciones ($100\times 1000$ y $200\times 500$), lo cual permite una explotación más prolongada en el espacio latente. Solo un número reducido de combinaciones retiene la partición $400\times 250$.
+
+    \item \textbf{Configuración seleccionada en \acrshort{cmopso}:} \acrshort{cmopso} selecciona el esquema $100\times 1000$ con un tamaño de élite de 10, una tasa de velocidad reducida ($v_{\text{max}} = 0.1$) y una probabilidad de mutación de $0.031$, alcanzando un hipervolumen medio de $1.1092$. Su rango medio ($26.00$) proviene de rankear simultáneamente las 81 configuraciones de su grilla, a diferencia de los algoritmos genéticos donde el ordenamiento se realizó dentro de las 27 configuraciones de cada combinación de operadores.
+\end{enumerate}
+
+\subsubsection{Compromiso entre Hipervolumen y Validez Química}
+
+La Figura~\ref{fig:hv_vs_val} muestra el compromiso entre hipervolumen y validez química en todas las configuraciones evaluadas (mediana de 20 semillas).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/hp/hypervolume_vs_validity.png}
+    \caption{Relación de compromiso entre Hipervolumen y Validez Química para todas las configuraciones evaluadas (mediana de 20 semillas). Con borde negro, la configuración seleccionada para cada combinación de operadores.}
+    \label{fig:hv_vs_val}
+\end{figure}
+
+Este análisis muestra los siguientes comportamientos:
+\begin{itemize}
+    \item \textbf{Separación por operador de cruce:} En los algoritmos genéticos se aprecia una clara diferenciación según el operador de cruce. Las variantes con PCX logran los mayores valores de hipervolumen, a costa de una validez química moderada (entre $80\%$ y $95\%$). En contraposición, las variantes con SBX preservan una validez casi completa (entre $98\%$ y $100\%$), aunque con un hipervolumen inferior.
+    \item \textbf{Alta validez en \acrshort{moead}:} \acrshort{moead} mantiene una validez química superior al $98\%$ en la totalidad de sus configuraciones, independientemente de los operadores empleados.
+    \item \textbf{Comportamiento en \acrshort{cmopso}:} \acrshort{cmopso} presenta una validez superior al $99\%$ en prácticamente todas sus configuraciones. Su hipervolumen se encuentra fuertemente condicionado por el tope de velocidad: los valores bajos ($v_{\text{max}} = 0.1$) permiten alcanzar los mayores hipervolúmenes, mientras que un aumento en la velocidad ($v_{\text{max}} = 0.35$) produce un descenso apreciable del hipervolumen.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/hp/efectos_hypervolume.png}
+    \caption{Efecto de cada hiperparámetro sobre el hipervolumen dentro de cada combinación de operadores en los algoritmos genéticos y en \acrshort{cmopso}.}
+    \label{fig:efectos_hypervolume}
+\end{figure}
+
+La Figura~\ref{fig:efectos_hypervolume} resume la magnitud del efecto de cada hiperparámetro sobre el hipervolumen. En los algoritmos genéticos, las variantes con PCX son predominantemente sensibles a la probabilidad de cruce $P(\text{cruce})$ (con un efecto especialmente marcado en \acrshort{nsga2}), mientras que las variantes con SBX responden principalmente a la probabilidad de mutación $P(\text{mut.})$. \acrshort{moead} exhibe una marcada sensibilidad tanto a la mutación como al reparto de población y generaciones. En \acrshort{cmopso}, el parámetro de mayor impacto es el tope de velocidad ($v_{\text{max}}$), seguido por la probabilidad de mutación, mientras que el tamaño del archivo de élites y la partición del presupuesto presentan una influencia secundaria.
+
+\subsection{Comparativa de Operadores Genéticos}
+\label{subsec:comparativa_operadores}
+
+Se evalúa el impacto de los operadores de cruce (SBX, PCX) y mutación (Polinomial, Gaussiana) en \acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3} sobre distintos indicadores multiobjetivo y químicos.
+
+La comparación estadística se realiza sobre el hipervolumen: test de Friedman con las 20 semillas ($p < 0.001$), seguido de comparaciones por pares con Wilcoxon de rangos con signo y corrección de Holm ($\alpha = 0.05$). Para cada par se reporta el valor $p$ ajustado y la correlación rango-biserial de pares emparejados ($r_{\text{rb}}$), con signo positivo cuando la primera combinación aventaja a la segunda; un valor próximo al máximo ($\pm 1.0$) indica unanimidad en las 20 semillas.
+
+
+\subsubsection{Resultados AGE-MOEA}
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores multiobjetivo — \acrshort{agemoea}.}
+\label{tab:comparison_multiobjective_agemoea}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+Algoritmo & Hipervolumen $\uparrow$ & Espaciamiento $\downarrow$ & $\text{IGD}^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) $\downarrow$ \\
+\midrule
+pcx\_pm & $1.1208 \pm 0.0028$ & $1.1695 \pm 0.3519$ & $0.0402 \pm 0.0048$ & $\mathbf{0.1181 \pm 0.0201}$ & $\mathbf{24.1 \pm 4.4}$ & $110.7 \pm 5.1$ \\
+pcx\_gauss & $\mathbf{1.1216 \pm 0.0037}$ & $1.0193 \pm 0.3572$ & $\mathbf{0.0369 \pm 0.0072}$ & $0.1193 \pm 0.0287$ & $22.9 \pm 4.1$ & $120.2 \pm 4.5$ \\
+sbx\_pm & $1.1132 \pm 0.0024$ & $\mathbf{0.9033 \pm 0.3059}$ & $0.0530 \pm 0.0057$ & $0.1801 \pm 0.0217$ & $19.4 \pm 2.4$ & $229.6 \pm 19.6$ \\
+sbx\_gauss & $1.1137 \pm 0.0031$ & $1.0249 \pm 0.3140$ & $0.0519 \pm 0.0089$ & $0.1779 \pm 0.0243$ & $18.2 \pm 3.9$ & $\mathbf{97.0 \pm 3.6}$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_multiobjective_agemoea} compara cuatro configuraciones de \acrshort{agemoea} obtenidas mediante distintas combinaciones de operadores de cruce y mutación. La evaluación considera métricas de calidad del frente de Pareto —hipervolumen, espaciamiento, $\text{IGD}^+$ y $\epsilon^+$—, además del tamaño del conjunto de soluciones no dominadas factibles y el tiempo de ejecución.
+
+Los resultados muestran que las configuraciones basadas en PCX alcanzan un mejor desempeño global en cuanto a los indicadores multiobjetivo, logrando el mayor hipervolumen promedio ($1.1216$ en pcx\_gauss), el menor $\text{IGD}^+$ ($0.0369$ en pcx\_gauss) y el menor $\epsilon^+$ ($0.1181$ en pcx\_pm). En la práctica, estos valores reflejan una mejor aproximación al frente óptimo sin dejar regiones desatendidas, lo que se traduce en un conjunto más amplio de alternativas para el diseño molecular (hasta $24.1$ moléculas factibles en pcx\_pm, frente a $18\text{--}19$ en SBX).
+
+Por su parte, aunque las variantes con SBX obtienen un espaciamiento ligeramente menor ($0.9033$ en sbx\_pm), esto se debe solamente a que sus soluciones se agrupan en un tramo reducido del frente. En cambio, el espaciamiento algo mayor de PCX se debe a que extiende la búsqueda hacia los extremos del compromiso entre \gls{qed} y SA. En tiempo de cómputo, sbx\_gauss resulta la variante más rápida ($97.0$~s), mientras que sbx\_pm requiere el mayor tiempo ($229.6$~s).
+
+Estas diferencias responden principalmente al operador de cruce, ya que las configuraciones tienden a agruparse según utilicen PCX o SBX. PCX favorece una mayor cobertura y distribución de las soluciones hacia las regiones extremas del espacio de objetivos, mientras que SBX concentra sus soluciones en la zona central con frentes más reducidos. El tipo de mutación muestra un impacto menor y más específico para cada métrica, sin marcar una diferencia determinante en el rendimiento general.
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores químicos — \acrshort{agemoea}.}
+\label{tab:comparison_chemical_agemoea}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Algoritmo & QED $\uparrow$ & SA $\downarrow$ & Factibilidad $\uparrow$ & $F_{\text{sp3}}$ & Validez $\uparrow$ & Unicidad $\uparrow$ & Novedad $\uparrow$ \\
+\midrule
+pcx\_pm & $0.8477 \pm 0.0402$ & $1.62 \pm 0.09$ & $0.7464 \pm 0.0384$ & $0.4126 \pm 0.0411$ & $0.8642 \pm 0.0262$ & $0.9861 \pm 0.0224$ & $0.9736 \pm 0.0073$ \\
+pcx\_gauss & $0.8479 \pm 0.0543$ & $1.62 \pm 0.08$ & $0.7362 \pm 0.0346$ & $0.4077 \pm 0.0584$ & $0.8307 \pm 0.0377$ & $\mathbf{0.9975 \pm 0.0052}$ & $\mathbf{0.9771 \pm 0.0055}$ \\
+sbx\_pm & $\mathbf{0.8844 \pm 0.0095}$ & $\mathbf{1.61 \pm 0.06}$ & $\mathbf{0.8591 \pm 0.0436}$ & $0.3897 \pm 0.0165$ & $\mathbf{0.9900 \pm 0.0099}$ & $0.3229 \pm 0.0331$ & $0.6236 \pm 0.2079$ \\
+sbx\_gauss & $0.8842 \pm 0.0134$ & $1.63 \pm 0.08$ & $0.8558 \pm 0.0519$ & $0.3836 \pm 0.0263$ & $0.9844 \pm 0.0106$ & $0.4832 \pm 0.0670$ & $0.6957 \pm 0.1667$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_chemical_agemoea} resume las propiedades químicas obtenidas, donde \gls{qed} y SA se promedian sobre el frente no dominado acumulado, la validez, factibilidad y novedad sobre el total de evaluaciones de la ejecución, la unicidad sobre la población final, y $F_{\text{sp3}}$ como nivel medio de saturación alcanzado bajo la restricción.
+
+Se observa un comportamiento diferenciado según el operador de cruce. Las variantes con SBX alcanzan una alta validez ($>98\%$) y una factibilidad superior ($85.6\% - 85.9\%$), con un \gls{qed} promedio cercano a $0.884$. Sin embargo, sufren una pérdida de diversidad en la población final, con una unicidad reducida ($32.3\% - 48.3\%$) y menor novedad ($62.4\% - 69.6\%$), lo que en la práctica representa una desventaja para el diseño molecular al generar estructuras repetidas o ya presentes en el conjunto de entrenamiento. En contraste, las combinaciones con PCX mantienen una unicidad y novedad elevadas ($>97\%$), con un nivel de factibilidad en torno al $74\%$ y una validez moderada ($83.1\% - 86.4\%$). El valor medio de $F_{\text{sp3}}$ se mantiene en torno a $0.38 - 0.41$ en todas las configuraciones, superando el umbral impuesto de $0.30$, lo que ayuda a evitar compuestos exclusivamente planos. Asimismo, la accesibilidad sintética se sitúa cerca de $1.62$ en todos los casos, indicando que las moléculas obtenidas no presentan dificultades severas para su síntesis. Este comportamiento podría explicarse por la dinámica de exploración de los operadores. SBX genera descendientes cerca de los padres en regiones de alta validez del modelo, mientras que PCX aplica perturbaciones orientadas por múltiples padres hacia zonas menos densas y más novedosas del espacio latente. 
+
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de operadores en \acrshort{agemoea} sobre hipervolumen. Grupos homogéneos: \{pcx\_pm, pcx\_gauss\} $>$ \{sbx\_gauss, sbx\_pm\}.}
+\label{tab:ops_agemoea}
+\begin{tabular}{lrrl}
+\toprule
+Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
+\midrule
+pcx\_pm vs pcx\_gauss & 0.818 & $-$0.219 & --- \\
+pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.971 & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0.001 & $+$0.962 & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0.001 & $+$1.000 & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0.818 & $-$0.190 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:ops_agemoea} confirma que las combinaciones con PCX superan a las de SBX en hipervolumen ($p < 0.001$, $r_{\text{rb}} \ge +0.962$). Dentro de cada familia de cruce, no se observan diferencias estadísticamente significativas entre la mutación polinomial y la gaussiana, ni en PCX ($p = 0.818$) ni en SBX ($p = 0.818$), conformando los grupos homogéneos $\{\text{pcx\_pm}, \text{pcx\_gauss}\} > \{\text{sbx\_gauss}, \text{sbx\_pm}\}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/AGEMOEA/pareto_qed_sa_grid_nruns_popAGEMOEA.png}
+    \caption{Frentes no dominados acumulados sobre las veinte semillas en el espacio QED--SA para cada combinación de operadores en \acrshort{agemoea}, coloreados por el número de semillas en que apareció cada molécula.}
+    \label{fig:pareto_agemoea_grid_nruns}
+\end{figure}
+
+Como se observa en la Figura~\ref{fig:pareto_agemoea_grid_nruns}, las combinaciones con PCX logran una cobertura más amplia del espacio \gls{qed}--SA, alcanzando la región de bajo SA ($\approx 1.1$) con valores de \gls{qed} desde $0.25$ a $0.50$, si bien estas moléculas extremas aparecen en un número reducido de semillas. En contraste, las variantes con SBX restringen su búsqueda a valores de \gls{qed} superiores a $0.70$. En todas las configuraciones, la mayor reproducibilidad entre semillas (apareciendo en más de 15 ejecuciones) se concentra en la zona de compromiso con \gls{qed} entre $0.80$ y $0.88$.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/AGEMOEA/frente_conjunto_popAGEMOEA.png}
+    \caption{Frente no dominado conjunto de las cuatro combinaciones de operadores en \acrshort{agemoea} en el espacio QED--SA, coloreado según la familia de cruce aportante (PCX o SBX).}
+    \label{fig:frente_conjunto_agemoea}
+\end{figure}
+
+La Figura~\ref{fig:frente_conjunto_agemoea} muestra la complementariedad entre operadores en el frente no dominado conjunto (25 soluciones aportadas por PCX y 16 por SBX). Las variantes con PCX cubren en exclusividad el extremo de bajo SA y menor \gls{qed} ($< 0.60$), mientras que ambas familias comparten la región intermedia y la rama vertical de máximo \gls{qed} ($> 0.93$).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/AGEMOEA/moleculas_operadores_AGEMOEA.png}
+    \caption{Moléculas de mayor QED con $\text{SA} < 3$ seleccionadas del frente no dominado acumulado para cada combinación de operadores en \acrshort{agemoea}.}
+    \label{fig:moleculas_operadores_agemoea}
+\end{figure}
+
+La Figura~\ref{fig:moleculas_operadores_agemoea} muestra las dos moléculas de mayor \gls{qed} con $\text{SA} < 3$ para cada combinación en \acrshort{agemoea}, desempatando por menor SA. Todas alcanzan un \gls{qed} cercano a $0.948$. En accesibilidad sintética, las variantes con SBX y pcx\_gauss consiguen una primera molécula con SA favorable ($1.78\text{--}1.86$), pero en la segunda molécula SBX sube a valores más altos ($2.42$ y $2.74$). En cambio, pcx\_pm mantiene ambos candidatos en un SA cercano a $2.0$ y con mayor carácter tridimensional ($F_{\text{sp3}}$ de hasta $0.50$).
+
+
+\subsubsection{Resultados MOEA/D}
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores multiobjetivo — \acrshort{moead}.}
+\label{tab:comparison_multiobjective_moead}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+Algoritmo & Hipervolumen $\uparrow$ & Espaciamiento $\downarrow$ & $\text{IGD}^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) $\downarrow$ \\
+\midrule
+pcx\_pm & $1.1128 \pm 0.0039$ & $1.0420 \pm 0.2724$ & $0.0571 \pm 0.0114$ & $\mathbf{0.1729 \pm 0.0317}$ & $19.9 \pm 3.5$ & $43.9 \pm 2.4$ \\
+pcx\_gauss & $\mathbf{1.1138 \pm 0.0033}$ & $1.1119 \pm 0.3832$ & $\mathbf{0.0530 \pm 0.0090}$ & $0.1734 \pm 0.0245$ & $\mathbf{19.9 \pm 4.1}$ & $52.2 \pm 3.0$ \\
+sbx\_pm & $1.1073 \pm 0.0050$ & $1.1119 \pm 0.3082$ & $0.0675 \pm 0.0136$ & $0.1994 \pm 0.0287$ & $17.9 \pm 3.7$ & $\mathbf{38.5 \pm 1.5}$ \\
+sbx\_gauss & $1.1079 \pm 0.0055$ & $\mathbf{1.0330 \pm 0.3701}$ & $0.0685 \pm 0.0128$ & $0.1991 \pm 0.0243$ & $17.4 \pm 3.7$ & $41.4 \pm 2.5$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_multiobjective_moead} compara cuatro configuraciones de \acrshort{moead} obtenidas mediante distintas combinaciones de operadores de cruce y mutación. La evaluación considera métricas de calidad del frente de Pareto —hipervolumen, espaciamiento, $\text{IGD}^+$ y $\epsilon^+$—, además del tamaño del conjunto de soluciones no dominadas factibles y el tiempo de ejecución.
+
+Los resultados muestran que las combinaciones con PCX alcanzan mayor hipervolumen promedio, mejor convergencia ($\text{IGD}^+$) y menor $\epsilon^+$ en comparación con las variantes de SBX. En particular, pcx\_gauss obtiene el mayor hipervolumen ($1.1138$) y el menor $\text{IGD}^+$ ($0.0530$), y pcx\_pm el menor $\epsilon^+$ ($0.1729$). En la práctica, esto refleja una mejor aproximación al frente óptimo, ofreciendo un conjunto algo más amplio de alternativas para el diseño molecular ($19.9$ moléculas factibles en promedio frente a $17\text{--}18$ en SBX).
+
+En espaciamiento, sbx\_gauss logra el valor más favorable ($1.0330$), aunque esto responde a que sus soluciones se concentran en un tramo reducido del frente. En tiempo de ejecución, sbx\_pm es la variante más rápida ($38.5$~s), mientras que pcx\_gauss requiere el mayor tiempo ($52.2$~s).
+
+Estas diferencias podrían explicarse por el operador de cruce. En \acrshort{moead} los padres se eligen entre soluciones vecinas muy parecidas entre sí. Como SBX cruza únicamente dos padres coordenada a coordenada, los descendientes tienden a concentrarse en esa misma zona, lo que acota la dispersión del frente. En cambio, PCX combina varios padres y añade variaciones en múltiples direcciones, lo que favorece explorar más allá del entorno local y obtener un mejor hipervolumen. La mutación, por su parte, muestra un efecto secundario.
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores químicos — \acrshort{moead}.}
+\label{tab:comparison_chemical_moead}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Algoritmo & QED $\uparrow$ & SA $\downarrow$ & Factibilidad $\uparrow$ & $F_{\text{sp3}}$ & Validez $\uparrow$ & Unicidad $\uparrow$ & Novedad $\uparrow$ \\
+\midrule
+pcx\_pm & $0.8774 \pm 0.0173$ & $1.66 \pm 0.07$ & $0.8822 \pm 0.0500$ & $0.3875 \pm 0.0197$ & $0.9912 \pm 0.0050$ & $0.4447 \pm 0.0702$ & $0.7452 \pm 0.0907$ \\
+pcx\_gauss & $0.8823 \pm 0.0148$ & $\mathbf{1.65 \pm 0.08}$ & $0.8747 \pm 0.0442$ & $0.3869 \pm 0.0320$ & $0.9845 \pm 0.0090$ & $\mathbf{0.5449 \pm 0.0601}$ & $\mathbf{0.7927 \pm 0.0663}$ \\
+sbx\_pm & $\mathbf{0.8891 \pm 0.0118}$ & $1.70 \pm 0.05$ & $\mathbf{0.9299 \pm 0.0304}$ & $0.3910 \pm 0.0236$ & $\mathbf{0.9965 \pm 0.0013}$ & $0.2550 \pm 0.0480$ & $0.7000 \pm 0.1040$ \\
+sbx\_gauss & $0.8838 \pm 0.0168$ & $1.69 \pm 0.09$ & $0.9227 \pm 0.0305$ & $0.4071 \pm 0.0333$ & $0.9896 \pm 0.0085$ & $0.3802 \pm 0.0600$ & $0.7396 \pm 0.1811$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_chemical_moead} resume las propiedades químicas obtenidas, donde \gls{qed} y SA se promedian sobre el frente no dominado acumulado, la validez, factibilidad y novedad sobre el total de evaluaciones de la ejecución, la unicidad sobre la población final, y $F_{\text{sp3}}$ como nivel medio de saturación alcanzado bajo la restricción.
+
+Todas las configuraciones de \acrshort{moead} destacan por mantener una validez química alta ($> 98.4\%$) y una factibilidad de $87.5\% - 93.0\%$, con valores de SA favorables ($1.65 - 1.70$) y un $F_{\text{sp3}}$ medio de $0.39 - 0.41$ que supera el umbral de $0.30$. Las variantes con SBX obtienen un \gls{qed} medio en torno a $0.884 - 0.889$, pero sufren una caída en la unicidad de la población final ($25.5\% - 38.0\%$), lo que genera estructuras repetidas. En contraposición, las variantes con PCX conservan mayor unicidad ($44.5\% - 54.5\%$) y novedad ($74.5\% - 79.3\%$). A diferencia de \acrshort{agemoea}, en \acrshort{moead} las diferencias entre operadores son más moderadas, ya que la descomposición en subproblemas y el cruce acotado a vecinos locales podrían limitar la dispersión de PCX, lo que mantiene a todas las configuraciones con una validez superior al $98\%$ y concentra la búsqueda en valores de \gls{qed} mayores a $0.70$.
+
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de operadores en \acrshort{moead} sobre hipervolumen. Grupos homogéneos: \{pcx\_gauss, pcx\_pm\} $>$ \{sbx\_gauss, sbx\_pm\}.}
+\label{tab:ops_moead}
+\begin{tabular}{lrrl}
+\toprule
+Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
+\midrule
+pcx\_pm vs pcx\_gauss & 0.624 & $-$0.200 & --- \\
+pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.933 & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & 0.011 & $+$0.714 & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0.001 & $+$0.886 & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & 0.001 & $+$0.848 & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0.624 & $-$0.267 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:ops_moead} confirma que las combinaciones con PCX superan a las de SBX en hipervolumen ($p \le 0.011$, $r_{\text{rb}} \ge +0.714$). El tamaño del efecto resulta algo menor que en \acrshort{agemoea} (donde $r_{\text{rb}} \ge +0.962$), reflejando una ventaja de PCX más moderada. Dentro de cada familia de cruce, no se detectan diferencias estadísticas entre la mutación polinomial y la gaussiana, ni en PCX ($p = 0.624$) ni en SBX ($p = 0.624$), definiendo los grupos homogéneos $\{\text{pcx\_gauss}, \text{pcx\_pm}\} > \{\text{sbx\_gauss}, \text{sbx\_pm}\}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/MOEAD/pareto_qed_sa_grid_nruns_popMOEAD.png}
+    \caption{Frentes no dominados acumulados sobre las veinte semillas en el espacio QED--SA para cada combinación de operadores en \acrshort{moead}, coloreados por el número de semillas en que apareció cada molécula.}
+    \label{fig:pareto_moead_grid_nruns}
+\end{figure}
+
+Como se observa en la Figura~\ref{fig:pareto_moead_grid_nruns}, todas las variantes de \acrshort{moead} restringen su búsqueda a valores de \gls{qed} superiores a $0.70$, sin alcanzar la región de bajo SA y menor \gls{qed} que exploraba PCX en \acrshort{agemoea}. A diferencia de este último, las combinaciones con SBX acumulan más soluciones no dominadas sobre las 20 semillas (33 en sbx\_pm y 27 en sbx\_gauss frente a 22 y 23 en PCX), concentrándose en la zona de compromiso y en el tramo de máximo \gls{qed} ($\approx 0.948$). La consistencia entre semillas es más baja, con un máximo de $10\text{--}12$ ejecuciones en las soluciones centrales y la mayoría presente en solo $1$ a $5$ ejecuciones.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/MOEAD/frente_conjunto_popMOEAD.png}
+    \caption{Frente no dominado conjunto de las cuatro combinaciones de operadores en \acrshort{moead} en el espacio QED--SA, coloreado según la familia de cruce aportante (PCX o SBX).}
+    \label{fig:frente_conjunto_moead}
+\end{figure}
+
+La Figura~\ref{fig:frente_conjunto_moead} muestra el frente no dominado conjunto en \acrshort{moead}, donde PCX aporta 24 soluciones y SBX 12. Las variantes con PCX cubren en exclusividad el extremo de menor \gls{qed} ($\sim 0.70$) y la mayor parte del tramo vertical de alto \gls{qed} ($>0.93$), mientras que ambas familias comparten las soluciones intermedias en la región central (\gls{qed} entre $0.79$ y $0.89$).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/MOEAD/moleculas_operadores_MOEAD.png}
+    \caption{Moléculas de mayor QED con $\text{SA} < 3$ seleccionadas del frente no dominado acumulado para cada combinación de operadores en \acrshort{moead}.}
+    \label{fig:moleculas_operadores_moead}
+\end{figure}
+
+La Figura~\ref{fig:moleculas_operadores_moead} presenta las dos moléculas de mayor \gls{qed} con $\text{SA} < 3$ para cada variante en \acrshort{moead}. Todas obtienen un \gls{qed} cercano a $0.948$. Sin embargo, las variantes con PCX logran una mejor facilidad sintética, con un SA de $1.81$ en su mejor candidato frente al $2.74$ y $2.77$ de sbx\_pm. Esto demuestra que en \acrshort{moead}, PCX no solo ofrece un frente más amplio, sino también moléculas más accesibles en el extremo de alto \gls{qed}.
+
+\subsubsection{Resultados NSGA-II}
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores multiobjetivo — \acrshort{nsga2}.}
+\label{tab:comparison_multiobjective_nsga2}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+Algoritmo & Hipervolumen $\uparrow$ & Espaciamiento $\downarrow$ & $\text{IGD}^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) $\downarrow$ \\
+\midrule
+pcx\_pm & $1.1250 \pm 0.0039$ & $1.2283 \pm 0.4461$ & $0.0375 \pm 0.0061$ & $0.1008 \pm 0.0230$ & $\mathbf{29.4 \pm 4.7}$ & $99.0 \pm 4.1$ \\
+pcx\_gauss & $\mathbf{1.1258 \pm 0.0046}$ & $1.2640 \pm 0.5025$ & $\mathbf{0.0338 \pm 0.0081}$ & $\mathbf{0.0939 \pm 0.0306}$ & $26.1 \pm 5.7$ & $102.2 \pm 4.7$ \\
+sbx\_pm & $1.1137 \pm 0.0016$ & $1.1321 \pm 0.3624$ & $0.0513 \pm 0.0054$ & $0.1812 \pm 0.0110$ & $24.0 \pm 3.9$ & $\mathbf{56.5 \pm 5.7}$ \\
+sbx\_gauss & $1.1158 \pm 0.0029$ & $\mathbf{1.0860 \pm 0.3243}$ & $0.0456 \pm 0.0075$ & $0.1671 \pm 0.0231$ & $21.9 \pm 4.2$ & $59.4 \pm 4.4$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_multiobjective_nsga2} compara las cuatro combinaciones de operadores en \acrshort{nsga2} evaluando indicadores de convergencia y cobertura (hipervolumen, $\text{IGD}^+$ y $\epsilon^+$), métricas de distribución y tamaño (espaciamiento y cantidad de soluciones factibles) y tiempo de ejecución.
+
+Los resultados muestran que las combinaciones con PCX superan a las de SBX en los indicadores de calidad global. Las variantes con PCX alcanzan un hipervolumen de $1.1250\text{--}1.1258$ frente a $1.1137\text{--}1.1158$ en SBX. En $\text{IGD}^+$ y $\epsilon^+$, PCX obtiene valores de $0.0338\text{--}0.0375$ y $0.0939\text{--}0.1008$, mientras que en SBX estos indicadores se elevan a $0.0456\text{--}0.0513$ y $0.1671\text{--}0.1812$, respectivamente. La diferencia en $\epsilon^+$ confirma que SBX deja sin representar segmentos amplios del frente de referencia. En particular, pcx\_gauss consigue el mayor hipervolumen ($1.1258$), el menor $\text{IGD}^+$ ($0.0338$) y el menor $\epsilon^+$ ($0.0939$).
+
+En cuanto al tamaño de Pareto, pcx\_pm genera el frente promedio más numeroso con $29.4$ soluciones factibles frente a las $21.9\text{--}24.0$ de SBX. Este incremento podría deberse al criterio de distancia de apiñamiento de \acrshort{nsga2}, que permite retener más soluciones no dominadas a medida que el operador explora extremos más distantes del espacio de objetivos.
+
+Nuevamente se repite el comportamiento en el espaciamiento, donde SBX registra valores menores ($1.0860$ en sbx\_gauss y $1.1321$ en sbx\_pm) frente a PCX ($1.2283\text{--}1.2640$) debido a que agrupa sus soluciones en un tramo más acotado del frente. En tiempo de cómputo, SBX requiere entre $56.5$ y $59.4$~s, mientras que PCX tarda entre $99.0$ y $102.2$~s por combinar más progenitores y generar mayor variedad estructural.
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores químicos — \acrshort{nsga2}.}
+\label{tab:comparison_chemical_nsga2}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Algoritmo & QED $\uparrow$ & SA $\downarrow$ & Factibilidad $\uparrow$ & $F_{\text{sp3}}$ & Validez $\uparrow$ & Unicidad $\uparrow$ & Novedad $\uparrow$ \\
+\midrule
+pcx\_pm & $0.8034 \pm 0.0581$ & $1.62 \pm 0.08$ & $0.7351 \pm 0.0233$ & $0.4643 \pm 0.0635$ & $0.7980 \pm 0.0355$ & $0.9911 \pm 0.0097$ & $0.9825 \pm 0.0032$ \\
+pcx\_gauss & $0.8054 \pm 0.0673$ & $\mathbf{1.58 \pm 0.08}$ & $0.7457 \pm 0.0359$ & $0.4584 \pm 0.0757$ & $0.7856 \pm 0.0334$ & $\mathbf{0.9958 \pm 0.0083}$ & $\mathbf{0.9828 \pm 0.0051}$ \\
+sbx\_pm & $\mathbf{0.8889 \pm 0.0136}$ & $1.65 \pm 0.08$ & $\mathbf{0.8665 \pm 0.0289}$ & $0.3973 \pm 0.0321$ & $\mathbf{0.9890 \pm 0.0056}$ & $0.8331 \pm 0.0479$ & $0.8044 \pm 0.0445$ \\
+sbx\_gauss & $0.8838 \pm 0.0143$ & $1.63 \pm 0.10$ & $0.8567 \pm 0.0369$ & $0.3888 \pm 0.0305$ & $0.9876 \pm 0.0061$ & $0.7605 \pm 0.0772$ & $0.8465 \pm 0.0430$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_chemical_nsga2} resume las propiedades químicas obtenidas en \acrshort{nsga2}. \gls{qed} y SA se promedian sobre el frente no dominado acumulado, mientras que validez, factibilidad, unicidad, novedad y $F_{\text{sp3}}$ describen la exploración sobre el espacio químico.
+
+Las combinaciones con PCX destacan por su alta unicidad ($0.9911$ en pcx\_pm y $0.9958$ en pcx\_gauss) y una novedad superior al $98\%$ ($0.9825\text{--}0.9828$) frente a los compuestos de entrenamiento. Asimismo, alcanzan un $F_{\text{sp3}}$ medio de $0.46$, el más elevado entre los algoritmos evaluados, lo que asegura un mayor carácter tridimensional bajo la restricción impuesta ($F_{\text{sp3}} \ge 0.30$), junto con un SA favorable de $1.58$ en pcx\_gauss y $1.62$ en pcx\_pm. Su validez química, en cambio, desciende a $78.6\%\text{--}79.8\%$, con una factibilidad del $73.5\%\text{--}74.6\%$.
+
+Por su parte, SBX alcanza mayor validez química ($> 98.7\%$), mayor factibilidad ($85.7\%\text{--}86.7\%$) y un \gls{qed} promedio más alto ($0.884\text{--}0.889$ frente a $0.803\text{--}0.805$ en PCX). A diferencia de lo observado en \acrshort{agemoea} y \acrshort{moead}, en \acrshort{nsga2} las variantes con SBX no sufren una pérdida severa de diversidad y conservan niveles adecuados de unicidad ($76.1\%$ en sbx\_gauss y $83.3\%$ en sbx\_pm) y novedad ($80.4\%\text{--}84.7\%$). Aun así, la concentración en la zona de alto \gls{qed} produce menor variedad molecular que la búsqueda más abierta de PCX. En cuanto a la mutación, su efecto resulta secundario frente al cruce, aunque la mutación gaussiana en SBX aporta una novedad algo superior ($84.7\%$ frente a $80.4\%$ con polinomial).
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de operadores en \acrshort{nsga2} sobre hipervolumen. Grupos homogéneos: \{pcx\_gauss, pcx\_pm\} $>$ \{sbx\_gauss\} $>$ \{sbx\_pm\}.}
+\label{tab:ops_nsga2}
+\begin{tabular}{lrrl}
+\toprule
+Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
+\midrule
+pcx\_pm vs pcx\_gauss & 0.388 & $-$0.229 & --- \\
+pcx\_pm vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0.001 & $+$1.000 & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0.001 & $+$0.981 & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0.002 & $-$0.800 & sbx\_gauss \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:ops_nsga2} muestra que las combinaciones con PCX superan a las de SBX en hipervolumen con significancia estadística ($p < 0.001$, $r_{\text{rb}} \ge +0.981$). Dentro de PCX no se detectan diferencias significativas entre mutaciones ($p = 0.388$). Sin embargo, dentro de la familia SBX, la mutación gaussiana supera de manera estadísticamente significativa a la polinomial ($p = 0.002, r_{\text{rb}} = -0.800$), estableciendo los grupos homogéneos $\{\text{pcx\_gauss}, \text{pcx\_pm}\} > \{\text{sbx\_gauss}\} > \{\text{sbx\_pm}\}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/NSGA2/pareto_qed_sa_grid_nruns_popNSGA2.png}
+    \caption{Frentes no dominados acumulados sobre las veinte semillas en el espacio QED--SA para cada combinación de operadores en \acrshort{nsga2}, coloreados por el número de semillas en que apareció cada molécula.}
+    \label{fig:pareto_nsga2_grid_nruns}
+\end{figure}
+
+Como se observa en la Figura~\ref{fig:pareto_nsga2_grid_nruns}, las combinaciones con PCX logran una cobertura amplia del espacio \gls{qed}--SA, descubriendo soluciones desde $\text{QED} \approx 0.22$ con bajo SA ($\approx 1.06$), a diferencia de SBX que delimita su búsqueda a valores de \gls{qed} superiores a $0.70$. Las variantes con PCX acumulan más soluciones no dominadas sobre las 20 semillas, destacando \texttt{pcx\_pm} con 41 soluciones frente a las 24 de \texttt{sbx\_pm} y 26 de \texttt{sbx\_gauss}, además de prolongar el tramo vertical de alto \gls{qed} hasta un SA cercano a $3.5$. En la zona de compromiso ($\text{QED}$ entre $0.80$ y $0.88$), las soluciones más frecuentes alcanzan entre $12$ y $15$ ejecuciones.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/NSGA2/frente_conjunto_popNSGA2.png}
+    \caption{Frente no dominado conjunto de las cuatro combinaciones de operadores en \acrshort{nsga2} en el espacio QED--SA, coloreado según la familia de cruce aportante (PCX o SBX).}
+    \label{fig:frente_conjunto_nsga2}
+\end{figure}
+
+En la Figura~\ref{fig:frente_conjunto_nsga2}, PCX y SBX aportan una cantidad idéntica de soluciones ($22$ cada una) que se complementan de forma equilibrada. PCX cubre exclusivamente la región de bajo SA y menor \gls{qed} ($< 0.70$), mientras que SBX aporta la mayor parte del frente vertical en la zona de máximo \gls{qed} ($>0.93$), compartiendo ambas familias las soluciones en la zona de compromiso.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/NSGA2/moleculas_operadores_NSGA2.png}
+    \caption{Moléculas de mayor QED con $\text{SA} < 3$ seleccionadas del frente no dominado acumulado para cada combinación de operadores en \acrshort{nsga2}.}
+    \label{fig:moleculas_operadores_nsga2}
+\end{figure}
+
+La Figura~\ref{fig:moleculas_operadores_nsga2} muestra las dos moléculas de mayor \gls{qed} con $\text{SA} < 3$ en \acrshort{nsga2}, donde todas las variantes vuelven a alcanzar un \gls{qed} de $0.948$. En este algoritmo, las combinaciones con SBX logran los mejores valores de SA en ambos candidatos ($1.71\text{--}1.85$), concentrándose en estructuras sencillas y fácilmente sintetizables. Por su parte, PCX también consigue moléculas de bajo SA ($1.87$ en pcx\_gauss), pero explora además esqueletos más diversos con un SA ligeramente superior ($2.07\text{--}2.29$).
+
+\subsubsection{Resultados NSGA-III}
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores multiobjetivo — \acrshort{nsga3}.}
+\label{tab:comparison_multiobjective_nsga3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+Algoritmo & Hipervolumen $\uparrow$ & Espaciamiento $\downarrow$ & $\text{IGD}^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) $\downarrow$ \\
+\midrule
+pcx\_pm & $\mathbf{1.1214 \pm 0.0032}$ & $1.1708 \pm 0.3897$ & $\mathbf{0.0363 \pm 0.0056}$ & $\mathbf{0.1207 \pm 0.0214}$ & $22.7 \pm 5.1$ & $108.3 \pm 3.7$ \\
+pcx\_gauss & $1.1213 \pm 0.0036$ & $1.2213 \pm 0.3222$ & $0.0380 \pm 0.0049$ & $0.1244 \pm 0.0255$ & $23.8 \pm 4.2$ & $106.0 \pm 4.4$ \\
+sbx\_pm & $1.1151 \pm 0.0022$ & $\mathbf{1.1295 \pm 0.3135}$ & $0.0478 \pm 0.0054$ & $0.1708 \pm 0.0161$ & $\mathbf{24.8 \pm 3.4}$ & $\mathbf{60.5 \pm 4.0}$ \\
+sbx\_gauss & $1.1163 \pm 0.0029$ & $1.1371 \pm 0.4672$ & $0.0446 \pm 0.0071$ & $0.1626 \pm 0.0243$ & $22.9 \pm 3.5$ & $64.8 \pm 6.1$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_multiobjective_nsga3} compara las cuatro combinaciones de operadores en \acrshort{nsga3} evaluando métricas de aproximación al frente de referencia (hipervolumen, $\text{IGD}^+$ y $\epsilon^+$), métricas de distribución y tamaño (espaciamiento y cantidad de soluciones factibles) y tiempo de ejecución.
+
+Los resultados confirman que PCX supera a SBX en los indicadores de convergencia y cobertura global. Las combinaciones con PCX obtienen un hipervolumen de $1.1213\text{--}1.1214$, frente a $1.1151\text{--}1.1163$ en SBX. En $\text{IGD}^+$ y $\epsilon^+$, PCX alcanza valores de $0.0363\text{--}0.0380$ y $0.1207\text{--}0.1244$, respectivamente, frente a $0.0446\text{--}0.0478$ y $0.1626\text{--}0.1708$ en SBX. Estos menores valores reflejan una aproximación más cercana y una representación sin vacíos amplios respecto al frente de referencia. Entre las variantes de PCX, pcx\_pm alcanza el menor $\text{IGD}^+$ ($0.0363$) y el mayor hipervolumen ($1.1214$).
+
+A diferencia de \acrshort{nsga2}, donde el tamaño del frente variaba considerablemente entre configuraciones ($21.9\text{--}29.4$), en \acrshort{nsga3} el número de soluciones no dominadas factibles se mantiene parejo en las cuatro variantes ($22.7\text{--}24.8$ moléculas). Este comportamiento podría deberse al uso de puntos de referencia en \acrshort{nsga3}, que distribuyen las soluciones a lo largo del frente y mantienen una cantidad similar de individuos independientemente del operador.
+
+Nuevamente se repite el comportamiento en el espaciamiento, donde SBX obtiene valores menores ($1.1295$ en sbx\_pm y $1.1371$ en sbx\_gauss) frente a PCX ($1.1708$ y $1.2213$) debido a que concentra sus soluciones en un tramo más acotado del frente. En tiempo de cómputo, SBX requiere entre $60.5$ y $64.8$~s, mientras que PCX tarda entre $106.0$ y $108.3$~s por combinar más progenitores y generar mayor variedad estructural.
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores químicos — \acrshort{nsga3}.}
+\label{tab:comparison_chemical_nsga3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Algoritmo & QED $\uparrow$ & SA $\downarrow$ & Factibilidad $\uparrow$ & $F_{\text{sp3}}$ & Validez $\uparrow$ & Unicidad $\uparrow$ & Novedad $\uparrow$ \\
+\midrule
+pcx\_pm & $0.8536 \pm 0.0438$ & $\mathbf{1.60 \pm 0.09}$ & $0.7440 \pm 0.0424$ & $0.4082 \pm 0.0489$ & $0.8630 \pm 0.0361$ & $\mathbf{0.9994 \pm 0.0026}$ & $0.9731 \pm 0.0066$ \\
+pcx\_gauss & $0.8513 \pm 0.0602$ & $1.65 \pm 0.09$ & $0.7472 \pm 0.0384$ & $0.4151 \pm 0.0724$ & $0.8261 \pm 0.0408$ & $0.9980 \pm 0.0049$ & $\mathbf{0.9796 \pm 0.0050}$ \\
+sbx\_pm & $\mathbf{0.8846 \pm 0.0083}$ & $1.61 \pm 0.06$ & $0.8192 \pm 0.0250$ & $0.4075 \pm 0.0212$ & $\mathbf{0.9851 \pm 0.0044}$ & $0.7557 \pm 0.0436$ & $0.8241 \pm 0.0335$ \\
+sbx\_gauss & $0.8806 \pm 0.0112$ & $1.62 \pm 0.08$ & $\mathbf{0.8408 \pm 0.0302}$ & $0.3923 \pm 0.0274$ & $0.9847 \pm 0.0082$ & $0.8528 \pm 0.0566$ & $0.8428 \pm 0.0278$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_chemical_nsga3} resume las propiedades químicas obtenidas en \acrshort{nsga3}. \gls{qed} y SA se promedian sobre el frente no dominado acumulado, mientras que validez, factibilidad, unicidad, novedad y $F_{\text{sp3}}$ describen la exploración sobre el espacio químico.
+
+Las combinaciones con PCX destacan por preservar la diversidad en la población. Ambas alcanzan una unicidad igual o superior al $99.8\%$ ($0.9994$ en pcx\_pm y $0.9980$ en pcx\_gauss) y una novedad de $97.3\%\text{--}98.0\%$ frente a los compuestos de entrenamiento. Además, logran un $F_{\text{sp3}}$ medio de $0.41$, superando la cota impuesta ($F_{\text{sp3}} \ge 0.30$), y un SA favorable de $1.60\text{--}1.65$. Su validez química se sitúa entre $82.6\%$ y $86.3\%$, con una factibilidad del $74.4\%\text{--}74.7\%$.
+
+En cambio, SBX obtiene un \gls{qed} promedio superior ($0.881\text{--}0.885$ frente a $0.851\text{--}0.854$ en PCX), mayor validez ($> 98.4\%$) y mayor factibilidad ($81.9\%\text{--}84.1\%$). Sin embargo, su menor dispersión reduce la unicidad ($75.6\%$ en sbx\_pm y $85.3\%$ en sbx\_gauss) y la novedad ($82.4\%\text{--}84.3\%$), lo que muestra mayor repetición de estructuras y menor capacidad de generar compuestos nuevos. La mutación muestra un efecto secundario frente al cruce, registrando una validez algo mayor con mutación polinomial en PCX ($86.3\%$ frente a $82.6\%$ con gaussiana).
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de operadores en \acrshort{nsga3} sobre hipervolumen. Grupos homogéneos: \{pcx\_pm, pcx\_gauss\} $>$ \{sbx\_gauss, sbx\_pm\}.}
+\label{tab:ops_nsga3}
+\begin{tabular}{lrrl}
+\toprule
+Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
+\midrule
+pcx\_pm vs pcx\_gauss & 0.729 & $+$0.095 & --- \\
+pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.971 & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0.001 & $+$0.914 & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0.001 & $+$0.943 & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0.286 & $-$0.381 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:ops_nsga3} confirma que las configuraciones con PCX superan a las de SBX en hipervolumen ($p < 0.001$, $r_{\text{rb}} \ge +0.914$). Dentro de cada familia de cruce no se aprecian diferencias estadísticas entre los tipos de mutación, ni en PCX ($p = 0.729$) ni en SBX ($p = 0.286$), conformando los grupos homogéneos $\{\text{pcx\_pm}, \text{pcx\_gauss}\} > \{\text{sbx\_gauss}, \text{sbx\_pm}\}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/NSGA3/pareto_qed_sa_grid_nruns_popNSGA3.png}
+    \caption{Frentes no dominados acumulados sobre las veinte semillas en el espacio QED--SA para cada combinación de operadores en \acrshort{nsga3}, coloreados por el número de semillas en que apareció cada molécula.}
+    \label{fig:pareto_nsga3_grid_nruns}
+\end{figure}
+
+Como se observa en la Figura~\ref{fig:pareto_nsga3_grid_nruns}, las combinaciones con PCX logran una cobertura amplia del espacio \gls{qed}--SA, descubriendo soluciones desde $\text{QED} \approx 0.24$ con bajo SA ($\approx 1.06$), mientras que SBX delimita su búsqueda a valores de \gls{qed} superiores a $0.70$. Las variantes con PCX acumulan más soluciones no dominadas sobre las 20 semillas (33 en ambas combinaciones frente a 21 en \texttt{sbx\_pm} y 25 en \texttt{sbx\_gauss}), prolongando el tramo vertical de alto \gls{qed} hasta un SA de $3.56$ en \texttt{pcx\_pm}. En la zona de compromiso ($\text{QED}$ entre $0.80$ y $0.88$), la consistencia entre semillas es alta, con soluciones presentes en hasta $14\text{--}17$ ejecuciones.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/NSGA3/frente_conjunto_popNSGA3.png}
+    \caption{Frente no dominado conjunto de las cuatro combinaciones de operadores en \acrshort{nsga3} en el espacio QED--SA, coloreado según la familia de cruce aportante (PCX o SBX).}
+    \label{fig:frente_conjunto_nsga3}
+\end{figure}
+
+En la Figura~\ref{fig:frente_conjunto_nsga3}, PCX aporta 31 soluciones y SBX 20 al frente no dominado conjunto. PCX cubre en exclusividad la cola de bajo \gls{qed} ($<0.50$) y mínimo SA ($\approx 1.1$), además de alcanzar los puntos de mayor \gls{qed} con SA elevado, mientras que SBX y PCX comparten las soluciones intermedias en la zona de compromiso.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/operadores/NSGA3/moleculas_operadores_NSGA3.png}
+    \caption{Moléculas de mayor QED con $\text{SA} < 3$ seleccionadas del frente no dominado acumulado para cada combinación de operadores en \acrshort{nsga3}.}
+    \label{fig:moleculas_operadores_nsga3}
+\end{figure}
+
+La Figura~\ref{fig:moleculas_operadores_nsga3} ilustra las dos moléculas de mayor \gls{qed} con $\text{SA} < 3$ en \acrshort{nsga3}. Todas las configuraciones alcanzan un \gls{qed} de $0.948$. En facilidad sintética, tanto PCX como SBX consiguen candidatos muy favorables con SA por debajo de $1.85$, destacando pcx\_pm ($1.71$) y sbx\_gauss ($1.72$) que redescubren estructuras casi idénticas. A su vez, pcx\_gauss aporta esqueletos más variados con mayor saturación ($F_{\text{sp3}} = 0.400$, SA de $1.99$).
+
+\subsection{Comparación Global entre Metaheurísticas Multiobjetivo}
+\label{subsec:comparacion_final}
 \label{subsec:calidad_gen_moleculas}
-% Reporte de resultados de QED, SA y Fsp3.
-% Análisis de validez, unicidad y novedad molecular.
-% Indicadores de rendimiento de los algoritmos multiobjetivo y visualizaciones de frentes de Pareto y distribución de métricas.
 
-\subsection{Comparación Contra Algoritmos del Estado del Arte}
-\label{subsec:comp_estado_arte_genericos}
-% Análisis comparativo del desempeño de la propuesta frente a otros métodos de la literatura.
+En esta sección se comparan los cinco algoritmos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead}, \acrshort{agemoea} y \acrshort{cmopso}) seleccionando la mejor configuración de cada uno a partir del estudio de hiperparámetros y operadores presentado anteriormente. Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead} y \acrshort{agemoea}) emplean la combinación pcx\_pm, acorde a las comparaciones de la Sección~\ref{subsec:comparativa_operadores}. \acrshort{cmopso} usa su configuración de hiperparámetros ganadora ($100\times 1000$, $\text{élite}=10$, $p_m=0.031$, $v_{\text{max}}=0.1$).
+
+\subsubsection{Indicadores Multiobjetivo y Químicos}
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores multiobjetivo — mejores configuraciones.}
+\label{tab:comparison_multiobjective}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+Algoritmo & Hipervolumen $\uparrow$ & Espaciamiento $\downarrow$ & $\text{IGD}^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) $\downarrow$ \\
+\midrule
+\acrshort{nsga2} & $\mathbf{1.1250 \pm 0.0039}$ & $1.2283 \pm 0.4461$ & $0.0375 \pm 0.0061$ & $\mathbf{0.1008 \pm 0.0230}$ & $\mathbf{29.4 \pm 4.7}$ & $99.0 \pm 4.1$ \\
+\acrshort{nsga3} & $1.1214 \pm 0.0032$ & $1.1708 \pm 0.3897$ & $\mathbf{0.0363 \pm 0.0056}$ & $0.1207 \pm 0.0214$ & $22.7 \pm 5.1$ & $108.3 \pm 3.7$ \\
+\acrshort{moead} & $1.1128 \pm 0.0039$ & $\mathbf{1.0420 \pm 0.2724}$ & $0.0571 \pm 0.0114$ & $0.1729 \pm 0.0317$ & $19.9 \pm 3.5$ & $\mathbf{43.9 \pm 2.4}$ \\
+\acrshort{agemoea} & $1.1208 \pm 0.0028$ & $1.1695 \pm 0.3519$ & $0.0402 \pm 0.0048$ & $0.1181 \pm 0.0201$ & $24.1 \pm 4.4$ & $110.7 \pm 5.1$ \\
+\acrshort{cmopso} & $1.1092 \pm 0.0037$ & $1.0526 \pm 0.3802$ & $0.0591 \pm 0.0027$ & $0.1908 \pm 0.0106$ & $17.8 \pm 3.4$ & $50.2 \pm 1.9$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+La Tabla~\ref{tab:comparison_multiobjective} presenta la comparación de las mejores configuraciones de los cinco algoritmos en el espacio multiobjetivo. Se evalúan indicadores de convergencia y proximidad al frente de referencia (hipervolumen, $\text{IGD}^+$ y $\epsilon^+$), junto con la distribución (espaciamiento), el número de soluciones no dominadas factibles y el tiempo de ejecución.
+
+Los resultados muestran que \acrshort{nsga2} alcanza el mayor hipervolumen promedio ($1.1250$), el menor $\epsilon^+$ ($0.1008$) y el frente más numeroso ($29.4$ soluciones factibles), y \acrshort{nsga3} el menor $\text{IGD}^+$ ($0.0363$). \acrshort{nsga3} ($1.1214$) y \acrshort{agemoea} ($1.1208$) se ubican en un segundo nivel muy cercano en convergencia, con valores de $\text{IGD}^+$ de $0.0363$ y $0.0402$, $\epsilon^+$ de $0.1207$ y $0.1181$, y tamaños de frente de $22.7$ y $24.1$ soluciones, respectivamente. Por su parte, \acrshort{moead} ($1.1128$) y \acrshort{cmopso} ($1.1092$) obtienen hipervolúmenes menores y valores más altos en $\text{IGD}^+$ ($0.0571$ y $0.0591$) y $\epsilon^+$ ($0.1729$ y $0.1908$), lo que refleja que dejan segmentos del frente de referencia sin cubrir. No obstante, ambos destacan por una ejecución más rápida ($43.9$~s y $50.2$~s frente a $99.0\text{--}110.7$~s en los demás métodos) y por un espaciamiento menor ($1.0420$ y $1.0526$) al concentrar sus soluciones en la región de alto \gls{qed}.
+
+Estas diferencias podrían deberse a cómo busca y selecciona cada algoritmo. En \acrshort{nsga2}, la distancia de apiñamiento permite que las soluciones se expandan libremente hacia los extremos del frente, lo que junto con PCX facilita descubrir moléculas tanto de bajo SA como de alto \gls{qed} y acumular más soluciones no dominadas. En cambio, \acrshort{cmopso} mueve sus partículas hacia las mejores soluciones encontradas, las cuales suelen concentrarse en la zona de alto \gls{qed}, lo que reduce la exploración hacia otras regiones. En \acrshort{moead}, cruzar únicamente entre vecinos cercanos favorece la búsqueda local pero limita la dispersión. Finalmente, \acrshort{nsga3} y \acrshort{agemoea} reparten las soluciones de forma más uniforme a lo largo del frente, logrando una buena convergencia sin acumular tantas moléculas como \acrshort{nsga2}.
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación de indicadores químicos — mejores configuraciones.}
+\label{tab:comparison_chemical}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Algoritmo & QED $\uparrow$ & SA $\downarrow$ & Factibilidad $\uparrow$ & $F_{\text{sp3}}$ & Validez $\uparrow$ & Unicidad $\uparrow$ & Novedad $\uparrow$ \\
+\midrule
+\acrshort{nsga2} & $0.8034 \pm 0.0581$ & $1.62 \pm 0.08$ & $0.7351 \pm 0.0233$ & $0.4643 \pm 0.0635$ & $0.7980 \pm 0.0355$ & $0.9911 \pm 0.0097$ & $\mathbf{0.9825 \pm 0.0032}$ \\
+\acrshort{nsga3} & $0.8536 \pm 0.0438$ & $\mathbf{1.60 \pm 0.09}$ & $0.7440 \pm 0.0424$ & $0.4082 \pm 0.0489$ & $0.8630 \pm 0.0361$ & $\mathbf{0.9994 \pm 0.0026}$ & $0.9731 \pm 0.0066$ \\
+\acrshort{moead} & $0.8774 \pm 0.0173$ & $1.66 \pm 0.07$ & $0.8822 \pm 0.0500$ & $0.3875 \pm 0.0197$ & $0.9912 \pm 0.0050$ & $0.4447 \pm 0.0702$ & $0.7452 \pm 0.0907$ \\
+\acrshort{agemoea} & $0.8477 \pm 0.0402$ & $1.62 \pm 0.09$ & $0.7464 \pm 0.0384$ & $0.4126 \pm 0.0411$ & $0.8642 \pm 0.0262$ & $0.9861 \pm 0.0224$ & $0.9736 \pm 0.0073$ \\
+\acrshort{cmopso} & $\mathbf{0.8870 \pm 0.0092}$ & $1.65 \pm 0.08$ & $\mathbf{0.9295 \pm 0.0247}$ & $0.4069 \pm 0.0303$ & $\mathbf{0.9959 \pm 0.0046}$ & $0.3202 \pm 0.0640$ & $0.6649 \pm 0.2108$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+
+La Tabla~\ref{tab:comparison_chemical} presenta la comparación de las propiedades químicas entre los cinco algoritmos. \gls{qed} y SA se promedian sobre el frente no dominado acumulado, mientras que validez, factibilidad, unicidad, novedad y $F_{\text{sp3}}$ describen el comportamiento de la búsqueda sobre el espacio químico.
+
+Los resultados dividen a los algoritmos en dos grupos definidos. Por un lado, \acrshort{cmopso} y \acrshort{moead} obtienen los valores promedio más altos de \gls{qed} ($0.887$ y $0.877$), junto con una validez química cercana al $100\%$. Sin embargo, este comportamiento reduce la diversidad de la población final, registrando una unicidad baja ($32.0\%$ en \acrshort{cmopso} y $44.5\%$ en \acrshort{moead}) y menor novedad frente a los compuestos de entrenamiento ($66.5\%$ y $74.5\%$).
+
+Por otro lado, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} mantienen una unicidad superior al $98.6\%$ ($0.9994$ en \acrshort{nsga3} y $0.9911$ en \acrshort{nsga2}) y una novedad superior al $97\%$ ($0.9825$ en \acrshort{nsga2}), con una factibilidad del $73.5\%\text{--}74.6\%$ y una validez entre $79.8\%$ y $86.4\%$. Su menor \gls{qed} promedio en el frente ($0.803\text{--}0.854$) responde a que estos algoritmos incorporan soluciones a lo largo de todo el frente, incluyendo el extremo de bajo SA ($1.60$ en \acrshort{nsga3} y $1.62$ en \acrshort{nsga2} y \acrshort{agemoea}), cubriendo un conjunto más amplio de compromisos. Todos los métodos cumplen la restricción de tridimensionalidad ($F_{\text{sp3}} \ge 0.30$), destacando \acrshort{nsga2} con un promedio de $0.4643$.
+
+Estas diferencias en la diversidad química podrían explicarse por la dinámica de búsqueda en el espacio latente. \acrshort{cmopso} y \acrshort{moead} tienden a concentrar a sus individuos en zonas densas del modelo generativo, lo que asegura que casi todas las moléculas decodificadas sean válidas pero a costa de repetir estructuras conocidas. En cambio, los algoritmos genéticos combinados con PCX exploran regiones más diversas del espacio latente, lo que genera compuestos estructuralmente únicos y novedosos, aunque con una leve disminución en la tasa de validez.
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{gray!10}{white}
+\caption{Comparación entre algoritmos sobre hipervolumen. Grupos homogéneos: \{\acrshort{nsga2}\} $>$ \{\acrshort{agemoea}, \acrshort{nsga3}\} $>$ \{\acrshort{moead}\} $>$ \{\acrshort{cmopso}\}.}
+\label{tab:comparacion_grupos}
+\begin{tabular}{lrrl}
+\toprule
+Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
+\midrule
+\acrshort{nsga2} vs \acrshort{nsga3} & 0.005 & $+$0.762 & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{moead} & $<$0.001 & $+$1.000 & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{agemoea} & 0.004 & $+$0.790 & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{cmopso} & $<$0.001 & $+$1.000 & \acrshort{nsga2} \\
+\acrshort{nsga3} vs \acrshort{moead} & $<$0.001 & $+$1.000 & \acrshort{nsga3} \\
+\acrshort{nsga3} vs \acrshort{agemoea} & 0.571 & $+$0.152 & --- \\
+\acrshort{nsga3} vs \acrshort{cmopso} & $<$0.001 & $+$1.000 & \acrshort{nsga3} \\
+\acrshort{moead} vs \acrshort{agemoea} & $<$0.001 & $-$0.990 & \acrshort{agemoea} \\
+\acrshort{moead} vs \acrshort{cmopso} & 0.008 & $+$0.705 & \acrshort{moead} \\
+\acrshort{agemoea} vs \acrshort{cmopso} & $<$0.001 & $+$1.000 & \acrshort{agemoea} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:comparacion_grupos} confirma diferencias significativas entre los algoritmos sobre el hipervolumen ($p < 0.001$ en el test de Friedman). \acrshort{nsga2} se posiciona como el algoritmo con mejor desempeño global, superando a todos los demás de forma estadísticamente significativa ($p \le 0.005, r_{\text{rb}} \ge +0.762$). En el segundo escalón homogéneo se ubican \acrshort{agemoea} y \acrshort{nsga3} sin diferencias significativas entre sí ($p = 0.571$), seguidos por \acrshort{moead} en tercer lugar ($p = 0.008$ frente a \acrshort{cmopso}) y finalmente \acrshort{cmopso}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/boxplots_mo_popfinal.png}
+    \caption{Distribución de los indicadores multiobjetivo de cada algoritmo sobre las veinte ejecuciones independientes.}
+    \label{fig:boxplots_mo}
+\end{figure}
+
+La Figura~\ref{fig:boxplots_mo} ilustra la distribución de los indicadores multiobjetivo de la Tabla~\ref{tab:comparison_multiobjective} mediante diagramas de caja. \acrshort{nsga2} obtiene las medianas más favorables en hipervolumen ($\approx 1.126$), $\text{IGD}^+$ y $\epsilon^+$, junto con el mayor número de soluciones no dominadas (mediana de $29$). \acrshort{agemoea} y \acrshort{nsga3} muestran distribuciones similares entre sí en todas las métricas, manteniendo una buena aproximación y cobertura del frente de referencia.
+
+Por su parte, \acrshort{moead} y \acrshort{cmopso} presentan medianas menores de espaciamiento ($1.05$ y $0.95$) debido a que sus soluciones se concentran en el tramo de alto \gls{qed}. Sin embargo, al no explorar la rama de bajo SA, registran valores peores en $\text{IGD}^+$ y $\epsilon^+$, ya que dejar ese sector sin cubrir aumenta la distancia respecto al frente de referencia. Además, al enfocarse en una zona más acotada, obtienen menos soluciones no dominadas (medianas de $20$ y $18$ moléculas, respectivamente).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/boxplots_chemical_popfinal.png}
+    \caption{Distribución de las propiedades químicas del frente de Pareto obtenido por cada algoritmo.}
+    \label{fig:boxplots_chemical}
+\end{figure}
+
+La Figura~\ref{fig:boxplots_chemical} ilustra mediante diagramas de caja las distribuciones de la Tabla~\ref{tab:comparison_chemical} a lo largo de las veinte ejecuciones. En ella, \gls{qed}, SA y $F_{\text{sp3}}$ se evalúan sobre las moléculas del frente no dominado, mientras que la validez, unicidad y novedad describen la generación global de cada ejecución.
+
+En los objetivos, \acrshort{cmopso} y \acrshort{moead} concentran sus resultados de \gls{qed} en torno a $0.88$, mientras que \acrshort{nsga2} presenta mayor dispersión con valores entre $0.70$ y $0.88$, reflejando su cobertura sobre el frente. En accesibilidad sintética, todos los métodos obtienen valores favorables con medianas entre $1.60$ y $1.66$. Respecto a la restricción $F_{\text{sp3}} \ge 0.30$, todos los algoritmos la cumplen, alcanzando \acrshort{nsga2} los valores más altos cerca de $0.47$.
+
+En las métricas de generación, \acrshort{moead} y \acrshort{cmopso} alcanzan una validez próxima al $99\%$, pero su unicidad desciende a medianas de $0.45$ y $0.32$, y su novedad resulta menor y dispersa en \acrshort{cmopso}. En contraste, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} mantienen unicidad y novedad cercanas a $1.0$ y $0.98$, con una validez situada entre el $80\%$ y el $86\%$.
+
+\subsubsection{Análisis de Convergencia}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/convergence_mo_evals_popfinal.png}
+    \caption{Convergencia de los indicadores multiobjetivo en función del número de evaluaciones para cada algoritmo, promediada sobre las veinte ejecuciones independientes.}
+    \label{fig:convergence_mo}
+\end{figure}
+
+La Figura~\ref{fig:convergence_mo} presenta la convergencia de los indicadores multiobjetivo en función del número de evaluaciones, promediada sobre las veinte ejecuciones independientes. Al calcularse de forma acumulativa, estas curvas reflejan el progreso continuo del frente no dominado a lo largo del presupuesto y convergen hacia los valores finales reportados en la Tabla~\ref{tab:comparison_multiobjective}.
+
+En hipervolumen, todos los algoritmos experimentan un avance rápido durante las primeras $20{,}000$ evaluaciones, superando valores de $1.10$, para luego ingresar en una fase de refinamiento gradual. \acrshort{nsga2} consolida la cota más alta a lo largo de todo el proceso ($1.1250$), seguido por \acrshort{nsga3} ($1.1214$) y \acrshort{agemoea} ($1.1208$), mientras que \acrshort{cmopso} ($1.1092$) y \acrshort{moead} ($1.1072$) se estabilizan en niveles inferiores desde etapas tempranas, ratificando la jerarquía obtenida en los tests estadísticos.
+
+En $\text{IGD}^+$ y $\epsilon^+$, las trayectorias evidencian diferencias en la dinámica de exploración. \acrshort{cmopso} desciende durante las primeras $10{,}000$ evaluaciones al concentrar sus partículas en la zona de alto \gls{qed}, alcanzando $\text{IGD}^+ \approx 0.073$ y $\epsilon^+ \approx 0.210$. Sin embargo, su progreso se detiene a partir de las $40{,}000$ evaluaciones y finaliza con los valores más desfavorables ($0.0591$ y $0.1908$). \acrshort{moead} muestra un descenso más progresivo pero igualmente limitado, concluyendo en $0.0571$ y $0.1729$. Este comportamiento confirma que ambos métodos dejan sectores periféricos del frente de referencia sin cubrir.
+
+Por el contrario, los algoritmos \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} logran una mejora sostenida a lo largo de todo el presupuesto. \acrshort{nsga2} registra el menor $\epsilon^+$ desde las $10{,}000$ evaluaciones y concluye en $0.1008$, mientras que el menor $\text{IGD}^+$ lo alcanza \acrshort{nsga3} ($0.0363$), seguido de \acrshort{nsga2} ($0.0375$) y \acrshort{agemoea} ($0.0402$). La capacidad de estos algoritmos para extender soluciones hacia el extremo de bajo SA explica que continúen descubriendo nuevas alternativas no dominadas a lo largo de la optimización.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/convergence_chemical_evals_popfinal.png}
+    \caption{Convergencia de los indicadores químicos en función del número de evaluaciones para cada algoritmo, promediada sobre las veinte ejecuciones independientes.}
+    \label{fig:convergence_chemical}
+\end{figure}
+
+La Figura~\ref{fig:convergence_chemical} ilustra la dinámica de las propiedades químicas en la población activa a lo largo de las evaluaciones. \acrshort{moead} y \acrshort{cmopso} sostienen una validez cercana al $99\%$ durante toda la optimización, pero su unicidad desciende durante las primeras $5{,}000$ evaluaciones y se estabiliza entre el $30\%$ y el $44\%$. En novedad frente a los compuestos de entrenamiento, \acrshort{moead} se sitúa en torno al $75\%$ y \acrshort{cmopso} alrededor del $66\%$. Por el contrario, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} conservan una unicidad y novedad próximas al $98\%$ y $100\%$, con una validez que se sitúa entre el $75\%$ y el $84\%$. En el espacio de objetivos de la población activa, \acrshort{cmopso} y \acrshort{moead} concentran sus soluciones en valores promedio de \gls{qed} cercanos a $0.88$ y SA inferior a $1.86$, mientras que los algoritmos genéticos registran un \gls{qed} promedio en torno a $0.66\text{--}0.73$ y un SA superior a $2.37$, reflejando la presencia continua de individuos en diversas regiones del frente.
+
+\subsubsection{Frentes de Pareto}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/pareto_comparison_popfinal.png}
+    \caption{Frentes de Pareto superpuestos de las mejores configuraciones de los cinco algoritmos en el espacio QED--SA.}
+    \label{fig:pareto_comparison}
+\end{figure}
+
+La Figura~\ref{fig:pareto_comparison} muestra los frentes de Pareto acumulados de los cinco algoritmos en el espacio \gls{qed}--SA sobre las veinte ejecuciones. Todos los métodos comparten la misma frontera general, aunque con diferencias claras en la cantidad y distribución de las soluciones. \acrshort{nsga2} acumula el mayor número de moléculas no dominadas ($41$), seguido por \acrshort{agemoea} ($36$) y \acrshort{nsga3} ($33$), mientras que \acrshort{cmopso} y \acrshort{moead} obtienen solo $22$ cada uno, en línea con el tamaño de frente reportado en la Tabla~\ref{tab:comparison_multiobjective}.
+
+En la región de bajo SA, los algoritmos genéticos son los únicos que encuentran soluciones, alcanzando \acrshort{nsga2} los compuestos de menor SA ($\approx 1.06$). En cambio, \acrshort{cmopso} y \acrshort{moead} no exploran esta zona y limitan su búsqueda a valores de \gls{qed} superiores a $0.70$. Hacia el centro del frente, los cinco métodos coinciden y comparten soluciones con un equilibrio adecuado entre ambas propiedades.
+
+En el extremo de alto \gls{qed}, el frente forma una rama vertical donde los valores se saturan cerca de $0.948$. En este tramo, mejoras mínimas en \gls{qed} exigen estructuras más complejas y elevan el SA por encima de $3.0$, donde \acrshort{nsga2} y \acrshort{nsga3} alcanzan las soluciones más altas. Esta distribución explica por qué \acrshort{cmopso} y \acrshort{moead} obtienen un \gls{qed} promedio superior en la Tabla~\ref{tab:comparison_chemical}, ya que concentran sus soluciones en la derecha, mientras que los algoritmos genéticos reducen su promedio al incluir también alternativas de fácil síntesis.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/metaheuristicas/comparacion/pareto_qed_sa_grid_nruns_popfinal.png}
+    \caption{Frentes de Pareto obtenidos por cada algoritmo en paneles independientes para el espacio QED--SA, coloreados por frecuencia de aparición entre ejecuciones.}
+    \label{fig:pareto_qed_sa_grid_nruns}
+\end{figure}
+
+La Figura~\ref{fig:pareto_qed_sa_grid_nruns} presenta los frentes de Pareto desagregados por algoritmo, coloreando cada solución según su frecuencia de aparición entre las veinte ejecuciones.
+
+En todos los métodos, las moléculas más repetidas se concentran en la zona intermedia ($\text{QED}$ entre $0.80$ y $0.88$), descubriéndose en la gran mayoría de las ejecuciones. En este sector, los algoritmos convergen a las mismas soluciones de compromiso, con \acrshort{nsga2}, \acrshort{agemoea} y \acrshort{nsga3} mostrando mayor consistencia que \acrshort{moead}.
+
+En contraste, los extremos del frente presentan una frecuencia menor. Tanto las moléculas de bajo SA como las de máximo \gls{qed} aparecen solo en pocas semillas, lo que indica que alcanzar los límites del frente exige trayectorias de búsqueda más específicas, si bien los algoritmos genéticos acceden a la zona de fácil síntesis en varias ejecuciones independientes.
+
+
+
+
+\subsection{Análisis del Frente no Dominado Conjunto Global}
+\label{subsec:frente_conjunto_global}
+
+Para evaluar la capacidad exploratoria conjunta y caracterizar el espacio químico accesible, se combinan las soluciones obtenidas por las ramas de cruce PCX y SBX en los cuatro algoritmos genéticos (empleando en cada caso el operador de mutación con mejor desempeño en la comparación estadística), junto con \acrshort{cmopso}, a lo largo de las veinte ejecuciones independientes. Tras deduplicar por estructura química (SMILES), se recalcula la no dominancia global, conformando un frente no dominado conjunto de 32 moléculas únicas.
+
+\subsubsection{Contribución al Frente Conjunto Global}
+
+La Tabla~\ref{tab:contribucion_pool} presenta la contribución de cada algoritmo y combinación de operadores al frente no dominado conjunto global, indicando el número de moléculas aportadas, las exclusivas, el porcentaje sobre el total y los promedios de los objetivos en las soluciones aportadas.
+
+\begin{table}[H]
+\centering
+\caption{Contribución de cada algoritmo y combinación de operadores al frente no dominado conjunto global (32 soluciones).}
+\label{tab:contribucion_pool}
+\begin{tabular}{llrrrrrr}
+\toprule
+Configuración & Operadores & Aporta & Exclusivas & \% & QED $\uparrow$ & SA $\downarrow$ & $F_{\text{sp3}}$ \\
+\midrule
+\multirow{2}{*}{\acrshort{nsga2}} & pcx\_pm & 15 & 4 & 46.9 & 0.598 & 1.22 & 0.570 \\
+ & sbx\_gauss & 16 & 6 & 50.0 & 0.874 & 1.59 & 0.338 \\
+\midrule
+\multirow{2}{*}{\acrshort{nsga3}} & pcx\_pm & 15 & 2 & 46.9 & 0.726 & 1.47 & 0.475 \\
+ & sbx\_pm & 9 & 1 & 28.1 & 0.829 & 1.48 & 0.347 \\
+\midrule
+\multirow{2}{*}{\acrshort{moead}} & pcx\_pm & 9 & 0 & 28.1 & 0.841 & 1.41 & 0.343 \\
+ & sbx\_pm & 6 & 0 & 18.8 & 0.828 & 1.37 & 0.359 \\
+\midrule
+\multirow{2}{*}{\acrshort{agemoea}} & pcx\_pm & 11 & 1 & 34.4 & 0.615 & 1.24 & 0.587 \\
+ & sbx\_pm & 7 & 0 & 21.9 & 0.811 & 1.35 & 0.350 \\
+\midrule
+\acrshort{cmopso} & --- & 10 & 3 & 31.2 & 0.865 & 1.62 & 0.360 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+En la Tabla~\ref{tab:contribucion_pool} se observa que \acrshort{nsga2} lidera la contribución al frente global, aportando el $50.0\%$ de las soluciones mediante sbx\_gauss ($16$ moléculas, $6$ exclusivas) y el $46.9\%$ mediante pcx\_pm ($15$ moléculas, $4$ exclusivas). \acrshort{nsga3} y \acrshort{agemoea} también realizan aportes importantes, mientras que \acrshort{cmopso} suma $10$ soluciones ($3$ de ellas exclusivas, representando el $31.2\%$). Por su parte, las soluciones de \acrshort{moead} resultan compartidas con las aportadas por los demás algoritmos.
+
+Nuevamente se comprueba la complementariedad entre familias de operadores: las combinaciones con PCX aportan las moléculas con mayor grado de saturación ($F_{\text{sp3}}$ medio de $0.48\text{--}0.59$) y menor dificultad sintética (SA $\approx 1.22\text{--}1.47$, aunque con menor \gls{qed}), mientras que las variantes con SBX y \acrshort{cmopso} consolidan la zona de alto \gls{qed} ($> 0.81\text{--}0.87$) con valores de $F_{\text{sp3}}$ en torno a $0.34\text{--}0.36$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/frente_conjunto/frente_conjunto_poppool.png}
+    \caption{Frente no dominado conjunto global (32 soluciones) en el espacio QED--SA, coloreado según el algoritmo aportante.}
+    \label{fig:frente_conjunto_poppool}
+\end{figure}
+
+La Figura~\ref{fig:frente_conjunto_poppool} presenta la distribución de las 32 soluciones del frente no dominado conjunto en el espacio \gls{qed}--SA. Los círculos de un solo color representan aportes exclusivos de un algoritmo, mientras que las divisiones multicolores indican moléculas descubiertas por más de un método.
+
+\acrshort{nsga2} muestra la mayor cobertura al participar en 24 de las 32 soluciones y aportar 10 de forma exclusiva, abarcando los compuestos de menor SA en solitario y compartiendo la zona intermedia de esa cola con \acrshort{agemoea} y \acrshort{nsga3}. En el centro del frente, la presencia de puntos multicolores refleja convergencia hacia las mismas estructuras de compromiso, mientras que en la rama vertical de alto \gls{qed} destacan aportes de \acrshort{cmopso}, \acrshort{nsga2} y la molécula de mayor SA descubierta por \acrshort{nsga3}.
+
+\subsubsection{Moléculas Representativas}
+
+A partir del frente no dominado acumulado de cada algoritmo, se seleccionan las cinco moléculas de mayor \gls{qed} que cumplen con el filtro de accesibilidad sintética ($\text{SA} < 3$) y la restricción de tridimensionalidad ($F_{\text{sp3}} \ge 0.30$). La Tabla~\ref{tab:moleculas_representativas} y la Figura~\ref{fig:moleculas_representativas} presentan sus propiedades fisicoquímicas y estructuras 2D.
+
+\begin{table}[H]
+\centering
+\caption{Las cinco moléculas con mayor QED del frente de Pareto de cada algoritmo que satisfacen el filtro de accesibilidad ($\text{SA} < 3$) y la restricción de tridimensionalidad ($F_{\text{sp3}} \ge 0.30$).}
+\label{tab:moleculas_representativas}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccl}
+\toprule
+\textbf{Algoritmo} & \textbf{Puesto} & \textbf{QED} $\uparrow$ & \textbf{SA} $\downarrow$ & \textbf{$F_{\text{sp3}}$} & \textbf{SMILES} \\
+\midrule
+\multirow{5}{*}{\acrshort{nsga2}}
+ & 1 & 0.9484 & 2.73 & 0.333 & \texttt{Cn1cc(NC(=O)C2CCCO2)c(-c2ccccc2Cl)n1} \\
+ & 2 & 0.9483 & 2.06 & 0.357 & \texttt{O=C(Nc1nnc(Cc2ccc(F)cc2)s1)N1CCCC1} \\
+ & 3 & 0.9483 & 1.85 & 0.312 & \texttt{O=C(Nc1ccc(F)cc1)N1CCN(Cc2ccco2)CC1} \\
+ & 4 & 0.9481 & 1.80 & 0.333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccn3)CC2)cc1} \\
+ & 5 & 0.9473 & 1.76 & 0.368 & \texttt{O=C(NCC(=O)N1CCCCCC1)c1ccc2ccccc2c1} \\
+\midrule
+\multirow{5}{*}{\acrshort{nsga3}}
+ & 1 & 0.9484 & 2.80 & 0.333 & \texttt{Cn1nc(NC(=O)C2CCCO2)cc1-c1ccccc1Cl} \\
+ & 2 & 0.9484 & 2.74 & 0.308 & \texttt{Nc1cc(Br)n(COc2ccc3c(c2)CCC3)n1} \\
+ & 3 & 0.9484 & 2.57 & 0.333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
+ & 4 & 0.9483 & 2.13 & 0.357 & \texttt{O=C(Nc1nnc(Cc2ccccc2F)s1)N1CCCC1} \\
+ & 5 & 0.9481 & 1.82 & 0.333 & \texttt{Cc1ccccc1NC(=O)N1CCN(Cc2ccccn2)CC1} \\
+\midrule
+\multirow{5}{*}{\acrshort{moead}}
+ & 1 & 0.9482 & 2.40 & 0.333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3ccccn3)C2)s1} \\
+ & 2 & 0.9481 & 1.81 & 0.333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3cccnc3)CC2)cc1} \\
+ & 3 & 0.9458 & 1.65 & 0.316 & \texttt{Cc1ccc(N2CCN(C(=O)NCc3ccccc3)CC2)cc1} \\
+ & 4 & 0.9436 & 1.58 & 0.316 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cc1} \\
+ & 5 & 0.9079 & 1.58 & 0.467 & \texttt{CCC(=O)Nc1ccc(C(=O)N2CCCCC2)cc1} \\
+\midrule
+\multirow{5}{*}{\acrshort{agemoea}}
+ & 1 & 0.9482 & 2.03 & 0.375 & \texttt{O=C(c1csc(-c2cccc(CO)c2)n1)N1CCCCC1} \\
+ & 2 & 0.9481 & 1.81 & 0.333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cn1} \\
+ & 3 & 0.9440 & 1.80 & 0.312 & \texttt{O=C(Nc1ccc(CN2CCOCC2)cc1)c1cccs1} \\
+ & 4 & 0.9437 & 1.79 & 0.300 & \texttt{O=C(Nc1ccc(C(=O)N2CCc3ccccc3C2)cc1)C1CC1} \\
+ & 5 & 0.9428 & 1.72 & 0.333 & \texttt{O=C(NCc1ccc(N2CCCCC2)nc1)c1ccccc1} \\
+\midrule
+\multirow{5}{*}{\acrshort{cmopso}}
+ & 1 & 0.9484 & 2.57 & 0.333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
+ & 2 & 0.9483 & 2.50 & 0.333 & \texttt{O=C(c1cc[nH]n1)N1CCC(Oc2ccccc2Cl)CC1} \\
+ & 3 & 0.9481 & 2.06 & 0.333 & \texttt{O=C(NC1CCN(c2nccs2)CC1)c1ccccc1F} \\
+ & 4 & 0.9463 & 1.90 & 0.389 & \texttt{O=C(Nc1ccc2c(N3CCOCC3)cccc2c1)C1CC1} \\
+ & 5 & 0.9440 & 1.85 & 0.312 & \texttt{O=C(Nc1cccc(CN2CCOCC2)c1)c1cccs1} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Figures/metaheuristicas/frente_conjunto/moleculas_representativas.png}
+    \caption{Estructuras 2D de las cinco moléculas de mayor QED filtradas por algoritmo ($\text{SA} < 3$ y $F_{\text{sp3}} \ge 0.30$).}
+    \label{fig:moleculas_representativas}
+\end{figure}
+
+Las moléculas seleccionadas alcanzan valores de \gls{qed} superiores a $0.94$, con índices de accesibilidad sintética favorables situados entre $1.58$ y $2.80$, y fracciones $F_{\text{sp3}}$ concentradas mayoritariamente entre $0.30$ y $0.39$. Se observa una convergencia estructural entre los algoritmos, llegando a identificar compuestos idénticos como la primera solución de \acrshort{cmopso} y la tercera de \acrshort{nsga3}.
+
+A nivel químico, las estructuras integran anillos aromáticos (como piridina, tiofeno o fenilos sustituidos) con heterociclos saturados (como piperazina, morfolina, piperidina y tetrahidropirano). Esta combinación permite cumplir holgadamente la cota de carbonos $sp^3$ sin recurrir a cadenas alifáticas extensas que perjudicarían la solubilidad o el \gls{qed}. De este modo, la restricción de tridimensionalidad guía la generación hacia arquitecturas equilibradas y accesibles sintéticamente, superando la tendencia a generar esqueletos planos y puramente aromáticos observada en optimizaciones sin restricción.
+
+\subsection{Limitaciones}
+
+Las funciones objetivo optimizadas (\gls{qed} y SA) y la restricción impuesta ($F_{\text{sp3}} \ge 0.30$) evalúan propiedades fisicoquímicas generales estimadas computacionalmente, sin medir la afinidad frente a una diana terapéutica particular, aspecto que se aborda en una etapa posterior incorporando acoplamiento molecular (\textit{docking}).
+
+Por otra parte, la formulación de $F_{\text{sp3}}$ como restricción de factibilidad en lugar de objetivo evita el sesgo hacia la sobresaturación alifática indiscriminada observado al maximizarlo directamente, asegurando únicamente un umbral mínimo de tridimensionalidad y solubilidad. No obstante, $F_{\text{sp3}}$ constituye una aproximación indirecta a la complejidad tridimensional real.
+
+Asimismo, al no existir un frente de Pareto teórico conocido para este espacio químico, la comparación entre algoritmos se fundamenta en un frente de referencia empírico construido a partir de las soluciones no dominadas factibles obtenidas.
+
+\subsection{Discusión}
+
+La incorporación de $F_{\text{sp3}} \ge 0.30$ como restricción de factibilidad corrige los efectos no deseados de su maximización en experimentos previos. La restricción de $F_{\text{sp3}}$ fuerza al modelo a evitar estructuras predominantemente planas y aromáticas asociadas a baja solubilidad y promiscuidad biológica~\cite{Lovering2009Flatland,Lovering2013Flatland2}, que se obtenían al solo maximizar \gls{qed} y SA sin ninguna restricción.
+
+Los resultados confirman la complementariedad estructural de los operadores, donde PCX actúa como motor de dispersión y novedad, extendiendo el frente hacia regiones de muy bajo SA y alta saturación, mientras que SBX y \acrshort{cmopso} concentran la búsqueda en regiones de alto \gls{qed} con alta validez química.
+
+La preferencia por probabilidades de mutación intermedias y altas ($p_m = 0.012$ y $0.031$) responde a la dimensionalidad del espacio latente, donde perturbaciones en una sola dimensión generan desplazamientos casi imperceptibles en la decodificación.
+
+En conjunto, estos resultados sugieren que formular la tridimensionalidad como una restricción ayuda a orientar la búsqueda sin sobrecargar la optimización. La combinación de operadores con dinámicas distintas permite explorar diferentes zonas del frente, aportando soluciones factibles que concilian de manera razonable la accesibilidad sintética y las propiedades tipo fármaco evaluadas.
 
 \section{Generación de Inhibidores de la Proteína MRP1}
 \label{sec:res_mrp1}
