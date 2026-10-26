@@ -307,12 +307,16 @@ Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance  fre
 \section{Generación de Fármacos Genéricos y Evaluación de Metaheurísticas}
 \label{sec:res_genericos}
 
+En esta sección se aborda la generación de fármacos genéricos sin diana específica mediante metaheurísticas multiobjetivo en el espacio latente del \gls{vae}. Se describen los resultados del ajuste de hiperparámetros y la comparativa de operadores genéticos, para luego contrastar el desempeño global de los cinco algoritmos y caracterizar las moléculas candidatas obtenidas en el frente de Pareto conjunto.
+
 \subsection{Ajuste de Hiperparámetros de las Metaheurísticas}
 \label{subsec:res_metaheuristicas_hp}
 
+A continuación se detallan los resultados de la exploración de hiperparámetros para cada algoritmo, identificando las configuraciones con mejor rendimiento en hipervolumen y examinando la relación entre la convergencia multiobjetivo y la validez química.
+
 \subsubsection{Estudio de Hiperparámetros y Selección de Configuraciones}
 
-Para la selección de configuraciones y la comparación entre algoritmos, se utiliza el hipervolumen ($HV$) como métrica principal, ya que evalúa de forma conjunta la convergencia y la diversidad de las soluciones sin necesidad de contar con un frente de referencia previo. En función de este criterio, la Tabla~\ref{tab:hp_seleccionadas} presenta las configuraciones seleccionadas para cada algoritmo y combinación de operadores, evaluadas por el menor rango medio de hipervolumen en 20 semillas independientes.
+Para la selección de configuraciones y la comparación entre algoritmos, se utiliza el hipervolumen (\acrshort{hv}) como métrica principal, ya que evalúa de forma conjunta la convergencia y la diversidad de las soluciones sin necesidad de contar con un frente de referencia previo. En función de este criterio, la Tabla~\ref{tab:hp_seleccionadas} presenta las configuraciones seleccionadas para cada algoritmo y combinación de operadores, evaluadas por el menor rango medio de hipervolumen en 20 semillas independientes.
 
 \begin{table}[H]
 \centering
@@ -975,7 +979,7 @@ En contraste, los extremos del frente presentan una frecuencia menor. Tanto las 
 \subsection{Análisis del Frente no Dominado Conjunto Global}
 \label{subsec:frente_conjunto_global}
 
-Para evaluar la capacidad exploratoria conjunta y caracterizar el espacio químico accesible, se combinan las soluciones obtenidas por las ramas de cruce PCX y SBX en los cuatro algoritmos genéticos (empleando en cada caso el operador de mutación con mejor desempeño en la comparación estadística), junto con \acrshort{cmopso}, a lo largo de las veinte ejecuciones independientes. Tras deduplicar por estructura química (SMILES), se recalcula la no dominancia global, conformando un frente no dominado conjunto de 32 moléculas únicas.
+Para evaluar la capacidad exploratoria conjunta y caracterizar el espacio químico accesible, se combinan las soluciones obtenidas por las ramas de cruce PCX y SBX en los cuatro algoritmos genéticos (empleando en cada caso el operador de mutación con mejor desempeño en la comparación estadística), junto con \acrshort{cmopso}, a lo largo de las veinte ejecuciones independientes. Tras deduplicar por estructura química (\gls{smiles}), se recalcula la no dominancia global, conformando un frente no dominado conjunto de 32 moléculas únicas.
 
 \subsubsection{Contribución al Frente Conjunto Global}
 
