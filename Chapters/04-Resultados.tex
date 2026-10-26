@@ -1,18 +1,18 @@
 \chapter{Resultados y Discusión}
 \label{ch:resultados}
 
-En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se examinan los resultados del ajuste de hiperparámetros del modelo generativo (\gls{vae}) a través de sus dos fases experimentales y se compara el desempeño de la mejor configuración frente al estado del arte en el benchmark MOSES. A continuación, se describen los resultados de la calibración de las metaheurísticas multiobjetivo en la generación de fármacos genéricos, analizando el impacto de los diferentes operadores. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando la afinidad de unión obtenida mediante acoplamiento molecular y las propiedades fisicoquímicas de las mejores moléculas candidatas.
+En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se examinan los resultados del ajuste de hiperparámetros del modelo generativo (\gls{vae}) a través de sus dos fases experimentales y se compara el desempeño de la mejor configuración frente al estado del arte en el benchmark \gls{moses}. A continuación, se describen los resultados de la calibración de las metaheurísticas multiobjetivo en la generación de fármacos genéricos, analizando el impacto de los diferentes operadores. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando la afinidad de unión obtenida mediante acoplamiento molecular y las propiedades fisicoquímicas de las mejores moléculas candidatas.
 
 \section{Resultados del Modelo Generativo (VAE)}
 \label{sec:res_vae}
 
-En esta sección se aborda la evaluación del modelo generativo sobre el conjunto de datos MOSES. Se presentan los resultados de las fases de ajuste de hiperparámetros y se examina el comportamiento del modelo seleccionado en dicho benchmark frente a otros enfoques de la literatura.
+En esta sección se aborda la evaluación del modelo generativo sobre el conjunto de datos \gls{moses}. Se presentan los resultados de las fases de ajuste de hiperparámetros y se examina el comportamiento del modelo seleccionado en dicho benchmark frente a otros enfoques de la literatura.
 
 \subsection{Ajuste de Hiperparámetros: Fase 1 (Arquitectura y Representación)}
 \label{subsec:res_vae_fase1}
 \label{subsec:res_vae_hiperparametros}
 
-Cada configuración se identifica con la representación (SM para SMILES, SE para SELFIES), la arquitectura (L para LSTM, G para GRU), el número de capas y la dimensión latente. Por ejemplo, SM-L 2 256 corresponde a SMILES, LSTM, 2 capas y latente de 256.
+Cada configuración se identifica con la representación (SM para \gls{smiles}, SE para \gls{selfies}), la arquitectura (L para \gls{lstm}, G para \gls{gru}), el número de capas y la dimensión latente. Por ejemplo, SM-L 2 256 corresponde a \gls{smiles}, \gls{lstm}, 2 capas y latente de 256.
 
 La Tabla~\ref{tab:log_experimentos_100} muestra los resultados de la Fase 1 con 100 épocas de entrenamiento, y la Tabla~\ref{tab:log_experimentos_300} los de 300 épocas.
 
@@ -122,37 +122,37 @@ Al analizar las métricas obtenidas en los experimentos, surgen distintos patron
 
 \paragraph{SMILES vs. SELFIES}
 
-Si bien la representación de SELFIES cumple con su diseño, garantizando una validez perfecta en todas las ejecuciones, las redes entrenadas con SMILES logran capturar con mayor precisión la distribución estadística y las propiedades de las moléculas reales. Esto se refleja en puntuaciones de FCD y distancias de Wasserstein (SA y QED) notablemente inferiores a las de los modelos SELFIES.
+Si bien la representación de \gls{selfies} cumple con su diseño, garantizando una validez perfecta en todas las ejecuciones, las redes entrenadas con \gls{smiles} logran capturar con mayor precisión la distribución estadística y las propiedades de las moléculas reales. Esto se refleja en puntuaciones de \gls{fcd} y distancias de Wasserstein (\gls{sas} y \gls{qed}) notablemente inferiores a las de los modelos \gls{selfies}.
 
 \paragraph{Dimensionalidad}
 
-El espacio latente de 256 es en general superior al de 64 y 128. El aumento de dimensionalidad permite al modelo representar en sus vectores latentes mayores características químicas y da como resultado un mejor FCD y una mayor validez general en los modelos SMILES.
+El espacio latente de 256 es en general superior al de 64 y 128. El aumento de dimensionalidad permite al modelo representar en sus vectores latentes mayores características químicas y da como resultado un mejor \gls{fcd} y una mayor validez general en los modelos \gls{smiles}.
 
 \paragraph{LSTM vs. GRU}
 
-Las redes LSTM demostraron ser más resilientes a entrenamientos prolongados. Al pasar de 100 a 300 épocas, las arquitecturas LSTM tendieron a mejorar sus métricas. Por el contrario, varios modelos GRU sufrieron un colapso o inestabilidad al pasar a las 300 épocas, reduciendo drásticamente la validez general de las moléculas generadas.
+Las redes \gls{lstm} demostraron ser más resilientes a entrenamientos prolongados. Al pasar de 100 a 300 épocas, las arquitecturas \gls{lstm} tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al pasar a las 300 épocas, reduciendo drásticamente la validez general de las moléculas generadas.
 
-La mayor estabilidad de las redes LSTM en entrenamientos prolongados podría atribuirse a la presencia de una compuerta de salida, la cual permite controlar y atenuar la magnitud de su memoria antes de transmitirla a las siguientes capas. En contraste, la arquitectura GRU carece de este mecanismo \cite{chung2014empirical}. Al exponer su memoria de forma directa, en épocas avanzadas se generaría un conflicto numérico con la regularización del VAE, lo que propiciaría el colapso del modelo.
+La mayor estabilidad de las redes \gls{lstm} en entrenamientos prolongados podría atribuirse a la presencia de una compuerta de salida, la cual permite controlar y atenuar la magnitud de su memoria antes de transmitirla a las siguientes capas. En contraste, la arquitectura \gls{gru} carece de este mecanismo \cite{chung2014empirical}. Al exponer su memoria de forma directa, en épocas avanzadas se generaría un conflicto numérico con la regularización del \gls{vae}, lo que propiciaría el colapso del modelo.
 
 \subsubsection{Selección de modelos}
 
-La fase 2 de la optimización de hiperparámetros se centra en probar diferentes tasas de aprendizaje y tamaños de lote; por lo cual, se seleccionarán aquellas configuraciones que muestren tanto una generación estructural adecuada como un mejor balance en las métricas que miden la calidad de la generación molecular (FCD, SA, QED). Dado que todos los modelos seleccionados comparten un espacio latente de 256 dimensiones, este valor se omitirá en su nomenclatura.
+La fase 2 de la optimización de hiperparámetros se centra en probar diferentes tasas de aprendizaje y tamaños de lote; por lo cual, se seleccionarán aquellas configuraciones que muestren tanto una generación estructural adecuada como un mejor balance en las métricas que miden la calidad de la generación molecular (\gls{fcd}, \gls{sas}, \gls{qed}). Dado que todos los modelos seleccionados comparten un espacio latente de 256 dimensiones, este valor se omitirá en su nomenclatura.
 
 \paragraph{SM-L 2 (300 épocas)}
 
-Logró el FCD más bajo de todos los registros (0.3214), manteniendo una validez considerable (0.9514) y excelentes distancias para SA (0.1129) y QED (0.0126).
+Logró el \gls{fcd} más bajo de todos los registros (0.3214), manteniendo una validez considerable (0.9514) y excelentes distancias para \gls{sas} (0.1129) y \gls{qed} (0.0126).
 
 \paragraph{SM-G 2 (100 épocas)}
 
-Aunque la arquitectura GRU se volvió inestable a las 300 épocas, su desempeño temprano fue sobresaliente. A las 100 épocas, este modelo obtuvo un notable FCD (0.4700) y una validez de 0.9449.
+Aunque la arquitectura \gls{gru} se volvió inestable a las 300 épocas, su desempeño temprano fue sobresaliente. A las 100 épocas, este modelo obtuvo un notable \gls{fcd} (0.4700) y una validez de 0.9449.
 
 \paragraph{SE-L 2 (100 épocas)}
 
-Si bien la representación SELFIES mostró consistentemente peores resultados que SMILES, el modelo seleccionado consiguió los mejores resultados frente a sus contrapartes que utilizan la misma representación, obteniendo el FCD más bajo (0.7642) y menores distancias de Wasserstein. En oposición, presenta una novedad pobre (0.8814), por lo cual es significativo observar si esta métrica mejora al explorar otras tasas de aprendizaje y tamaños de lote.
+Si bien la representación \gls{selfies} mostró consistentemente peores resultados que \gls{smiles}, el modelo seleccionado consiguió los mejores resultados frente a sus contrapartes que utilizan la misma representación, obteniendo el \gls{fcd} más bajo (0.7642) y menores distancias de Wasserstein. En oposición, presenta una novedad pobre (0.8814), por lo cual es significativo observar si esta métrica mejora al explorar otras tasas de aprendizaje y tamaños de lote.
 
 \paragraph{SM-L 1 (300 épocas)}
 
-Representa una alternativa con menor profundidad de red, a las 300 épocas consiguió el segundo mejor FCD (0.4588), logrando una validez muy alta (0.9461). Se aspira a observar si el costo de añadir una segunda capa justifica la mejora en rendimiento que presenta el experimento SM-L 2 256.
+Representa una alternativa con menor profundidad de red, a las 300 épocas consiguió el segundo mejor \gls{fcd} (0.4588), logrando una validez muy alta (0.9461). Se aspira a observar si el costo de añadir una segunda capa justifica la mejora en rendimiento que presenta el experimento SM-L 2 256.
 
 
 
@@ -229,13 +229,13 @@ $1 \times 10^{-4}$ & 192 & 0.9057 & \textbf{1.0000} & 0.9822 & 0.9762 & 0.6389 &
 
 \paragraph{Impacto de la Tasa de Aprendizaje (LR)}
 
-La reducción de la tasa de aprendizaje de $1 \times 10^{-3}$ a $1 \times 10^{-4}$ muestra en general una mejora en las arquitecturas con representación SMILES en la calidad del espacio químico generado. Esta mejora se refleja en la obtención de mejores puntuaciones en las métricas de FCD y en las distancias de Wasserstein de estos modelos.
+La reducción de la tasa de aprendizaje de $1 \times 10^{-3}$ a $1 \times 10^{-4}$ muestra en general una mejora en las arquitecturas con representación \gls{smiles} en la calidad del espacio químico generado. Esta mejora se refleja en la obtención de mejores puntuaciones en las métricas de \gls{fcd} y en las distancias de Wasserstein de estos modelos.
 
-Por otro lado, la arquitectura SELFIES presentó en general mejores resultados con un learning rate de $1 \times 10^{-3}$, manteniendo la validez perfecta que le otorga esta representación, pero aun así mostrando peores métricas en cuanto a la calidad del espacio químico que sus contrapartes.
+Por otro lado, la arquitectura \gls{selfies} presentó en general mejores resultados con una tasa de aprendizaje de $1 \times 10^{-3}$, manteniendo la validez perfecta que le otorga esta representación, pero aun así mostrando peores métricas en cuanto a la calidad del espacio químico que sus contrapartes.
 
 \paragraph{Impacto del tamaño de lote (Batch)}
 
-De forma general, con excepción de los modelos SELFIES, configurar el entrenamiento con tamaños de lotes más pequeños, específicamente 64, en combinación con una tasa de aprendizaje de $1 \times 10^{-4}$, produce los mejores resultados, con el mejor FCD de cada modelo SMILES correspondiente a estos valores.
+De forma general, con excepción de los modelos \gls{selfies}, configurar el entrenamiento con tamaños de lotes más pequeños, específicamente 64, en combinación con una tasa de aprendizaje de $1 \times 10^{-4}$, produce los mejores resultados, con el mejor \gls{fcd} de cada modelo \gls{smiles} correspondiente a estos valores.
 
 \paragraph{Tiempos de entrenamiento}
 
@@ -245,33 +245,33 @@ La tendencia de los datos nos muestra que existe un contraste entre la calidad d
 
 \paragraph{SM-L 2 (300 épocas)}
 
-Esta arquitectura mostró los mejores resultados de toda la etapa experimental. Su configuración óptima (LR de $1 \times 10^{-4}$ y Batch de 64) alcanzó conjuntamente la validez más alta de las arquitecturas SMILES y el FCD más bajo de todos los registros analizados (0.1790). De igual manera, el modelo alcanzó la menor distancia de Wasserstein para la distribución de Accesibilidad Sintética (SA) en todo el experimento (0.0932). En contraste, este modelo presentó una métrica de novedad levemente menor en comparación con las demás arquitecturas evaluadas (0.9434) y requirió el mayor tiempo de ejecución de todos los experimentos de la segunda fase.
+Esta arquitectura mostró los mejores resultados de toda la etapa experimental. Su configuración óptima (LR de $1 \times 10^{-4}$ y Batch de 64) alcanzó conjuntamente la validez más alta de las arquitecturas \gls{smiles} y el \gls{fcd} más bajo de todos los registros analizados (0.1790). De igual manera, el modelo alcanzó la menor distancia de Wasserstein para la distribución de Accesibilidad Sintética (\gls{sas}) en todo el experimento (0.0932). En contraste, este modelo presentó una métrica de novedad levemente menor en comparación con las demás arquitecturas evaluadas (0.9434) y requirió el mayor tiempo de ejecución de todos los experimentos de la segunda fase.
 
 \paragraph{SM-G 2 (100 épocas)}
 
-Su mejor comportamiento se registró utilizando un LR de $1 \times 10^{-4}$ y un Batch de 64, donde consiguió un FCD competitivo de 0.3014 y una validez de 0.9500. Además, presentó valores adecuados en las métricas de novedad (0.9658) y Filter (0.9835), logrando distancias de Wasserstein bajas para las distribuciones de SA (0.1114) y QED (0.0064). Esta arquitectura demuestra capacidad para generar un espacio químico de calidad con menos épocas de entrenamiento, aligerando la carga computacional.
+Su mejor comportamiento se registró utilizando un LR de $1 \times 10^{-4}$ y un Batch de 64, donde consiguió un \gls{fcd} competitivo de 0.3014 y una validez de 0.9500. Además, presentó valores adecuados en las métricas de novedad (0.9658) y Filter (0.9835), logrando distancias de Wasserstein bajas para las distribuciones de \gls{sas} (0.1114) y \gls{qed} (0.0064). Esta arquitectura demuestra capacidad para generar un espacio químico de calidad con menos épocas de entrenamiento, aligerando la carga computacional.
 
 \paragraph{SE-L 2 (100 épocas)}
 
-Su principal ventaja sigue siendo la validez, al garantizar una puntuación perfecta (1.0000) en todas las pruebas gracias a la representación SELFIES. Pero, en términos generales, presenta resultados peores al compararlo con las arquitecturas basadas en SMILES. Mientras que los modelos SMILES alcanzan un FCD de hasta 0.1790, el SE-L 2 solo logra un FCD de 0.6751 en su mejor configuración y a costa de una novedad baja (0.8676). Si se intenta mejorar esa novedad reduciendo la tasa de aprendizaje, el FCD empeora significativamente a 2.8927.
+Su principal ventaja sigue siendo la validez, al garantizar una puntuación perfecta (1.0000) en todas las pruebas gracias a la representación \gls{selfies}. Pero, en términos generales, presenta resultados peores al compararlo con las arquitecturas basadas en \gls{smiles}. Mientras que los modelos \gls{smiles} alcanzan un \gls{fcd} de hasta 0.1790, el SE-L 2 solo logra un \gls{fcd} de 0.6751 en su mejor configuración y a costa de una novedad baja (0.8676). Si se intenta mejorar esa novedad reduciendo la tasa de aprendizaje, el \gls{fcd} empeora significativamente a 2.8927.
 
 \paragraph{SM-L 1 (300 épocas)}
 
-La variante de red menos profunda consiguió su punto de mayor eficacia con un LR de $1 \times 10^{-4}$ y un Batch de 64, registrando un FCD de 0.4242 y una validez de 0.9404. Al comparar estos números con el modelo de dos capas (SM-L 2), podemos ver que si bien la arquitectura es más ligera y presenta menores tiempos de entrenamiento, el agregar una capa mejora sistemáticamente las métricas obtenidas.
+La variante de red menos profunda consiguió su punto de mayor eficacia con un LR de $1 \times 10^{-4}$ y un Batch de 64, registrando un \gls{fcd} de 0.4242 y una validez de 0.9404. Al comparar estos números con el modelo de dos capas (SM-L 2), podemos ver que si bien la arquitectura es más ligera y presenta menores tiempos de entrenamiento, el agregar una capa mejora sistemáticamente las métricas obtenidas.
 
 \subsection{Evaluación en el Benchmark MOSES}
 \label{subsec:res_vae_moses}
 
 \subsubsection{Modelo seleccionado}
 
-Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor FCD de todos los experimentos (0.1790), la mayor validez entre los modelos SMILES (0.9624) y la menor distancia de Wasserstein para SA (0.0932). A cambio, presentó una novedad levemente menor (0.9434) y el mayor tiempo de entrenamiento de la segunda fase.
+Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor \gls{fcd} de todos los experimentos (0.1790), la mayor validez entre los modelos \gls{smiles} (0.9624) y la menor distancia de Wasserstein para \gls{sas} (0.0932). A cambio, presentó una novedad levemente menor (0.9434) y el mayor tiempo de entrenamiento de la segunda fase.
 
-En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de QED y SA de las moléculas generadas por este modelo frente a las del conjunto de prueba de MOSES. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0.0083 para QED y 0.0932 para SA).
+En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0.0083 para \gls{qed} y 0.0932 para \gls{sas}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.85\textwidth]{Figures/distribuciones_qed_sa.png}
-\caption{Distribuciones de QED y SA de las moléculas válidas generadas por SM-L 2 frente al conjunto de prueba de MOSES.}
+\caption{Distribuciones de QED y SAS de las moléculas válidas generadas por SM-L 2 frente al conjunto de prueba de MOSES.}
 \label{fig:distribuciones}
 \end{figure}
 
@@ -302,7 +302,7 @@ PCF-VAE & 0.9801 & 1.0000 & 0.9377 & 0.9900 & 0.2962 & 0.8587 & N/R & N/R\\
 \end{tabular}}
 \end{table}
 
-Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance  frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un FCD de 0.1790, manteniendo al mismo tiempo una alta tasa de novedad (0.9434) y diversidad interna (0.8590). Si bien enfoques autorregresivos como CharRNN alcanzan un FCD numéricamente menor (0.0732), este comportamiento suele estar asociado a una caída en la novedad (0.8419), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos VAE radica en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
+Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance  frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0.1790, manteniendo al mismo tiempo una alta tasa de novedad (0.9434) y diversidad interna (0.8590). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0.0732), este comportamiento suele estar asociado a una caída en la novedad (0.8419), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} radica en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
 
 \section{Calibración de Metaheurísticas en Fármacos Genéricos}
 \label{sec:res_genericos}
