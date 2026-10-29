@@ -420,6 +420,17 @@ A partir de esta clasificación, los indicadores de rendimiento considerados en 
 
 Los dos indicadores basados en distancias, \acrshort{igd}$^+$ y el indicador $\epsilon$ aditivo, necesitan un conjunto de referencia que aproxime el frente de Pareto óptimo. Como en el diseño de moléculas ese frente no se conoce, dicho conjunto se construye de forma empírica~\cite{liyao2019quality}.
 
+\subsection{Validación y Perfilado de las Moléculas Candidatas}
+\label{subsec:validacion_perfilado_candidatos}
+
+Con el fin de evaluar y caracterizar las moléculas candidatas obtenidas para \gls{mrp1}, se realiza un análisis sobre sus soluciones del frente de pareto. En esta sección se describen los criterios empleados para evaluar la calidad física de las poses de acoplamiento, la estimación de su potencia inhibitoria y el perfil farmacocinético, fisicoquímico y toxicológico (\gls{admet}).
+
+\textbf{Validación de poses de acoplamiento.} Para evaluar las moléculas obtenidas del frente de Pareto, se utiliza PoseBusters~\cite{buttenschoen2024posebusters}, que permite verificar si las conformaciones generadas son físicamente viables. La métrica corresponde al porcentaje de moléculas que supera las 20 pruebas de la herramienta.
+
+\textbf{Predicción de potencia y bioactividad inhibitoria.} Se entrenó un modelo de \textit{Random Forest} con inhibidores conocidos de \gls{mrp1} extraídos de ChEMBL~\cite{mendez2019chembl} para predecir la bioactividad de las moléculas. Como métrica se utiliza el valor pChEMBL predicho, fijando un umbral de 5.0 para considerar activo al compuesto.
+
+\textbf{Perfil farmacocinético, fisicoquímico y toxicológico.} Se utilizó ADMET-AI~\cite{swanson2024admetai} para predecir las propiedades de los candidatos a partir de modelos de \textit{Therapeutics Data Commons}. Se analizaron descriptores de absorción y permeabilidad intestinal (HIA, Caco-2, PAMPA y biodisponibilidad oral), propiedades fisicoquímicas de solubilidad y lipofilicidad ($\log P$), y el perfil de toxicidad clínica y aguda ($\text{ClinTox}$ y $\text{LD}_{50}$).
+
 \section{Herramientas y Tecnologías de Implementación}
 \label{sec:herramientas_tecnologias}
 
@@ -435,6 +446,9 @@ En esta sección se describen las herramientas y tecnologías empleadas en el en
     \item \textbf{AutoDock Vina (Versión 1.2.7):} Utilizado en el docking ciego y con residuos flexibles para caracterizar el sitio de unión de \gls{mrp1}.
     \item \textbf{Meeko (Versión 0.8.0):} Utilizado para preparar receptores y ligandos en formato PDBQT para el acoplamiento molecular.
     \item \textbf{FPocket:} Utilizado para identificar y evaluar la drogabilidad de cavidades en la estructura de \gls{mrp1}.
+    \item \textbf{PoseBusters:} Utilizado para evaluar la validez química y la plausibilidad física de las poses de acoplamiento.
+    \item \textbf{Scikit-learn:} Empleado para el entrenamiento y evaluación del modelo Random Forest de bioactividad.
+    \item \textbf{ADMET-AI:} Utilizado para predecir perfiles farmacocinéticos y de toxicidad sobre los candidatos.
 \end{itemize}
 
 Además, para el desarrollo, redacción y diseño de esquemas se utilizaron Git para el control de versiones, LaTeX para la composición tipográfica de texto, fórmulas y bibliografía, Visual Studio Code como entorno integrado de desarrollo y TikZ para la creación de los diagramas y esquemas.
