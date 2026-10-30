@@ -347,7 +347,7 @@ Algoritmo & Operadores & Configuración & Rango medio & $\mu \pm \sigma$ \\
  & sbx/pm & 400$\times$250 cx=1 mut=0.031 & 6.30 & 1.1132 $\pm$ 0.0024 \\
  & sbx/gauss & 200$\times$500 cx=0.9 mut=0.031 & 6.75 & 1.1137 $\pm$ 0.0031 \\
 \midrule
-\acrshort{cmopso} & --- & 100$\times$1000 elite=10 mut=0.031 vel=0.1 & 26.00 & 1.1092 $\pm$ 0.0037 \\
+\acrshort{cmopso} & - & 100$\times$1000 elite=10 mut=0.031 vel=0.1 & 26.00 & 1.1092 $\pm$ 0.0037 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -401,7 +401,7 @@ La comparación estadística se realiza sobre el hipervolumen: test de Friedman 
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores multiobjetivo — \acrshort{agemoea}.}
+\caption{Comparación de indicadores multiobjetivo - \acrshort{agemoea}.}
 \label{tab:comparison_multiobjective_agemoea}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
@@ -417,7 +417,7 @@ sbx\_gauss & $1.1137 \pm 0.0031$ & $1.0249 \pm 0.3140$ & $0.0519 \pm 0.0089$ & $
 }
 \end{table}
 
-La Tabla~\ref{tab:comparison_multiobjective_agemoea} compara cuatro configuraciones de \acrshort{agemoea} obtenidas mediante distintas combinaciones de operadores de cruce y mutación. La evaluación considera métricas de calidad del frente de Pareto —hipervolumen, espaciamiento, $\text{IGD}^+$ y $\epsilon^+$—, además del tamaño del conjunto de soluciones no dominadas factibles y el tiempo de ejecución.
+La Tabla~\ref{tab:comparison_multiobjective_agemoea} compara cuatro configuraciones de \acrshort{agemoea} obtenidas mediante distintas combinaciones de operadores de cruce y mutación. La evaluación considera métricas de calidad del frente de Pareto (hipervolumen, espaciamiento, $\text{IGD}^+$ y $\epsilon^+$), además del tamaño del conjunto de soluciones no dominadas factibles y el tiempo de ejecución.
 
 Los resultados muestran que las configuraciones basadas en PCX alcanzan un mejor desempeño global en cuanto a los indicadores multiobjetivo, logrando el mayor hipervolumen promedio ($1.1216$ en pcx\_gauss), el menor $\text{IGD}^+$ ($0.0369$ en pcx\_gauss) y el menor $\epsilon^+$ ($0.1181$ en pcx\_pm). En la práctica, estos valores reflejan una mejor aproximación al frente óptimo sin dejar regiones desatendidas, lo que se traduce en un conjunto más amplio de alternativas para el diseño molecular (hasta $24.1$ moléculas factibles en pcx\_pm, frente a $18\text{--}19$ en SBX).
 
@@ -428,7 +428,7 @@ Estas diferencias responden principalmente al operador de cruce, ya que las conf
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores químicos — \acrshort{agemoea}.}
+\caption{Comparación de indicadores químicos - \acrshort{agemoea}.}
 \label{tab:comparison_chemical_agemoea}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccc}
@@ -458,12 +458,12 @@ Se observa un comportamiento diferenciado según el operador de cruce. Las varia
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0.818 & $-$0.219 & --- \\
+pcx\_pm vs pcx\_gauss & 0.818 & $-$0.219 & - \\
 pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.971 & pcx\_pm \\
 pcx\_pm vs sbx\_gauss & $<$0.001 & $+$0.962 & pcx\_pm \\
 pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
 pcx\_gauss vs sbx\_gauss & $<$0.001 & $+$1.000 & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0.818 & $-$0.190 & --- \\
+sbx\_pm vs sbx\_gauss & 0.818 & $-$0.190 & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -504,7 +504,7 @@ La Figura~\ref{fig:moleculas_operadores_agemoea} muestra las dos moléculas de m
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores multiobjetivo — \acrshort{moead}.}
+\caption{Comparación de indicadores multiobjetivo - \acrshort{moead}.}
 \label{tab:comparison_multiobjective_moead}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
@@ -520,7 +520,7 @@ sbx\_gauss & $1.1079 \pm 0.0055$ & $\mathbf{1.0330 \pm 0.3701}$ & $0.0685 \pm 0.
 }
 \end{table}
 
-La Tabla~\ref{tab:comparison_multiobjective_moead} compara cuatro configuraciones de \acrshort{moead} obtenidas mediante distintas combinaciones de operadores de cruce y mutación. La evaluación considera métricas de calidad del frente de Pareto —hipervolumen, espaciamiento, $\text{IGD}^+$ y $\epsilon^+$—, además del tamaño del conjunto de soluciones no dominadas factibles y el tiempo de ejecución.
+La Tabla~\ref{tab:comparison_multiobjective_moead} compara cuatro configuraciones de \acrshort{moead} obtenidas mediante distintas combinaciones de operadores de cruce y mutación. La evaluación considera métricas de calidad del frente de Pareto (hipervolumen, espaciamiento, $\text{IGD}^+$ y $\epsilon^+$), además del tamaño del conjunto de soluciones no dominadas factibles y el tiempo de ejecución.
 
 Los resultados muestran que las combinaciones con PCX alcanzan mayor hipervolumen promedio, mejor convergencia ($\text{IGD}^+$) y menor $\epsilon^+$ en comparación con las variantes de SBX. En particular, pcx\_gauss obtiene el mayor hipervolumen ($1.1138$) y el menor $\text{IGD}^+$ ($0.0530$), y pcx\_pm el menor $\epsilon^+$ ($0.1729$). En la práctica, esto refleja una mejor aproximación al frente óptimo, ofreciendo un conjunto algo más amplio de alternativas para el diseño molecular ($19.9$ moléculas factibles en promedio frente a $17\text{--}18$ en SBX).
 
@@ -531,7 +531,7 @@ Estas diferencias podrían explicarse por el operador de cruce. En \acrshort{moe
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores químicos — \acrshort{moead}.}
+\caption{Comparación de indicadores químicos - \acrshort{moead}.}
 \label{tab:comparison_chemical_moead}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccc}
@@ -561,12 +561,12 @@ Todas las configuraciones de \acrshort{moead} destacan por mantener una validez 
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0.624 & $-$0.200 & --- \\
+pcx\_pm vs pcx\_gauss & 0.624 & $-$0.200 & - \\
 pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.933 & pcx\_pm \\
 pcx\_pm vs sbx\_gauss & 0.011 & $+$0.714 & pcx\_pm \\
 pcx\_gauss vs sbx\_pm & $<$0.001 & $+$0.886 & pcx\_gauss \\
 pcx\_gauss vs sbx\_gauss & 0.001 & $+$0.848 & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0.624 & $-$0.267 & --- \\
+sbx\_pm vs sbx\_gauss & 0.624 & $-$0.267 & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -606,7 +606,7 @@ La Figura~\ref{fig:moleculas_operadores_moead} presenta las dos moléculas de ma
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores multiobjetivo — \acrshort{nsga2}.}
+\caption{Comparación de indicadores multiobjetivo - \acrshort{nsga2}.}
 \label{tab:comparison_multiobjective_nsga2}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
@@ -633,7 +633,7 @@ Nuevamente se repite el comportamiento en el espaciamiento, donde SBX registra v
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores químicos — \acrshort{nsga2}.}
+\caption{Comparación de indicadores químicos - \acrshort{nsga2}.}
 \label{tab:comparison_chemical_nsga2}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccc}
@@ -664,7 +664,7 @@ Por su parte, SBX alcanza mayor validez química ($> 98.7\%$), mayor factibilida
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0.388 & $-$0.229 & --- \\
+pcx\_pm vs pcx\_gauss & 0.388 & $-$0.229 & - \\
 pcx\_pm vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_pm \\
 pcx\_pm vs sbx\_gauss & $<$0.001 & $+$1.000 & pcx\_pm \\
 pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
@@ -709,7 +709,7 @@ La Figura~\ref{fig:moleculas_operadores_nsga2} muestra las dos moléculas de may
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores multiobjetivo — \acrshort{nsga3}.}
+\caption{Comparación de indicadores multiobjetivo - \acrshort{nsga3}.}
 \label{tab:comparison_multiobjective_nsga3}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
@@ -736,7 +736,7 @@ Nuevamente se repite el comportamiento en el espaciamiento, donde SBX obtiene va
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores químicos — \acrshort{nsga3}.}
+\caption{Comparación de indicadores químicos - \acrshort{nsga3}.}
 \label{tab:comparison_chemical_nsga3}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccc}
@@ -767,12 +767,12 @@ En cambio, SBX obtiene un \gls{qed} promedio superior ($0.881\text{--}0.885$ fre
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0.729 & $+$0.095 & --- \\
+pcx\_pm vs pcx\_gauss & 0.729 & $+$0.095 & - \\
 pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.971 & pcx\_pm \\
 pcx\_pm vs sbx\_gauss & $<$0.001 & $+$0.914 & pcx\_pm \\
 pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
 pcx\_gauss vs sbx\_gauss & $<$0.001 & $+$0.943 & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0.286 & $-$0.381 & --- \\
+sbx\_pm vs sbx\_gauss & 0.286 & $-$0.381 & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -818,7 +818,7 @@ En esta sección se comparan los cinco algoritmos (\acrshort{nsga2}, \acrshort{n
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores multiobjetivo — mejores configuraciones.}
+\caption{Comparación de indicadores multiobjetivo - mejores configuraciones.}
 \label{tab:comparison_multiobjective}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
@@ -844,7 +844,7 @@ Estas diferencias podrían deberse a cómo busca y selecciona cada algoritmo. En
 \begin{table}[H]
 \centering
 \rowcolors{2}{gray!10}{white}
-\caption{Comparación de indicadores químicos — mejores configuraciones.}
+\caption{Comparación de indicadores químicos - mejores configuraciones.}
 \label{tab:comparison_chemical}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccc}
@@ -884,7 +884,7 @@ Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \acrshort{nsga2} vs \acrshort{agemoea} & 0.004 & $+$0.790 & \acrshort{nsga2} \\
 \acrshort{nsga2} vs \acrshort{cmopso} & $<$0.001 & $+$1.000 & \acrshort{nsga2} \\
 \acrshort{nsga3} vs \acrshort{moead} & $<$0.001 & $+$1.000 & \acrshort{nsga3} \\
-\acrshort{nsga3} vs \acrshort{agemoea} & 0.571 & $+$0.152 & --- \\
+\acrshort{nsga3} vs \acrshort{agemoea} & 0.571 & $+$0.152 & - \\
 \acrshort{nsga3} vs \acrshort{cmopso} & $<$0.001 & $+$1.000 & \acrshort{nsga3} \\
 \acrshort{moead} vs \acrshort{agemoea} & $<$0.001 & $-$0.990 & \acrshort{agemoea} \\
 \acrshort{moead} vs \acrshort{cmopso} & 0.008 & $+$0.705 & \acrshort{moead} \\
@@ -1005,7 +1005,7 @@ Configuración & Operadores & Aporta & Exclusivas & \% & QED $\uparrow$ & SA $\d
 \multirow{2}{*}{\acrshort{agemoea}} & pcx\_pm & 11 & 1 & 34.4 & 0.615 & 1.24 & 0.587 \\
  & sbx\_pm & 7 & 0 & 21.9 & 0.811 & 1.35 & 0.350 \\
 \midrule
-\acrshort{cmopso} & --- & 10 & 3 & 31.2 & 0.865 & 1.62 & 0.360 \\
+\acrshort{cmopso} & - & 10 & 3 & 31.2 & 0.865 & 1.62 & 0.360 \\
 \bottomrule
 \end{tabular}
 \end{table}
