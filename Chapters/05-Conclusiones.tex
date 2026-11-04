@@ -1,12 +1,54 @@
 \chapter{Conclusiones y Trabajo Futuro}
 \label{ch:conclusiones}
 
+Este capítulo contiene las conclusiones generales del desarrollo y los resultados obtenidos en esta tesina final de grado. Se repasan los principales hallazgos alcanzados, se presentan las dificultades y desafíos que surgieron a lo largo de la investigación, tanto a nivel metodológico como computacional y se plantean posibles líneas de trabajo futuro.
+
 \section{Conclusiones}
 \label{sec:conclusiones}
-% Discusión del grado de satisfacción y cumplimiento de los objetivos planteados.
-% Principales hallazgos en la generación e inhibición de MRP1 y en la optimización multiobjetivo.
-% Dificultades y desafíos encontrados durante el desarrollo del trabajo.
+
+En este trabajo se presentó la implementación de un enfoque híbrido, mediante el cual, a través de un modelo generativo y la aplicación de metaheurísticas multiobjetivo, se evaluó la generación y optimización dirigida de nuevos compuestos químicos para la inhibición de la proteína MRP1.
+
+En relación con los objetivos específicos planteados al inicio de esta tesina (Sección~\ref{sec:objetivos}), se destacan los siguientes logros y conclusiones:
+
+\begin{itemize}
+    \item En primer lugar, se diseñó, entrenó y evaluó mediante \textit{benchmarks} estandarizados un modelo generativo de tipo autoencoder variacional, logrando una alta tasa de validez química, novedad y diversidad en la reconstrucción y decodificación del espacio molecular.
+
+    \item En segundo lugar, las metaheurísticas multiobjetivo demostraron ser eficaces para explorar el espacio latente continuo del modelo, resolviendo el compromiso entre múltiples métricas en conflicto y permitiendo encontrar moléculas candidatas con perfiles fisicoquímicos estables y potencial inhibitorio frente a MRP1.
+\end{itemize}
+
+En resumen, la integración propuesta valida que la combinación de modelos generativos continuos y metaheurísticas multiobjetivo constituye una herramienta computacional sólida para el diseño dirigido de moléculas, dando cumplimiento satisfactorio a los propósitos planteados para este trabajo de grado.
+
+\section{Dificultades Encontradas}
+\label{sec:dificultades_encontradas}
+
+Durante el desarrollo de esta tesina de grado surgió un conjunto de dificultades relevantes, relacionadas tanto al campo de estudio del proyecto como a las particularidades del contexto computacional que requirió la implementación. Algunas de estas son:
+
+\begin{itemize}
+    \item En primer lugar, la naturaleza interdisciplinaria del proyecto representó una curva de aprendizaje exigente, siendo necesario adquirir conocimientos fundamentales del campo farmacológico para poder afrontar este trabajo. Aspectos que abarcan desde representaciones moleculares, métricas de acoplamiento molecular y de caracterización de compuestos, hasta nociones sobre el funcionamiento de las proteínas y su interacción con ligandos, fueron imprescindibles para abordar el problema y definir los objetivos a optimizar.
+
+    \item En segundo lugar, la selección y formulación de los objetivos a optimizar se presentó como una dificultad importante. Caracterizar correctamente las moléculas candidatas exigió contemplar propiedades fisicoquímicas, métricas de acoplamiento y predictores de bioactividad para obtener candidatos viables.
+
+    \item Por último, los requerimientos de cómputo representaron una dificultad importante, tanto para el entrenamiento de los modelos generativos como para la posterior optimización metaheurística. En particular, la necesidad de evaluar el acoplamiento de las moléculas generadas en cada iteración de los algoritmos supuso un cuello de botella temporal significativo. Frente a este desafío, la aceleración por GPU provista por el clúster TOKO de la UNCUYO fue fundamental para hacer viable la experimentación en tiempos de ejecución razonables.
+\end{itemize}
+
+Superar estas dificultades hizo posible la obtención de los resultados presentados y dejó aprendizajes metodológicos, los cuales dan pie a las distintas líneas de trabajo futuro que se detallan a continuación.
 
 \section{Trabajo Futuro}
 \label{sec:trabajo_futuro}
-% Líneas de investigación abiertas: exploración de nuevas arquitecturas generativas (modelos de difusión, Transformers moleculares), validación biológica in vitro/in vivo, consideración de efectos adversos y expansión a otras dianas de la familia ABC.
+
+Los resultados y metodologías desarrolladas en esta tesina sientan las bases para diversas líneas de investigación a futuro:
+
+\begin{itemize}
+    \item En primer lugar, se plantea la exploración de otras técnicas de representación molecular, en especial representaciones tridimensionales que permitan incorporar información geométrica de las moléculas directamente.
+
+    \item En segundo lugar, se propone ampliar el conjunto de entrenamiento mediante la integración de librerías químicas de mayor escala y diversidad estructural, permitiendo al modelo aprender una distribución más amplia y representativa del espacio químico.
+
+    \item Por último, se plantea la extensión de la metodología hacia otras dianas biológicas. El enfoque híbrido desarrollado en este trabajo no está restringido exclusivamente a MRP1, por lo que una línea prometedora consiste en aplicar este mismo esquema al diseño de candidatos dirigidos contra otras proteínas de relevancia terapéutica en el tratamiento del cáncer.
+\end{itemize}
+
+De este modo, las líneas propuestas abren un camino claro para continuar evolucionando esta metodología, ampliando su capacidad de exploración en el diseño computacional de nuevos~compuestos.
+
+\section{Conclusiones Finales}
+\label{sec:conclusiones_finales}
+
+Desde una perspectiva personal, el desarrollo de esta tesina final de grado representó una experiencia fructifera. Abordar un desafío interdisciplinario como el diseño de fármacos no solo demandó poner en práctica conceptos de las ciencias de la computación, sino también aplicarlos a un campo complejo, demostrando la capacidad de la disciplina para aportar soluciones a problemas de otras áreas.
