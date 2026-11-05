@@ -69,7 +69,7 @@ En esta sección se describe la primera etapa metodológica, orientada a dos obj
 Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, el espacio de búsqueda de hiperparámetros se estructuró en dos fases secuenciales, totalizando 72 entrenamientos independientes. Se optó por evaluar primero la estructura del autoencoder y posteriormente sus parámetros de optimización, evitando así escalar el tiempo de cómputo de forma desmedida. Así, la primera fase define la representación y la arquitectura base, y la segunda afina la tasa de aprendizaje y el tamaño de lote en las mejores configuraciones:
 
 \begin{itemize}
-    \item \textbf{Fase 1 (Estructura base):} Se evaluaron 48 configuraciones combinando la representación molecular (\gls{smiles} y \gls{selfies}), el tipo de celda recurrente (\gls{gru} y \gls{lstm}), la cantidad de capas ocultas (1 y 2), la dimensión latente (64, 128 y 256) y las épocas de entrenamiento (100 y 300). La tasa de aprendizaje y el tamaño de lote se mantuvieron fijos en $1 \times 10^{-3}$ y 128. Las dimensiones latentes se basan en trabajos previos de VAE moleculares~\cite{GBWHLDSA18} para probar diferentes capacidades de representación, y las épocas buscan evaluar si un entrenamiento prolongado mejora los resultados.
+    \item \textbf{Fase 1 (Estructura base):} Se evaluaron 48 configuraciones combinando la representación molecular (\gls{smiles} y \gls{selfies}), el tipo de celda recurrente (\gls{gru} y \gls{lstm}), la cantidad de capas ocultas (1 y 2), la dimensión latente (64, 128 y 256) y las épocas de entrenamiento (100 y 300). La tasa de aprendizaje y el tamaño de lote se mantuvieron fijos en $1 \times 10^{-3}$ y 128. Las dimensiones latentes se basan en trabajos previos de \glspl{vae} moleculares~\cite{GBWHLDSA18} para probar diferentes capacidades de representación, y las épocas buscan evaluar si un entrenamiento prolongado mejora los resultados.
     \item \textbf{Fase 2 (Optimización):} Sobre los cuatro modelos representativos con mejor balance de la fase previa, se exploraron dos tasas de aprendizaje ($1 \times 10^{-3}$ y $1 \times 10^{-4}$) y tres tamaños de lote (64, 128 y 192), sumando 24 ejecuciones adicionales. El objetivo fue comprobar si una tasa de aprendizaje más baja ($1 \times 10^{-4}$) permitía un mejor ajuste y evaluar el efecto de variar el tamaño de lote en el entrenamiento.
 \end{itemize}
 
@@ -77,7 +77,7 @@ El cuadro~\ref{tab:espacio_busqueda_vae} resume las variables y los valores expl
 
 \begin{table}[htbp]
 \centering
-\caption{Espacio de búsqueda de hiperparámetros del VAE dividido por fases.}
+\caption{Espacio de búsqueda de hiperparámetros del \gls{vae} dividido por fases.}
 \label{tab:espacio_busqueda_vae}
 \begin{tabular}{lllc}
 \toprule
@@ -118,7 +118,7 @@ Se consideran cinco algoritmos metaheurísticos multiobjetivo para la experiment
 
 \textbf{\acrshort{moead} (Multiobjective Evolutionary Algorithm Based on Decomposition).} Descompone el problema multiobjetivo en un conjunto de subproblemas escalares, definidos por vectores de pesos, y los optimiza de forma simultánea. Cada subproblema se resuelve usando solo la información de sus subproblemas vecinos. La distribución de las soluciones sobre el frente depende de cómo se distribuyan los vectores de pesos, y no de un mecanismo explícito de preservación de la diversidad~\cite{zhang2007moead}.
 
-\textbf{\acrshort{cmopso} (Competitive Mechanism Based Multi-objective Particle Swarm Optimizer).} Pertenece a la familia de la optimización por enjambre de partículas. El rendimiento de los optimizadores convencionales de esta familia depende en gran medida de las mejores soluciones globales y personales guardadas en un archivo externo. CMOPSO, en cambio, selecciona en cada generación un conjunto de partículas élite del propio enjambre, según el frente de no dominancia y la distancia de apiñamiento, y actualiza cada partícula mediante una competencia por pares entre dos élites elegidas al azar: gana la que forma el ángulo menor con la partícula~\cite{zhang2018competitive}.
+\textbf{\acrshort{cmopso} (Competitive Mechanism Based Multi-objective Particle Swarm Optimizer).} Pertenece a la familia de la optimización por enjambre de partículas. El rendimiento de los optimizadores convencionales de esta familia depende en gran medida de las mejores soluciones globales y personales guardadas en un archivo externo. \acrshort{cmopso}, en cambio, selecciona en cada generación un conjunto de partículas élite del propio enjambre, según el frente de no dominancia y la distancia de apiñamiento, y actualiza cada partícula mediante una competencia por pares entre dos élites elegidas al azar: gana la que forma el ángulo menor con la partícula~\cite{zhang2018competitive}.
 
 \textbf{\acrshort{agemoea} (Adaptive Geometry Estimation Based MOEA).} Parte de que el desempeño de los algoritmos multiobjetivo depende de la geometría del frente de Pareto, que puede ser una hipersuperficie euclídea, esférica o hiperbólica. Sobre el esquema de \acrshort{nsga2}, reemplaza la distancia de apiñamiento por un puntaje de supervivencia que combina diversidad y proximidad mediante una norma $L_p$ adaptativa. La estimación de dicha geometría se realiza mediante un procedimiento de complejidad $O(n \times N)$, donde $n$ es el número de objetivos y $N$ el tamaño de la población. De este modo mantiene un rendimiento competitivo ante frentes de geometrías diversas, donde los algoritmos que suponen una geometría fija tienden a degradarse~\cite{panichella2019adaptive}.
 
@@ -174,9 +174,9 @@ Población & Generaciones & Evaluaciones \\
 Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead} y \acrshort{agemoea}) comparten el mismo espacio de hiperparámetros, definido por el tipo de operador de cruce y mutación. Se evalúan los siguientes operadores:
 
 \begin{itemize}
-    \item \textbf{Cruce Binario Simulado (SBX)~\cite{deb1995sbx}:} Genera dos hijos a partir de dos padres imitando el comportamiento del cruce de un punto en codificación binaria, pero adaptado a variables reales.
-    \item \textbf{Cruce Centrado en Padres (PCX)~\cite{deb2002pcx}:} Genera cada hijo cerca del centroide de los padres seleccionados, desplazándolo ligeramente hacia uno de ellos y añadiendo una pequeña perturbación aleatoria en las demás direcciones.
-    \item \textbf{Mutación Polinomial (PM)~\cite{deb1996polynomial}:} Perturba cada variable del individuo a partir de una distribución polinomial.
+    \item \textbf{Cruce Binario Simulado (\acrshort{sbx})~\cite{deb1995sbx}:} Genera dos hijos a partir de dos padres imitando el comportamiento del cruce de un punto en codificación binaria, pero adaptado a variables reales.
+    \item \textbf{Cruce Centrado en Padres (\acrshort{pcx})~\cite{deb2002pcx}:} Genera cada hijo cerca del centroide de los padres seleccionados, desplazándolo ligeramente hacia uno de ellos y añadiendo una pequeña perturbación aleatoria en las demás direcciones.
+    \item \textbf{Mutación Polinomial (\acrshort{pm})~\cite{deb1996polynomial}:} Perturba cada variable del individuo a partir de una distribución polinomial.
     \item \textbf{Mutación Gaussiana~\cite{back1993gaussian}:} Añade a cada variable un ruido aleatorio extraído de una distribución normal.
 \end{itemize}
 
@@ -234,7 +234,7 @@ El estudio comprende cuatro etapas. Se utiliza el hipervolumen como criterio pri
     \item \textbf{Estudio de hiperparámetros:} Se ejecutan 20 semillas independientes por configuración ($(108 \times 4 + 81) \times 20 = 10\,260$ ejecuciones en total). Para cada combinación de operadores (\texttt{pcx/pm}, \texttt{pcx/gauss}, \texttt{sbx/pm}, \texttt{sbx/gauss}) en los algoritmos genéticos y para \acrshort{cmopso}, se selecciona la mejor configuración interna basándose en el menor rango medio de hipervolumen entre las 20 semillas.
     \item \textbf{Comparativa de operadores genéticos:} Fijando la mejor configuración de cada combinación de operadores, se analizan las cuatro variantes por algoritmo para evaluar el impacto del cruce y la mutación mediante pruebas estadísticas sobre el hipervolumen e indicadores químicos.
     \item \textbf{Comparación global entre metaheurísticas multiobjetivo:} Se seleccionan las configuraciones con mejor desempeño de los cinco algoritmos y se comparan exhaustivamente entre sí sobre todos los indicadores multiobjetivo y químicos, analizando además sus dinámicas de convergencia y la distribución de sus frentes de Pareto.
-    \item \textbf{Análisis del frente conjunto global y moléculas representativas:} Evaluación del frente no dominado conjunto obtenido a partir de las combinaciones de operadores (incorporando las familias de cruce PCX y SBX de todos los algoritmos genéticos y \acrshort{cmopso}) y análisis de las moléculas representativas.
+    \item \textbf{Análisis del frente conjunto global y moléculas representativas:} Evaluación del frente no dominado conjunto obtenido a partir de las combinaciones de operadores (incorporando las familias de cruce \acrshort{pcx} y \acrshort{sbx} de todos los algoritmos genéticos y \acrshort{cmopso}) y análisis de las moléculas representativas.
 \end{enumerate}
 
 En total, el estudio comprende $10\,260$ ejecuciones independientes, cada una con un número fijo de 100\,000 evaluaciones.
@@ -252,11 +252,11 @@ El procedimiento propuesto se organiza en una serie de etapas consecutivas que p
 
 \input{Figures/pipeline_preparacion_mrp1.tex}
 
-\textbf{Estructura de referencia.} Como no existen estructuras en el \textit{Protein Data Bank} que contengan los quimioterápicos de interés unidos a \gls{mrp1}, se recurre a la literatura. Se utiliza la estructura 8VUX, correspondiente a ABCC1 (\gls{mrp1}) humano cocristalizado con \gls{cgamp} y determinada por microscopía crioelectrónica con una resolución de 3.54~Å (ángstroms, unidad de medida de distancias a escala atómica equivalente a $0.1\text{ nm}$)~\cite{shinde2025structures}. El \gls{cgamp} es un nucleótido cíclico mensajero que desempeña un papel clave en la inmunidad innata y en la respuesta contra infecciones y tumores. Si bien el \gls{cgamp} no es un quimioterapéutico, los autores del trabajo que reporta la estructura señalan que el sitio donde se une es el sitio de unión del sustrato de \gls{mrp1}, localizado en el dominio transmembrana TMD2~\cite{shinde2025structures}.
+\textbf{Estructura de referencia.} Como no existen estructuras en el \textit{Protein Data Bank} que contengan los quimioterápicos de interés unidos a \gls{mrp1}, se recurre a la literatura. Se utiliza la estructura 8VUX, correspondiente a \gls{abcc1} (\gls{mrp1}) humano cocristalizado con \gls{cgamp} y determinada por microscopía crioelectrónica con una resolución de 3.54~Å (ángstroms, unidad de medida de distancias a escala atómica equivalente a $0.1\text{ nm}$)~\cite{shinde2025structures}. El \gls{cgamp} es un nucleótido cíclico mensajero que desempeña un papel clave en la inmunidad innata y en la respuesta contra infecciones y tumores. Si bien el \gls{cgamp} no es un quimioterapéutico, los autores del trabajo que reporta la estructura señalan que el sitio donde se une es el sitio de unión del sustrato de \gls{mrp1}, localizado en el dominio transmembrana TMD2~\cite{shinde2025structures}.
 
 \textbf{Preparación del receptor.} Puesto que la proteína en la estructura 8VUX se encuentra como un homodímero, los experimentos de esta tesina se centran únicamente en la cadena B como receptor. Sobre esta se eliminan el \gls{cgamp}, el hemisuccinato de colesterol y las moléculas de agua. Posteriormente se añaden los átomos de hidrógeno, se asignan los estados de protonación estándar de cada residuo y las cargas parciales, y se genera el archivo en formato PDBQT con Meeko~\cite{santosmartins2025meeko}. El receptor resultante comprende 1005 residuos y 9587 átomos, de los cuales 1658 son hidrógenos polares.
 
-\textbf{Identificación del sitio de unión.} Se procede a identificar los sitios drogables de 8VUX posteriormente a la separación de la proteína del ligando, con énfasis en TMD2 por su asociación con el sitio de unión del sustrato. Para ello se utiliza FPocketWeb~\cite{kochnev2022fpocketweb}, que arrojó como resultado una cavidad drogable en TMD2, el bolsillo número 78, con una drogabilidad reportada de 0.738 (probabilidad de drogabilidad elevada), y que además coincide con el sitio de unión del \gls{cgamp}. Como resultado, se selecciona el bolsillo 78 como sitio de unión probable de los quimioterápicos. Los demás bolsillos con elevada drogabilidad no se consideran porque corresponden a las cavidades donde se une el ATP para accionar el mecanismo de extracción de \gls{mrp1}.
+\textbf{Identificación del sitio de unión.} Se procede a identificar los sitios drogables de 8VUX posteriormente a la separación de la proteína del ligando, con énfasis en TMD2 por su asociación con el sitio de unión del sustrato. Para ello se utiliza FPocketWeb~\cite{kochnev2022fpocketweb}, que arrojó como resultado una cavidad drogable en TMD2, el bolsillo número 78, con una drogabilidad reportada de 0.738 (probabilidad de drogabilidad elevada), y que además coincide con el sitio de unión del \gls{cgamp}. Como resultado, se selecciona el bolsillo 78 como sitio de unión probable de los quimioterápicos. Los demás bolsillos con elevada drogabilidad no se consideran porque corresponden a las cavidades donde se une el \gls{atp} para accionar el mecanismo de extracción de \gls{mrp1}.
 
 \textbf{Docking ciego y elección de los aminoácidos flexibles.} Como no existe una estructura que cocristalice \gls{mrp1} con los quimioterápicos de interés, los aminoácidos relevantes se identifican de manera computacional. Para ello se utiliza AutoDock Vina~\cite{trott2010vina,eberhardt2021vina} en un docking ciego sobre el bolsillo 78, con el irinotecán como ligando de referencia (PubChem, CID 60838), con el objetivo de determinar las poses más probables y los aminoácidos con los que más interacciona. Vina se configuró con un centro en $(164.6835,\ 130.2140,\ 120.1165)$~Å y una caja de $29.2 \times 35.6 \times 35.0$~Å, una exhaustividad de 32 y la generación de 100 poses.
 
@@ -328,13 +328,14 @@ El TRP1246 presenta 11 pares de átomos con distancias de 2.98 a 3.87~Å en su a
 
 \textbf{Preparación de las moléculas candidatas.} Las secuencias lineales decodificadas por el \gls{vae} se convierten a su estructura tridimensional con RDKit~\cite{landrum2026rdkit} y se preparan con Meeko~\cite{santosmartins2025meeko}, que asigna los tipos de átomo, las cargas parciales y las torsiones activas.
 
-\subsection{Funciones Objetivo y Acoplamiento Molecular}
+\subsection{Funciones Objetivo}
 \label{subsec:fo_mrp1}
 
-Para el diseño dirigido hacia \gls{mrp1} se añade la energía de unión como tercer objetivo junto a \gls{qed} y \gls{sas}, con el fin de guiar la búsqueda hacia la interacción con la diana objetivo. De este modo, se optimizan simultáneamente sobre el espacio latente del \gls{vae}:
+Para el diseño dirigido hacia \gls{mrp1} se añaden la energía de unión y el pChEMBL predicho junto a \gls{qed} y \gls{sas}, con el fin de guiar la búsqueda hacia la interacción con la diana objetivo. De este modo, se optimizan simultáneamente sobre el espacio latente del \gls{vae}:
 
 \begin{itemize}
     \item \textbf{Energía de unión:} [Minimizar] Energía libre de afinidad de unión de la molécula con \gls{mrp1}, estimada mediante acoplamiento molecular con la función de puntuación de AutoDock Vina~\cite{trott2010vina}. Se utiliza su implementación en \gls{gpu}, Uni-Dock~\cite{yu2023unidock}, que reproduce dicha función de puntuación y evalúa un lote de moléculas en paralelo.
+    \item \textbf{pChEMBL predicho:} [Maximizar] Busca maximizar la potencia inhibitoria esperada de cada molécula frente a \gls{mrp1}. El pChEMBL expresa el $\text{IC}_{50}$ en escala logarítmica, de modo que un valor mayor corresponde a una mayor potencia. Dado que no es posible determinar experimentalmente el $\text{IC}_{50}$ de moléculas recién generadas, este valor se estima con un modelo Random Forest entrenado con compuestos de \gls{mrp1} cuyo $\text{IC}_{50}$ está reportado en ChEMBL~\cite{mendez2019chembl}.
     \item \textbf{\gls{qed}:} [Maximizar] Definida en la sección~\ref{subsec:fo_genericos}.
     \item \textbf{\gls{sas}:} [Minimizar] Definida en la sección~\ref{subsec:fo_genericos}.
 \end{itemize}
@@ -348,7 +349,7 @@ Se mantiene la restricción de complejidad estructural $F_{\text{sp3}} \ge 0.30$
 
 Se ejecuta la búsqueda dirigida en el espacio latente con las mejores configuraciones seleccionadas en la sección~\ref{sec:farmacos_genericos}, con el mismo total de 100\,000 evaluaciones por ejecución y 20 semillas independientes. El acoplamiento se realiza con el receptor rígido, dentro de la caja de docking definida en la subsección~\ref{subsec:prep_proteina}.
 
-Las moléculas generadas se evalúan en términos de \gls{qed}, \gls{sas}, afinidad, $F_{\text{sp3}}$ y características de unión. Adicionalmente, se evalúan la validez, la unicidad y la diversidad de las moléculas generadas.
+Las moléculas generadas se evalúan en términos de \gls{qed}, \gls{sas}, afinidad, potencia predicha, $F_{\text{sp3}}$ y características de unión. Adicionalmente, se evalúan la validez, la unicidad y la diversidad de las moléculas generadas.
 
 \section{Métricas de Evaluación del Rendimiento de los Modelos Considerados}
 \label{sec:metricas_evaluacion}
@@ -437,7 +438,7 @@ Con el fin de evaluar y caracterizar las moléculas candidatas obtenidas para \g
 En esta sección se describen las herramientas y tecnologías empleadas en el entrenamiento y evaluación del modelo generativo, la exploración del espacio latente mediante optimización multiobjetivo y el acoplamiento molecular sobre la proteína \gls{mrp1}. Conda facilitó la gestión de dependencias y entornos virtuales de Python (Versión 3.12.3), utilizándose las siguientes herramientas y librerías principales:
 
 \begin{itemize}
-    \item \textbf{PyTorch (Versión 2.12.1):} Utilizado para construir y entrenar las redes neuronales recurrentes (GRU y LSTM) del \gls{vae}.
+    \item \textbf{PyTorch (Versión 2.12.1):} Utilizado para construir y entrenar las redes neuronales recurrentes (\gls{gru} y \gls{lstm}) del \gls{vae}.
     \item \textbf{pymoo (Versión 0.6.1.6):} Utilizado para ejecutar los algoritmos de optimización multiobjetivo, sus operadores y las métricas de rendimiento.
     \item \textbf{RDKit (Versión 2026.03.3):} Utilizado para validar estructuras químicas, calcular propiedades moleculares (\gls{qed}, \gls{sas}, $F_{\text{sp3}}$) y generar conformaciones 3D.
     \item \textbf{SELFIES (Versión 2.2.0):} Representación molecular basada en cadenas válidas, empleada como alternativa a \gls{smiles}.
@@ -453,4 +454,4 @@ En esta sección se describen las herramientas y tecnologías empleadas en el en
 
 Además, para el desarrollo, redacción y diseño de esquemas se utilizaron Git para el control de versiones, LaTeX para la composición tipográfica de texto, fórmulas y bibliografía, Visual Studio Code como entorno integrado de desarrollo y TikZ para la creación de los diagramas y esquemas.
 
-En cuanto a los recursos de hardware, los experimentos se llevaron a cabo en el Clúster Toko (FCEN-UNCuyo) sobre nodos con 16 vCPUs y 64~GB de memoria RAM: se empleó una GPU NVIDIA TITAN Xp para el entrenamiento del modelo generativo (\gls{vae}), y nodos equipados con GPU NVIDIA GeForce RTX 4080 para las tareas de optimización multiobjetivo y acoplamiento molecular.
+En cuanto a los recursos de hardware, los experimentos se llevaron a cabo en el Clúster Toko (FCEN-UNCuyo) sobre nodos con 16 vCPUs y 64~GB de memoria RAM: se empleó una \gls{gpu} NVIDIA TITAN Xp para el entrenamiento del modelo generativo (\gls{vae}), y nodos equipados con \gls{gpu} NVIDIA GeForce RTX 4080 para las tareas de optimización multiobjetivo y acoplamiento molecular.
