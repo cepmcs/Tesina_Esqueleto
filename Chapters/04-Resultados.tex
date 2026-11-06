@@ -1,104 +1,270 @@
 \chapter{Resultados y Discusión}
 \label{ch:resultados}
 
-En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se describe la evaluación de arquitecturas y la optimización del entrenamiento del modelo generativo (\gls{vae}), comparando el desempeño del modelo final seleccionado frente al estado del arte en el benchmark \gls{moses}. A continuación, se examinan los resultados de la optimización multiobjetivo de propiedades moleculares sin diana específica, evaluando la influencia de los operadores de cruce y mutación, la comparación global entre metaheurísticas, y la convergencia y distribución del frente no dominado conjunto. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando la afinidad de unión obtenida mediante acoplamiento molecular, la potencia predicha y las propiedades de las mejores moléculas candidatas.
+En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se examinan los resultados del ajuste de hiperparámetros del modelo generativo (\gls{vae}) a través de sus dos fases experimentales y se compara el desempeño de la mejor configuración frente al estado del arte en el benchmark \gls{moses}. A continuación, se describen los resultados de la generación de fármacos genéricos y la evaluación de las metaheurísticas multiobjetivo, analizando el impacto de los diferentes operadores. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando la afinidad de unión obtenida mediante acoplamiento molecular y las propiedades fisicoquímicas de las mejores moléculas candidatas.
 
-\section{Evaluación y Selección del Modelo Generativo VAE}
+\section{Resultados del Modelo Generativo (VAE)}
 \label{sec:res_vae}
 
-En esta sección se aborda la evaluación y selección del modelo generativo sobre el conjunto de datos \gls{moses}. Se presentan los resultados del análisis de arquitecturas y de la optimización del entrenamiento, culminando con la evaluación del modelo final seleccionado y su comparación con el estado del arte.
+En esta sección se aborda la evaluación del modelo generativo sobre el conjunto de datos \gls{moses}. Se presentan los resultados de las fases de ajuste de hiperparámetros y se examina el comportamiento del modelo seleccionado en dicho benchmark frente a otros enfoques de la literatura.
 
-\subsection{Evaluación de Arquitecturas y Selección de Configuraciones}
+\subsection{Ajuste de Hiperparámetros: Fase 1 (Arquitectura y Representación)}
 \label{subsec:res_vae_fase1}
 \label{subsec:res_vae_hiperparametros}
 
 Cada configuración se identifica con la representación (SM para \gls{smiles}, SE para \gls{selfies}), la arquitectura (L para \gls{lstm}, G para \gls{gru}), el número de capas y la dimensión latente. Por ejemplo, SM-L 2 256 corresponde a \gls{smiles}, \gls{lstm}, 2 capas y latente de 256.
 
-Los resultados completos de las configuraciones evaluadas se reportan en el Apéndice~\ref{apendice:vae_fase1}, donde la Tabla~\ref{tab:log_experimentos_100} presenta los experimentos con 100 épocas de entrenamiento y la Tabla~\ref{tab:log_experimentos_300} los correspondientes a 300 épocas.
+La Tabla~\ref{tab:log_experimentos_100} muestra los resultados de la Fase 1 con 100 épocas de entrenamiento, y la Tabla~\ref{tab:log_experimentos_300} los de 300 épocas.
 
-\subsubsection{Análisis de las Arquitecturas y Representaciones}
-
-Al analizar las métricas obtenidas en los experimentos, surgen distintos patrones que permiten definir las mejores arquitecturas para balancear tanto la calidad del espacio químico que exploran como la validez de las moléculas generadas.
-
-En cuanto a la representación molecular, si bien \gls{selfies} cumple con su diseño garantizando una validez perfecta en todas las ejecuciones, las redes entrenadas con \gls{smiles} logran capturar con mayor precisión la distribución estadística y las propiedades de las moléculas reales. Esto se refleja en puntuaciones de \gls{fcd} y distancias de Wasserstein (\gls{sas} y \gls{qed}) notablemente inferiores a las de los modelos \gls{selfies}.
-
-Respecto a la dimensionalidad, el espacio latente de 256 dimensiones es en general superior al de 64 y 128. El aumento de dimensionalidad permite al modelo representar en sus vectores latentes mayores características químicas y da como resultado un mejor \gls{fcd} y una mayor validez general en los modelos \gls{smiles}.
-
-Por su parte, las redes \gls{lstm} demostraron ser más resilientes a entrenamientos prolongados en comparación con \gls{gru}. Al pasar de 100 a 300 épocas, las arquitecturas \gls{lstm} tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al pasar a las 300 épocas, reduciendo drásticamente la validez general de las moléculas generadas. La mayor estabilidad de las redes \gls{lstm} en entrenamientos prolongados podría atribuirse a la presencia de una compuerta de salida, la cual permite controlar y atenuar la magnitud de su memoria antes de transmitirla a las siguientes capas. En contraste, la arquitectura \gls{gru} carece de este mecanismo \cite{chung2014empirical}. Al exponer su memoria de forma directa, en épocas avanzadas se generaría un conflicto numérico con la regularización del \gls{vae}, lo que propiciaría el colapso del modelo.
-
-\subsubsection{Selección de Modelos}
-
-Para la siguiente etapa de optimización de hiperparámetros (tasas de aprendizaje y tamaños de lote), se seleccionaron aquellas configuraciones que mostraron tanto una generación estructural adecuada como un mejor balance en las métricas que miden la calidad de la generación molecular (\gls{fcd}, \gls{sas}, \gls{qed}). Dado que todos los modelos seleccionados comparten un espacio latente de 256 dimensiones, este valor se omitirá en su nomenclatura.
-
-La Tabla~\ref{tab:modelos_seleccionados_fase1} resume las métricas de los cuatro modelos seleccionados.
-
-\begin{table}[H]
-\centering
-\small
-\caption{Modelos seleccionados de la evaluación de arquitecturas para optimización de entrenamiento}
-\label{tab:modelos_seleccionados_fase1}
-\begin{tabular}{lcccccccccc}
+{\rowcolors{2}{gray!10}{white}
+\begin{longtable}{lccccccccc}
+\caption{Fase 1: Resultados Experimentales de Generación Molecular (100 Épocas)} \label{tab:log_experimentos_100} \\
 \toprule
-\textbf{Modelo} & \textbf{Épocas} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
 \midrule
-SM-G 2 & 100 & 0.9449 & 0.9998 & 0.9685 & 0.9821 & 0.4700 & 0.8586 & 0.1150 & 0.0053 & 08:19:48 \\
-SE-L 2 & 100 & 1.0000 & 0.9997 & 0.8814 & 0.9277 & 0.7642 & 0.8609 & 0.2007 & 0.0196 & 08:59:13 \\
-SM-L 1 & 300 & 0.9461 & 0.9999 & 0.9715 & 0.9807 & 0.4588 & 0.8593 & 0.1553 & 0.0114 & 07:30:22 \\
-SM-L 2 & 300 & 0.9514 & 1.0000 & 0.9559 & 0.9864 & 0.3214 & 0.8579 & 0.1129 & 0.0126 & 10:19:52 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\endfirsthead
 
-A continuación se detalla la justificación de selección para cada uno:
+\multicolumn{10}{c}%
+{{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
+\toprule
+\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{10}{r}{{Continúa en la siguiente página...}} \\
+\bottomrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+SM-G 1 64 & 0.6048 & 0.9995 & \textbf{0.9976} & 0.9095 & 2.4573 & 0.8661 & 0.4919 & 0.0415 & 09:32:53\\
+SM-G 1 128 & 0.8330 & 0.9999 & 0.9924 & 0.9441 & 1.3965 & 0.8600 & 0.3246 & 0.0273 & 02:34:12\\
+SM-G 1 256 & 0.9145 & \textbf{1.0000} & 0.9811 & 0.9746 & 0.5655 & 0.8569 & 0.1594 & \textbf{0.0126} & 04:35:19\\
+SM-G 2 64 & 0.7483 & 1.0000 & 0.9947 & 0.9486 & 1.5919 & 0.8616 & 0.3767 & 0.0316 & 04:46:52\\
+SM-G 2 128 & 0.8931 & \textbf{1.0000} & 0.9830 & 0.9732 & 0.6699 & 0.8596 & 0.2336 & 0.0138 & 03:19:52\\
+SM-G 2 256 & \textbf{0.9449} & 0.9998 & 0.9685 & 0.9821 & 0.4700 & 0.8586 & \textbf{0.1150} & 0.0053 & 08:19:48\\
+SM-L 1 64 & 0.6317 & \textbf{1.0000} & 0.9966 & 0.9292 & 1.9910 & \textbf{0.8663} & 0.4769 & 0.0500 & 02:16:19\\
+SM-L 1 128 & 0.8287 & \textbf{1.0000} & 0.9903 & 0.9573 & 1.2077 & 0.8631 & 0.3358 & 0.0211 & 02:50:02\\
+SM-L 1 256 & 0.9224 & \textbf{1.0000} & 0.9769 & 0.9784 & 0.5341 & 0.8596 & 0.1834 & 0.0195 & 04:20:21\\
+SM-L 2 64 & 0.8161 & \textbf{1.0000} & 0.9892 & 0.9640 & 0.9826 & 0.8640 & 0.3079 & 0.0326 & 02:41:42\\
+SM-L 2 128 & 0.9082 & 0.9999 & 0.9840 & 0.9714 & 0.7658 & 0.8638 & 0.2393 & 0.0230 & 03:35:58\\
+SM-L 2 256 & 0.9434 & 0.9999 & 0.9618 & \textbf{0.9849} & \textbf{0.4125} & 0.8587 & 0.1410 & 0.0130 & 08:05:22\\
+\midrule
+SE-G 1 64 & \textbf{1.0000} & 0.9996 & \textbf{0.9999} & 0.5468 & 16.6096 & 0.8897 & 1.7459 & 0.1958 & 02:32:52\\
+SE-G 1 128 & \textbf{1.0000} & 0.9997 & 0.9973 & 0.6921 & 9.0081 & 0.8812 & 1.1759 & 0.1030 & 02:36:18\\
+SE-G 1 256 & \textbf{1.0000} & \textbf{0.9999} & 0.9879 & 0.8261 & 3.7491 & 0.8683 & 0.6360 & 0.0499 & 04:42:11\\
+SE-G 2 64 & \textbf{1.0000} & 0.9998 & 0.9987 & 0.6582 & 10.5668 & 0.8826 & 1.2688 & 0.1278 & 03:08:15\\
+SE-G 2 128 & \textbf{1.0000} & \textbf{0.9999} & 0.9906 & 0.8083 & 3.8895 & 0.8703 & 0.6685 & 0.0693 & 03:27:05\\
+SE-G 2 256 & \textbf{1.0000} & 0.9997 & 0.9833 & 0.8517 & 2.9528 & 0.8663 & 0.5592 & 0.0510 & 08:51:40\\
+SE-L 1 64& \textbf{1.0000} & 0.9979 & 0.9991 & 0.5904 & 12.1475 & \textbf{0.8831} & 1.3856 & 0.1770 & 02:10:52\\
+SE-L 1 128 & \textbf{1.0000} & \textbf{0.9999} & 0.9970 & 0.7151 & 8.0543 & 0.8799 & 1.0965 & 0.1100 & 02:53:50\\
+SE-L 1 256 & \textbf{1.0000} & \textbf{0.9999} & 0.9880 & 0.8311 & 3.4543 & 0.8716 & 0.6284 & 0.0625 & 04:15:32\\
+SE-L 2 64 & \textbf{1.0000} & \textbf{0.9999} & 0.9969 & 0.7140 & 7.6215 & 0.8817 & 1.0768 & 0.1182 & 02:43:37\\
+SE-L 2 128 & \textbf{1.0000} & \textbf{0.9999} & 0.9894 & 0.8231 & 3.6458 & 0.8719 & 0.6502 & 0.0658 & 03:32:51\\
+SE-L 2 256 & \textbf{1.0000} & 0.9997 & 0.8814 & \textbf{0.9277} & \textbf{0.7642} & 0.8609 & \textbf{0.2007} & \textbf{0.0196} & 08:59:13\\
+\end{longtable}}
+
+{\rowcolors{2}{gray!10}{white}
+\begin{longtable}{lccccccccc}
+\caption{Fase 1: Resultados Experimentales de Generación Molecular (300 Épocas)} \label{tab:log_experimentos_300} \\
+\toprule
+\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\endfirsthead
+
+\multicolumn{10}{c}%
+{{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
+\toprule
+\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{10}{r}{{Continúa en la siguiente página...}} \\
+\bottomrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+SM-G 1 64 & 0.5923 & 0.9999 & 0.9978 & 0.9040 & 2.5791 & 0.8661 & 0.5527 & 0.0430  & 10:53:24\\
+SM-G 1 128 & 0.8126 & \textbf{1.0000} & 0.9925 & 0.9493 & 1.4190 & 0.8637 & 0.3731 & 0.0191  & 10:44:32\\
+SM-G 1 256 & 0.2486 & 0.9998 & 0.9912 & 0.9170 & 5.5216 & 0.8603 & 0.5843 & 0.0340  &17:20:11\\ 
+SM-G 2 64 & 0.7617 & \textbf{1.0000} & 0.9939 & 0.9425 & 1.4415 & 0.8620 & 0.3546 & 0.0266  & 12:47:02\\
+SM-G 2 128 & 0.0034 & 0.7857 & \textbf{1.0000} & 0.4167 & 35.7960 & \textbf{0.9049} & 0.8052 & 0.3806 & 12:32:25\\
+SM-G 2 256 & 0.7879 & 0.9999 & 0.9844 & 0.9683 & 1.0484 & 0.8595 & 0.2054 & 0.0120  & 26:10:15\\
+SM-L 1 64 & 0.6735 & \textbf{1.0000} & 0.9966 & 0.9301 & 2.1199 & 0.8657 & 0.4946 & 0.0426  & 04:37:36 \\
+SM-L 1 128 & 0.8544 & \textbf{1.0000} & 0.9887 & 0.9641 & 1.0559 & 0.8617 & 0.3053 & 0.0163  & 04:48:36\\
+SM-L 1 256 & 0.9461 & 0.9999 & 0.9715 & 0.9807 & 0.4588 & 0.8593 & 0.1553 & \textbf{0.0114}  & 07:30:22\\
+SM-L 2 64 & 0.7832 & \textbf{1.0000} & 0.9938 & 0.9492 & 1.5143 & 0.8665 & 0.4109 & 0.0357  & 06:58:03\\
+SM-L 2 128 & 0.9091 & 0.9999 & 0.9815 & 0.9744 & 0.6738 & 0.8642 & 0.2312 & 0.0233  & 07:35:45\\
+SM-L 2 256 & \textbf{0.9514} & 1.0000 & 0.9559 & \textbf{0.9864} & \textbf{0.3214} & 0.8579 & \textbf{0.1129} & 0.0126  & 10:19:52\\
+\midrule
+SE-G 1 64 & \textbf{1.0000} & 0.9899 & 0.9998 & 0.5650 & 16.4825 & 0.8928 & 1.7408 & 0.2109  & 10:48:12\\
+SE-G 1 128  & \textbf{1.0000} & 0.7798 & \textbf{1.0000} & 0.5435 & 36.4865 & 0.9078 & 1.8901 & 0.5455  &06:51:58  \\
+SE-G 1 256 & \textbf{1.0000} & 0.3196 & \textbf{1.0000} & 0.7144 & 42.3145 & \textbf{0.9703} & 2.9268 & 0.4431  & 12:33:11\\
+SE-G 2 64 & \textbf{1.0000} & 0.9997 & 0.9981 & 0.7178 & 8.3782 & 0.8786 & 1.1093 & 0.1077  & 08:24:36\\
+SE-G 2 128 & \textbf{1.0000} & 0.9961 & \textbf{1.0000} & 0.4366 & 34.5677 & 0.8805 & 2.6126 & 0.2739  & 09:57:54\\
+SE-G 2 256 & \textbf{1.0000} & \textbf{1.0000} & 0.9887 & 0.8067 & 4.4307 & 0.8727 & 0.7486 & 0.0574  &14:03:36 \\
+SE-L 1 64 & \textbf{1.0000} & 0.9994 & 0.9996 & 0.5598 & 14.2082 & 0.8887 & 1.5028 & 0.1909 & 10:01:24\\
+SE-L 1 128 & \textbf{1.0000} & 0.9996 & 0.9961 & 0.7318 & 6.8969 & 0.8772 & 1.0110 & 0.0933  & 05:08:21\\
+SE-L 1 256 & \textbf{1.0000} & \textbf{1.0000} & 0.9803 & \textbf{0.8736} & \textbf{2.1698} & 0.8651 & \textbf{0.4525} & 0.0455  & 09:43:56\\
+SE-L 2 64 & \textbf{1.0000} & 0.9996 & 0.9976 & 0.7077 & 8.3676 & 0.8810 & 1.0930 & 0.1255  & 09:26:53\\
+SE-L 2 128 & \textbf{1.0000} & \textbf{1.0000} & 0.9856 & 0.8269 & 3.3049 & 0.8712 & 0.6277 & \textbf{0.0561}  & 05:20:24\\
+SE-L 2 256 & \textbf{1.0000} & 0.9965 & 0.9986 & 0.4967 & 15.0077 & 0.8935 & 1.5616 & 0.1972  & 10:57:46\\
+\end{longtable}}
+
+\subsubsection{Análisis de la Fase 1}
+
+Al analizar las métricas obtenidas en los experimentos, surgen distintos patrones que nos permiten definir las mejores arquitecturas para balancear tanto la calidad del espacio químico que exploran como la validez de las moléculas generadas:
+
+\paragraph{SMILES vs. SELFIES}
+
+Si bien la representación de \gls{selfies} cumple con su diseño, garantizando una validez perfecta en todas las ejecuciones, las redes entrenadas con \gls{smiles} logran capturar con mayor precisión la distribución estadística y las propiedades de las moléculas reales. Esto se refleja en puntuaciones de \gls{fcd} y distancias de Wasserstein (\gls{sas} y \gls{qed}) notablemente inferiores a las de los modelos \gls{selfies}.
+
+\paragraph{Dimensionalidad}
+
+El espacio latente de 256 es en general superior al de 64 y 128. El aumento de dimensionalidad permite al modelo representar en sus vectores latentes mayores características químicas y da como resultado un mejor \gls{fcd} y una mayor validez general en los modelos \gls{smiles}.
+
+\paragraph{LSTM vs. GRU}
+
+Las redes \gls{lstm} demostraron ser más resilientes a entrenamientos prolongados. Al pasar de 100 a 300 épocas, las arquitecturas \gls{lstm} tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al pasar a las 300 épocas, reduciendo drásticamente la validez general de las moléculas generadas.
+
+La mayor estabilidad de las redes \gls{lstm} en entrenamientos prolongados podría atribuirse a la presencia de una compuerta de salida, la cual permite controlar y atenuar la magnitud de su memoria antes de transmitirla a las siguientes capas. En contraste, la arquitectura \gls{gru} carece de este mecanismo \cite{chung2014empirical}. Al exponer su memoria de forma directa, en épocas avanzadas se generaría un conflicto numérico con la regularización del \gls{vae}, lo que propiciaría el colapso del modelo.
+
+\subsubsection{Selección de modelos}
+
+La fase 2 de la optimización de hiperparámetros se centra en probar diferentes tasas de aprendizaje y tamaños de lote; por lo cual, se seleccionarán aquellas configuraciones que muestren tanto una generación estructural adecuada como un mejor balance en las métricas que miden la calidad de la generación molecular (\gls{fcd}, \gls{sas}, \gls{qed}). Dado que todos los modelos seleccionados comparten un espacio latente de 256 dimensiones, este valor se omitirá en su nomenclatura.
+
+\paragraph{SM-L 2 (300 épocas)}
+
+Logró el \gls{fcd} más bajo de todos los registros (0.3214), manteniendo una validez considerable (0.9514) y excelentes distancias para \gls{sas} (0.1129) y \gls{qed} (0.0126).
 
 \paragraph{SM-G 2 (100 épocas)}
+
 Aunque la arquitectura \gls{gru} se volvió inestable a las 300 épocas, su desempeño temprano fue sobresaliente. A las 100 épocas, este modelo obtuvo un notable \gls{fcd} (0.4700) y una validez de 0.9449.
 
 \paragraph{SE-L 2 (100 épocas)}
+
 Si bien la representación \gls{selfies} mostró consistentemente peores resultados que \gls{smiles}, el modelo seleccionado consiguió los mejores resultados frente a sus contrapartes que utilizan la misma representación, obteniendo el \gls{fcd} más bajo (0.7642) y menores distancias de Wasserstein. En oposición, presenta una novedad pobre (0.8814), por lo cual es significativo observar si esta métrica mejora al explorar otras tasas de aprendizaje y tamaños de lote.
 
 \paragraph{SM-L 1 (300 épocas)}
-Representa una alternativa con menor profundidad de red; a las 300 épocas consiguió el segundo mejor \gls{fcd} (0.4588), logrando una validez muy alta (0.9461). Se aspira a observar si el costo de añadir una segunda capa justifica la mejora en rendimiento que presenta el experimento SM-L 2 256.
 
-\paragraph{SM-L 2 (300 épocas)}
-Logró el \gls{fcd} más bajo de todos los registros (0.3214), manteniendo una validez considerable (0.9514) y excelentes distancias para \gls{sas} (0.1129) y \gls{qed} (0.0126).
+Representa una alternativa con menor profundidad de red, a las 300 épocas consiguió el segundo mejor \gls{fcd} (0.4588), logrando una validez muy alta (0.9461). Se aspira a observar si el costo de añadir una segunda capa justifica la mejora en rendimiento que presenta el experimento SM-L 2 256.
 
 
 
-\subsection{Optimización del Entrenamiento y Selección del Modelo Final}
+\subsection{Ajuste de Hiperparámetros: Fase 2 (Optimización de Entrenamiento)}
 \label{subsec:res_vae_fase2}
 
-Una vez seleccionadas las cuatro arquitecturas representativas, se evaluó el impacto de la tasa de aprendizaje ($1 \times 10^{-3}$ y $1 \times 10^{-4}$) y el tamaño de lote (64, 128 y 192). Los resultados detallados de las 24 combinaciones exploradas se reportan en el Apéndice~\ref{apendice:vae_fase1} (Tabla~\ref{tab:log_experimentos_fase2}).
+La Tabla~\ref{tab:log_experimentos_fase2} muestra los resultados de la Fase 2 para los cuatro modelos seleccionados, evaluados con distintas combinaciones de tasa de aprendizaje y tamaño de lote.
 
-La Tabla~\ref{tab:mejores_configuraciones_vae} reúne la configuración óptima alcanzada por cada uno de los cuatro modelos evaluados.
-
-\begin{table}[H]
-\centering
-\small
-\caption{Mejor configuración de entrenamiento obtenida para cada modelo evaluado}
-\label{tab:mejores_configuraciones_vae}
-\begin{tabular}{lccccccccccc}
+{\rowcolors{2}{gray!10}{white}
+\begin{longtable}{cc ccccccccc}
+% Forzamos blanco en la fila de la leyenda/caption
+\rowcolor{white} \caption{Fase 2: Resultados de Optimización (Mejores 4 Modelos)} \label{tab:log_experimentos_fase2} \\
 \toprule
-\textbf{Modelo} & \textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\rowcolor{white} \textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
 \midrule
-SM-L 2 & $1 \times 10^{-4}$ & 64 & 0.9624 & 0.9999 & 0.9434 & 0.9884 & 0.1790 & 0.8590 & 0.0932 & 0.0083 & 23:25:24 \\
-SM-G 2 & $1 \times 10^{-4}$ & 64 & 0.9500 & 0.9999 & 0.9658 & 0.9835 & 0.3014 & 0.8580 & 0.1114 & 0.0064 & 08:10:05 \\
-SE-L 2 & $1 \times 10^{-3}$ & 192 & 1.0000 & 0.9992 & 0.8676 & 0.9358 & 0.6751 & 0.8615 & 0.1853 & 0.0176 & 02:26:16 \\
-SM-L 1 & $1 \times 10^{-4}$ & 64 & 0.9404 & 1.0000 & 0.9733 & 0.9797 & 0.4242 & 0.8588 & 0.1587 & 0.0129 & 19:07:21 \\
+\endfirsthead
+
+\multicolumn{11}{c}%
+{{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
+\toprule
+\rowcolor{white} \textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{11}{r}{{Continúa en la siguiente página...}} \\
 \bottomrule
-\end{tabular}
-\end{table}
+\endfoot
 
-Al analizar la variación de estos hiperparámetros, se observa que la reducción de la tasa de aprendizaje de $1 \times 10^{-3}$ a $1 \times 10^{-4}$ genera una mejora generalizada en las arquitecturas basadas en \gls{smiles}, traduciéndose en puntuaciones de \gls{fcd} más bajas y menores distancias de Wasserstein en las distribuciones fisicoquímicas. En cuanto al tamaño de lote, configurar el entrenamiento con lotes más pequeños (específicamente 64), en combinación con la tasa de $1 \times 10^{-4}$, condujo sistemáticamente a los mejores resultados en los modelos \gls{smiles}. No obstante, esta mejora conlleva un incremento sustancial en el costo computacional, donde los modelos entrenados durante 300 épocas llegaron a superar las 20 horas de ejecución con esos tamaños de lote.
+\bottomrule
+\endlastfoot
 
-Por el contrario, el modelo basado en \gls{selfies} (SE-L 2) exhibió un comportamiento diferente: obtuvo sus mejores métricas con una tasa de aprendizaje de $1 \times 10^{-3}$ y un tamaño de lote de 192. Si bien mantuvo una validez perfecta (1.0000) gracias a la representación \gls{selfies}, presentó un desempeño global inferior al de las arquitecturas \gls{smiles}, alcanzando un \gls{fcd} de 0.6751 a costa de una novedad reducida (0.8676). Al intentar mejorar dicha novedad reduciendo la tasa de aprendizaje a $1 \times 10^{-4}$, el \gls{fcd} se degradó notablemente hasta 2.8927.
+\rowcolor{white} \multicolumn{11}{l}{\textbf{Modelo: SM-L 2 (300 épocas)}} \\
+\midrule
+$1 \times 10^{-3}$ & 64  & 0.9571 & 0.9999 & 0.9560 & 0.9867 & 0.2944 & 0.8573 & 0.1144 & 0.0147 & 19:53:13\\
+$1 \times 10^{-3}$ & 128 & 0.9514 & \textbf{1.0000} & 0.9559 & 0.9864 & 0.3214 & 0.8579 & 0.1129 & 0.0126  & 10:19:52 \\
+$1 \times 10^{-3}$ & 192 & 0.9572 & 0.9999 & 0.9531 & 0.9863 & 0.2818 & 0.8589 & 0.1168 & 0.0095 & 07:15:25\\
+$1 \times 10^{-4}$ & 64  & \textbf{0.9624} & 0.9999 & 0.9434 & \textbf{0.9884} & \textbf{0.1790} & 0.8590 & \textbf{0.0932} & 0.0083 & 23:25:24\\
+$1 \times 10^{-4}$ & 128 & 0.9596 & 0.9999 & 0.9504 & 0.9876 & 0.2284 & \textbf{0.8591} & 0.1015 & \textbf{0.0071} & 13:45:28\\
+$1 \times 10^{-4}$ & 192 & 0.9567 & \textbf{1.0000} & \textbf{0.9570} & 0.9859& 0.2570 & 0.8587 & 0.1251 & 0.0108 & 08:54:27\\
+\midrule
 
-Entre las variantes basadas en \gls{smiles}, el modelo SM-G 2 a 100 épocas confirmó su capacidad de generar un espacio químico competitivo (\gls{fcd} de 0.3014 y validez de 0.9500) con distancias bajas de Wasserstein en accesibilidad sintética (0.1114) y \gls{qed} (0.0064), requiriendo un tercio del tiempo de cómputo (08:10:05). Por su parte, la comparación entre SM-L 1 y SM-L 2 a 300 épocas evidencia que, aunque la red de una sola capa es más ligera y presenta menores tiempos de entrenamiento, la incorporación de una segunda capa oculta mejora de forma sistemática las métricas obtenidas.
+\rowcolor{white} \multicolumn{11}{l}{\textbf{Modelo: SM-G 2 (100 épocas)}} \\
+\midrule
+$1 \times 10^{-3}$ & 64  & 0.4590 & \textbf{1.0000} & \textbf{0.9911} & \textbf{0.9386} & 2.2125 & 0.8571 & 0.4210 & 0.0369 & 07:58:37\\
+$1 \times 10^{-3}$ & 128 & 0.9449 & 0.9998 & 0.9685 & 0.9821 & 0.4700 & \textbf{0.8586} & 0.1150 & \textbf{0.0053} & 08:19:48 \\
+$1 \times 10^{-3}$ & 192 & 0.9425 & \textbf{1.0000} & 0.9682 & 0.9819 & 0.3598 & 0.8580 & 0.1347 & 0.0074 & 02:50:26\\
+$1 \times 10^{-4}$ & 64  & \textbf{0.9500} & 0.9999 & 0.9658 & 0.9835 & \textbf{0.3014} & 0.8580 & \textbf{0.1114} & 0.0064 & 08:10:05\\
+$1 \times 10^{-4}$ & 128 & 0.9357 & 0.9999 & 0.9706 & 0.9802 & 0.3460 & 0.8580 & 0.1288 & 0.0089 & 04:20:09\\
+$1 \times 10^{-4}$ & 192 & 0.9377 & 0.9999 & 0.9723 & 0.9768 & 0.4178 & \textbf{0.8586} & 0.1593 & 0.0055 & 02:53:20\\
+\midrule
 
-En consecuencia, el modelo \textbf{SM-L 2 (300 épocas)}, entrenado con una tasa de aprendizaje de $1 \times 10^{-4}$ y un tamaño de lote de 64, fue seleccionado como el modelo generativo definitivo. Esta configuración alcanzó conjuntamente la validez más alta entre las arquitecturas \gls{smiles} (0.9624), el \gls{fcd} más bajo de todo el estudio (0.1790) y la menor distancia de Wasserstein para la accesibilidad sintética (\gls{sas}, 0.0932), garantizando un espacio latente de máxima calidad para la posterior optimización multiobjetivo.
+\rowcolor{white} \multicolumn{11}{l}{\textbf{Modelo: SE-L 2 (100 épocas)}} \\
+\midrule
+$1 \times 10^{-3}$ & 64   & \textbf{1.0000} & 0.9996 & 0.9664 & 0.8151 & 3.6421 & 0.8705 & 0.5998 & 0.0632 & 06:34:09 \\
+$1 \times 10^{-3}$ & 128 & \textbf{1.0000} & 0.9997 & 0.8814 & 0.9277 & 0.7642 & 0.8609 & 0.2007 & 0.0196 & 08:59:13 \\
+$1 \times 10^{-3}$ & 192 & \textbf{1.0000} & 0.9992 & 0.8676 & \textbf{0.9358} & \textbf{0.6751} & 0.8615 & \textbf{0.1853} & \textbf{0.0176} & 02:26:16 \\
+$1 \times 10^{-4}$ & 64  & \textbf{1.0000} & \textbf{1.0000} & 0.9762 & 0.8856 & 1.7909 & 0.8661 & 0.4262 & 0.0369 & 07:51:36 \\
+$1 \times 10^{-4}$ & 128 & \textbf{1.0000} & \textbf{1.0000} & 0.9808 & 0.8732 & 2.0787 & 0.8669 & 0.4783 & 0.0417 & 03:29:25 \\
+$1 \times 10^{-4}$ & 192 & \textbf{1.0000} & \textbf{1.0000} & \textbf{0.9881} & 0.8456 & 2.8927 & \textbf{0.8713} & 0.5756 & 0.0549 & 02:26:25 \\
+\midrule
+\rowcolor{white} \multicolumn{11}{l}{\textbf{Modelo: SM-L 1 (300 épocas)}} \\
+\midrule
+$1 \times 10^{-3}$ & 64  & 0.9420 & \textbf{1.0000} & 0.9696 & \textbf{0.9815} & 0.4488 & 0.8600 & 0.1596 & 0.0156 & 15:43:28\\
+$1 \times 10^{-3}$ & 128 & \textbf{0.9461} & 0.9999 & 0.9715 & 0.9807 & 0.4588 & 0.8593 & \textbf{0.1553} & \textbf{0.0114}  & 07:30:22\\
+$1 \times 10^{-3}$ & 192 & 0.9211 & \textbf{1.0000} & 0.9783 & 0.9775 & 0.6037 & 0.8626 & 0.2421 & 0.0172 & 05:52:49\\
+$1 \times 10^{-4}$ & 64  & 0.9404 & \textbf{1.0000} & 0.9733 & 0.9797 & \textbf{0.4242} & 0.8588 & 0.1587 & 0.0129 & 19:07:21\\
+$1 \times 10^{-4}$ & 128 & 0.9047 & 0.9999 & \textbf{0.9834} & 0.9739 & 0.7291 & \textbf{0.8633} & 0.2673 & 0.0220 & 09:12:05\\
+$1 \times 10^{-4}$ & 192 & 0.9057 & \textbf{1.0000} & 0.9822 & 0.9762 & 0.6389 & 0.8622 & 0.2335 & 0.0207& 05:03:35\\
 
-\subsection{Evaluación en MOSES y Comparación con el Estado del Arte}
+\end{longtable}}
+
+\subsubsection{Análisis de la Fase 2}
+
+\paragraph{Impacto de la Tasa de Aprendizaje (LR)}
+
+La reducción de la tasa de aprendizaje de $1 \times 10^{-3}$ a $1 \times 10^{-4}$ muestra en general una mejora en las arquitecturas con representación \gls{smiles} en la calidad del espacio químico generado. Esta mejora se refleja en la obtención de mejores puntuaciones en las métricas de \gls{fcd} y en las distancias de Wasserstein de estos modelos.
+
+Por otro lado, la arquitectura \gls{selfies} presentó en general mejores resultados con una tasa de aprendizaje de $1 \times 10^{-3}$, manteniendo la validez perfecta que le otorga esta representación, pero aun así mostrando peores métricas en cuanto a la calidad del espacio químico que sus contrapartes.
+
+\paragraph{Impacto del tamaño de lote (Batch)}
+
+De forma general, con excepción de los modelos \gls{selfies}, configurar el entrenamiento con tamaños de lotes más pequeños, específicamente 64, en combinación con una tasa de aprendizaje de $1 \times 10^{-4}$, produce los mejores resultados, con el mejor \gls{fcd} de cada modelo \gls{smiles} correspondiente a estos valores.
+
+\paragraph{Tiempos de entrenamiento}
+
+La tendencia de los datos nos muestra que existe un contraste entre la calidad del modelo y su costo computacional al modificar el tamaño de lote y los tiempos de entrenamiento, con los modelos de 300 épocas llegando a superar las 20 horas de entrenamiento con esos tamaños de lote. Sin embargo, asumir este gasto es necesario, ya que, como se mencionó previamente, a tamaños de lote más pequeños, se obtienen mejores resultados.
+
+\subsubsection{Análisis por Modelo}
+
+\paragraph{SM-L 2 (300 épocas)}
+
+Esta arquitectura mostró los mejores resultados de toda la etapa experimental. Su configuración óptima (LR de $1 \times 10^{-4}$ y Batch de 64) alcanzó conjuntamente la validez más alta de las arquitecturas \gls{smiles} y el \gls{fcd} más bajo de todos los registros analizados (0.1790). De igual manera, el modelo alcanzó la menor distancia de Wasserstein para la distribución de Accesibilidad Sintética (\gls{sas}) en todo el experimento (0.0932). En contraste, este modelo presentó una métrica de novedad levemente menor en comparación con las demás arquitecturas evaluadas (0.9434) y requirió el mayor tiempo de ejecución de todos los experimentos de la segunda fase.
+
+\paragraph{SM-G 2 (100 épocas)}
+
+Su mejor comportamiento se registró utilizando un LR de $1 \times 10^{-4}$ y un Batch de 64, donde consiguió un \gls{fcd} competitivo de 0.3014 y una validez de 0.9500. Además, presentó valores adecuados en las métricas de novedad (0.9658) y Filter (0.9835), logrando distancias de Wasserstein bajas para las distribuciones de \gls{sas} (0.1114) y \gls{qed} (0.0064). Esta arquitectura demuestra capacidad para generar un espacio químico de calidad con menos épocas de entrenamiento, aligerando la carga computacional.
+
+\paragraph{SE-L 2 (100 épocas)}
+
+Su principal ventaja sigue siendo la validez, al garantizar una puntuación perfecta (1.0000) en todas las pruebas gracias a la representación \gls{selfies}. Pero, en términos generales, presenta resultados peores al compararlo con las arquitecturas basadas en \gls{smiles}. Mientras que los modelos \gls{smiles} alcanzan un \gls{fcd} de hasta 0.1790, el SE-L 2 solo logra un \gls{fcd} de 0.6751 en su mejor configuración y a costa de una novedad baja (0.8676). Si se intenta mejorar esa novedad reduciendo la tasa de aprendizaje, el \gls{fcd} empeora significativamente a 2.8927.
+
+\paragraph{SM-L 1 (300 épocas)}
+
+La variante de red menos profunda consiguió su punto de mayor eficacia con un LR de $1 \times 10^{-4}$ y un Batch de 64, registrando un \gls{fcd} de 0.4242 y una validez de 0.9404. Al comparar estos números con el modelo de dos capas (SM-L 2), podemos ver que si bien la arquitectura es más ligera y presenta menores tiempos de entrenamiento, el agregar una capa mejora sistemáticamente las métricas obtenidas.
+
+\subsection{Evaluación en el Benchmark MOSES}
 \label{subsec:res_vae_moses}
+
+\subsubsection{Modelo seleccionado}
+
+Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor \gls{fcd} de todos los experimentos (0.1790), la mayor validez entre los modelos \gls{smiles} (0.9624) y la menor distancia de Wasserstein para \gls{sas} (0.0932). A cambio, presentó una novedad levemente menor (0.9434) y el mayor tiempo de entrenamiento de la segunda fase.
 
 En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0.0083 para \gls{qed} y 0.0932 para \gls{sas}).
 
@@ -116,6 +282,7 @@ En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed
 \centering
 \caption{Comparación con el estado del arte utilizando el dataset MOSES}
 \label{tab:resultados_reducidos}
+\rowcolors{2}{gray!10}{white}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{l c c c c c c c c}
 \toprule
@@ -137,12 +304,12 @@ PCF-VAE & 0.9801 & 1.0000 & 0.9377 & 0.9900 & 0.2962 & 0.8587 & N/R & N/R\\
 
 Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance  frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0.1790, manteniendo al mismo tiempo una alta tasa de novedad (0.9434) y diversidad interna (0.8590). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0.0732), este comportamiento suele estar asociado a una caída en la novedad (0.8419), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} radica en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
 
-\section{Optimización Multiobjetivo de Propiedades Moleculares sin Diana Específica}
+\section{Generación de Fármacos Genéricos y Evaluación de Metaheurísticas}
 \label{sec:res_genericos}
 
-En esta sección se aborda la optimización multiobjetivo de moléculas sin diana específica en el espacio latente del \gls{vae}. Se describen los resultados del ajuste de hiperparámetros y la influencia de los operadores de cruce y mutación, para luego contrastar el desempeño global de los cinco algoritmos, analizar su convergencia y frente de Pareto, y caracterizar las moléculas candidatas obtenidas en el frente no dominado conjunto.
+En esta sección se aborda la generación de fármacos genéricos sin diana específica mediante metaheurísticas multiobjetivo en el espacio latente del \gls{vae}. Se describen los resultados del ajuste de hiperparámetros y la comparativa de operadores genéticos, para luego contrastar el desempeño global de los cinco algoritmos y caracterizar las moléculas candidatas obtenidas en el frente de Pareto conjunto.
 
-\subsection{Ajuste de Hiperparámetros}
+\subsection{Ajuste de Hiperparámetros de las Metaheurísticas}
 \label{subsec:res_metaheuristicas_hp}
 
 A continuación se detallan los resultados de la exploración de hiperparámetros para cada algoritmo, identificando las configuraciones con mejor rendimiento en hipervolumen y examinando la relación entre la convergencia multiobjetivo y la validez química.
@@ -221,7 +388,7 @@ Este análisis muestra los siguientes comportamientos:
 
 La Figura~\ref{fig:efectos_hypervolume} resume la magnitud del efecto de cada hiperparámetro sobre el hipervolumen. En los algoritmos genéticos, las variantes con PCX son predominantemente sensibles a la probabilidad de cruce $P(\text{cruce})$ (con un efecto especialmente marcado en \acrshort{nsga2}), mientras que las variantes con SBX responden principalmente a la probabilidad de mutación $P(\text{mut.})$. \acrshort{moead} exhibe una marcada sensibilidad tanto a la mutación como al reparto de población y generaciones. En \acrshort{cmopso}, el parámetro de mayor impacto es el tope de velocidad ($v_{\text{max}}$), seguido por la probabilidad de mutación, mientras que el tamaño del archivo de élites y la partición del presupuesto presentan una influencia secundaria.
 
-\subsection{Influencia de los Operadores de Cruce y Mutación}
+\subsection{Comparativa de Operadores Genéticos}
 \label{subsec:comparativa_operadores}
 
 Se evalúa el impacto de los operadores de cruce (SBX, PCX) y mutación (Polinomial, Gaussiana) en \acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3} sobre distintos indicadores multiobjetivo y químicos.
@@ -640,7 +807,7 @@ En la Figura~\ref{fig:frente_conjunto_nsga3}, PCX aporta 31 soluciones y SBX 20 
 
 La Figura~\ref{fig:moleculas_operadores_nsga3} ilustra las dos moléculas de mayor \gls{qed} con $\text{SA} < 3$ en \acrshort{nsga3}. Todas las configuraciones alcanzan un \gls{qed} de $0.948$. En facilidad sintética, tanto PCX como SBX consiguen candidatos muy favorables con SA por debajo de $1.85$, destacando pcx\_pm ($1.71$) y sbx\_gauss ($1.72$) que redescubren estructuras casi idénticas. A su vez, pcx\_gauss aporta esqueletos más variados con mayor saturación ($F_{\text{sp3}} = 0.400$, SA de $1.99$).
 
-\subsection{Comparación Global de Metaheurísticas}
+\subsection{Comparación Global entre Metaheurísticas Multiobjetivo}
 \label{subsec:comparacion_final}
 \label{subsec:calidad_gen_moleculas}
 
@@ -752,9 +919,6 @@ En los objetivos, \acrshort{cmopso} y \acrshort{moead} concentran sus resultados
 
 En las métricas de generación, \acrshort{moead} y \acrshort{cmopso} alcanzan una validez próxima al $99\%$, pero su unicidad desciende a medianas de $0.45$ y $0.32$, y su novedad resulta menor y dispersa en \acrshort{cmopso}. En contraste, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} mantienen unicidad y novedad cercanas a $1.0$ y $0.98$, con una validez situada entre el $80\%$ y el $86\%$.
 
-\subsection{Convergencia, Cobertura y Diversidad de las Soluciones}
-\label{subsec:convergencia_cobertura_diversidad}
-
 \subsubsection{Análisis de Convergencia}
 
 \begin{figure}[H]
@@ -812,7 +976,7 @@ En contraste, los extremos del frente presentan una frecuencia menor. Tanto las 
 
 
 
-\subsection{Análisis del Frente no Dominado Conjunto y Moléculas Representativas}
+\subsection{Análisis del Frente no Dominado Conjunto Global}
 \label{subsec:frente_conjunto_global}
 
 Para evaluar la capacidad exploratoria conjunta y caracterizar el espacio químico accesible, se combinan las soluciones obtenidas por las ramas de cruce PCX y SBX en los cuatro algoritmos genéticos (empleando en cada caso el operador de mutación con mejor desempeño en la comparación estadística), junto con \acrshort{cmopso}, a lo largo de las veinte ejecuciones independientes. Tras deduplicar por estructura química (\gls{smiles}), se recalcula la no dominancia global, conformando un frente no dominado conjunto de 32 moléculas únicas.
