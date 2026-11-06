@@ -1,30 +1,19 @@
 \chapter{Registro de Experimentos del VAE}
 \label{apendice:vae_fase1}
 
-En este apéndice se presentan los resultados experimentales completos de las 48 configuraciones del modelo generativo (\gls{vae}) evaluadas en la etapa de exploración de arquitecturas y representaciones moleculares. La Tabla~\ref{tab:log_experimentos_100} reúne las métricas correspondientes al entrenamiento durante 100 épocas, mientras que la Tabla~\ref{tab:log_experimentos_300} detalla los resultados obtenidos al extender el entrenamiento a 300 épocas.
+En este apéndice se presentan los resultados experimentales completos de las configuraciones del modelo generativo (\gls{vae}) evaluadas tanto en la exploración de arquitecturas como en la optimización de los parámetros de entrenamiento. La Tabla~\ref{tab:log_experimentos_100} reúne las métricas correspondientes al entrenamiento durante 100 épocas, la Tabla~\ref{tab:log_experimentos_300} detalla los resultados al extender el entrenamiento a 300 épocas, y la Tabla~\ref{tab:log_experimentos_fase2} presenta la evaluación sistemática de la tasa de aprendizaje y el tamaño de lote sobre los cuatro modelos seleccionados.
 
-\begin{longtable}{lccccccccc}
-\caption{Resultados Experimentales de Generación Molecular (100 Épocas)} \label{tab:log_experimentos_100} \\
+\clearpage
+
+\begin{table}[p]
+\centering
+\small
+\caption{Resultados Experimentales de Generación Molecular (100 Épocas)}
+\label{tab:log_experimentos_100}
+\begin{tabular}{lccccccccc}
 \toprule
 \textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
 \midrule
-\endfirsthead
-
-\multicolumn{10}{c}%
-{{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
-\toprule
-\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
-\midrule
-\endhead
-
-\midrule
-\multicolumn{10}{r}{{Continúa en la siguiente página...}} \\
-\bottomrule
-\endfoot
-
-\bottomrule
-\endlastfoot
-
 SM-G 1 64 & 0.6048 & 0.9995 & \textbf{0.9976} & 0.9095 & 2.4573 & 0.8661 & 0.4919 & 0.0415 & 09:32:53\\
 SM-G 1 128 & 0.8330 & 0.9999 & 0.9924 & 0.9441 & 1.3965 & 0.8600 & 0.3246 & 0.0273 & 02:34:12\\
 SM-G 1 256 & 0.9145 & \textbf{1.0000} & 0.9811 & 0.9746 & 0.5655 & 0.8569 & 0.1594 & \textbf{0.0126} & 04:35:19\\
@@ -50,30 +39,21 @@ SE-L 1 256 & \textbf{1.0000} & \textbf{0.9999} & 0.9880 & 0.8311 & 3.4543 & 0.87
 SE-L 2 64 & \textbf{1.0000} & \textbf{0.9999} & 0.9969 & 0.7140 & 7.6215 & 0.8817 & 1.0768 & 0.1182 & 02:43:37\\
 SE-L 2 128 & \textbf{1.0000} & \textbf{0.9999} & 0.9894 & 0.8231 & 3.6458 & 0.8719 & 0.6502 & 0.0658 & 03:32:51\\
 SE-L 2 256 & \textbf{1.0000} & 0.9997 & 0.8814 & \textbf{0.9277} & \textbf{0.7642} & 0.8609 & \textbf{0.2007} & \textbf{0.0196} & 08:59:13\\
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 
-\begin{longtable}{lccccccccc}
-\caption{Resultados Experimentales de Generación Molecular (300 Épocas)} \label{tab:log_experimentos_300} \\
+\clearpage
+
+\begin{table}[p]
+\centering
+\small
+\caption{Resultados Experimentales de Generación Molecular (300 Épocas)}
+\label{tab:log_experimentos_300}
+\begin{tabular}{lccccccccc}
 \toprule
 \textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
 \midrule
-\endfirsthead
-
-\multicolumn{10}{c}%
-{{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
-\toprule
-\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
-\midrule
-\endhead
-
-\midrule
-\multicolumn{10}{r}{{Continúa en la siguiente página...}} \\
-\bottomrule
-\endfoot
-
-\bottomrule
-\endlastfoot
-
 SM-G 1 64 & 0.5923 & 0.9999 & 0.9978 & 0.9040 & 2.5791 & 0.8661 & 0.5527 & 0.0430  & 10:53:24\\
 SM-G 1 128 & 0.8126 & \textbf{1.0000} & 0.9925 & 0.9493 & 1.4190 & 0.8637 & 0.3731 & 0.0191  & 10:44:32\\
 SM-G 1 256 & 0.2486 & 0.9998 & 0.9912 & 0.9170 & 5.5216 & 0.8603 & 0.5843 & 0.0340  &17:20:11\\ 
@@ -99,4 +79,56 @@ SE-L 1 256 & \textbf{1.0000} & \textbf{1.0000} & 0.9803 & \textbf{0.8736} & \tex
 SE-L 2 64 & \textbf{1.0000} & 0.9996 & 0.9976 & 0.7077 & 8.3676 & 0.8810 & 1.0930 & 0.1255  & 09:26:53\\
 SE-L 2 128 & \textbf{1.0000} & \textbf{1.0000} & 0.9856 & 0.8269 & 3.3049 & 0.8712 & 0.6277 & \textbf{0.0561}  & 05:20:24\\
 SE-L 2 256 & \textbf{1.0000} & 0.9965 & 0.9986 & 0.4967 & 15.0077 & 0.8935 & 1.5616 & 0.1972  & 10:57:46\\
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\begin{table}[p]
+\centering
+\small
+\caption{Resultados de Optimización del Entrenamiento: Tasa de Aprendizaje y Tamaño de Lote}
+\label{tab:log_experimentos_fase2}
+\begin{tabular}{cc ccccccccc}
+\toprule
+\textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+\midrule
+\multicolumn{11}{l}{\textbf{Modelo: SM-L 2 (300 épocas)}} \\
+\midrule
+$1 \times 10^{-3}$ & 64  & 0.9571 & 0.9999 & 0.9560 & 0.9867 & 0.2944 & 0.8573 & 0.1144 & 0.0147 & 19:53:13\\
+$1 \times 10^{-3}$ & 128 & 0.9514 & \textbf{1.0000} & 0.9559 & 0.9864 & 0.3214 & 0.8579 & 0.1129 & 0.0126  & 10:19:52 \\
+$1 \times 10^{-3}$ & 192 & 0.9572 & 0.9999 & 0.9531 & 0.9863 & 0.2818 & 0.8589 & 0.1168 & 0.0095 & 07:15:25\\
+$1 \times 10^{-4}$ & 64  & \textbf{0.9624} & 0.9999 & 0.9434 & \textbf{0.9884} & \textbf{0.1790} & 0.8590 & \textbf{0.0932} & 0.0083 & 23:25:24\\
+$1 \times 10^{-4}$ & 128 & 0.9596 & 0.9999 & 0.9504 & 0.9876 & 0.2284 & \textbf{0.8591} & 0.1015 & \textbf{0.0071} & 13:45:28\\
+$1 \times 10^{-4}$ & 192 & 0.9567 & \textbf{1.0000} & \textbf{0.9570} & 0.9859& 0.2570 & 0.8587 & 0.1251 & 0.0108 & 08:54:27\\
+\midrule
+\multicolumn{11}{l}{\textbf{Modelo: SM-G 2 (100 épocas)}} \\
+\midrule
+$1 \times 10^{-3}$ & 64  & 0.4590 & \textbf{1.0000} & \textbf{0.9911} & \textbf{0.9386} & 2.2125 & 0.8571 & 0.4210 & 0.0369 & 07:58:37\\
+$1 \times 10^{-3}$ & 128 & 0.9449 & 0.9998 & 0.9685 & 0.9821 & 0.4700 & \textbf{0.8586} & 0.1150 & \textbf{0.0053} & 08:19:48 \\
+$1 \times 10^{-3}$ & 192 & 0.9425 & \textbf{1.0000} & 0.9682 & 0.9819 & 0.3598 & 0.8580 & 0.1347 & 0.0074 & 02:50:26\\
+$1 \times 10^{-4}$ & 64  & \textbf{0.9500} & 0.9999 & 0.9658 & 0.9835 & \textbf{0.3014} & 0.8580 & \textbf{0.1114} & 0.0064 & 08:10:05\\
+$1 \times 10^{-4}$ & 128 & 0.9357 & 0.9999 & 0.9706 & 0.9802 & 0.3460 & 0.8580 & 0.1288 & 0.0089 & 04:20:09\\
+$1 \times 10^{-4}$ & 192 & 0.9377 & 0.9999 & 0.9723 & 0.9768 & 0.4178 & \textbf{0.8586} & 0.1593 & 0.0055 & 02:53:20\\
+\midrule
+\multicolumn{11}{l}{\textbf{Modelo: SE-L 2 (100 épocas)}} \\
+\midrule
+$1 \times 10^{-3}$ & 64   & \textbf{1.0000} & 0.9996 & 0.9664 & 0.8151 & 3.6421 & 0.8705 & 0.5998 & 0.0632 & 06:34:09 \\
+$1 \times 10^{-3}$ & 128 & \textbf{1.0000} & 0.9997 & 0.8814 & 0.9277 & 0.7642 & 0.8609 & 0.2007 & 0.0196 & 08:59:13 \\
+$1 \times 10^{-3}$ & 192 & \textbf{1.0000} & 0.9992 & 0.8676 & \textbf{0.9358} & \textbf{0.6751} & 0.8615 & \textbf{0.1853} & \textbf{0.0176} & 02:26:16 \\
+$1 \times 10^{-4}$ & 64  & \textbf{1.0000} & \textbf{1.0000} & 0.9762 & 0.8856 & 1.7909 & 0.8661 & 0.4262 & 0.0369 & 07:51:36 \\
+$1 \times 10^{-4}$ & 128 & \textbf{1.0000} & \textbf{1.0000} & 0.9808 & 0.8732 & 2.0787 & 0.8669 & 0.4783 & 0.0417 & 03:29:25 \\
+$1 \times 10^{-4}$ & 192 & \textbf{1.0000} & \textbf{1.0000} & \textbf{0.9881} & 0.8456 & 2.8927 & \textbf{0.8713} & 0.5756 & 0.0549 & 02:26:25 \\
+\midrule
+\multicolumn{11}{l}{\textbf{Modelo: SM-L 1 (300 épocas)}} \\
+\midrule
+$1 \times 10^{-3}$ & 64  & 0.9420 & \textbf{1.0000} & 0.9696 & \textbf{0.9815} & 0.4488 & 0.8600 & 0.1596 & 0.0156 & 15:43:28\\
+$1 \times 10^{-3}$ & 128 & \textbf{0.9461} & 0.9999 & 0.9715 & 0.9807 & 0.4588 & 0.8593 & \textbf{0.1553} & \textbf{0.0114}  & 07:30:22\\
+$1 \times 10^{-3}$ & 192 & 0.9211 & \textbf{1.0000} & 0.9783 & 0.9775 & 0.6037 & 0.8626 & 0.2421 & 0.0172 & 05:52:49\\
+$1 \times 10^{-4}$ & 64  & 0.9404 & \textbf{1.0000} & 0.9733 & 0.9797 & \textbf{0.4242} & 0.8588 & 0.1587 & 0.0129 & 19:07:21\\
+$1 \times 10^{-4}$ & 128 & 0.9047 & 0.9999 & \textbf{0.9834} & 0.9739 & 0.7291 & \textbf{0.8633} & 0.2673 & 0.0220 & 09:12:05\\
+$1 \times 10^{-4}$ & 192 & 0.9057 & \textbf{1.0000} & 0.9822 & 0.9762 & 0.6389 & 0.8622 & 0.2335 & 0.0207& 05:03:35\\
+\bottomrule
+\end{tabular}
+\end{table}

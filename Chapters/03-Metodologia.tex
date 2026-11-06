@@ -58,7 +58,7 @@ Esta representación en secuencias de tokens sirve como base para el proceso de 
 \label{sec:farmacos_genericos}
 \label{sec:ajuste_hiperparametros}
 
-En esta sección se describe la primera etapa metodológica, orientada a dos objetivos principales: seleccionar la mejor configuración del modelo generativo (\gls{vae}) a través de un espacio de búsqueda por fases, y calibrar los hiperparámetros de las metaheurísticas multiobjetivo al optimizar propiedades generales en su espacio latente.
+En esta sección se describe la primera etapa metodológica, orientada a dos objetivos principales: seleccionar la mejor configuración del modelo generativo (\gls{vae}) a través de un espacio de búsqueda estructurado, y calibrar los hiperparámetros de las metaheurísticas multiobjetivo al optimizar propiedades generales en su espacio latente.
 
 \subsection{Ajustes de Hiperparámetros del VAE}
 \label{subsec:hiperparametros_vae}
@@ -66,31 +66,31 @@ En esta sección se describe la primera etapa metodológica, orientada a dos obj
 \label{sec:vae_metodologia}
 \label{sec:modelo_generativo}
 
-Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, el espacio de búsqueda de hiperparámetros se estructuró en dos fases secuenciales, totalizando 72 entrenamientos independientes. Se optó por evaluar primero la estructura del autoencoder y posteriormente sus parámetros de optimización, evitando así escalar el tiempo de cómputo de forma desmedida. Así, la primera fase define la representación y la arquitectura base, y la segunda afina la tasa de aprendizaje y el tamaño de lote en las mejores configuraciones:
+Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, el espacio de búsqueda de hiperparámetros se dividió en dos partes, totalizando 72 entrenamientos independientes. Se optó por evaluar primero la estructura del autoencoder y posteriormente sus parámetros de optimización, evitando así escalar el tiempo de cómputo de forma desmedida. Así, la exploración inicial define la representación y la arquitectura base, y la optimización posterior afina la tasa de aprendizaje y el tamaño de lote en las mejores configuraciones:
 
 \begin{itemize}
-    \item \textbf{Fase 1 (Estructura base):} Se evaluaron 48 configuraciones combinando la representación molecular (\gls{smiles} y \gls{selfies}), el tipo de celda recurrente (\gls{gru} y \gls{lstm}), la cantidad de capas ocultas (1 y 2), la dimensión latente (64, 128 y 256) y las épocas de entrenamiento (100 y 300). La tasa de aprendizaje y el tamaño de lote se mantuvieron fijos en $1 \times 10^{-3}$ y 128. Las dimensiones latentes se basan en trabajos previos de \glspl{vae} moleculares~\cite{GBWHLDSA18} para probar diferentes capacidades de representación, y las épocas buscan evaluar si un entrenamiento prolongado mejora los resultados.
-    \item \textbf{Fase 2 (Optimización):} Sobre los cuatro modelos representativos con mejor balance de la fase previa, se exploraron dos tasas de aprendizaje ($1 \times 10^{-3}$ y $1 \times 10^{-4}$) y tres tamaños de lote (64, 128 y 192), sumando 24 ejecuciones adicionales. El objetivo fue comprobar si una tasa de aprendizaje más baja ($1 \times 10^{-4}$) permitía un mejor ajuste y evaluar el efecto de variar el tamaño de lote en el entrenamiento.
+    \item \textbf{Exploración de la estructura base:} Se evaluaron 48 configuraciones combinando la representación molecular (\gls{smiles} y \gls{selfies}), el tipo de celda recurrente (\gls{gru} y \gls{lstm}), la cantidad de capas ocultas (1 y 2), la dimensión latente (64, 128 y 256) y las épocas de entrenamiento (100 y 300). La tasa de aprendizaje y el tamaño de lote se mantuvieron fijos en $1 \times 10^{-3}$ y 128. Las dimensiones latentes se basan en trabajos previos de \glspl{vae} moleculares~\cite{GBWHLDSA18} para probar diferentes capacidades de representación, y las épocas buscan evaluar si un entrenamiento prolongado mejora los resultados.
+    \item \textbf{Optimización del entrenamiento:} Sobre los cuatro modelos representativos con mejor balance del análisis previo, se exploraron dos tasas de aprendizaje ($1 \times 10^{-3}$ y $1 \times 10^{-4}$) y tres tamaños de lote (64, 128 y 192), sumando 24 ejecuciones adicionales. El objetivo fue comprobar si una tasa de aprendizaje más baja ($1 \times 10^{-4}$) permitía un mejor ajuste y evaluar el efecto de variar el tamaño de lote en el entrenamiento.
 \end{itemize}
 
-El cuadro~\ref{tab:espacio_busqueda_vae} resume las variables y los valores explorados en cada fase.
+El cuadro~\ref{tab:espacio_busqueda_vae} resume las variables y los valores explorados en cada parte del análisis.
 
 \begin{table}[htbp]
 \centering
-\caption{Espacio de búsqueda de hiperparámetros del \gls{vae} dividido por fases.}
+\caption{Espacio de búsqueda de hiperparámetros del \gls{vae}.}
 \label{tab:espacio_busqueda_vae}
 \begin{tabular}{lllc}
 \toprule
-\textbf{Fase del Experimento} & \textbf{Variable} & \textbf{Valores Explorados} & \textbf{Total} \\
+\textbf{Configuración} & \textbf{Variable} & \textbf{Valores Explorados} & \textbf{Total} \\
 \midrule
-\textbf{Fase 1: Base} & Representación & SMILES, SELFIES & \\
+\textbf{Estructura base} & Representación & SMILES, SELFIES & \\
 (Fijos: LR $1 \times 10^{-3}$, & Arquitectura & GRU, LSTM & 48 \\
 Batch 128) & Capas ocultas & 1, 2 & \\
  & Dimensión Latente & 64, 128, 256 & \\
  & Épocas de Entrenamiento & 100, 300 & \\
 \midrule
-\textbf{Fase 2: Optimización} & Tasa de Aprendizaje (LR) & $1 \times 10^{-3}$, $1 \times 10^{-4}$ & \\
-(Mejores 4 Modelos de la Fase 1) & Tamaño de Lote (Batch) & 64, 128, 192 & 24 \\
+\textbf{Optimización de entrenamiento} & Tasa de Aprendizaje (LR) & $1 \times 10^{-3}$, $1 \times 10^{-4}$ & \\
+(Mejores 4 Modelos seleccionados) & Tamaño de Lote (Batch) & 64, 128, 192 & 24 \\
 \midrule
 \multicolumn{3}{r}{\textbf{Total de ejecuciones:}} & \textbf{72} \\
 \bottomrule
