@@ -183,3 +183,57 @@ sbx\_pm vs sbx\_gauss & 0.286 & $-$0.381 & - \\
     \caption{Moléculas de mayor QED con $\text{SA} < 3$ seleccionadas del frente no dominado acumulado para cada combinación de operadores en \acrshort{nsga3}.}
     \label{fig:moleculas_operadores_nsga3}
 \end{figure}
+
+\clearpage
+\section{Moléculas de Mayor QED por Algoritmo (Catálogo Completo)}
+\label{sec:apendice_moleculas_top_qed}
+
+En la Tabla~\ref{tab:moleculas_representativas_completo} se detallan las cinco moléculas de mayor \gls{qed} obtenidas a partir del frente no dominado acumulado de cada algoritmo que satisfacen el filtro de accesibilidad sintética ($\text{SA} < 3$) y la restricción de tridimensionalidad ($F_{\text{sp3}} \ge 0.30$).
+
+\begin{table}[H]
+\centering
+\caption{Las cinco moléculas con mayor QED del frente de Pareto de cada algoritmo que satisfacen el filtro de accesibilidad ($\text{SA} < 3$) y la restricción de tridimensionalidad ($F_{\text{sp3}} \ge 0.30$).}
+\label{tab:moleculas_representativas_completo}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccl}
+\toprule
+\textbf{Algoritmo} & \textbf{Puesto} & \textbf{QED} $\uparrow$ & \textbf{SA} $\downarrow$ & \textbf{$F_{\text{sp3}}$} & \textbf{SMILES} \\
+\midrule
+\multirow{5}{*}{\acrshort{nsga2}}
+ & 1 & 0.948 & 2.730 & 0.333 & \texttt{Cn1cc(NC(=O)C2CCCO2)c(-c2ccccc2Cl)n1} \\
+ & 2 & 0.948 & 2.060 & 0.357 & \texttt{O=C(Nc1nnc(Cc2ccc(F)cc2)s1)N1CCCC1} \\
+ & 3 & 0.948 & 1.850 & 0.312 & \texttt{O=C(Nc1ccc(F)cc1)N1CCN(Cc2ccco2)CC1} \\
+ & 4 & 0.948 & 1.800 & 0.333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccn3)CC2)cc1} \\
+ & 5 & 0.947 & 1.760 & 0.368 & \texttt{O=C(NCC(=O)N1CCCCCC1)c1ccc2ccccc2c1} \\
+\midrule
+\multirow{5}{*}{\acrshort{nsga3}}
+ & 1 & 0.948 & 2.800 & 0.333 & \texttt{Cn1nc(NC(=O)C2CCCO2)cc1-c1ccccc1Cl} \\
+ & 2 & 0.948 & 2.740 & 0.308 & \texttt{Nc1cc(Br)n(COc2ccc3c(c2)CCC3)n1} \\
+ & 3 & 0.948 & 2.570 & 0.333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
+ & 4 & 0.948 & 2.130 & 0.357 & \texttt{O=C(Nc1nnc(Cc2ccccc2F)s1)N1CCCC1} \\
+ & 5 & 0.948 & 1.820 & 0.333 & \texttt{Cc1ccccc1NC(=O)N1CCN(Cc2ccccn2)CC1} \\
+\midrule
+\multirow{5}{*}{\acrshort{moead}}
+ & 1 & 0.948 & 2.400 & 0.333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3ccccn3)C2)s1} \\
+ & 2 & 0.948 & 1.810 & 0.333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3cccnc3)CC2)cc1} \\
+ & 3 & 0.946 & 1.650 & 0.316 & \texttt{Cc1ccc(N2CCN(C(=O)NCc3ccccc3)CC2)cc1} \\
+ & 4 & 0.944 & 1.580 & 0.316 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cc1} \\
+ & 5 & 0.908 & 1.580 & 0.467 & \texttt{CCC(=O)Nc1ccc(C(=O)N2CCCCC2)cc1} \\
+\midrule
+\multirow{5}{*}{\acrshort{agemoea}}
+ & 1 & 0.948 & 2.030 & 0.375 & \texttt{O=C(c1csc(-c2cccc(CO)c2)n1)N1CCCCC1} \\
+ & 2 & 0.948 & 1.810 & 0.333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cn1} \\
+ & 3 & 0.944 & 1.800 & 0.312 & \texttt{O=C(Nc1ccc(CN2CCOCC2)cc1)c1cccs1} \\
+ & 4 & 0.944 & 1.790 & 0.300 & \texttt{O=C(Nc1ccc(C(=O)N2CCc3ccccc3C2)cc1)C1CC1} \\
+ & 5 & 0.943 & 1.720 & 0.333 & \texttt{O=C(NCc1ccc(N2CCCCC2)nc1)c1ccccc1} \\
+\midrule
+\multirow{5}{*}{\acrshort{cmopso}}
+ & 1 & 0.948 & 2.570 & 0.333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
+ & 2 & 0.948 & 2.500 & 0.333 & \texttt{O=C(c1cc[nH]n1)N1CCC(Oc2ccccc2Cl)CC1} \\
+ & 3 & 0.948 & 2.060 & 0.333 & \texttt{O=C(NC1CCN(c2nccs2)CC1)c1ccccc1F} \\
+ & 4 & 0.946 & 1.900 & 0.389 & \texttt{O=C(Nc1ccc2c(N3CCOCC3)cccc2c1)C1CC1} \\
+ & 5 & 0.944 & 1.850 & 0.312 & \texttt{O=C(Nc1cccc(CN2CCOCC2)c1)c1cccs1} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
