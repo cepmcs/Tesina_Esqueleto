@@ -68,7 +68,7 @@ Al optimizar el entrenamiento, la reducción de la tasa de aprendizaje de $1 \ti
 
 En los entrenamientos de 100 épocas, \textbf{SM-G 2} registró su mejor comportamiento con este LR de $1 \times 10^{-4}$ y Batch de 64, donde consiguió un \gls{fcd} competitivo de 0.301, una validez de 0.950 y distancias de Wasserstein bajas (\gls{sas} de 0.111 y \gls{qed} de 0.006), demostrando capacidad para generar un espacio químico de calidad en menos épocas de entrenamiento y aligerando la carga computacional. En contraste, la representación \gls{selfies} en \textbf{SE-L 2} requirió una tasa de $1 \times 10^{-3}$ y un lote de 192 para lograr su mejor \gls{fcd} (0.675) a costa de una novedad baja (0.868). Si bien mantiene una validez perfecta (1.000), si se intenta mejorar esa novedad reduciendo la tasa de aprendizaje a $1 \times 10^{-4}$, el \gls{fcd} empeora significativamente a 2.893.
 
-A las 300 épocas, la variante de red menos profunda, \textbf{SM-L 1}, consiguió su mayor eficacia también con LR de $1 \times 10^{-4}$ y Batch de 64, registrando un \gls{fcd} de 0.424 y una validez de 0.940. Al comparar estos números con el modelo de dos capas (\textbf{SM-L 2}), se observa que si bien la arquitectura de una capa es más ligera, agregar una segunda capa mejora sistemáticamente las métricas. De hecho, \textbf{SM-L 2} mostró los mejores resultados de toda la etapa experimental con dicha configuración, ya que alcanzó conjuntamente la validez más alta de las arquitecturas \gls{smiles} (0.962), el \gls{fcd} más bajo de todos los registros analizados (0.179) y la menor distancia de Wasserstein para \gls{sas} (0.093), con una novedad de 0.943.
+A las 300 épocas, la variante de red menos profunda, \textbf{SM-L 1}, consiguió su mayor eficacia también con LR de $1 \times 10^{-4}$ y Batch de 64, registrando un \gls{fcd} de 0.424 y una validez de 0.940. Al comparar estos números con el modelo de dos capas (\textbf{SM-L 2}), se observa que si bien la arquitectura de una capa es más ligera, agregar una segunda capa mejora sistemáticamente las métricas. \textbf{SM-L 2} mostró los mejores resultados de toda la etapa experimental con dicha configuración, ya que alcanzó conjuntamente la validez más alta de las arquitecturas \gls{smiles} (0.962), el \gls{fcd} más bajo de todos los registros analizados (0.179) y la menor distancia de Wasserstein para \gls{sas} (0.093), con una novedad de 0.943.
 
 \subsection{Evaluación en MOSES y Comparación con el Estado del Arte}
 \label{subsec:res_vae_moses}
@@ -84,6 +84,13 @@ En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed
 \includegraphics[width=0.8\textwidth]{Figures/distribuciones_qed_sa.png}
 \caption{Distribuciones de QED y SAS de las moléculas válidas generadas por SM-L 2 frente al conjunto de prueba de MOSES.}
 \label{fig:distribuciones}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\framebox[\textwidth]{\rule{0pt}{6cm}\textbf{[Placeholder: Figura 4.2 -- Muestras de moléculas generadas por el modelo SM-L 2]}}
+\caption{Muestras de moléculas generadas por el modelo seleccionado SM-L 2.}
+\label{fig:muestras_modelo_seleccionado}
 \end{figure}
 
 
