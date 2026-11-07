@@ -12,25 +12,11 @@ En esta sección se aborda la evaluación del modelo generativo sobre el conjunt
 \label{subsec:res_vae_fase1}
 \label{subsec:res_vae_hiperparametros}
 
-Cada configuración se identifica con la representación (SM para \gls{smiles}, SE para \gls{selfies}), la arquitectura (L para \gls{lstm}, G para \gls{gru}), el número de capas y la dimensión latente. Por ejemplo, SM-L 2 256 corresponde a \gls{smiles}, \gls{lstm}, 2 capas y latente de 256.
+En esta etapa se evaluaron diversas configuraciones del modelo generativo \gls{vae} con 100 y 300 épocas de entrenamiento, cuyos resultados completos se presentan detalladamente en el Apéndice~\ref{apendice:vae_experimentos} (Tabla~\ref{tab:log_experimentos_completo}). Cada configuración se identifica con la representación (SM para \gls{smiles}, SE para \gls{selfies}), la arquitectura (L para \gls{lstm}, G para \gls{gru}), el número de capas y la dimensión latente. Por ejemplo, SM-L 2 256 corresponde a \gls{smiles}, \gls{lstm}, 2 capas y latente de 256. A partir de estos resultados, surgen distintos patrones respecto a cada componente:
 
-Los resultados completos de todas las configuraciones evaluadas con 100 y 300 épocas de entrenamiento se presentan detalladamente en el Apéndice~\ref{apendice:vae_experimentos} (Tabla~\ref{tab:log_experimentos_completo}).
+En primer lugar, si bien la representación de \gls{selfies} cumple con su diseño garantizando una validez perfecta en todas las ejecuciones, las redes entrenadas con \gls{smiles} logran capturar con mayor precisión la distribución estadística y las propiedades de las moléculas reales, lo cual se refleja en puntuaciones de \gls{fcd} y distancias de Wasserstein (\gls{sas} y \gls{qed}) notablemente inferiores a las de los modelos \gls{selfies}. Asimismo, el espacio latente de 256 dimensiones superó a las configuraciones de 64 y 128 en todas las arquitecturas evaluadas. Al incrementar la dimensión a 256 se observa una reducción constante en el \gls{fcd} (por ejemplo, descendiendo de 0.983 a 0.412 en SM-L 2), junto con un incremento sostenido en la validez de los modelos \gls{smiles} (que en dicha configuración pasa de 0.816 a 0.943) y menores distancias de Wasserstein.
 
-Al analizar las métricas obtenidas en los experimentos, surgen distintos patrones que nos permiten definir las mejores arquitecturas para balancear tanto la calidad del espacio químico que exploran como la validez de las moléculas generadas:
-
-\paragraph{SMILES vs. SELFIES}
-
-Si bien la representación de \gls{selfies} cumple con su diseño, garantizando una validez perfecta en todas las ejecuciones, las redes entrenadas con \gls{smiles} logran capturar con mayor precisión la distribución estadística y las propiedades de las moléculas reales. Esto se refleja en puntuaciones de \gls{fcd} y distancias de Wasserstein (\gls{sas} y \gls{qed}) notablemente inferiores a las de los modelos \gls{selfies}.
-
-\paragraph{Dimensionalidad}
-
-El espacio latente de 256 es en general superior al de 64 y 128. El aumento de dimensionalidad permite al modelo representar en sus vectores latentes mayores características químicas y da como resultado un mejor \gls{fcd} y una mayor validez general en los modelos \gls{smiles}.
-
-\paragraph{LSTM vs. GRU}
-
-Las redes \gls{lstm} demostraron ser más resilientes a entrenamientos prolongados. Al pasar de 100 a 300 épocas, las arquitecturas \gls{lstm} tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al pasar a las 300 épocas, reduciendo drásticamente la validez general de las moléculas generadas.
-
-La mayor estabilidad de las redes \gls{lstm} en entrenamientos prolongados podría atribuirse a la presencia de una compuerta de salida, la cual permite controlar y atenuar la magnitud de su memoria antes de transmitirla a las siguientes capas. En contraste, la arquitectura \gls{gru} carece de este mecanismo \cite{chung2014empirical}. Al exponer su memoria de forma directa, en épocas avanzadas se generaría un conflicto numérico con la regularización del \gls{vae}, lo que propiciaría el colapso del modelo.
+En cuanto a la arquitectura, las redes \gls{lstm} demostraron ser más resilientes a entrenamientos prolongados: al pasar de 100 a 300 épocas, tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al alcanzar las 300 épocas, reduciendo drásticamente la validez general de las moléculas generadas. Esta mayor estabilidad de las redes \gls{lstm} podría deberse, a modo de hipótesis, a la presencia de una compuerta de salida que permite regular la magnitud de su memoria antes de transmitirla. En contraste, al carecer \gls{gru} de este mecanismo \cite{chung2014empirical}, es posible que en épocas avanzadas se produzca un conflicto numérico con la regularización del \gls{vae} que favorezca el colapso del modelo. Cabe destacar que las ejecuciones evaluadas corresponden a configuraciones experimentales individuales y no a repeticiones de cada una, por lo que la variabilidad entre entrenamientos no queda caracterizada.
 
 \paragraph{Selección de configuraciones}
 
