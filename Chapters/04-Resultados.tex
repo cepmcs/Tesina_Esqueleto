@@ -121,12 +121,12 @@ PCF-VAE & 0.980 & 1.000 & 0.938 & 0.990 & 0.296 & 0.859 & N/R & N/R \\
 
 Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance competitivo frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0.179, manteniendo al mismo tiempo una alta tasa de novedad (0.943) y diversidad interna (0.859). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0.073), este comportamiento suele estar asociado a una caída en la novedad (0.842), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} radica en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
 
-\section{Generación de Fármacos Genéricos y Evaluación de Metaheurísticas}
+\section{Optimización Multiobjetivo de Propiedades Moleculares sin Diana Específica}
 \label{sec:res_genericos}
 
-En esta sección se aborda la generación de fármacos genéricos sin diana específica mediante metaheurísticas multiobjetivo en el espacio latente del \gls{vae}. Se describen los resultados del ajuste de hiperparámetros y la comparativa de operadores genéticos, para luego contrastar el desempeño global de los cinco algoritmos y caracterizar las moléculas candidatas obtenidas en el frente de Pareto conjunto.
+En esta sección se aborda la optimización multiobjetivo de propiedades moleculares sin diana específica mediante metaheurísticas en el espacio latente del \gls{vae}. Se describen los resultados del ajuste de hiperparámetros y la influencia de los operadores de cruce y mutación, para luego contrastar el desempeño global de los cinco algoritmos y caracterizar las moléculas candidatas obtenidas en el frente de Pareto conjunto.
 
-\subsection{Ajuste de Hiperparámetros de las Metaheurísticas}
+\subsection{Ajuste de Hiperparámetros}
 \label{subsec:res_metaheuristicas_hp}
 
 A continuación se detallan los resultados de la exploración de hiperparámetros para cada algoritmo, identificando las configuraciones con mejor rendimiento en hipervolumen y examinando la relación entre la convergencia multiobjetivo y la validez química.
@@ -205,7 +205,7 @@ Este análisis muestra los siguientes comportamientos:
 
 La Figura~\ref{fig:efectos_hypervolume} resume la magnitud del efecto de cada hiperparámetro sobre el hipervolumen. En los algoritmos genéticos, las variantes con PCX son predominantemente sensibles a la probabilidad de cruce $P(\text{cruce})$ (con un efecto especialmente marcado en \acrshort{nsga2}), mientras que las variantes con SBX responden principalmente a la probabilidad de mutación $P(\text{mut.})$. \acrshort{moead} exhibe una marcada sensibilidad tanto a la mutación como al reparto de población y generaciones. En \acrshort{cmopso}, el parámetro de mayor impacto es el tope de velocidad ($v_{\text{max}}$), seguido por la probabilidad de mutación, mientras que el tamaño del archivo de élites y la partición del presupuesto presentan una influencia secundaria.
 
-\subsection{Comparativa de Operadores Genéticos}
+\subsection{Influencia de los Operadores de Cruce y Mutación}
 \label{subsec:comparativa_operadores}
 
 Se evalúa el impacto de los operadores de cruce (SBX, PCX) y mutación (Polinomial, Gaussiana) en \acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3} sobre distintos indicadores multiobjetivo y químicos.
@@ -624,7 +624,7 @@ En la Figura~\ref{fig:frente_conjunto_nsga3}, PCX aporta 31 soluciones y SBX 20 
 
 La Figura~\ref{fig:moleculas_operadores_nsga3} ilustra las dos moléculas de mayor \gls{qed} con $\text{SA} < 3$ en \acrshort{nsga3}. Todas las configuraciones alcanzan un \gls{qed} de $0.948$. En facilidad sintética, tanto PCX como SBX consiguen candidatos muy favorables con SA por debajo de $1.85$, destacando pcx\_pm ($1.71$) y sbx\_gauss ($1.72$) que redescubren estructuras casi idénticas. A su vez, pcx\_gauss aporta esqueletos más variados con mayor saturación ($F_{\text{sp3}} = 0.400$, SA de $1.99$).
 
-\subsection{Comparación Global entre Metaheurísticas Multiobjetivo}
+\subsection{Comparación Global de Metaheurísticas}
 \label{subsec:comparacion_final}
 \label{subsec:calidad_gen_moleculas}
 
@@ -736,7 +736,8 @@ En los objetivos, \acrshort{cmopso} y \acrshort{moead} concentran sus resultados
 
 En las métricas de generación, \acrshort{moead} y \acrshort{cmopso} alcanzan una validez próxima al $99\%$, pero su unicidad desciende a medianas de $0.45$ y $0.32$, y su novedad resulta menor y dispersa en \acrshort{cmopso}. En contraste, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} mantienen unicidad y novedad cercanas a $1.0$ y $0.98$, con una validez situada entre el $80\%$ y el $86\%$.
 
-\subsubsection{Análisis de Convergencia}
+\subsection{Convergencia, Cobertura y Diversidad de las Soluciones}
+\label{subsec:convergencia_cobertura_diversidad}
 
 \begin{figure}[H]
     \centering
@@ -793,7 +794,7 @@ En contraste, los extremos del frente presentan una frecuencia menor. Tanto las 
 
 
 
-\subsection{Análisis del Frente no Dominado Conjunto Global}
+\subsection{Análisis del Frente no Dominado Conjunto y Moléculas Representativas}
 \label{subsec:frente_conjunto_global}
 
 Para evaluar la capacidad exploratoria conjunta y caracterizar el espacio químico accesible, se combinan las soluciones obtenidas por las ramas de cruce PCX y SBX en los cuatro algoritmos genéticos (empleando en cada caso el operador de mutación con mejor desempeño en la comparación estadística), junto con \acrshort{cmopso}, a lo largo de las veinte ejecuciones independientes. Tras deduplicar por estructura química (\gls{smiles}), se recalcula la no dominancia global, conformando un frente no dominado conjunto de 32 moléculas únicas.
