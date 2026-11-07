@@ -129,54 +129,9 @@ En esta sección se aborda la optimización multiobjetivo de propiedades molecul
 \subsection{Ajuste de Hiperparámetros}
 \label{subsec:res_metaheuristicas_hp}
 
-A continuación se detallan los resultados de la exploración de hiperparámetros para cada algoritmo, identificando las configuraciones con mejor rendimiento en hipervolumen y examinando la relación entre la convergencia multiobjetivo y la validez química.
+Siguiendo el protocolo experimental establecido en la Sección~\ref{subsec:protocolo_ajuste}, la exploración de hiperparámetros se evaluó utilizando el hipervolumen (\acrshort{hv}) como métrica principal sobre 20 semillas independientes. La mejor configuración obtenida para cada algoritmo y combinación de operadores se detalla en el Apéndice~\ref{sec:apendice_hp_seleccionadas} (Tabla~\ref{tab:hp_seleccionadas}).
 
-\subsubsection{Estudio de Hiperparámetros y Selección de Configuraciones}
-
-Para la selección de configuraciones y la comparación entre algoritmos, se utiliza el hipervolumen (\acrshort{hv}) como métrica principal, ya que evalúa de forma conjunta la convergencia y la diversidad de las soluciones sin necesidad de contar con un frente de referencia previo. En función de este criterio, la Tabla~\ref{tab:hp_seleccionadas} presenta las configuraciones seleccionadas para cada algoritmo y combinación de operadores, evaluadas por el menor rango medio de hipervolumen en 20 semillas independientes.
-
-\begin{table}[H]
-\centering
-\small
-\caption{Configuraciones seleccionadas: mejor configuración para cada combinación de operadores en los algoritmos genéticos y mejor configuración global en \acrshort{cmopso}, determinadas por el menor rango medio de hipervolumen a lo largo de las 20 semillas independientes.}
-\label{tab:hp_seleccionadas}
-\begin{tabular}{lllcc}
-\toprule
-Algoritmo & Operadores & Configuración & Rango medio & $\mu \pm \sigma$ \\
-\midrule
-\acrshort{nsga2} & pcx/pm & 200$\times$500 cx=1 mut=0.012 & 5.20 & 1.1250 $\pm$ 0.0039 \\
- & pcx/gauss & 100$\times$1000 cx=1 mut=0.012 & 5.55 & 1.1258 $\pm$ 0.0046 \\
- & sbx/pm & 100$\times$1000 cx=0.9 mut=0.031 & 9.35 & 1.1137 $\pm$ 0.0016 \\
- & sbx/gauss & 100$\times$1000 cx=0.7 mut=0.031 & 6.70 & 1.1158 $\pm$ 0.0029 \\
-\midrule
-\acrshort{nsga3} & pcx/pm & 100$\times$1000 cx=1 mut=0.004 & 8.65 & 1.1214 $\pm$ 0.0032 \\
- & pcx/gauss & 100$\times$1000 cx=1 mut=0.012 & 9.35 & 1.1213 $\pm$ 0.0036 \\
- & sbx/pm & 400$\times$250 cx=1 mut=0.031 & 7.00 & 1.1151 $\pm$ 0.0022 \\
- & sbx/gauss & 100$\times$1000 cx=0.9 mut=0.031 & 7.65 & 1.1163 $\pm$ 0.0029 \\
-\midrule
-\acrshort{moead} & pcx/pm & 200$\times$500 cx=0.9 mut=0.031 & 7.20 & 1.1128 $\pm$ 0.0039 \\
- & pcx/gauss & 200$\times$500 cx=1 mut=0.031 & 7.70 & 1.1138 $\pm$ 0.0033 \\
- & sbx/pm & 400$\times$250 cx=1 mut=0.031 & 7.60 & 1.1073 $\pm$ 0.0050 \\
- & sbx/gauss & 200$\times$500 cx=1 mut=0.031 & 8.25 & 1.1079 $\pm$ 0.0055 \\
-\midrule
-\acrshort{agemoea} & pcx/pm & 400$\times$250 cx=1 mut=0.004 & 6.35 & 1.1208 $\pm$ 0.0028 \\
- & pcx/gauss & 100$\times$1000 cx=1 mut=0.031 & 6.25 & 1.1216 $\pm$ 0.0037 \\
- & sbx/pm & 400$\times$250 cx=1 mut=0.031 & 6.30 & 1.1132 $\pm$ 0.0024 \\
- & sbx/gauss & 200$\times$500 cx=0.9 mut=0.031 & 6.75 & 1.1137 $\pm$ 0.0031 \\
-\midrule
-\acrshort{cmopso} & - & 100$\times$1000 elite=10 mut=0.031 vel=0.1 & 26.00 & 1.1092 $\pm$ 0.0037 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-A partir de los resultados de la Tabla~\ref{tab:hp_seleccionadas}, se observan las siguientes tendencias principales:
-\begin{enumerate}
-    \item \textbf{Escala de hipervolumen en el espacio restringido:} Al evaluar los objetivos \gls{qed} y SA bajo la restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$), los valores de hipervolumen se sitúan en el rango de $\sim 1.10\text{--}1.12$.
-
-    \item \textbf{Distribución del presupuesto de evaluaciones:} La mayoría de las configuraciones seleccionadas favorece esquemas con mayor número de generaciones ($100\times 1000$ y $200\times 500$), lo cual permite una explotación más prolongada en el espacio latente. Solo un número reducido de combinaciones retiene la partición $400\times 250$.
-
-    \item \textbf{Configuración seleccionada en \acrshort{cmopso}:} \acrshort{cmopso} selecciona el esquema $100\times 1000$ con un tamaño de élite de 10, una tasa de velocidad reducida ($v_{\text{max}} = 0.1$) y una probabilidad de mutación de $0.031$, alcanzando un hipervolumen medio de $1.1092$. Su rango medio ($26.00$) proviene de rankear simultáneamente las 81 configuraciones de su grilla, a diferencia de los algoritmos genéticos donde el ordenamiento se realizó dentro de las 27 configuraciones de cada combinación de operadores.
-\end{enumerate}
+En términos generales, al evaluar los objetivos \gls{qed} y SA bajo la restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$), los valores de hipervolumen se sitúan en el rango de $\sim 1.10\text{--}1.12$. Asimismo, la mayoría de las configuraciones seleccionadas favorece esquemas con mayor número de generaciones ($100\times 1000$ y $200\times 500$), lo cual permite una explotación más prolongada en el espacio latente frente a particiones de población más amplia ($400\times 250$). En \acrshort{cmopso}, la configuración seleccionada ($100\times 1000$, archivo élite de 10, velocidad $v_{\text{max}} = 0.1$ y mutación $0.031$) alcanza un hipervolumen medio de $1.1092$.
 
 \subsubsection{Compromiso entre Hipervolumen y Validez Química}
 
