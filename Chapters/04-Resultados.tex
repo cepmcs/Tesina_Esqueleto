@@ -14,9 +14,7 @@ En esta sección se aborda la evaluación del modelo generativo sobre el conjunt
 
 Cada configuración se identifica con la representación (SM para \gls{smiles}, SE para \gls{selfies}), la arquitectura (L para \gls{lstm}, G para \gls{gru}), el número de capas y la dimensión latente. Por ejemplo, SM-L 2 256 corresponde a \gls{smiles}, \gls{lstm}, 2 capas y latente de 256.
 
-Los resultados completos de todas las configuraciones evaluadas con 100 y 300 épocas de entrenamiento se presentan detalladamente en el Apéndice~\ref{apendice:vae_experimentos} (Tablas~\ref{tab:log_experimentos_100} y~\ref{tab:log_experimentos_300}).
-
-\subsubsection{Análisis de la Fase 1}
+Los resultados completos de todas las configuraciones evaluadas con 100 y 300 épocas de entrenamiento se presentan detalladamente en el Apéndice~\ref{apendice:vae_experimentos} (Tabla~\ref{tab:log_experimentos_completo}).
 
 Al analizar las métricas obtenidas en los experimentos, surgen distintos patrones que nos permiten definir las mejores arquitecturas para balancear tanto la calidad del espacio químico que exploran como la validez de las moléculas generadas:
 
@@ -34,9 +32,9 @@ Las redes \gls{lstm} demostraron ser más resilientes a entrenamientos prolongad
 
 La mayor estabilidad de las redes \gls{lstm} en entrenamientos prolongados podría atribuirse a la presencia de una compuerta de salida, la cual permite controlar y atenuar la magnitud de su memoria antes de transmitirla a las siguientes capas. En contraste, la arquitectura \gls{gru} carece de este mecanismo \cite{chung2014empirical}. Al exponer su memoria de forma directa, en épocas avanzadas se generaría un conflicto numérico con la regularización del \gls{vae}, lo que propiciaría el colapso del modelo.
 
-\subsubsection{Selección de modelos}
+\paragraph{Selección de configuraciones}
 
-La fase 2 de la optimización de hiperparámetros se centra en probar diferentes tasas de aprendizaje y tamaños de lote; por lo cual, se seleccionarán aquellas configuraciones que muestren tanto una generación estructural adecuada como un mejor balance en las métricas que miden la calidad de la generación molecular (\gls{fcd}, \gls{sas}, \gls{qed}). Dado que todos los modelos seleccionados comparten un espacio latente de 256 dimensiones, este valor se omitirá en su nomenclatura.
+La etapa de optimización del entrenamiento se centra en probar diferentes tasas de aprendizaje y tamaños de lote; por lo cual, se seleccionaron aquellas configuraciones que mostraron tanto una generación estructural adecuada como un mejor balance en las métricas que miden la calidad de la generación molecular (\gls{fcd}, \gls{sas}, \gls{qed}). Dado que todos los modelos seleccionados comparten un espacio latente de 256 dimensiones, este valor se omitirá en su nomenclatura.
 
 \paragraph{SM-L 2 (300 épocas)}
 
