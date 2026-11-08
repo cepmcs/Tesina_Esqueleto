@@ -1,9 +1,9 @@
 \chapter{Resultados y Discusión}
 \label{ch:resultados}
 
-En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se examinan los resultados del ajuste de hiperparámetros del modelo generativo (\gls{vae}) a través de sus dos fases experimentales y se compara el desempeño de la mejor configuración frente al estado del arte en el benchmark \gls{moses}. A continuación, se describen los resultados de la generación de fármacos genéricos y la evaluación de las metaheurísticas multiobjetivo, analizando el impacto de los diferentes operadores. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando la afinidad de unión obtenida mediante acoplamiento molecular y las propiedades fisicoquímicas de las mejores moléculas candidatas.
+En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se examinan los resultados del ajuste de hiperparámetros del modelo generativo (\gls{vae}) a través de sus dos fases experimentales y se compara el desempeño de la mejor configuración frente al estado del arte en el benchmark \gls{moses}. A continuación, se describen los resultados de la optimización de moléculas sin diana específica y la evaluación de las metaheurísticas multiobjetivo, analizando el impacto de los diferentes operadores. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando la afinidad de unión obtenida mediante acoplamiento molecular y las propiedades fisicoquímicas de las mejores moléculas candidatas.
 
-\section{Evaluación y Selección del Modelo Generativo VAE}
+\section{Evaluación y Selección del Modelo Generativo \texorpdfstring{\gls{vae}}{VAE}}
 \label{sec:res_vae}
 
 En esta sección se aborda la evaluación del modelo generativo sobre el conjunto de datos \gls{moses}. Se presentan los resultados de las fases de ajuste de hiperparámetros y se examina el comportamiento del modelo seleccionado en dicho benchmark frente a otros enfoques de la literatura.
@@ -195,7 +195,7 @@ En \acrshort{agemoea}, se observa la caída más marcada de diversidad bajo SBX,
 
 Por último, todas las configuraciones de \acrshort{moead} destacan por sostener una validez química alta ($> 98.4\%$) y una factibilidad de $87.5\%\text{--}93.0\%$, con valores de SA favorables ($1.65\text{--}1.70$) y un $F_{\text{sp3}}$ medio de $0.39\text{--}0.41$. No obstante, a diferencia de los otros métodos, en \acrshort{moead} la descomposición en subproblemas escalares y el cruce acotado a vecinos locales restringe la dispersión de PCX; en consecuencia, aun con este operador, la unicidad ($44.5\%\text{--}54.5\%$) y la novedad ($74.5\%\text{--}79.3\%$) resultan inferiores a las de los restantes algoritmos genéticos, concentrando la exploración en análogos moleculares conocidos.
 
-Las pruebas de Wilcoxon de rangos con signo con corrección de Holm (detalladas en las Tablas~\ref{tab:ops_agemoea}, \ref{tab:ops_moead}, \ref{tab:ops_nsga2} y \ref{tab:ops_nsga3} del Apéndice~\ref{apendice:wilcoxon}) confirman que las combinaciones basadas en PCX superan a las de SBX en hipervolumen con significancia estadística en los cuatro algoritmos. Dentro de cada familia de cruce, el tipo de mutación (polinomial o gaussiana) no produce diferencias significativas en \acrshort{agemoea}, \acrshort{moead} ni \acrshort{nsga3}, definiendo. La única excepción se presenta en \acrshort{nsga2} bajo SBX, donde la mutación gaussiana supera de forma estadísticamente significativa a la polinomial.
+Las pruebas de Wilcoxon de rangos con signo con corrección de Holm (detalladas en las Tablas~\ref{tab:ops_agemoea}, \ref{tab:ops_moead}, \ref{tab:ops_nsga2} y \ref{tab:ops_nsga3} del Apéndice~\ref{apendice:wilcoxon}) confirman que las combinaciones basadas en PCX superan a las de SBX en hipervolumen con significancia estadística en los cuatro algoritmos. Dentro de cada familia de cruce, el tipo de mutación (polinomial o gaussiana) no produce diferencias significativas en \acrshort{agemoea}, \acrshort{moead} ni \acrshort{nsga3}. La única excepción se presenta en \acrshort{nsga2} bajo SBX, donde la mutación gaussiana supera de forma estadísticamente significativa a la polinomial.
 
 \begin{figure}[H]
     \centering
@@ -220,7 +220,6 @@ En esta sección se comparan los cinco algoritmos (\acrshort{nsga2}, \acrshort{n
 
 \begin{table}[H]
 \centering
-\rowcolors{2}{gray!10}{white}
 \caption{Comparación de indicadores multiobjetivo - mejores configuraciones.}
 \label{tab:comparison_multiobjective}
 \resizebox{\textwidth}{!}{%
@@ -246,7 +245,6 @@ Estas diferencias podrían deberse a cómo busca y selecciona cada algoritmo. En
 
 \begin{table}[H]
 \centering
-\rowcolors{2}{gray!10}{white}
 \caption{Comparación de indicadores químicos - mejores configuraciones.}
 \label{tab:comparison_chemical}
 \resizebox{\textwidth}{!}{%
@@ -275,7 +273,6 @@ Estas diferencias en la diversidad química podrían explicarse por la dinámica
 
 \begin{table}[H]
 \centering
-\rowcolors{2}{gray!10}{white}
 \caption{Comparación entre algoritmos sobre hipervolumen. Grupos homogéneos: \{\acrshort{nsga2}\} $>$ \{\acrshort{agemoea}, \acrshort{nsga3}\} $>$ \{\acrshort{moead}\} $>$ \{\acrshort{cmopso}\}.}
 \label{tab:comparacion_grupos}
 \begin{tabular}{lrrl}
