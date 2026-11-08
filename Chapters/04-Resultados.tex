@@ -131,7 +131,7 @@ En esta sección se aborda la optimización multiobjetivo de propiedades molecul
 
 Siguiendo el protocolo experimental establecido en la Sección~\ref{subsec:protocolo_ajuste}, la exploración de hiperparámetros se evaluó utilizando el hipervolumen (\acrshort{hv}) como métrica principal sobre 20 semillas independientes. La mejor configuración obtenida para cada algoritmo y combinación de operadores se detalla en el Apéndice~\ref{sec:apendice_hp_seleccionadas} (Tabla~\ref{tab:hp_seleccionadas}).
 
-En términos generales, al evaluar los objetivos \gls{qed} y SA bajo la restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$), los valores de hipervolumen se sitúan en el rango de $\sim 1.10\text{--}1.12$. Asimismo, la mayoría de las configuraciones seleccionadas favorece esquemas con mayor número de generaciones ($100\times 1000$ y $200\times 500$), lo cual permite una explotación más prolongada en el espacio latente frente a particiones de población más amplia ($400\times 250$). En \acrshort{cmopso}, la configuración seleccionada ($100\times 1000$, archivo élite de 10, velocidad $v_{\text{max}} = 0.1$ y mutación $0.031$) alcanza un hipervolumen medio de $1.1092$.
+En términos generales, al evaluar los objetivos \gls{qed} y SA bajo la restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$), los valores de hipervolumen se sitúan en el rango de $\sim 1.10\text{--}1.12$. Asimismo, la mayoría de las configuraciones seleccionadas favorece esquemas con mayor número de generaciones, lo cual permite una explotación más prolongada en el espacio latente frente a particiones de población más amplia.
 
 \subsubsection{Compromiso entre Hipervolumen y Validez Química}
 
