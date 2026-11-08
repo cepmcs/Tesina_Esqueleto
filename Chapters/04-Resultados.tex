@@ -479,23 +479,235 @@ Al no existir un frente de Pareto teórico conocido para este espacio químico, 
 
 Por último, las funciones objetivo optimizadas (\gls{qed} y SA) y la restricción impuesta ($F_{\text{sp3}} \ge 0.30$) evalúan propiedades fisicoquímicas generales estimadas computacionalmente, sin medir la afinidad frente a una diana terapéutica particular, aspecto que se aborda en una etapa posterior incorporando acoplamiento molecular.
 
-\section{Generación de Inhibidores de la Proteína MRP1}
+\section{Generación de Inhibidores de la Proteína \texorpdfstring{\gls{mrp1}}{MRP1}}
 \label{sec:res_mrp1}
 
-\subsection{Análisis de Calidad de Generación de Moléculas}
+En esta sección se aborda la optimización multiobjetivo dirigida hacia la diana \gls{mrp1} mediante los algoritmos seleccionados. Se evalúa el desempeño en cuatro objetivos de optimización y la influencia de los operadores de cruce (SBX y PCX), para luego comparar con modelos de referencia y analizar las moléculas candidatas de los frentes de Pareto generados mediante validación conformacional y análisis de características \gls{admet}.
+
+% -----------------------------------------------------------------------------
+\subsection{Análisis de Calidad de Generación e Indicadores Multiobjetivo}
 \label{subsec:calidad_gen_mrp1}
-% Resultados de afinidad de unión (AutoDock Vina), QED, SA y Fsp3.
-% Análisis de validez, unicidad, novedad y frentes de Pareto obtenidos para MRP1.
-% Visualizaciones: distribuciones de afinidad y métricas moleculares.
 
-\subsection{Comparación Contra Algoritmos del Estado del Arte}
+\subsubsection{Indicadores Multiobjetivo y Propiedades Químicas}
+\label{subsubsec:indicadores_multiobjetivo_quimicos}
+
+\input{Chapters/Tables/mrp1/tab_multiobjetivo_mrp1.tex}
+
+La Tabla~\ref{tab:multiobjetivo} presenta la comparación de los indicadores multiobjetivo para cada configuración evaluada sobre cinco ejecuciones independientes. Se analizan indicadores de convergencia y proximidad al frente de referencia (hipervolumen, $\text{IGD}^+$ y $\epsilon^+$), junto con la distribución (espaciamiento), el tamaño del frente de Pareto factible y el tiempo total de ejecución.
+
+En comparación con los experimentos previos, la escala del hipervolumen varía debido a la incorporación simultánea de cuatro objetivos (\gls{qed}, SA, afinidad de unión y pChEMBL predicho) junto con las restricciones de viabilidad ($F_{\text{sp3}}$ y $\log P$). Por otra parte, el tiempo de ejecución de los algoritmos aumenta considerablemente, debido a la carga computacional que conlleva el cálculo del acoplamiento molecular de las moléculas generadas. De igual manera, al optimizarse cuatro objetivos simultáneos, la cantidad de moléculas pertenecientes al frente de Pareto aumenta sustancialmente.
+
+Al observar las métricas multiobjetivo, los resultados muestran que las variantes con el operador SBX obtuvieron en promedio un rendimiento superior a las de PCX en los tres algoritmos genéticos evaluados. \acrshort{nsga3} con SBX alcanza el hipervolumen más alto del estudio, superando tanto a su variante con PCX como a los otros algoritmos. Asimismo, las configuraciones con SBX consiguen mejores valores en los indicadores de proximidad $\text{IGD}^+$ y $\epsilon^+$. En particular, \acrshort{nsga3} con SBX logra el mejor $\text{IGD}^+$, reduciendo la distancia al frente de referencia. De igual manera, \acrshort{nsga2} con SBX registra el menor valor de $\epsilon^+$, reflejando una convergencia más cercana y uniforme hacia el frente de Pareto conjunto. A diferencia de los experimentos previos, donde \acrshort{nsga2} lideraba los indicadores, en cuatro objetivos \acrshort{nsga3} superó a \acrshort{nsga2} en hipervolumen y convergencia. Este resultado concuerda con la literatura, ya que \acrshort{nsga3} fue desarrollado específicamente para contrarrestar el deterioro en la selección que experimenta \acrshort{nsga2} ante espacios de muchos objetivos~\cite{deb2014nsga3}.
+
+\input{Chapters/Tables/mrp1/tab_propiedades_mrp1.tex}
+
+La Tabla~\ref{tab:propiedades} presenta la comparación de las propiedades químicas y biológicas sobre los frentes no dominados acumulados. Se consideran los cuatro objetivos de optimización, junto con las restricciones de la búsqueda.
+
+Los tres algoritmos exhiben un comportamiento consistente en el cual las variantes con SBX logran un desempeño superior en los cuatro objetivos. Específicamente, \acrshort{nsga3} con SBX alcanza el mayor valor promedio de \gls{qed}, la mejor afinidad de unión hacia \gls{mrp1} y la mayor predicción de bioactividad inhibitoria. Por su parte, \acrshort{agemoea} con SBX obtiene la mejor accesibilidad sintética con un SA promedio de $2.115 \pm 0.126$. 
+
+En contraste, las configuraciones con PCX obtienen un \gls{qed} promedio menor, afinidades de docking más débiles y una accesibilidad sintética más compleja ($\text{SA} > 2.29$). Respecto a las restricciones fisicoquímicas, todas las variantes se sitúan dentro de los rangos buscados: los valores de $F_{\text{sp3}}$ oscilan entre $0.399$ y $0.424$, asegurando la tridimensionalidad molecular, mientras que los valores de $\log P$ convergen hacia el intervalo de $2.75$ a $2.86$, asegurando un perfil lipofílico propicio para la permeabilidad de membrana sin comprometer la solubilidad.
+
+\input{Chapters/Tables/mrp1/tab_generacion_mrp1.tex}
+
+La Tabla~\ref{tab:generacion} presenta la comparación de las métricas de calidad generativa, correspondientes a la validez, novedad y unicidad para cada configuración. La validez y la novedad se calculan sobre el total de evaluaciones realizadas a lo largo de las 100.000 evaluaciones, mientras que la unicidad se evalúa sobre las moléculas válidas generadas en la última generación.
+
+Los resultados muestran diferencias en la tasa de validez química entre ambos operadores de cruce. Las variantes con SBX alcanzan porcentajes de validez superiores al 94\% en todos los algoritmos, con un máximo de 0.963 en \acrshort{agemoea} y 0.960 en \acrshort{nsga3}, superando a las configuraciones con PCX, las cuales se sitúan entre el 57.0\% y el 58.3\%. Por su parte, todas las configuraciones conservan niveles elevados de novedad y unicidad, con una leve ventaja para las variantes con PCX, las cuales alcanzan un 1.000 en unicidad en todos los algoritmos y valores de novedad cercanos a 0.995.
+
+A diferencia de los experimentos con dos objetivos donde PCX presentaba una ventaja exploratoria, la incorporación simultánea de la afinidad de unión y la bioactividad inhibitoria pChEMBL favoreció a las variantes con SBX. SBX explota de manera conservadora las regiones densas de validez en el espacio latente, generando soluciones viables y no dominadas de manera regular. En cambio, el mecanismo direccional de PCX genera descendientes hacia los extremos del espacio de búsqueda, produciendo una mayor cantidad de estructuras químicamente inválidas o fuera de las restricciones fisicoquímicas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/mrp1/4_distribucion_propiedades.pdf}
+    \caption{Distribución de densidad de los cuatro objetivos de optimización (\gls{qed}, SA, afinidad de unión en kcal/mol y pChEMBL predicho) en el frente no dominado para cada configuración.}
+    \label{fig:distribucion_propiedades}
+\end{figure}
+
+La Figura~\ref{fig:distribucion_propiedades} muestra la distribución de densidad de los cuatro objetivos de optimización en los frentes obtenidos por cada configuración.
+
+En el gráfico de \gls{qed} se aprecian las tendencias observadas: las variantes con SBX concentran sus soluciones en un pico estrecho y elevado cerca de 0.88--0.94, mientras que PCX dispersa sus moléculas en un rango más amplio con valores menores de \gls{qed}. En la accesibilidad sintética (SA), todos los algoritmos ubican el grueso de sus soluciones en valores favorables (entre 1.8 y 2.5). Al mirar la afinidad de acoplamiento, las curvas de SBX se desplazan hacia energías más negativas, logrando una mayor densidad de soluciones con afinidades entre $-8$ y $-11\text{ kcal/mol}$. Finalmente, en la bioactividad predicha, todas las configuraciones sitúan su distribución por encima del umbral de 5.0, centradas entre 5.25 y 5.50.
+
+\subsubsection{Análisis de Convergencia}
+\label{subsubsec:convergencia}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/mrp1/1_convergencia_multiobjetivo.pdf}
+    \caption{Convergencia de los indicadores multiobjetivo en función del número de evaluaciones para cada configuración, promediada sobre las cinco ejecuciones independientes.}
+    \label{fig:convergencia_multiobjetivo}
+\end{figure}
+
+La Figura~\ref{fig:convergencia_multiobjetivo} muestra la evolución de los indicadores multiobjetivo a lo largo de las 100.000 evaluaciones, promediada sobre las cinco ejecuciones independientes.
+
+En el hipervolumen se observa un crecimiento rápido durante las primeras 20.000 evaluaciones en todas las configuraciones. A partir de esa etapa, \acrshort{nsga3} con SBX presenta un mejor comportamiento y sostiene el valor más alto hasta concluir la búsqueda ($\approx 0.514$). Por su parte, las variantes con PCX se estabilizan alrededor de las 40.000 evaluaciones. La disparidad entre operadores se hace todavía más patente en los indicadores $\text{IGD}^+$ y $\epsilon^+$: aunque todas las configuraciones inician en valores semejantes ($\text{IGD}^+ \approx 0.24$), las variantes con SBX experimentan un descenso abrupto, situándose por debajo de 0.05 antes de las 40.000 evaluaciones, lo cual se traduce en un mejor acercamiento al frente de referencia.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{Figures/mrp1/2_convergencia_quimica.pdf}
+    \caption{Evolución y convergencia de las propiedades químicas, validez, novedad, afinidad de unión y pChEMBL predicho a lo largo de las evaluaciones, promediada sobre las cinco ejecuciones independientes.}
+    \label{fig:convergencia_quimica}
+\end{figure}
+
+La Figura~\ref{fig:convergencia_quimica} presenta la evolución de las métricas de generación y de los cuatro objetivos de optimización a lo largo de la búsqueda.
+
+Las variantes con SBX mantienen una validez química elevada y estable (superior al 94\%--96\%) durante toda la optimización. En cambio, en las configuraciones con PCX la validez cae aceleradamente en las primeras 20.000 evaluaciones. En lo referente a la novedad, todas las variantes exhiben tasas elevadas cercanas a 1.0, con una leve ventaja para las variantes con PCX.
+
+Al analizar la convergencia de los cuatro objetivos, SBX vuelve a presentar un mejor comportamiento. En cuanto a \gls{qed}, las configuraciones con SBX sostienen un promedio superior durante toda la búsqueda. En la afinidad de acoplamiento, las variantes con SBX continúan mejorando de manera sostenida hasta el final, alcanzando \acrshort{nsga3} y \acrshort{agemoea} los valores más bajos, seguidos por \acrshort{nsga2}. Asimismo, la convergencia de pChEMBL muestra que todas las configuraciones inician cerca de 5.0 y progresan hacia valores superiores, destacando \acrshort{nsga3} con SBX al superar consistentemente a sus contrapartes.
+
+\subsubsection{Frentes de Pareto y Frente No Dominado Conjunto Global}
+\label{subsubsec:frentes_pareto_mrp1}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Figures/mrp1/3_frentes_por_configuracion.pdf}
+    \caption{Proyección de los frentes de Pareto en el espacio \gls{qed} vs. SA por configuración para las cinco ejecuciones independientes, con la afinidad de unión indicada mediante la escala de color.}
+    \label{fig:frentes_por_configuracion}
+\end{figure}
+
+La Figura~\ref{fig:frentes_por_configuracion} presenta los frentes no dominados acumulados en el plano \gls{qed} contra SA para cada configuración sobre las cinco ejecuciones independientes, donde el color de cada punto indica su afinidad de unión hacia \gls{mrp1}.
+
+Se aprecian contrastes definidos entre ambos operadores de cruce. Las variantes con SBX generan frentes con un número considerablemente mayor de soluciones, concentrándose en la región de alto \gls{qed} ($\text{QED} > 0.80$) y bajo SA ($\text{SA} < 2.5$). Además, estas configuraciones concentran una alta proporción de puntos con afinidades muy favorables. Por el contrario, las variantes con PCX dispersan sus soluciones y exploran zonas de menor similitud a fármacos conocidos ($\text{QED} < 0.60$), logrando algunas moléculas con baja complejidad sintética ($\text{SA} \approx 1.2$), pero a expensas de energías de unión menos favorables.
+
+Para evaluar la capacidad exploratoria global, se combinan las soluciones obtenidas por las variantes con PCX y SBX en los tres algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea}) a lo largo de las cinco ejecuciones independientes. Se recalcula la no dominancia considerando los cuatro objetivos simultáneos, conformando un Frente No Dominado Conjunto Global de 1396 moléculas únicas.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1.05\textwidth]{Figures/mrp1/5_frente_3d_pchembl_conjunto.pdf}}
+    \caption{Frente No Dominado Conjunto Global (1396 soluciones) en el espacio tridimensional de objetivos (\gls{qed}, SA y afinidad de docking en kcal/mol), con el valor de pChEMBL predicho indicado mediante la escala de color, visualizado desde cuatro ángulos tridimensionales distintos.}
+    \label{fig:frentes_pareto_3d}
+\end{figure}
+
+La Figura~\ref{fig:frentes_pareto_3d} muestra el Frente No Dominado Conjunto Global en cuatro perspectivas tridimensionales. En las gráficas se muestra el compromiso entre las propiedades optimizadas: se preserva una alta densidad de moléculas en la franja de alto \gls{qed} ($\text{QED} > 0.85$) y síntesis accesible ($\text{SA} < 2.5$), alcanzando simultáneamente afinidades de acoplamiento por debajo de $-10\text{ kcal/mol}$. La escala de color refleja que al aumentar el valor de accesibilidad sintética también aumenta la afinidad predicha, por lo que el espacio de búsqueda presenta un compromiso entre estos dos objetivos.
+
+En cuanto al aporte de cada método al frente global, los tres algoritmos muestran complementariedad, \acrshort{nsga3} aporta un total de 682 soluciones (525 exclusivas), \acrshort{agemoea} contribuye con 514 soluciones (360 exclusivas) y \acrshort{nsga2} provee 464 soluciones (303 exclusivas). Asimismo, 205 moléculas (un 14.7\% del frente) fueron descubiertas conjuntamente por más de un algoritmo.
+
+% -----------------------------------------------------------------------------
+\subsection{Comparación con Modelos de Referencia}
 \label{subsec:comp_estado_arte_mrp1}
-% Comparación del rendimiento frente a técnicas generativas y de optimización existentes para la diana MRP1.
+\label{sec:comparacion_referencia}
 
-\subsection{Análisis Detallado de las Mejores Moléculas Candidatas}
+Se comparó el enfoque multiobjetivo propuesto con modelos generativos de referencia entrenados con \gls{moses}:
+
+\begin{itemize}
+    \item \textbf{\gls{vae}:} El \gls{vae} utilizado en el modelo propuesto, entrenado con \gls{moses}.
+    \item \textbf{\gls{vae} con fine-tuning:} El mismo \gls{vae} ajustado mediante fine-tuning con ligandos conocidos asociados a \gls{mrp1} para sesgar la generación hacia la diana.
+    \item \textbf{GAN:} Red generativa adversaria del benchmark \gls{moses} (LatentGAN).
+    \item \textbf{GAN con fine-tuning:} La misma GAN ajustada con ligandos conocidos de \gls{mrp1}.
+\end{itemize}
+
+De cada modelo de referencia se generaron 100.000 moléculas al azar y se evaluó una muestra de 10.000 cumpliendo $F_{\text{sp3}} \ge 0.3$ en \gls{qed}, SA, afinidad de docking con Uni-Dock y pChEMBL predicho. En la Tabla~\ref{tab:comparacion_modelos} se contrastan directamente las seis configuraciones multiobjetivo del presente estudio con los cuatro modelos generativos de referencia.
+
+\input{Chapters/Tables/mrp1/tab_comparacion_modelos_mrp1.tex}
+
+Como se observa en la Tabla~\ref{tab:comparacion_modelos}, los enfoques multiobjetivo propuestos superan de manera categórica a los modelos generativos de referencia en el balance global de propiedades farmacológicas. En particular, \acrshort{nsga3} (SBX) logra el mayor valor promedio de \gls{qed} ($0.870 \pm 0.009$), una afinidad de docking sólida ($-8.182 \pm 0.079\text{ kcal/mol}$) y la mayor predicción de bioactividad ($5.397 \pm 0.038$), preservando una validez sobresaliente del $96.0\%$, unicidad del $98.5\%$ y novedad del $96.0\%$. Asimismo, \acrshort{agemoea} (SBX) consigue la mejor accesibilidad sintética global ($\text{SA} = 2.115 \pm 0.126$), mientras que las variantes con PCX exhiben una unicidad perfecta del $100.0\%$ y novedades de hasta $99.5\%$, si bien a expensas de una menor tasa de validez química ($57.0\% - 58.3\%$).
+
+En los modelos generativos de referencia no guiados (\gls{vae} y GAN base), el \gls{qed} ronda $0.795 - 0.800$, pero las afinidades de unión resultan más débiles ($-7.66$ a $-7.69\text{ kcal/mol}$) y la bioactividad promedio apenas roza el umbral de corte ($\text{pChEMBL} \approx 5.05 - 5.08$). El ajuste por fine-tuning incrementa la afinidad hacia la diana ($-8.34\text{ kcal/mol}$ en \gls{vae} y $-8.32\text{ kcal/mol}$ en GAN) y eleva discretamente el pChEMBL ($5.11 - 5.14$), pero provoca un severo detrimento en el valor de \gls{qed} (descendiendo a $0.63 - 0.64$), incrementa la dificultad sintética ($\text{SA} > 2.65$) y degrada notablemente la validez química en la GAN hasta un $66.3\%$.
+
+En conjunto, estos contrastes confirman que la optimización multiobjetivo en el espacio latente es capaz de enriquecer simultáneamente la potencia biológica y la afinidad de unión hacia \gls{mrp1} sin sacrificar el \gls{qed} ni la accesibilidad sintética de las moléculas generadas.
+
+% -----------------------------------------------------------------------------
+\subsection{Validación y Perfilado de las Moléculas Candidatas}
 \label{subsec:mejores_moleculas}
-% Estudio del subconjunto superior de moléculas generadas (Top candidates).
-% Estructuras químicas 2D/3D.
-% Propiedades ADMET extendidas (LogP, Peso Molecular, HBD, HBA, TPSA, toxicidad predicha).
-% Interacciones moleculares clave con los residuos de la cavidad de unión de MRP1.
-% Comparación con inhibidores conocidos de referencia.
+\label{sec:validacion_perfilado}
+
+Con el fin de evaluar y caracterizar las moléculas obtenidas para \gls{mrp1}, se realiza un análisis sobre las soluciones del frente de Pareto de cada configuración y los modelos de referencia. Esta sección examina la calidad física de las conformaciones de acoplamiento mediante PoseBusters \cite{buttenschoen2024posebusters}, la potencia y bioactividad inhibitoria predicha con Random Forest a partir de ChEMBL \cite{mendez2019chembl}, y el perfil farmacocinético, fisicoquímico y toxicológico mediante ADMET-AI \cite{swanson2024admetai}.
+
+\subsubsection{Moléculas Representativas}
+\label{subsubsec:moleculas_representativas}
+\label{subsec:moleculas_candidatas}
+
+Con el fin de analizar las moléculas generadas con un perfil equilibrado, se aplicó un filtrado sobre el Frente No Dominado Conjunto Global seleccionando aquellas que satisfacen simultáneamente condiciones en los cuatro objetivos: $\text{Docking} < -10\text{ kcal/mol}$, $\text{pChEMBL} > 5.5$, $\text{QED} > 0.70$ y $\text{SA} < 3.0$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/mrp1/moleculas_candidatas.pdf}
+    \caption{Estructuras químicas y propiedades de las ocho moléculas seleccionadas del Frente No Dominado Conjunto Global ($\text{Docking} < -10\text{ kcal/mol}$, $\text{pChEMBL} > 5.5$, $\text{QED} > 0.70$ y $\text{SA} < 3.0$).}
+    \label{fig:moleculas_candidatas}
+\end{figure}
+
+\input{Chapters/Tables/mrp1/tab_candidatas_mrp1.tex}
+
+La Figura~\ref{fig:moleculas_candidatas} y la Tabla~\ref{tab:moleculas_candidatas} presentan las ocho moléculas seleccionadas a partir de este filtrado. Las soluciones provienen de distintas configuraciones algorítmicas, principalmente de las variantes con SBX en \acrshort{nsga3} y \acrshort{agemoea}, junto con aportes de \acrshort{nsga2}. A nivel estructural, estas moléculas presentan una mayor complejidad, combinando múltiples anillos aromáticos y grupos funcionales que permiten mantener un equilibrio entre \gls{qed}, facilidad de síntesis y afinidad hacia la diana.
+
+En comparación con las moléculas del experimento previo, donde solo se optimizaban \gls{qed} y SA, la incorporación del acoplamiento molecular y la bioactividad hacia \gls{mrp1} conduce a estructuras de mayor tamaño y complejidad. Mientras que en el caso previo se favorecían moléculas más pequeñas o simples, aquí la necesidad de interactuar con la cavidad de la proteína promueve la presencia de más anillos aromáticos y grupos que permitan formar interacciones en el sitio de unión, conservando al mismo tiempo una síntesis accesible y cumpliendo las restricciones fisicoquímicas.
+
+\subsubsection{Validación de Poses de Acoplamiento (PoseBusters)}
+\label{subsubsec:posebusters}
+
+Para verificar la viabilidad física de las conformaciones tridimensionales generadas por acoplamiento molecular en la cavidad de \gls{mrp1}, se empleó PoseBusters \cite{buttenschoen2024posebusters}. Esta herramienta somete cada complejo ligando-proteína a 20 pruebas independientes que evalúan la química básica del ligando y la interacción física con el receptor. La métrica evaluada corresponde a la tasa de validez física sobre el conjunto de las 100 mejores moléculas de cada método.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Figures/mrp1/posebuster.pdf}
+    \caption{Tasa de validez de PoseBusters en el top 100 de moléculas para cada variante algorítmica y modelo de referencia.}
+    \label{fig:posebusters}
+\end{figure}
+
+Como se observa en la Figura~\ref{fig:posebusters}, todas las configuraciones multiobjetivo y los modelos de referencia alcanzan entre un 98\% y un 100\% de validez en las 20 pruebas de PoseBusters. Estos resultados confirman que las conformaciones predichas por acoplamiento molecular son físicamente viables y respetan la geometría del sitio de unión en \gls{mrp1}, sin presentar choques entre átomos ni distorsiones estructurales.
+
+\subsubsection{Predicción de Potencia y Bioactividad Inhibitoria}
+\label{subsubsec:potencia_bioactividad}
+
+La bioactividad frente a \gls{mrp1} se evaluó mediante un modelo de Random Forest entrenado con inhibidores de ChEMBL \cite{mendez2019chembl}. Como métrica se utiliza el valor de pChEMBL predicho, fijando un umbral de $5.0$ para considerar activo al compuesto ($\text{IC}_{50} \le 10\,\mu\text{M}$).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.88\textwidth]{Figures/mrp1/pchembl.pdf}
+    \caption{Distribución de densidad (KDE) del valor pChEMBL predicho para cada algoritmo y modelo de referencia. La línea vertical discontinua indica el umbral de actividad biológica ($\text{pChEMBL} \ge 5.0$).}
+    \label{fig:distribucion_pchembl}
+\end{figure}
+
+\input{Chapters/Tables/mrp1/tab_pchembl_mrp1.tex}
+
+La Figura~\ref{fig:distribucion_pchembl} y la Tabla~\ref{tab:pchembl_predicho} presentan los estadísticos descriptivos y las funciones de densidad del pChEMBL predicho sobre las moléculas generadas por cada método.
+
+Como se observa, todas las configuraciones multiobjetivo desplazan su distribución por encima del umbral de 5.0, logrando que la gran mayoría de las moléculas generadas sean predichas como activas. Entre los algoritmos evaluados, \acrshort{nsga3} presenta los valores promedio más altos de bioactividad (tanto con SBX como con PCX) y alcanza el valor máximo del conjunto cercano a 6.28 en su variante con SBX, seguido de cerca por \acrshort{agemoea} y \acrshort{nsga2}.
+
+En cambio, los modelos de referencia (tanto base como con fine-tuning) concentran gran parte de sus soluciones alrededor o por debajo del umbral, produciendo una proporción importante de compuestos inactivos. Esto confirma que la optimización guiada en el espacio latente favorece de forma efectiva la obtención de moléculas activas frente a \gls{mrp1}.
+
+\subsubsection{Perfil Farmacocinético, Fisicoquímico y Toxicológico (\texorpdfstring{\gls{admet}}{ADMET})}
+\label{subsubsec:perfil_admet}
+
+El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando ADMET-AI \cite{swanson2024admetai}, basado en modelos de aprendizaje automático de Therapeutics Data Commons. Se estudiaron descriptores agrupados en tres dimensiones clave: absorción y permeabilidad, fisicoquímica y toxicidad/seguridad.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{Figures/mrp1/admet_ranks.pdf}
+    \caption{Distribuciones de densidad (KDE) de las principales propiedades \gls{admet} predichas por ADMET-AI para cada algoritmo y modelo de referencia.}
+    \label{fig:admet_ranks}
+\end{figure}
+
+\input{Chapters/Tables/mrp1/tab_admet_resumen_mrp1.tex}
+
+La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para los seis descriptores con mayor variabilidad (permeabilidad epitelial, biodisponibilidad oral, solubilidad acuosa, toxicidad clínica, toxicidad aguda y lipofilicidad), mientras que la Tabla~\ref{tab:admet_resumen} resume los valores medios de todas las propiedades \gls{admet} evaluadas (incluyendo la absorción intestinal humana HIA y la permeabilidad pasiva PAMPA):
+
+\paragraph{Absorción y Permeabilidad.}
+\begin{itemize}
+    \item \textbf{Absorción Intestinal Humana (HIA\_Hou):} Estima la probabilidad de absorción oral (favorable $>0.8$). Todas las variantes multiobjetivo alcanzan valores óptimos de $1.0$, situándose ligeramente por encima de los modelos de referencia.
+    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang):} Mide la tasa de paso por células intestinales (alta permeabilidad $> -5.15$). Todas las variantes multiobjetivo se sitúan plenamente en la zona de permeabilidad alta, superando a los modelos ajustados por fine-tuning.
+    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS):} Evalúa el tránsito a través de membranas lipídicas (cruce óptimo $>0.70$). Las moléculas generadas presentan valores altos y homogéneos en todas las configuraciones, por encima de los modelos base y fine-tuning.
+    \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma):} Probabilidad de alcanzar la circulación sistémica vía oral (favorable $>0.50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
+\end{itemize}
+
+\paragraph{Propiedades Fisicoquímicas.}
+\begin{itemize}
+    \item \textbf{Solubilidad Acuosa (Solubility\_AqSolDB):} Expresada en $\log(\text{mol/L})$, donde valores entre $-4$ y $-2$ denotan solubilidad moderada y $<-4$ baja solubilidad. Las configuraciones multiobjetivo se mantienen dentro del rango moderado, con \acrshort{nsga2} (SBX) alcanzando la mejor solubilidad y evitando los valores deficientes observados en la GAN con fine-tuning.
+    \item \textbf{Lipofilicidad ($\log P$):} Coeficiente de partición octanol/agua (rango ideal entre $0$ y $3$). Como resultado de la restricción aplicada, las moléculas optimizadas convergen de manera homogénea en valores cercanos a $2.8$, lo que favorece el cruce de membranas sin comprometer la solubilidad, a diferencia de los modelos con fine-tuning que superan el umbral recomendado.
+\end{itemize}
+
+\paragraph{Toxicidad y Seguridad.}
+\begin{itemize}
+    \item \textbf{Toxicidad Clínica (ClinTox):} Probabilidad estimada de fracaso o toxicidad en ensayos clínicos (perfil seguro $<0.30$). Las configuraciones multiobjetivo presentan probabilidades bajas de riesgo, destacando las variantes con PCX (en especial \acrshort{nsga2} y \acrshort{nsga3}) con los valores más seguros, mejorando consistentemente a los modelos con fine-tuning.
+    \item \textbf{Toxicidad Aguda (LD50\_Zhu):} Dosis letal media en ratas expresada como $-\log(\text{mol/kg})$, donde valores más altos indican mayor toxicidad y el rango habitual oscila entre $2.0$ y $3.0$. Todas las variantes optimizadas se sitúan dentro de este intervalo habitual, con niveles comparables a los modelos generativos base.
+\end{itemize}
+
+% -----------------------------------------------------------------------------
+\subsection{Discusión}
+\label{subsec:discusion_mrp1}
+\label{sec:discusion}
+
+La formulación del diseño molecular optimizando simultáneamente la afinidad por acoplamiento en \gls{mrp1}, la potencia inhibitoria predicha pChEMBL, el \gls{qed} y la accesibilidad sintética SA, sujeta a restricciones de saturación ($F_{\text{sp3}}$) y lipofilicidad ($\log P$), permite orientar con éxito la exploración del espacio latente hacia regiones de interés biológico. En este entorno multiobjetivo con restricciones, el operador de cruce SBX ofrece un rendimiento superior a PCX. A diferencia de formulaciones más simples donde PCX favorecía la dispersión en zonas extremas, en este problema SBX preserva una validez química marcadamente más alta y alcanza mayores hipervolúmenes, lo que confirma que perturba en menor medida la coherencia estructural de los vectores latentes del \gls{vae}.
+
+En la comparación entre algoritmos, los tres métodos muestran complementariedad al aportar soluciones al Frente No Dominado Conjunto Global. No obstante, \acrshort{nsga3} con SBX presenta el desempeño más consistente en la exploración de este espacio, alcanzando el mayor hipervolumen y el promedio más alto de pChEMBL. Esta ventaja se debe a que el uso de puntos de referencia estructurados en \acrshort{nsga3} guía la búsqueda de forma más equilibrada que la distancia de apiñamiento de \acrshort{nsga2} o la estimación geométrica de \acrshort{agemoea}, evitando el agrupamiento prematuro y logrando un balance favorable entre afinidad de unión, potencia y facilidad sintética.
+
+Por otra parte, las pruebas con PoseBusters confirman que las poses generadas son físicamente viables y no presentan choques estéricos con \gls{mrp1}. Finalmente, al contrastar estos resultados con los modelos de referencia basados en ajuste fino (\textit{fine-tuning}), se evidencia la ventaja del enfoque propuesto: mientras que el \textit{fine-tuning} mejora la afinidad a expensas de degradar el \gls{qed}, empeorar la accesibilidad sintética y reducir drásticamente la validez química en modelos como la GAN, la optimización multiobjetivo en el espacio latente preserva la calidad molecular y asegura un perfil \gls{admet} favorable (alta absorción HIA, adecuada permeabilidad, lipofilicidad balanceada y menor riesgo en ClinTox), generando candidatos activos sin comprometer su viabilidad sintética ni farmacológica.
+

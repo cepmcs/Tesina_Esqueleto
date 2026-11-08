@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+\centering
+\caption{Comparación de indicadores multiobjetivo por algoritmo y operador de cruce.}
+\label{tab:multiobjetivo}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccccc}
+\toprule
+Configuración & Hipervolumen $\uparrow$ & Espaciamiento $\downarrow$ & IGD$^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) $\downarrow$ \\
+\midrule
+NSGA-II (SBX) & $0.502 \pm 0.012$ & $0.591 \pm 0.037$ & $0.038 \pm 0.005$ & $\mathbf{0.181 \pm 0.030}$ & $\mathbf{712.8 \pm 109.8}$ & $7112.8 \pm 264.5$ \\
+NSGA-II (PCX) & $0.471 \pm 0.004$ & $0.587 \pm 0.034$ & $0.077 \pm 0.005$ & $0.239 \pm 0.024$ & $368.0 \pm 42.2$ & $7231.9 \pm 176.5$ \\
+NSGA-III (SBX) & $\mathbf{0.514 \pm 0.012}$ & $0.664 \pm 0.070$ & $\mathbf{0.022 \pm 0.003}$ & $0.198 \pm 0.017$ & $574.8 \pm 49.3$ & $6673.4 \pm 432.6$ \\
+NSGA-III (PCX) & $0.465 \pm 0.008$ & $\mathbf{0.573 \pm 0.024}$ & $0.077 \pm 0.006$ & $0.244 \pm 0.023$ & $390.2 \pm 53.3$ & $6822.1 \pm 166.7$ \\
+AGE-MOEA (SBX) & $0.493 \pm 0.011$ & $0.647 \pm 0.036$ & $0.030 \pm 0.002$ & $0.204 \pm 0.022$ & $550.8 \pm 45.3$ & $\mathbf{5911.2 \pm 568.1}$ \\
+AGE-MOEA (PCX) & $0.473 \pm 0.010$ & $0.635 \pm 0.176$ & $0.076 \pm 0.002$ & $0.232 \pm 0.037$ & $395.4 \pm 33.9$ & $6503.6 \pm 598.4$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
