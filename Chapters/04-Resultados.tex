@@ -502,7 +502,7 @@ La Tabla~\ref{tab:propiedades} presenta la comparación de las propiedades quím
 
 Los tres algoritmos exhiben un comportamiento consistente en el cual las variantes con SBX logran un desempeño superior en los cuatro objetivos. Específicamente, \acrshort{nsga3} con SBX alcanza el mayor valor promedio de \gls{qed}, la mejor afinidad de unión hacia \gls{mrp1} y la mayor predicción de bioactividad inhibitoria. Por su parte, \acrshort{agemoea} con SBX obtiene la mejor accesibilidad sintética con un SA promedio de $2.115 \pm 0.126$. 
 
-En contraste, las configuraciones con PCX obtienen un \gls{qed} promedio menor, afinidades de docking más débiles y una accesibilidad sintética más compleja ($\text{SA} > 2.29$). Respecto a las restricciones fisicoquímicas, todas las variantes se sitúan dentro de los rangos buscados: los valores de $F_{\text{sp3}}$ oscilan entre $0.399$ y $0.424$, asegurando la tridimensionalidad molecular, mientras que los valores de $\log P$ convergen hacia el intervalo de $2.75$ a $2.86$, asegurando un perfil lipofílico favorable para la permeabilidad de membrana sin comprometer la solubilidad.
+En contraste, las configuraciones con PCX obtienen un \gls{qed} promedio menor, afinidades de docking más débiles y una accesibilidad sintética más compleja ($\text{SA} > 2.29$). Respecto a las restricciones fisicoquímicas, todas las variantes se sitúan dentro de los rangos buscados. Los valores de $F_{\text{sp3}}$ oscilan entre $0.399$ y $0.424$, asegurando la tridimensionalidad molecular, mientras que los valores de $\log P$ convergen hacia el intervalo de $2.75$ a $2.86$, asegurando un perfil lipofílico favorable para la permeabilidad de membrana sin comprometer la solubilidad.
 
 \input{Chapters/Tables/mrp1/tab_generacion_mrp1.tex}
 
@@ -521,7 +521,7 @@ A diferencia de los experimentos con dos objetivos donde PCX presentaba una vent
 
 La Figura~\ref{fig:distribucion_propiedades} muestra la distribución de densidad de los cuatro objetivos de optimización en los frentes obtenidos por cada configuración.
 
-En el gráfico de \gls{qed} se aprecian las tendencias observadas: las variantes con SBX concentran sus soluciones en un pico estrecho y elevado cerca de 0.88--0.94, mientras que PCX dispersa sus moléculas en un rango más amplio con valores menores de \gls{qed}. En la accesibilidad sintética (SA), todos los algoritmos ubican el grueso de sus soluciones en valores favorables (entre 1.8 y 2.5). Al mirar la afinidad de acoplamiento, las curvas de SBX se desplazan hacia energías más negativas, logrando una mayor densidad de soluciones con afinidades entre $-8$ y $-11\text{ kcal/mol}$. Finalmente, en la bioactividad predicha, todas las configuraciones sitúan su distribución por encima del umbral de 5.0, centradas entre 5.25 y 5.50.
+En el gráfico de \gls{qed} se aprecian las tendencias observadas. Las variantes con SBX concentran sus soluciones en un pico estrecho y elevado cerca de 0.88--0.94, mientras que PCX dispersa sus moléculas en un rango más amplio con valores menores de \gls{qed}. En la accesibilidad sintética (SA), todos los algoritmos ubican el grueso de sus soluciones en valores favorables (entre 1.8 y 2.5). Al mirar la afinidad de acoplamiento, las curvas de SBX se desplazan hacia energías más negativas, logrando una mayor densidad de soluciones con afinidades entre $-8$ y $-11\text{ kcal/mol}$. Finalmente, en la bioactividad predicha, todas las configuraciones sitúan su distribución por encima del umbral de 5.0, centradas entre 5.25 y 5.50.
 
 \subsubsection{Análisis de Convergencia}
 \label{subsubsec:convergencia}
@@ -573,7 +573,7 @@ Para evaluar la capacidad exploratoria global, se combinan las soluciones obteni
     \label{fig:frentes_pareto_3d}
 \end{figure}
 
-La Figura~\ref{fig:frentes_pareto_3d} muestra el Frente No Dominado Conjunto Global en cuatro perspectivas tridimensionales. En las gráficas se muestra el compromiso entre las propiedades optimizadas: se preserva una alta densidad de moléculas en la franja de alto \gls{qed} ($\text{QED} > 0.85$) y síntesis accesible ($\text{SA} < 2.5$), alcanzando simultáneamente afinidades de acoplamiento por debajo de $-10\text{ kcal/mol}$. La escala de color refleja que al aumentar el valor de accesibilidad sintética también aumenta la afinidad predicha, por lo que el espacio de búsqueda presenta un compromiso entre estos dos objetivos.
+La Figura~\ref{fig:frentes_pareto_3d} muestra el Frente No Dominado Conjunto Global en cuatro perspectivas tridimensionales. En las gráficas se muestra el compromiso entre las propiedades optimizadas. Se preserva una alta densidad de moléculas en la franja de alto \gls{qed} ($\text{QED} > 0.85$) y síntesis accesible ($\text{SA} < 2.5$), alcanzando simultáneamente afinidades de acoplamiento por debajo de $-10\text{ kcal/mol}$. La escala de color refleja que al aumentar el valor de accesibilidad sintética también aumenta la afinidad predicha, por lo que el espacio de búsqueda presenta un compromiso entre estos dos objetivos.
 
 En cuanto al aporte de cada método al frente global, los tres algoritmos muestran complementariedad, \acrshort{nsga3} aporta un total de 682 soluciones (525 exclusivas), \acrshort{agemoea} contribuye con 514 soluciones (360 exclusivas) y \acrshort{nsga2} provee 464 soluciones (303 exclusivas). Asimismo, 205 moléculas (un 14.7\% del frente) fueron descubiertas conjuntamente por más de un algoritmo.
 
@@ -601,13 +601,13 @@ En comparación con las moléculas del experimento previo sin diana (Sección~\r
 \label{subsec:comp_estado_arte_mrp1}
 \label{sec:comparacion_referencia}
 
-Se comparó el enfoque multiobjetivo propuesto con modelos generativos de referencia entrenados con \gls{moses}:
+Se comparó el enfoque multiobjetivo propuesto con modelos generativos de referencia entrenados con \gls{moses}.
 
 \begin{itemize}
-    \item \textbf{\gls{vae}:} El \gls{vae} utilizado en el modelo propuesto, entrenado con \gls{moses}.
-    \item \textbf{\gls{vae} con fine-tuning:} El mismo \gls{vae} ajustado mediante fine-tuning con ligandos conocidos asociados a \gls{mrp1} para sesgar la generación hacia la diana.
-    \item \textbf{GAN:} Red generativa adversaria del benchmark \gls{moses} (LatentGAN).
-    \item \textbf{GAN con fine-tuning:} La misma GAN ajustada con ligandos conocidos de \gls{mrp1}.
+    \item \textbf{\gls{vae}.} El \gls{vae} utilizado en el modelo propuesto, entrenado con \gls{moses}.
+    \item \textbf{\gls{vae} con fine-tuning.} El mismo \gls{vae} ajustado mediante fine-tuning con ligandos conocidos asociados a \gls{mrp1} para sesgar la generación hacia la diana.
+    \item \textbf{GAN.} Red generativa adversaria del benchmark \gls{moses} (LatentGAN).
+    \item \textbf{GAN con fine-tuning.} La misma GAN ajustada con ligandos conocidos de \gls{mrp1}.
 \end{itemize}
 
 De cada modelo de referencia se generaron 10.000 moléculas y se evaluó en \gls{qed}, SA, afinidad de docking con Uni-Dock y pChEMBL predicho. En la Tabla~\ref{tab:comparacion_modelos} se contrastan directamente las seis configuraciones multiobjetivo del presente estudio con los cuatro modelos generativos.
@@ -664,7 +664,7 @@ En cambio, los modelos de referencia (tanto base como con fine-tuning) concentra
 \subsubsection{Perfil Farmacocinético, Fisicoquímico y Toxicológico (\texorpdfstring{\gls{admet}}{ADMET})}
 \label{subsubsec:perfil_admet}
 
-El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando ADMET-AI \cite{swanson2024admetai}, basado en modelos de aprendizaje automático de Therapeutics Data Commons. Se estudiaron descriptores agrupados en tres dimensiones clave: absorción y permeabilidad, fisicoquímica y toxicidad/seguridad.
+El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando ADMET-AI \cite{swanson2024admetai}, basado en modelos de aprendizaje automático de Therapeutics Data Commons. Se estudiaron descriptores agrupados en tres dimensiones clave, correspondientes a absorción y permeabilidad, fisicoquímica y toxicidad o seguridad.
 
 \begin{figure}[H]
     \centering
@@ -675,26 +675,26 @@ El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando AD
 
 \input{Chapters/Tables/mrp1/tab_admet_resumen_mrp1.tex}
 
-La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para los seis descriptores con mayor variabilidad (permeabilidad epitelial, biodisponibilidad oral, solubilidad acuosa, toxicidad clínica, toxicidad aguda y lipofilicidad), mientras que la Tabla~\ref{tab:admet_resumen} resume los valores medios de todas las propiedades \gls{admet} evaluadas (incluyendo la absorción intestinal humana HIA y la permeabilidad pasiva PAMPA):
+La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para los seis descriptores con mayor variabilidad (permeabilidad epitelial, biodisponibilidad oral, solubilidad acuosa, toxicidad clínica, toxicidad aguda y lipofilicidad), mientras que la Tabla~\ref{tab:admet_resumen} resume los valores medios de todas las propiedades \gls{admet} evaluadas, incluyendo la absorción intestinal humana HIA y la permeabilidad pasiva PAMPA.
 
 \paragraph{Absorción y Permeabilidad.}
 \begin{itemize}
-    \item \textbf{Absorción Intestinal Humana (HIA\_Hou):} Estima la probabilidad de absorción oral (favorable $>0.8$). Todas las variantes multiobjetivo alcanzan valores óptimos de $1.0$, situándose ligeramente por encima de los modelos de referencia.
-    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang):} Mide la tasa de paso por células intestinales (alta permeabilidad $> -5.15$). Todas las variantes multiobjetivo se sitúan plenamente en la zona de permeabilidad alta, superando a los modelos ajustados por fine-tuning.
-    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS):} Evalúa el tránsito a través de membranas lipídicas (cruce óptimo $>0.70$). Las moléculas generadas presentan valores altos y homogéneos en todas las configuraciones, por encima de los modelos base y fine-tuning.
-    \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma):} Probabilidad de alcanzar la circulación sistémica vía oral (favorable $>0.50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
+    \item \textbf{Absorción Intestinal Humana (HIA\_Hou).} Estima la probabilidad de absorción oral (favorable $>0.8$). Todas las variantes multiobjetivo alcanzan valores óptimos de $1.0$, situándose ligeramente por encima de los modelos de referencia.
+    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang).} Mide la tasa de paso por células intestinales (alta permeabilidad $> -5.15$). Todas las variantes multiobjetivo se sitúan plenamente en la zona de permeabilidad alta, superando a los modelos ajustados por fine-tuning.
+    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS).} Evalúa el tránsito a través de membranas lipídicas (cruce óptimo $>0.70$). Las moléculas generadas presentan valores altos y homogéneos en todas las configuraciones, por encima de los modelos base y fine-tuning.
+    \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma).} Probabilidad de alcanzar la circulación sistémica vía oral (favorable $>0.50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
 \end{itemize}
 
 \paragraph{Propiedades Fisicoquímicas.}
 \begin{itemize}
-    \item \textbf{Solubilidad Acuosa (Solubility\_AqSolDB):} Expresada en $\log(\text{mol/L})$, donde valores entre $-4$ y $-2$ indican solubilidad moderada y $<-4$ baja solubilidad. Las configuraciones multiobjetivo se mantienen dentro del rango moderado, con \acrshort{nsga2} (SBX) alcanzando la mejor solubilidad y evitando los valores deficientes observados en la GAN con fine-tuning.
-    \item \textbf{Lipofilicidad ($\log P$):} Coeficiente de partición octanol/agua (rango ideal entre $0$ y $3$). Como resultado de la restricción aplicada, las moléculas optimizadas convergen de manera homogénea en valores cercanos a $2.8$, lo que favorece el cruce de membranas sin comprometer la solubilidad, a diferencia de los modelos con fine-tuning que superan el umbral recomendado.
+    \item \textbf{Solubilidad Acuosa (Solubility\_AqSolDB).} Expresada en $\log(\text{mol/L})$, donde valores entre $-4$ y $-2$ indican solubilidad moderada y $<-4$ baja solubilidad. Las configuraciones multiobjetivo se mantienen dentro del rango moderado, con \acrshort{nsga2} (SBX) alcanzando la mejor solubilidad y evitando los valores deficientes observados en la GAN con fine-tuning.
+    \item \textbf{Lipofilicidad ($\log P$).} Coeficiente de partición octanol/agua (rango ideal entre $0$ y $3$). Como resultado de la restricción aplicada, las moléculas optimizadas convergen de manera homogénea en valores cercanos a $2.8$, lo que favorece el cruce de membranas sin comprometer la solubilidad, a diferencia de los modelos con fine-tuning que superan el umbral recomendado.
 \end{itemize}
 
 \paragraph{Toxicidad y Seguridad.}
 \begin{itemize}
-    \item \textbf{Toxicidad Clínica (ClinTox):} Probabilidad estimada de fracaso o toxicidad en ensayos clínicos (perfil seguro $<0.30$). Las configuraciones multiobjetivo presentan probabilidades bajas de riesgo, destacando las variantes con PCX (en especial \acrshort{nsga2} y \acrshort{nsga3}) con los valores más seguros, mejorando consistentemente a los modelos con fine-tuning.
-    \item \textbf{Toxicidad Aguda (LD50\_Zhu):} Dosis letal media en ratas expresada como $-\log(\text{mol/kg})$, donde valores más altos indican mayor toxicidad y el rango habitual oscila entre $2.0$ y $3.0$. Todas las variantes optimizadas se sitúan dentro de este intervalo habitual, con niveles comparables a los modelos generativos base.
+    \item \textbf{Toxicidad Clínica (ClinTox).} Probabilidad estimada de fracaso o toxicidad en ensayos clínicos (perfil seguro $<0.30$). Las configuraciones multiobjetivo presentan probabilidades bajas de riesgo, destacando las variantes con PCX (en especial \acrshort{nsga2} y \acrshort{nsga3}) con los valores más seguros, mejorando consistentemente a los modelos con fine-tuning.
+    \item \textbf{Toxicidad Aguda (LD50\_Zhu).} Dosis letal media en ratas expresada como $-\log(\text{mol/kg})$, donde valores más altos indican mayor toxicidad y el rango habitual oscila entre $2.0$ y $3.0$. Todas las variantes optimizadas se sitúan dentro de este intervalo habitual, con niveles comparables a los modelos generativos base.
 \end{itemize}
 
 % -----------------------------------------------------------------------------
