@@ -34,7 +34,13 @@
 
 % Mantener negritas para entradas de frontmatter y backmatter (Figuras, Tablas, Bibliografía, Glosario, Siglas)
 
-\defbibheading{bibintoc}{\chapter*{#1}\MakeLinkTarget*{bibliography}\addcontentsline{toc}{backmatter}{\refname}}
+\defbibheading{bibintoc}{%
+    \chapter*{#1}%
+    \markboth{#1}{#1}%
+    \setcounter{section}{0}%
+    \MakeLinkTarget*{bibliography}%
+    \addcontentsline{toc}{backmatter}{\refname}%
+}
 
 \newcommand{\glossarytoc}{\MakeLinkTarget*{glossary}%
 \addcontentsline{toc}{backmatter}{\glossaryname}}

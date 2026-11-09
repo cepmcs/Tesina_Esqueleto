@@ -1,0 +1,242 @@
+\chapter{Estudios Preliminares de Mutación y Formulación para MRP1}
+\label{apendice:estudios_preliminares_mrp1}
+
+En este apéndice se presentan los resultados de las etapas intermedias de experimentación que fundamentaron las decisiones metodológicas adoptadas en la optimización dirigida hacia \gls{mrp1} (Sección~\ref{sec:res_mrp1}). Se incluyen la comparación entre esquemas de presupuesto computacional, el análisis de operadores y tasas de mutación sobre 20 semillas independientes para los algoritmos genéticos seleccionados (\acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea}), y el contraste entre las cinco formulaciones preliminares de objetivos y restricciones biológicas.
+
+\section{Estudio de Presupuesto y Operadores de Mutación}
+\label{ap:mutacion}
+
+Con el fin de determinar la asignación de evaluaciones y la calibración de los operadores genéticos, la Tabla~\ref{tab:presupuesto_multiobjetivo} compara el desempeño del reparto de 100 individuos por 1.000 generaciones frente a 200 individuos por 500 generaciones con mutación 0.1 sobre 20 semillas independientes.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación del reparto de evaluaciones (100$\times$1000 frente a 200$\times$500) con mutación 0.1 sobre 20 semillas independientes.}
+\label{tab:presupuesto_multiobjetivo}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llcccccc}
+\toprule
+Algoritmo & Reparto & Hipervolumen $\uparrow$ & IGD$^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Espaciamiento $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) \\
+\midrule
+\acrshort{nsga2} & 100$\times$1000 & $1.1207 \pm 0.0050$ & $0.0415 \pm 0.0075$ & $0.1330 \pm 0.0362$ & $1.1448 \pm 0.3869$ & $23.8 \pm 4.3$ & $88.2 \pm 14.7$ \\
+ & 200$\times$500 & $1.1201 \pm 0.0051$ & $0.0436 \pm 0.0072$ & $0.1358 \pm 0.0361$ & $1.1072 \pm 0.3720$ & $24.4 \pm 4.1$ & $82.7 \pm 16.9$ \\
+\midrule
+\acrshort{nsga3} & 100$\times$1000 & $1.1204 \pm 0.0046$ & $0.0409 \pm 0.0089$ & $0.1340 \pm 0.0313$ & $1.1594 \pm 0.4272$ & $23.5 \pm 4.4$ & $90.9 \pm 13.9$ \\
+ & 200$\times$500 & $1.1171 \pm 0.0035$ & $0.0476 \pm 0.0091$ & $0.1536 \pm 0.0280$ & $1.0727 \pm 0.3587$ & $22.9 \pm 4.6$ & $87.0 \pm 14.1$ \\
+\midrule
+\acrshort{agemoea} & 100$\times$1000 & $1.1178 \pm 0.0051$ & $0.0449 \pm 0.0087$ & $0.1516 \pm 0.0392$ & $1.0536 \pm 0.3740$ & $22.4 \pm 4.4$ & $102.2 \pm 17.0$ \\
+ & 200$\times$500 & $1.1181 \pm 0.0053$ & $0.0465 \pm 0.0085$ & $0.1499 \pm 0.0372$ & $1.1047 \pm 0.3535$ & $22.9 \pm 5.4$ & $102.5 \pm 7.6$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+A continuación, las Tablas~\ref{tab:mutacion_nsga2}, \ref{tab:mutacion_nsga3} y \ref{tab:mutacion_agemoea} presentan el estudio de operadores de cruce y mutación bajo el esquema seleccionado de 100$\times$1000 sobre 20 semillas independientes para \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea}. Los valores 0.004, 0.012 y 0.031 corresponden a la fase de ajuste de hiperparámetros, mientras que 0.05, 0.1 y el esquema adaptativo corresponden al experimento complementario de mutación. En negrita se destaca la mejor configuración de cada combinación de operadores.
+
+\begin{table}[htbp]
+\centering
+\caption{\acrshort{nsga2} — reparto 100$\times$1000, $p_c = 1.0$ (PCX) y $0.9$ (SBX). Media y desvío sobre 20 semillas.}
+\label{tab:mutacion_nsga2}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccccccc}
+\toprule
+Operadores & Mutación & Hipervolumen $\uparrow$ & IGD$^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Espaciamiento $\downarrow$ & Tamaño Pareto $\uparrow$ & Validez $\uparrow$ & Tiempo (s) \\
+\midrule
+PCX pm & 0.004 & $1.1218 \pm 0.0049$ & $0.0371 \pm 0.0072$ & $0.1198 \pm 0.0349$ & $1.0488 \pm 0.2127$ & $24.6 \pm 5.5$ & $\mathbf{0.8256 \pm 0.0462}$ & $105.1 \pm 6.0$ \\
+ & 0.012 & $1.1238 \pm 0.0046$ & $\mathbf{0.0347 \pm 0.0074}$ & $\mathbf{0.1076 \pm 0.0310}$ & $1.0722 \pm 0.4037$ & $24.4 \pm 5.3$ & $0.8097 \pm 0.0356$ & $105.7 \pm 4.0$ \\
+ & 0.031 & $1.1224 \pm 0.0050$ & $0.0391 \pm 0.0094$ & $0.1216 \pm 0.0299$ & $1.0494 \pm 0.4501$ & $24.4 \pm 4.9$ & $0.7889 \pm 0.0412$ & $104.5 \pm 5.0$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1211 \pm 0.0038$ & $0.0400 \pm 0.0045$ & $0.1233 \pm 0.0258$ & $1.1272 \pm 0.4772$ & $22.9 \pm 3.8$ & $0.7914 \pm 0.0408$ & $105.1 \pm 4.4$ \\
+ & 0.1 & $\mathbf{1.1241 \pm 0.0041}$ & $0.0379 \pm 0.0054$ & $0.1091 \pm 0.0250$ & $1.1969 \pm 0.3513$ & $23.9 \pm 5.6$ & $0.7584 \pm 0.0274$ & $103.5 \pm 3.7$ \\
+ & adapt. & $1.1231 \pm 0.0041$ & $0.0379 \pm 0.0070$ & $0.1088 \pm 0.0303$ & $\mathbf{1.0172 \pm 0.3546}$ & $\mathbf{25.3 \pm 4.5}$ & $0.7839 \pm 0.0307$ & $104.9 \pm 5.1$ \\
+\midrule
+PCX gauss & 0.004 & $1.1224 \pm 0.0046$ & $0.0366 \pm 0.0083$ & $0.1119 \pm 0.0354$ & $1.1138 \pm 0.4213$ & $25.2 \pm 4.4$ & $\mathbf{0.8038 \pm 0.0411}$ & $104.8 \pm 5.3$ \\
+ & 0.012 & $\mathbf{1.1258 \pm 0.0046}$ & $\mathbf{0.0338 \pm 0.0081}$ & $\mathbf{0.0939 \pm 0.0306}$ & $1.2640 \pm 0.5025$ & $\mathbf{26.1 \pm 5.7}$ & $0.7856 \pm 0.0334$ & $102.2 \pm 4.7$ \\
+ & 0.031 & $1.1248 \pm 0.0037$ & $0.0377 \pm 0.0076$ & $0.0997 \pm 0.0294$ & $1.0623 \pm 0.3202$ & $25.9 \pm 5.3$ & $0.7622 \pm 0.0343$ & $102.5 \pm 4.8$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1242 \pm 0.0049$ & $0.0414 \pm 0.0082$ & $0.1090 \pm 0.0303$ & $1.1263 \pm 0.3548$ & $24.3 \pm 5.5$ & $0.7579 \pm 0.0291$ & $103.1 \pm 5.3$ \\
+ & 0.1 & $1.1244 \pm 0.0032$ & $0.0452 \pm 0.0055$ & $0.1055 \pm 0.0192$ & $\mathbf{0.9979 \pm 0.2670}$ & $26.1 \pm 3.9$ & $0.7239 \pm 0.0268$ & $100.0 \pm 3.6$ \\
+ & adapt. & $1.1238 \pm 0.0039$ & $0.0388 \pm 0.0065$ & $0.1129 \pm 0.0203$ & $1.1924 \pm 0.3433$ & $25.3 \pm 6.0$ & $0.7591 \pm 0.0236$ & $103.3 \pm 4.3$ \\
+\midrule
+SBX pm & 0.004 & $1.1112 \pm 0.0041$ & $0.0595 \pm 0.0108$ & $0.1882 \pm 0.0311$ & $1.2333 \pm 0.3233$ & $20.1 \pm 3.9$ & $\mathbf{0.9921 \pm 0.0054}$ & $45.3 \pm 3.4$ \\
+ & 0.012 & $1.1128 \pm 0.0030$ & $0.0547 \pm 0.0092$ & $0.1843 \pm 0.0224$ & $\mathbf{1.0413 \pm 0.4045}$ & $20.2 \pm 4.3$ & $0.9875 \pm 0.0071$ & $48.0 \pm 3.8$ \\
+ & 0.031 & $1.1137 \pm 0.0016$ & $0.0513 \pm 0.0054$ & $0.1812 \pm 0.0110$ & $1.1321 \pm 0.3624$ & $\mathbf{24.0 \pm 3.9}$ & $0.9890 \pm 0.0056$ & $56.5 \pm 5.7$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1152 \pm 0.0026$ & $0.0478 \pm 0.0063$ & $0.1723 \pm 0.0220$ & $1.1852 \pm 0.4146$ & $23.1 \pm 6.3$ & $0.9871 \pm 0.0066$ & $61.5 \pm 6.6$ \\
+ & 0.1 & $\mathbf{1.1164 \pm 0.0034}$ & $\mathbf{0.0438 \pm 0.0076}$ & $\mathbf{0.1647 \pm 0.0285}$ & $1.2968 \pm 0.4526$ & $23.1 \pm 3.7$ & $0.9829 \pm 0.0083$ & $70.1 \pm 5.5$ \\
+ & adapt. & $1.1138 \pm 0.0021$ & $0.0518 \pm 0.0054$ & $0.1777 \pm 0.0157$ & $1.2423 \pm 0.3292$ & $24.0 \pm 4.4$ & $0.9863 \pm 0.0057$ & $55.4 \pm 4.1$ \\
+\midrule
+SBX gauss & 0.004 & $1.1117 \pm 0.0029$ & $0.0582 \pm 0.0079$ & $0.1890 \pm 0.0188$ & $1.0933 \pm 0.3627$ & $21.6 \pm 4.2$ & $0.9873 \pm 0.0076$ & $48.0 \pm 5.0$ \\
+ & 0.012 & $1.1123 \pm 0.0036$ & $0.0567 \pm 0.0109$ & $0.1900 \pm 0.0272$ & $1.0995 \pm 0.4201$ & $21.6 \pm 4.0$ & $\mathbf{0.9892 \pm 0.0069}$ & $51.3 \pm 4.9$ \\
+ & 0.031 & $1.1139 \pm 0.0052$ & $0.0503 \pm 0.0174$ & $0.1821 \pm 0.0385$ & $1.1032 \pm 0.3862$ & $19.5 \pm 4.0$ & $0.9879 \pm 0.0047$ & $60.7 \pm 5.1$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1160 \pm 0.0033$ & $0.0435 \pm 0.0073$ & $0.1651 \pm 0.0258$ & $1.0930 \pm 0.3523$ & $21.2 \pm 2.5$ & $0.9835 \pm 0.0076$ & $66.7 \pm 5.3$ \\
+ & 0.1 & $\mathbf{1.1179 \pm 0.0035}$ & $\mathbf{0.0391 \pm 0.0089}$ & $\mathbf{0.1527 \pm 0.0276}$ & $\mathbf{1.0874 \pm 0.4116}$ & $22.1 \pm 2.8$ & $0.9751 \pm 0.0099$ & $79.4 \pm 4.0$ \\
+ & adapt. & $1.1143 \pm 0.0020$ & $0.0489 \pm 0.0050$ & $0.1771 \pm 0.0179$ & $1.1841 \pm 0.4607$ & $\mathbf{22.9 \pm 4.0}$ & $0.9865 \pm 0.0078$ & $60.6 \pm 4.6$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{\acrshort{nsga3} — reparto 100$\times$1000, $p_c = 1.0$ (PCX) y $0.9$ (SBX). Media y desvío sobre 20 semillas.}
+\label{tab:mutacion_nsga3}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccccccc}
+\toprule
+Operadores & Mutación & Hipervolumen $\uparrow$ & IGD$^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Espaciamiento $\downarrow$ & Tamaño Pareto $\uparrow$ & Validez $\uparrow$ & Tiempo (s) \\
+\midrule
+PCX pm & 0.004 & $1.1214 \pm 0.0032$ & $\mathbf{0.0363 \pm 0.0056}$ & $0.1207 \pm 0.0214$ & $1.1708 \pm 0.3897$ & $22.7 \pm 5.1$ & $\mathbf{0.8630 \pm 0.0361}$ & $108.3 \pm 3.7$ \\
+ & 0.012 & $1.1214 \pm 0.0045$ & $0.0374 \pm 0.0078$ & $0.1233 \pm 0.0279$ & $1.1711 \pm 0.4249$ & $\mathbf{23.9 \pm 3.6}$ & $0.8415 \pm 0.0366$ & $107.9 \pm 3.1$ \\
+ & 0.031 & $1.1212 \pm 0.0036$ & $0.0381 \pm 0.0067$ & $0.1198 \pm 0.0262$ & $1.1235 \pm 0.4006$ & $22.8 \pm 3.7$ & $0.8233 \pm 0.0320$ & $107.4 \pm 3.3$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $\mathbf{1.1222 \pm 0.0033}$ & $0.0378 \pm 0.0048$ & $\mathbf{0.1103 \pm 0.0247}$ & $\mathbf{1.0853 \pm 0.3543}$ & $22.8 \pm 4.4$ & $0.8074 \pm 0.0382$ & $106.0 \pm 4.6$ \\
+ & 0.1 & $1.1222 \pm 0.0048$ & $0.0418 \pm 0.0069$ & $0.1174 \pm 0.0262$ & $1.1173 \pm 0.5303$ & $23.6 \pm 4.2$ & $0.7737 \pm 0.0373$ & $103.7 \pm 5.2$ \\
+ & adapt. & $1.1214 \pm 0.0042$ & $0.0378 \pm 0.0077$ & $0.1246 \pm 0.0246$ & $1.2113 \pm 0.4418$ & $21.2 \pm 4.4$ & $0.8217 \pm 0.0340$ & $105.4 \pm 6.5$ \\
+\midrule
+PCX gauss & 0.004 & $1.1201 \pm 0.0026$ & $0.0386 \pm 0.0057$ & $0.1269 \pm 0.0253$ & $1.2148 \pm 0.4017$ & $21.9 \pm 3.0$ & $\mathbf{0.8553 \pm 0.0381}$ & $107.8 \pm 5.0$ \\
+ & 0.012 & $1.1213 \pm 0.0036$ & $\mathbf{0.0380 \pm 0.0049}$ & $0.1244 \pm 0.0255$ & $1.2213 \pm 0.3222$ & $23.8 \pm 4.2$ & $0.8261 \pm 0.0408$ & $106.0 \pm 4.4$ \\
+ & 0.031 & $1.1211 \pm 0.0039$ & $0.0407 \pm 0.0074$ & $0.1225 \pm 0.0236$ & $1.1528 \pm 0.4199$ & $23.4 \pm 5.5$ & $0.8001 \pm 0.0373$ & $105.1 \pm 3.2$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1218 \pm 0.0042$ & $0.0420 \pm 0.0072$ & $0.1150 \pm 0.0276$ & $\mathbf{1.0258 \pm 0.4838}$ & $22.3 \pm 5.8$ & $0.7669 \pm 0.0269$ & $103.5 \pm 3.9$ \\
+ & 0.1 & $\mathbf{1.1232 \pm 0.0046}$ & $0.0449 \pm 0.0100$ & $\mathbf{0.1132 \pm 0.0263}$ & $1.1351 \pm 0.3879$ & $\mathbf{25.5 \pm 5.2}$ & $0.7370 \pm 0.0190$ & $103.4 \pm 3.5$ \\
+ & adapt. & $1.1222 \pm 0.0038$ & $0.0399 \pm 0.0063$ & $0.1118 \pm 0.0292$ & $1.1758 \pm 0.2313$ & $24.6 \pm 5.6$ & $0.7879 \pm 0.0310$ & $106.4 \pm 3.8$ \\
+\midrule
+SBX pm & 0.004 & $1.1109 \pm 0.0028$ & $0.0592 \pm 0.0071$ & $0.1966 \pm 0.0183$ & $\mathbf{1.0110 \pm 0.3242}$ & $19.5 \pm 4.3$ & $\mathbf{0.9918 \pm 0.0039}$ & $49.8 \pm 3.8$ \\
+ & 0.012 & $1.1125 \pm 0.0024$ & $0.0541 \pm 0.0067$ & $0.1852 \pm 0.0163$ & $1.0294 \pm 0.2618$ & $22.8 \pm 2.7$ & $0.9892 \pm 0.0078$ & $52.4 \pm 5.5$ \\
+ & 0.031 & $1.1146 \pm 0.0026$ & $0.0478 \pm 0.0063$ & $0.1718 \pm 0.0195$ & $1.1303 \pm 0.2918$ & $22.8 \pm 5.2$ & $0.9877 \pm 0.0083$ & $58.7 \pm 5.7$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1156 \pm 0.0030$ & $0.0458 \pm 0.0084$ & $0.1693 \pm 0.0242$ & $1.1096 \pm 0.3057$ & $23.6 \pm 4.4$ & $0.9864 \pm 0.0064$ & $66.7 \pm 5.2$ \\
+ & 0.1 & $\mathbf{1.1171 \pm 0.0031}$ & $\mathbf{0.0413 \pm 0.0085}$ & $\mathbf{0.1590 \pm 0.0233}$ & $1.2273 \pm 0.3316$ & $22.9 \pm 4.7$ & $0.9834 \pm 0.0088$ & $74.3 \pm 5.7$ \\
+ & adapt. & $1.1140 \pm 0.0026$ & $0.0513 \pm 0.0060$ & $0.1777 \pm 0.0211$ & $1.2814 \pm 0.4390$ & $\mathbf{25.1 \pm 4.3}$ & $0.9886 \pm 0.0055$ & $59.7 \pm 5.5$ \\
+\midrule
+SBX gauss & 0.004 & $1.1131 \pm 0.0030$ & $0.0542 \pm 0.0065$ & $0.1815 \pm 0.0224$ & $1.1081 \pm 0.4493$ & $21.6 \pm 4.0$ & $\mathbf{0.9897 \pm 0.0057}$ & $51.3 \pm 4.0$ \\
+ & 0.012 & $1.1127 \pm 0.0037$ & $0.0541 \pm 0.0097$ & $0.1831 \pm 0.0274$ & $1.0932 \pm 0.3477$ & $\mathbf{23.6 \pm 4.9}$ & $0.9887 \pm 0.0048$ & $54.2 \pm 4.1$ \\
+ & 0.031 & $1.1163 \pm 0.0029$ & $0.0446 \pm 0.0071$ & $0.1626 \pm 0.0243$ & $1.1371 \pm 0.4672$ & $22.9 \pm 3.5$ & $0.9847 \pm 0.0082$ & $64.8 \pm 6.1$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1152 \pm 0.0023$ & $0.0459 \pm 0.0066$ & $0.1731 \pm 0.0184$ & $\mathbf{1.0800 \pm 0.2867}$ & $23.2 \pm 4.1$ & $0.9833 \pm 0.0068$ & $71.5 \pm 5.4$ \\
+ & 0.1 & $\mathbf{1.1189 \pm 0.0030}$ & $\mathbf{0.0356 \pm 0.0077}$ & $\mathbf{0.1464 \pm 0.0244}$ & $1.1578 \pm 0.4582$ & $22.1 \pm 2.9$ & $0.9768 \pm 0.0083$ & $82.3 \pm 5.0$ \\
+ & adapt. & $1.1151 \pm 0.0035$ & $0.0465 \pm 0.0097$ & $0.1727 \pm 0.0273$ & $1.1455 \pm 0.4505$ & $21.3 \pm 5.0$ & $0.9862 \pm 0.0080$ & $64.4 \pm 6.6$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{\acrshort{agemoea} — reparto 100$\times$1000, $p_c = 1.0$ (PCX) y $1.0$ (SBX). Media y desvío sobre 20 semillas.}
+\label{tab:mutacion_agemoea}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccccccc}
+\toprule
+Operadores & Mutación & Hipervolumen $\uparrow$ & IGD$^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Espaciamiento $\downarrow$ & Tamaño Pareto $\uparrow$ & Validez $\uparrow$ & Tiempo (s) \\
+\midrule
+PCX pm & 0.004 & $1.1189 \pm 0.0029$ & $0.0396 \pm 0.0072$ & $0.1411 \pm 0.0259$ & $1.2331 \pm 0.5206$ & $22.4 \pm 5.7$ & $\mathbf{0.8849 \pm 0.0244}$ & $124.1 \pm 4.8$ \\
+ & 0.012 & $1.1185 \pm 0.0021$ & $0.0413 \pm 0.0055$ & $0.1436 \pm 0.0175$ & $1.1158 \pm 0.3418$ & $\mathbf{23.8 \pm 3.5}$ & $0.8828 \pm 0.0344$ & $124.1 \pm 3.6$ \\
+ & 0.031 & $1.1194 \pm 0.0033$ & $0.0416 \pm 0.0081$ & $0.1360 \pm 0.0231$ & $\mathbf{0.9625 \pm 0.3823}$ & $23.6 \pm 3.1$ & $0.8455 \pm 0.0445$ & $123.0 \pm 6.0$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $\mathbf{1.1200 \pm 0.0039}$ & $\mathbf{0.0387 \pm 0.0076}$ & $0.1356 \pm 0.0252$ & $1.0669 \pm 0.2653$ & $22.2 \pm 3.9$ & $0.8343 \pm 0.0333$ & $122.9 \pm 3.7$ \\
+ & 0.1 & $1.1199 \pm 0.0031$ & $0.0397 \pm 0.0055$ & $\mathbf{0.1325 \pm 0.0234}$ & $0.9974 \pm 0.3363$ & $21.6 \pm 4.5$ & $0.8175 \pm 0.0462$ & $121.8 \pm 4.9$ \\
+ & adapt. & $1.1180 \pm 0.0033$ & $0.0431 \pm 0.0090$ & $0.1463 \pm 0.0268$ & $1.0421 \pm 0.4203$ & $22.8 \pm 4.5$ & $0.8556 \pm 0.0295$ & $124.7 \pm 4.4$ \\
+\midrule
+PCX gauss & 0.004 & $1.1185 \pm 0.0021$ & $0.0412 \pm 0.0042$ & $0.1422 \pm 0.0199$ & $1.1675 \pm 0.4182$ & $23.8 \pm 4.1$ & $\mathbf{0.8926 \pm 0.0402}$ & $124.5 \pm 4.6$ \\
+ & 0.012 & $1.1192 \pm 0.0026$ & $0.0404 \pm 0.0058$ & $0.1360 \pm 0.0254$ & $1.1248 \pm 0.4309$ & $22.6 \pm 3.6$ & $0.8705 \pm 0.0369$ & $123.3 \pm 5.7$ \\
+ & 0.031 & $1.1216 \pm 0.0037$ & $0.0369 \pm 0.0072$ & $0.1193 \pm 0.0287$ & $1.0193 \pm 0.3572$ & $22.9 \pm 4.1$ & $0.8307 \pm 0.0377$ & $120.2 \pm 4.5$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1203 \pm 0.0031$ & $0.0385 \pm 0.0067$ & $0.1238 \pm 0.0269$ & $1.0947 \pm 0.3260$ & $21.4 \pm 2.9$ & $0.8128 \pm 0.0341$ & $120.8 \pm 4.4$ \\
+ & 0.1 & $\mathbf{1.1227 \pm 0.0053}$ & $0.0403 \pm 0.0090$ & $\mathbf{0.1116 \pm 0.0334}$ & $\mathbf{0.9637 \pm 0.3877}$ & $\mathbf{24.2 \pm 4.1}$ & $0.7532 \pm 0.0304$ & $113.5 \pm 3.4$ \\
+ & adapt. & $1.1225 \pm 0.0047$ & $\mathbf{0.0352 \pm 0.0072}$ & $0.1223 \pm 0.0259$ & $1.0777 \pm 0.3016$ & $23.1 \pm 5.0$ & $0.8141 \pm 0.0398$ & $119.6 \pm 5.2$ \\
+\midrule
+SBX pm & 0.004 & $1.1078 \pm 0.0044$ & $0.0673 \pm 0.0112$ & $0.2048 \pm 0.0222$ & $1.0369 \pm 0.3317$ & $17.1 \pm 4.6$ & $\mathbf{0.9923 \pm 0.0057}$ & $63.8 \pm 2.5$ \\
+ & 0.012 & $1.1089 \pm 0.0040$ & $0.0641 \pm 0.0078$ & $0.2001 \pm 0.0239$ & $1.0225 \pm 0.4159$ & $17.3 \pm 2.8$ & $0.9886 \pm 0.0092$ & $63.8 \pm 2.8$ \\
+ & 0.031 & $1.1110 \pm 0.0021$ & $0.0597 \pm 0.0070$ & $0.1982 \pm 0.0192$ & $\mathbf{0.9098 \pm 0.2651}$ & $18.6 \pm 3.6$ & $0.9843 \pm 0.0129$ & $68.4 \pm 3.4$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1132 \pm 0.0026$ & $0.0530 \pm 0.0077$ & $\mathbf{0.1825 \pm 0.0196}$ & $1.1148 \pm 0.3943$ & $20.1 \pm 4.8$ & $0.9845 \pm 0.0114$ & $71.1 \pm 3.8$ \\
+ & 0.1 & $\mathbf{1.1133 \pm 0.0024}$ & $\mathbf{0.0521 \pm 0.0078}$ & $0.1885 \pm 0.0192$ & $1.1000 \pm 0.3531$ & $\mathbf{21.6 \pm 4.2}$ & $0.9822 \pm 0.0113$ & $81.5 \pm 6.0$ \\
+ & adapt. & $1.1109 \pm 0.0039$ & $0.0611 \pm 0.0127$ & $0.1947 \pm 0.0296$ & $0.9651 \pm 0.2772$ & $20.2 \pm 4.0$ & $0.9854 \pm 0.0127$ & $66.2 \pm 3.3$ \\
+\midrule
+SBX gauss & 0.004 & $1.1070 \pm 0.0033$ & $0.0668 \pm 0.0078$ & $0.2090 \pm 0.0217$ & $\mathbf{0.9328 \pm 0.2582}$ & $17.2 \pm 2.9$ & $\mathbf{0.9926 \pm 0.0046}$ & $64.7 \pm 2.8$ \\
+ & 0.012 & $1.1105 \pm 0.0035$ & $0.0609 \pm 0.0111$ & $0.1965 \pm 0.0234$ & $0.9670 \pm 0.3678$ & $19.1 \pm 4.1$ & $0.9867 \pm 0.0098$ & $67.4 \pm 4.1$ \\
+ & 0.031 & $1.1120 \pm 0.0027$ & $0.0555 \pm 0.0084$ & $0.1916 \pm 0.0199$ & $0.9811 \pm 0.2825$ & $19.0 \pm 2.9$ & $0.9851 \pm 0.0121$ & $71.6 \pm 5.2$ \\
+\cmidrule(l){2-9}
+ & 0.05 & $1.1128 \pm 0.0034$ & $0.0534 \pm 0.0099$ & $0.1883 \pm 0.0256$ & $1.0460 \pm 0.3231$ & $18.6 \pm 3.9$ & $0.9859 \pm 0.0082$ & $76.5 \pm 5.3$ \\
+ & 0.1 & $\mathbf{1.1152 \pm 0.0021}$ & $\mathbf{0.0477 \pm 0.0053}$ & $\mathbf{0.1737 \pm 0.0189}$ & $1.1534 \pm 0.4110$ & $\mathbf{22.4 \pm 4.5}$ & $0.9766 \pm 0.0108$ & $92.1 \pm 5.7$ \\
+ & adapt. & $1.1126 \pm 0.0020$ & $0.0540 \pm 0.0069$ & $0.1875 \pm 0.0137$ & $1.1131 \pm 0.4204$ & $21.4 \pm 3.6$ & $0.9831 \pm 0.0110$ & $72.3 \pm 3.0$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\section{Comparación de Formulaciones Preliminares hacia MRP1}
+\label{ap:formulaciones_mrp1}
+
+En esta sección se presentan los resultados de las cinco formulaciones preliminares evaluadas para definir los objetivos y restricciones de la optimización hacia \gls{mrp1}.
+\begin{itemize}
+    \item \textbf{VAE + pChEMBL.} Modelo base con optimización de \gls{qed}, SA, afinidad de acoplamiento y pChEMBL, bajo restricción de $F_{\text{sp3}}$.
+    \item \textbf{VAE + pChEMBL + $\log P$.} Modelo base agregando la restricción de $\log P$ (configuración final adoptada).
+    \item \textbf{VAE-ft.} Modelo ajustado por fine-tuning optimizando únicamente docking, \gls{qed} y SA bajo restricción de $F_{\text{sp3}}$, sin pChEMBL ni $\log P$.
+    \item \textbf{VAE-ft + pChEMBL.} Modelo ajustado por fine-tuning incorporando pChEMBL.
+    \item \textbf{VAE-ft + pChEMBL + $\log P$.} Modelo ajustado por fine-tuning con pChEMBL y ambas restricciones.
+\end{itemize}
+
+La Tabla~\ref{tab:pchembl_exp5} detalla los estadísticos descriptivos del pChEMBL predicho para cada una de las cinco variantes sobre las moléculas generadas en el frente.
+
+\begin{table}[htbp]
+\centering
+\caption{Estadísticos descriptivos del pChEMBL predicho para cada una de las cinco formulaciones preliminares evaluadas hacia \gls{mrp1}.}
+\label{tab:pchembl_exp5}
+\begin{tabular}{lccccccc}
+\toprule
+Formulación & Media & Desv. & Mín. & Q1 & Mediana & Q3 & Máx. \\
+\midrule
+VAE + pChEMBL & $5.359$ & $0.331$ & $4.573$ & $5.112$ & $5.354$ & $5.589$ & $6.632$ \\
+VAE + pChEMBL + $\log P$ & $5.376$ & $0.325$ & $4.562$ & $5.143$ & $5.377$ & $5.607$ & $6.279$ \\
+\midrule
+VAE-ft & $4.906$ & $0.182$ & $4.563$ & $4.783$ & $4.864$ & $4.987$ & $5.632$ \\
+VAE-ft + pChEMBL & $5.413$ & $0.401$ & $4.557$ & $5.126$ & $5.379$ & $5.643$ & $6.870$ \\
+VAE-ft + pChEMBL + $\log P$ & $5.428$ & $0.412$ & $4.604$ & $5.124$ & $5.398$ & $5.660$ & $6.876$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Por su parte, las Tablas~\ref{tab:admet_exp5_1} y \ref{tab:admet_exp5_2} resumen los descriptores promedio de absorción, fisicoquímica y toxicidad predichos mediante ADMET-AI sobre las soluciones de cada variante evaluada.
+
+\begin{table}[htbp]
+\centering
+\caption{Propiedades fisicoquímicas y de absorción media para cada variante preliminar hacia \gls{mrp1}.}
+\label{tab:admet_exp5_1}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccccc}
+\toprule
+Formulación & QED & SA & $F_{\text{sp3}}$ & HIA\_Hou & Caco2\_Wang & PAMPA\_NCATS \\
+\midrule
+VAE + pChEMBL & $0.824$ & $2.277$ & $0.404$ & $1.000$ & $-4.669$ & $0.945$ \\
+VAE + pChEMBL + $\log P$ & $0.847$ & $2.208$ & $0.407$ & $1.000$ & $-4.632$ & $0.948$ \\
+\midrule
+VAE-ft & $0.835$ & $2.052$ & $0.375$ & $1.000$ & $-4.688$ & $0.946$ \\
+VAE-ft + pChEMBL & $0.784$ & $2.299$ & $0.409$ & $1.000$ & $-4.745$ & $0.939$ \\
+VAE-ft + pChEMBL + $\log P$ & $0.816$ & $2.265$ & $0.400$ & $0.999$ & $-4.730$ & $0.942$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Propiedades de biodisponibilidad, solubilidad y toxicidad media para cada variante preliminar hacia \gls{mrp1}.}
+\label{tab:admet_exp5_2}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccccc}
+\toprule
+Formulación & Bioavailability\_Ma & Solubility\_AqSolDB & ClinTox & LD50\_Zhu & $\log P$ \\
+\midrule
+VAE + pChEMBL & $0.821$ & $-4.014$ & $0.157$ & $2.509$ & $3.299$ \\
+VAE + pChEMBL + $\log P$ & $0.849$ & $-3.585$ & $0.152$ & $2.499$ & $2.842$ \\
+\midrule
+VAE-ft & $0.820$ & $-4.474$ & $0.142$ & $2.500$ & $3.681$ \\
+VAE-ft + pChEMBL & $0.810$ & $-4.345$ & $0.221$ & $2.653$ & $3.361$ \\
+VAE-ft + pChEMBL + $\log P$ & $0.839$ & $-3.977$ & $0.243$ & $2.677$ & $2.879$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
