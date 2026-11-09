@@ -601,7 +601,7 @@ En comparación con las moléculas del experimento previo sin diana (Sección~\r
 \label{subsec:comp_estado_arte_mrp1}
 \label{sec:comparacion_referencia}
 
-Se comparó el enfoque multiobjetivo propuesto con modelos generativos de referencia entrenados con \gls{moses}:
+Se comparó el enfoque multiobjetivo propuesto con cuatro modelos generativos de referencia entrenados con \gls{moses}:
 
 \begin{itemize}
     \item \textbf{\gls{vae}:} El \gls{vae} utilizado en el modelo propuesto, entrenado con \gls{moses}.
@@ -610,7 +610,7 @@ Se comparó el enfoque multiobjetivo propuesto con modelos generativos de refere
     \item \textbf{GAN con fine-tuning:} La misma GAN ajustada con ligandos conocidos de \gls{mrp1}.
 \end{itemize}
 
-De cada modelo de referencia se generaron 10.000 moléculas y se evaluó en \gls{qed}, SA, afinidad de docking con Uni-Dock y pChEMBL predicho. En la Tabla~\ref{tab:comparacion_modelos} se contrastan directamente las seis configuraciones multiobjetivo del presente estudio con los cuatro modelos generativos.
+De cada modelo de referencia se generaron 10.000 moléculas mediante muestreo aleatorio sobre cinco semillas independientes, utilizando una partición distinta de los datos en cada fine-tuning.
 
 \input{Chapters/Tables/mrp1/tab_comparacion_modelos_mrp1.tex}
 
