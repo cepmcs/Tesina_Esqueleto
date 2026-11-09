@@ -170,13 +170,13 @@ SBX gauss & 0.004 & $1.1070 \pm 0.0033$ & $0.0668 \pm 0.0078$ & $0.2090 \pm 0.02
 \section{Comparación de Formulaciones Preliminares hacia MRP1}
 \label{ap:formulaciones_mrp1}
 
-En esta sección se presentan los resultados de las cinco formulaciones preliminares evaluadas para definir los objetivos y restricciones de la optimización hacia \gls{mrp1}.
+En esta sección se presentan los resultados de las cinco formulaciones preliminares evaluadas para definir los objetivos y restricciones de la optimización hacia \gls{mrp1}:
 \begin{itemize}
-    \item \textbf{VAE + pChEMBL.} Modelo base con optimización de \gls{qed}, SA, afinidad de acoplamiento y pChEMBL, bajo restricción de $F_{\text{sp3}}$.
-    \item \textbf{VAE + pChEMBL + $\log P$.} Modelo base agregando la restricción de $\log P$ (configuración final adoptada).
-    \item \textbf{VAE-ft.} Modelo ajustado por fine-tuning optimizando únicamente docking, \gls{qed} y SA bajo restricción de $F_{\text{sp3}}$, sin pChEMBL ni $\log P$.
-    \item \textbf{VAE-ft + pChEMBL.} Modelo ajustado por fine-tuning incorporando pChEMBL.
-    \item \textbf{VAE-ft + pChEMBL + $\log P$.} Modelo ajustado por fine-tuning con pChEMBL y ambas restricciones.
+    \item \textbf{VAE + pChEMBL:} Modelo base con optimización de \gls{qed}, SA, afinidad de acoplamiento y pChEMBL, bajo restricción de $F_{\text{sp3}}$.
+    \item \textbf{VAE + pChEMBL + $\log P$:} Modelo base agregando la restricción de $\log P$ (configuración final adoptada).
+    \item \textbf{VAE-ft:} Modelo ajustado por fine-tuning optimizando únicamente docking, \gls{qed} y SA bajo restricción de $F_{\text{sp3}}$, sin pChEMBL ni $\log P$.
+    \item \textbf{VAE-ft + pChEMBL:} Modelo ajustado por fine-tuning incorporando pChEMBL.
+    \item \textbf{VAE-ft + pChEMBL + $\log P$:} Modelo ajustado por fine-tuning con pChEMBL y ambas restricciones.
 \end{itemize}
 
 La Tabla~\ref{tab:pchembl_exp5} detalla los estadísticos descriptivos del pChEMBL predicho para cada una de las cinco variantes sobre las moléculas generadas en el frente.
