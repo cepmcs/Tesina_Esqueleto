@@ -77,20 +77,20 @@ A las 300 épocas, la variante de red menos profunda, \textbf{SM-L 1}, consigui�
 
 Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor \gls{fcd} de todos los experimentos (0.179), la mayor validez entre los modelos \gls{smiles} (0.962) y la menor distancia de Wasserstein para \gls{sas} (0.093). A cambio, presentó una novedad levemente menor (0.943) y el mayor tiempo de entrenamiento en esta etapa.
 
-En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0.008 para \gls{qed} y 0.093 para \gls{sas}).
+En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0.008 para \gls{qed} y 0.093 para \gls{sas}). Por otra parte, la Figura~\ref{fig:pca_latente} presenta la proyección mediante análisis de componentes principales (PCA) del espacio latente para 30\,000 moléculas del conjunto \gls{moses}, observándose una distribución continua y homogénea.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{Figures/distribuciones_qed_sa.png}
+\includegraphics[width=0.75\textwidth]{Figures/distribuciones_qed_sa.png}
 \caption{Distribuciones de QED y SAS de las moléculas válidas generadas por SM-L 2 frente al conjunto de prueba de MOSES.}
 \label{fig:distribuciones}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\framebox[\textwidth]{\rule{0pt}{6cm}\textbf{[Placeholder: Figura 4.2 -- Muestras de moléculas generadas por el modelo SM-L 2]}}
-\caption{Muestras de moléculas generadas por el modelo seleccionado SM-L 2.}
-\label{fig:muestras_modelo_seleccionado}
+\includegraphics[width=0.65\textwidth]{Figures/pca_latente.pdf}
+\caption{Proyección PCA del espacio latente del VAE para 30\,000 moléculas de MOSES. Cada punto representa una molécula.}
+\label{fig:pca_latente}
 \end{figure}
 
 
