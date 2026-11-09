@@ -575,6 +575,25 @@ La Figura~\ref{fig:frentes_pareto_3d} muestra el Frente No Dominado Conjunto Glo
 
 En cuanto al aporte de cada método al frente global, los tres algoritmos muestran complementariedad, \acrshort{nsga3} aporta un total de 682 soluciones (525 exclusivas), \acrshort{agemoea} contribuye con 514 soluciones (360 exclusivas) y \acrshort{nsga2} provee 464 soluciones (303 exclusivas). Asimismo, 205 moléculas (un 14.7\% del frente) fueron descubiertas conjuntamente por más de un algoritmo.
 
+\subsubsection{Moléculas Representativas}
+\label{subsubsec:moleculas_representativas}
+\label{subsec:moleculas_candidatas}
+
+Con el fin de analizar las moléculas generadas con un perfil equilibrado, se aplicó un filtrado sobre el Frente No Dominado Conjunto Global seleccionando aquellas que satisfacen simultáneamente las condiciones de $\text{Docking} < -10\text{ kcal/mol}$, $\text{pChEMBL} > 5.5$, $\text{QED} > 0.70$ y $\text{SA} < 3.0$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/mrp1/moleculas_candidatas.pdf}
+    \caption{Estructuras químicas y propiedades de las ocho moléculas seleccionadas del Frente No Dominado Conjunto Global ($\text{Docking} < -10\text{ kcal/mol}$, $\text{pChEMBL} > 5.5$, $\text{QED} > 0.70$ y $\text{SA} < 3.0$).}
+    \label{fig:moleculas_candidatas}
+\end{figure}
+
+\input{Chapters/Tables/mrp1/tab_candidatas_mrp1.tex}
+
+La Figura~\ref{fig:moleculas_candidatas} y la Tabla~\ref{tab:moleculas_candidatas} presentan las ocho moléculas seleccionadas a partir de este filtrado. Las soluciones provienen de distintas configuraciones algorítmicas, principalmente de las variantes con SBX en \acrshort{nsga3} y \acrshort{agemoea}, junto con aportes de \acrshort{nsga2}. A nivel estructural, estas moléculas presentan una mayor complejidad, combinando múltiples anillos aromáticos y grupos funcionales que permiten mantener un equilibrio entre \gls{qed}, facilidad de síntesis y afinidad hacia la diana.
+
+En comparación con las moléculas del experimento previo sin diana (Sección~\ref{sec:res_genericos}), donde solo se optimizaban \gls{qed} y SA, la incorporación del acoplamiento molecular y la bioactividad hacia \gls{mrp1} conduce a estructuras de mayor tamaño y complejidad. Mientras que en el caso previo se favorecían moléculas más pequeñas o simples, aquí la necesidad de interactuar con la cavidad de la proteína promueve la presencia de más anillos aromáticos y grupos que permitan formar interacciones en el sitio de unión, conservando al mismo tiempo una síntesis accesible y cumpliendo las restricciones fisicoquímicas.
+
 % -----------------------------------------------------------------------------
 \subsection{Comparación con Modelos de Referencia}
 \label{subsec:comp_estado_arte_mrp1}
@@ -589,7 +608,7 @@ Se comparó el enfoque multiobjetivo propuesto con modelos generativos de refere
     \item \textbf{GAN con fine-tuning:} La misma GAN ajustada con ligandos conocidos de \gls{mrp1}.
 \end{itemize}
 
-De cada modelo de referencia se generaron 100.000 moléculas al azar y se evaluó una muestra de 10.000 cumpliendo $F_{\text{sp3}} \ge 0.3$ en \gls{qed}, SA, afinidad de docking con Uni-Dock y pChEMBL predicho. En la Tabla~\ref{tab:comparacion_modelos} se contrastan directamente las seis configuraciones multiobjetivo del presente estudio con los cuatro modelos generativos.
+De cada modelo de referencia se generaron 10.000 moléculas y se evaluó en \gls{qed}, SA, afinidad de docking con Uni-Dock y pChEMBL predicho. En la Tabla~\ref{tab:comparacion_modelos} se contrastan directamente las seis configuraciones multiobjetivo del presente estudio con los cuatro modelos generativos.
 
 \input{Chapters/Tables/mrp1/tab_comparacion_modelos_mrp1.tex}
 
@@ -605,25 +624,6 @@ En conjunto, estos contrastes confirman que la optimización multiobjetivo en el
 \label{sec:validacion_perfilado}
 
 Con el fin de evaluar y caracterizar las moléculas obtenidas para \gls{mrp1}, se realiza un análisis sobre las soluciones del frente de Pareto de cada configuración y los modelos de referencia. Esta sección examina la calidad física de las conformaciones de acoplamiento mediante PoseBusters \cite{buttenschoen2024posebusters}, la potencia y bioactividad inhibitoria predicha con Random Forest a partir de ChEMBL \cite{mendez2019chembl}, y el perfil farmacocinético, fisicoquímico y toxicológico mediante ADMET-AI \cite{swanson2024admetai}.
-
-\subsubsection{Moléculas Representativas}
-\label{subsubsec:moleculas_representativas}
-\label{subsec:moleculas_candidatas}
-
-Con el fin de analizar las moléculas generadas con un perfil equilibrado, se aplicó un filtrado sobre el Frente No Dominado Conjunto Global seleccionando aquellas que satisfacen simultáneamente condiciones en los cuatro objetivos: $\text{Docking} < -10\text{ kcal/mol}$, $\text{pChEMBL} > 5.5$, $\text{QED} > 0.70$ y $\text{SA} < 3.0$.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Figures/mrp1/moleculas_candidatas.pdf}
-    \caption{Estructuras químicas y propiedades de las ocho moléculas seleccionadas del Frente No Dominado Conjunto Global ($\text{Docking} < -10\text{ kcal/mol}$, $\text{pChEMBL} > 5.5$, $\text{QED} > 0.70$ y $\text{SA} < 3.0$).}
-    \label{fig:moleculas_candidatas}
-\end{figure}
-
-\input{Chapters/Tables/mrp1/tab_candidatas_mrp1.tex}
-
-La Figura~\ref{fig:moleculas_candidatas} y la Tabla~\ref{tab:moleculas_candidatas} presentan las ocho moléculas seleccionadas a partir de este filtrado. Las soluciones provienen de distintas configuraciones algorítmicas, principalmente de las variantes con SBX en \acrshort{nsga3} y \acrshort{agemoea}, junto con aportes de \acrshort{nsga2}. A nivel estructural, estas moléculas presentan una mayor complejidad, combinando múltiples anillos aromáticos y grupos funcionales que permiten mantener un equilibrio entre \gls{qed}, facilidad de síntesis y afinidad hacia la diana.
-
-En comparación con las moléculas del experimento previo sin diana (Sección~\ref{sec:res_genericos}), donde solo se optimizaban \gls{qed} y SA, la incorporación del acoplamiento molecular y la bioactividad hacia \gls{mrp1} conduce a estructuras de mayor tamaño y complejidad. Mientras que en el caso previo se favorecían moléculas más pequeñas o simples, aquí la necesidad de interactuar con la cavidad de la proteína promueve la presencia de más anillos aromáticos y grupos que permitan formar interacciones en el sitio de unión, conservando al mismo tiempo una síntesis accesible y cumpliendo las restricciones fisicoquímicas.
 
 \subsubsection{Validación de Poses de Acoplamiento (PoseBusters)}
 \label{subsubsec:posebusters}
