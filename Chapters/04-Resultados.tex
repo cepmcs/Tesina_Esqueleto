@@ -165,8 +165,6 @@ La Figura~\ref{fig:efectos_hypervolume} muestra el efecto de cada hiperparámetr
 
 Se evalúa el impacto de los operadores de cruce (SBX, PCX) y mutación (Polinomial, Gaussiana) en \acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3} sobre distintos indicadores multiobjetivo y químicos.
 
-La comparación estadística se realiza sobre el hipervolumen: test de Friedman con las 20 semillas ($p < 0.001$), seguido de comparaciones por pares con Wilcoxon de rangos con signo y corrección de Holm ($\alpha = 0.05$). Para cada par se reporta el valor $p$ ajustado y la correlación rango-biserial de pares emparejados ($r_{\text{rb}}$), con signo positivo cuando la primera combinación aventaja a la segunda; un valor próximo al máximo ($\pm 1.0$) indica unanimidad en las 20 semillas.
-
 \input{Chapters/Tables/tab_multiobjetivo_operadores.tex}
 
 La Tabla~\ref{tab:comparison_multiobjective_operadores} compara las configuraciones de \acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3} frente a las distintas combinaciones de operadores de cruce y mutación sobre indicadores de convergencia (\acrshort{hv}, $\text{IGD}^+$), cobertura ($\epsilon^+$), distribución (espaciamiento), tamaño del frente y costo computacional.
