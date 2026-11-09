@@ -84,7 +84,7 @@
 \ProcessKeyOptions[UMUthesis]
 \ExplSyntaxOff
 
-%%% Load Master Class %%% test
+%%% Load Master Class %%%
 \LoadClass[a4paper,11pt,twoside,openright]{report}
 \raggedbottom
 
