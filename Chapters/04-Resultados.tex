@@ -75,7 +75,7 @@ A las 300 épocas, la variante de red menos profunda, \textbf{SM-L 1}, consigui�
 
 \subsubsection{Modelo seleccionado}
 
-Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor \gls{fcd} de todos los experimentos (0.179), la mayor validez entre los modelos \gls{smiles} (0.962) y la menor distancia de Wasserstein para \gls{sas} (0.093). A cambio, presentó una novedad levemente menor (0.943) y el mayor tiempo de entrenamiento en esta etapa.
+Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor \gls{fcd} de todos los experimentos (0.179), la mayor validez entre los modelos \gls{smiles} (0.962) y la menor distancia de Wasserstein para \gls{sas} (0.093). A cambio, presentó una novedad levemente menor (0.943) y el mayor tiempo de entrenamiento.
 
 En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0.008 para \gls{qed} y 0.093 para \gls{sas}). Por otra parte, la Figura~\ref{fig:pca_latente} presenta la proyección mediante análisis de componentes principales (PCA) del espacio latente para 30\,000 moléculas del conjunto \gls{moses}, observándose una distribución continua y homogénea.
 
@@ -158,7 +158,7 @@ Este análisis muestra los siguientes comportamientos:
     \label{fig:efectos_hypervolume}
 \end{figure}
 
-La Figura~\ref{fig:efectos_hypervolume} resume la magnitud del efecto de cada hiperparámetro sobre el hipervolumen. En los algoritmos genéticos, las variantes con PCX son predominantemente sensibles a la probabilidad de cruce $P(\text{cruce})$ (con un efecto especialmente marcado en \acrshort{nsga2}), mientras que las variantes con SBX responden principalmente a la probabilidad de mutación $P(\text{mut.})$. \acrshort{moead} exhibe una marcada sensibilidad tanto a la mutación como al reparto de población y generaciones. En \acrshort{cmopso}, el parámetro de mayor impacto es el tope de velocidad ($v_{\text{max}}$), seguido por la probabilidad de mutación, mientras que el tamaño del archivo de élites y el reparto de evaluaciones presentan una influencia secundaria.
+La Figura~\ref{fig:efectos_hypervolume} resume la magnitud del efecto de cada hiperparámetro sobre el hipervolumen. En los algoritmos genéticos, las variantes con PCX son predominantemente sensibles a la probabilidad de cruce $P(\text{cruce})$ (con un efecto especialmente marcado en \acrshort{nsga2}), mientras que las variantes con SBX responden principalmente a la probabilidad de mutación $P(\text{mut.})$. \acrshort{moead} exhibe una marcada sensibilidad tanto a la mutación como al reparto de población y generaciones. En \acrshort{cmopso}, el parámetro de mayor impacto es el tope de velocidad ($v_{\text{max}}$), seguido por la probabilidad de mutación, mientras que el tamaño del archivo de élites y el reparto de evaluaciones tienen menor impacto.
 
 \subsection{Influencia de los Operadores de Cruce y Mutación}
 \label{subsec:comparativa_operadores}
@@ -179,7 +179,7 @@ En \acrshort{nsga3}, las variantes con PCX logran una convergencia muy favorable
 
 En \acrshort{agemoea}, el uso de PCX consolida un frente competitivo ($\text{HV} = 1.122$ e $\text{IGD}^+ = 0.037$ en pcx\_gauss) con un conjunto amplio de soluciones ($24.1$ en pcx\_pm). No obstante, el algoritmo muestra una alta sensibilidad computacional según el operador empleado, donde la variante \texttt{sbx\_pm} eleva el tiempo a $229.6$~s frente a los $\approx 97\text{--}120$~s de las restantes configuraciones. Esta sobrecarga sugiere que la combinación de un cruce concentrador con mutación polinomial dificulta el ajuste adaptativo de la geometría del frente que realiza \acrshort{agemoea}, requiriendo mayor iteración en el cálculo de distancias extremas de supervivencia.
 
-Por último, \acrshort{moead} presenta la menor brecha relativa entre familias de cruce y registra los menores tiempos de ejecución ($38.5\text{--}52.2$~s) y espaciamientos más reducidos ($1.033\text{--}1.042$). Al descomponer la búsqueda en subproblemas escalares acotados a vecindarios locales fijos, la capacidad de dispersión de PCX queda parcialmente restringida al entorno de soluciones vecinas muy similares entre sí. En consecuencia, aunque PCX mejora la cobertura frente a SBX, la dinámica de vecindad de \acrshort{moead} prioriza la explotación local, evitando que el frente se expanda hacia los extremos del espacio de propiedades.
+Por último, \acrshort{moead} presenta la menor brecha relativa entre familias de cruce y registra los menores tiempos de ejecución ($38.5\text{--}52.2$~s) y espaciamientos más reducidos ($1.033\text{--}1.042$). Al descomponer la búsqueda en subproblemas escalares acotados a vecindarios locales fijos, la capacidad de dispersión de PCX queda parcialmente restringida al entorno de soluciones vecinas muy similares entre sí. En consecuencia, aunque PCX mejora la cobertura frente a SBX, la dinámica de vecindad de \acrshort{moead} prioriza la explotación local, lo que impide que el frente cubra los extremos de ambas propiedades.
 
 \input{Chapters/Tables/tab_chemical_operadores.tex}
 
@@ -302,7 +302,7 @@ La Tabla~\ref{tab:comparacion_grupos} confirma diferencias significativas entre 
     \label{fig:boxplots_mo}
 \end{figure}
 
-La Figura~\ref{fig:boxplots_mo} ilustra la distribución de los indicadores multiobjetivo de la Tabla~\ref{tab:comparison_multiobjective} mediante diagramas de caja. \acrshort{nsga2} obtiene las medianas más favorables en hipervolumen ($\approx 1.126$), $\text{IGD}^+$ y $\epsilon^+$, junto con el mayor número de soluciones no dominadas (mediana de $29$). \acrshort{agemoea} y \acrshort{nsga3} muestran distribuciones similares entre sí en todas las métricas, manteniendo una buena aproximación y cobertura del frente de referencia.
+La Figura~\ref{fig:boxplots_mo} ilustra la distribución de los indicadores multiobjetivo de la Tabla~\ref{tab:comparison_multiobjective} mediante diagramas de caja. \acrshort{nsga2} obtiene las medianas más favorables en hipervolumen ($\approx 1.126$), $\text{IGD}^+$ y $\epsilon^+$, junto con el mayor número de soluciones no dominadas (mediana de $29$). \acrshort{agemoea} y \acrshort{nsga3} muestran distribuciones similares entre sí en todas las métricas, manteniendo una buena aproximación y cobertura del frente.
 
 Por su parte, \acrshort{moead} y \acrshort{cmopso} presentan medianas menores de espaciamiento ($1.05$ y $0.95$) debido a que sus soluciones se concentran en el tramo de alto \gls{qed}. Sin embargo, al no explorar la rama de bajo SA, registran valores peores en $\text{IGD}^+$ y $\epsilon^+$, ya que dejar ese sector sin cubrir aumenta la distancia respecto al frente de referencia. Además, al enfocarse en una zona más acotada, obtienen menos soluciones no dominadas (medianas de $20$ y $18$ moléculas, respectivamente).
 
@@ -363,7 +363,7 @@ En el extremo de alto \gls{qed}, el frente forma una rama vertical donde los val
 
 
 
-\subsection{Análisis del Frente no Dominado Conjunto y Moléculas Representativas}
+\subsection{Frente no Dominado Conjunto y Moléculas Representativas}
 \label{subsec:frente_conjunto_global}
 
 Para evaluar la capacidad exploratoria conjunta y caracterizar el espacio químico accesible, se combinan las soluciones obtenidas por las ramas de cruce PCX y SBX en los cuatro algoritmos genéticos (empleando en cada caso el operador de mutación con mejor desempeño en la comparación estadística), junto con \acrshort{cmopso}, a lo largo de las veinte ejecuciones independientes. Tras deduplicar por estructura química (\gls{smiles}), se recalcula la no dominancia global, conformando un frente no dominado conjunto de 32 moléculas únicas.
@@ -490,7 +490,7 @@ En esta subsección se evalúa el desempeño de las configuraciones seleccionada
 
 \input{Chapters/Tables/mrp1/tab_multiobjetivo_mrp1.tex}
 
-La Tabla~\ref{tab:multiobjetivo} presenta la comparación de los indicadores multiobjetivo para cada configuración evaluada sobre cinco ejecuciones independientes. Se analizan indicadores de convergencia y proximidad al frente de referencia (hipervolumen, $\text{IGD}^+$ y $\epsilon^+$), junto con la distribución (espaciamiento), el tamaño del frente de Pareto factible y el tiempo total de ejecución.
+La Tabla~\ref{tab:multiobjetivo} presenta la comparación de los indicadores multiobjetivo para cada configuración evaluada sobre cinco ejecuciones independientes. Se analizan indicadores de convergencia y proximidad al frente de referencia (hipervolumen, $\text{IGD}^+$ y $\epsilon^+$), junto con la distribución (espaciamiento), el tamaño del frente factible y el tiempo de ejecución.
 
 En comparación con los experimentos previos sin diana específica (Sección~\ref{sec:res_genericos}), la escala del hipervolumen varía debido a la incorporación simultánea de cuatro objetivos (\gls{qed}, SA, afinidad de unión y pChEMBL predicho) junto con las restricciones de viabilidad ($F_{\text{sp3}}$ y $\log P$). Por otra parte, el tiempo de ejecución de los algoritmos aumenta considerablemente, debido a la carga computacional que conlleva el cálculo del acoplamiento molecular de las moléculas generadas. De igual manera, al optimizarse cuatro objetivos simultáneos, la cantidad de moléculas pertenecientes al frente de Pareto aumenta sustancialmente.
 
@@ -535,7 +535,7 @@ En el gráfico de \gls{qed} se aprecian las tendencias observadas: las variantes
 
 La Figura~\ref{fig:convergencia_multiobjetivo} muestra la evolución de los indicadores multiobjetivo a lo largo de las 100.000 evaluaciones, promediada sobre las cinco ejecuciones independientes.
 
-En el hipervolumen se observa un crecimiento rápido durante las primeras 20.000 evaluaciones en todas las configuraciones. A partir de esa etapa, \acrshort{nsga3} con SBX presenta un mejor comportamiento y sostiene el valor más alto hasta concluir la búsqueda ($\approx 0.514$). Por su parte, las variantes con PCX se estabilizan alrededor de las 40.000 evaluaciones. La diferencia entre operadores se hace todavía más clara en los indicadores $\text{IGD}^+$ y $\epsilon^+$. Aunque todas las configuraciones inician en valores semejantes ($\text{IGD}^+ \approx 0.24$), las variantes con SBX experimentan un descenso rápido, situándose por debajo de 0.05 antes de las 40.000 evaluaciones, lo cual se traduce en un mejor acercamiento al frente de referencia.
+En el hipervolumen se observa un crecimiento rápido durante las primeras 20.000 evaluaciones en todas las configuraciones. A partir de esa etapa, \acrshort{nsga3} con SBX presenta un mejor comportamiento y sostiene el valor más alto hasta concluir la búsqueda ($\approx 0.514$). Por su parte, las variantes con PCX se estabilizan alrededor de las 40.000 evaluaciones. La diferencia entre operadores se hace todavía más clara en los indicadores $\text{IGD}^+$ y $\epsilon^+$. Aunque todas las configuraciones inician en valores semejantes ($\text{IGD}^+ \approx 0.24$), las variantes con SBX experimentan un descenso rápido, situándose por debajo de 0.05 antes de las 40.000 evaluaciones, lo cual se traduce en un mejor acercamiento al frente.
 
 \begin{figure}[H]
     \centering
@@ -562,7 +562,7 @@ Al analizar la convergencia de los cuatro objetivos, SBX vuelve a presentar un m
 
 La Figura~\ref{fig:frentes_por_configuracion} presenta los frentes no dominados acumulados en el plano \gls{qed} contra SA para cada configuración sobre las cinco ejecuciones independientes, donde el color de cada punto indica su afinidad de unión hacia \gls{mrp1}.
 
-Se aprecian contrastes definidos entre ambos operadores de cruce. Las variantes con SBX generan frentes con un número considerablemente mayor de soluciones, concentrándose en la región de alto \gls{qed} ($\text{QED} > 0.80$) y bajo SA ($\text{SA} < 2.5$). Además, estas configuraciones concentran una alta proporción de puntos con afinidades muy favorables. Por el contrario, las variantes con PCX dispersan sus soluciones y exploran zonas de menor similitud a fármacos conocidos ($\text{QED} < 0.60$), logrando algunas moléculas con baja complejidad sintética ($\text{SA} \approx 1.2$), pero a expensas de energías de unión menos favorables.
+Se aprecian contrastes definidos entre ambos operadores de cruce. Las variantes con SBX generan frentes con un número considerablemente mayor de soluciones, concentrándose en la región de alto \gls{qed} ($\text{QED} > 0.80$) y bajo SA ($\text{SA} < 2.5$). Además, estas configuraciones concentran una alta proporción de puntos con afinidades muy favorables. Por el contrario, las variantes con PCX dispersan sus soluciones y exploran zonas de menor similitud a fármacos conocidos ($\text{QED} < 0.60$), logrando algunas moléculas con baja complejidad sintética ($\text{SA} \approx 1.2$), pero con afinidades de unión más débiles.
 
 Para evaluar la capacidad exploratoria global, se combinan las soluciones obtenidas por las variantes con PCX y SBX en los tres algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea}) a lo largo de las cinco ejecuciones independientes. Se recalcula la no dominancia considerando los cuatro objetivos simultáneos, conformando un Frente No Dominado Conjunto Global de 1396 moléculas únicas.
 
@@ -591,7 +591,7 @@ Se comparó el enfoque multiobjetivo propuesto con modelos generativos de refere
     \item \textbf{GAN con fine-tuning:} La misma GAN ajustada con ligandos conocidos de \gls{mrp1}.
 \end{itemize}
 
-De cada modelo de referencia se generaron 100.000 moléculas al azar y se evaluó una muestra de 10.000 cumpliendo $F_{\text{sp3}} \ge 0.3$ en \gls{qed}, SA, afinidad de docking con Uni-Dock y pChEMBL predicho. En la Tabla~\ref{tab:comparacion_modelos} se contrastan directamente las seis configuraciones multiobjetivo del presente estudio con los cuatro modelos generativos de referencia.
+De cada modelo de referencia se generaron 100.000 moléculas al azar y se evaluó una muestra de 10.000 cumpliendo $F_{\text{sp3}} \ge 0.3$ en \gls{qed}, SA, afinidad de docking con Uni-Dock y pChEMBL predicho. En la Tabla~\ref{tab:comparacion_modelos} se contrastan directamente las seis configuraciones multiobjetivo del presente estudio con los cuatro modelos generativos.
 
 \input{Chapters/Tables/mrp1/tab_comparacion_modelos_mrp1.tex}
 
@@ -599,7 +599,7 @@ Como se observa en la Tabla~\ref{tab:comparacion_modelos}, los enfoques multiobj
 
 En los modelos de referencia sin optimización guiada (\gls{vae} y GAN base), las afinidades de unión son más débiles y la bioactividad promedio apenas alcanza el umbral de corte. Por otro lado, el ajuste mediante fine-tuning mejora la afinidad hacia \gls{mrp1} y eleva ligeramente el pChEMBL, pero provoca una caída marcada en el \gls{qed}, aumenta la dificultad de síntesis y reduce la validez química, especialmente en la GAN.
 
-En conjunto, estos contrastes confirman que la optimización multiobjetivo en el espacio latente es capaz de enriquecer simultáneamente la potencia biológica y la afinidad de unión hacia \gls{mrp1} sin sacrificar el \gls{qed} ni la accesibilidad sintética de las moléculas generadas.
+En conjunto, estos contrastes confirman que la optimización multiobjetivo en el espacio latente es capaz de enriquecer simultáneamente la potencia biológica y la afinidad de unión hacia \gls{mrp1} sin sacrificar el \gls{qed} ni la accesibilidad sintética de las moléculas.
 
 % -----------------------------------------------------------------------------
 \subsection{Validación y Perfilado de las Moléculas Candidatas}
@@ -706,5 +706,5 @@ La formulación del diseño molecular optimizando simultáneamente la afinidad p
 
 En la comparación entre algoritmos, los tres métodos muestran complementariedad al aportar soluciones al Frente No Dominado Conjunto Global. No obstante, \acrshort{nsga3} con SBX presenta el desempeño más consistente en la exploración de este espacio, alcanzando el mayor hipervolumen y el promedio más alto de pChEMBL. Esta ventaja se debe a que el uso de puntos de referencia estructurados en \acrshort{nsga3} guía la búsqueda de forma más equilibrada que la distancia de apiñamiento de \acrshort{nsga2} o la estimación geométrica de \acrshort{agemoea}, evitando el agrupamiento prematuro y logrando un balance favorable entre afinidad de unión, potencia y facilidad sintética.
 
-Por otra parte, las pruebas con PoseBusters confirman que las poses generadas son físicamente viables y no presentan choques estéricos con \gls{mrp1}. Finalmente, al contrastar estos resultados con los modelos de referencia basados en ajuste fino (\textit{fine-tuning}), se observa la ventaja del enfoque propuesto, ya que mientras el \textit{fine-tuning} mejora la afinidad a expensas de degradar el \gls{qed}, empeorar la accesibilidad sintética y reducir de forma marcada la validez química en modelos como la GAN, la optimización multiobjetivo en el espacio latente preserva la calidad molecular y asegura un perfil \gls{admet} favorable (alta absorción HIA, adecuada permeabilidad, lipofilicidad balanceada y menor riesgo en ClinTox), generando candidatos activos sin comprometer su viabilidad sintética ni farmacológica.
+Por otra parte, las pruebas con PoseBusters confirman que las poses generadas son físicamente viables y no presentan choques estéricos con \gls{mrp1}. Finalmente, al contrastar estos resultados con los modelos de referencia basados en ajuste fino (\textit{fine-tuning}), se observa la ventaja del enfoque propuesto, ya que mientras el \textit{fine-tuning} mejora la afinidad a expensas de degradar el \gls{qed}, empeorar la accesibilidad sintética y reducir de forma marcada la validez química en modelos como la GAN, la optimización multiobjetivo en el espacio latente preserva la calidad molecular y asegura un perfil \gls{admet} favorable (alta absorción HIA, adecuada permeabilidad, lipofilicidad balanceada y menor riesgo en ClinTox), generando candidatos activos con buena viabilidad sintética y farmacológica.
 
