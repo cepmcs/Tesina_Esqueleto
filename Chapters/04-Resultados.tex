@@ -28,10 +28,10 @@ La etapa de optimización del entrenamiento se centra en probar diferentes tasas
 \toprule
 \textbf{ID} & \textbf{Épocas} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} \\
 \midrule
-SM-G 2 & 100 & 0.945 & 1.000 & 0.969 & 0.982 & 0.470 & 0.859 & 0.115 & 0.005 \\
-SE-L 2 & 100 & 1.000 & 1.000 & 0.881 & 0.928 & 0.764 & 0.861 & 0.201 & 0.020 \\
-SM-L 1 & 300 & 0.946 & 1.000 & 0.972 & 0.981 & 0.459 & 0.859 & 0.155 & 0.011 \\
-SM-L 2 & 300 & 0.951 & 1.000 & 0.956 & 0.986 & 0.321 & 0.858 & 0.113 & 0.013 \\
+SM-G 2 & 100 & 0.945 & 1.000 & 0.969 & 0.982 & 0.470 & 0.859 & 0.115 & \textbf{0.005} \\
+SE-L 2 & 100 & \textbf{1.000} & 1.000 & 0.881 & 0.928 & 0.764 & \textbf{0.861} & 0.201 & 0.020 \\
+SM-L 1 & 300 & 0.946 & 1.000 & \textbf{0.972} & 0.981 & 0.459 & 0.859 & 0.155 & 0.011 \\
+SM-L 2 & 300 & 0.951 & 1.000 & 0.956 & \textbf{0.986} & \textbf{0.321} & 0.858 & \textbf{0.113} & 0.013 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -56,10 +56,10 @@ Los resultados completos de la optimización con todas las combinaciones de tasa
 \toprule
 \textbf{Modelo} & \textbf{Épocas} & \textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} \\
 \midrule
-SM-G 2 & 100 & $1 \times 10^{-4}$ & 64  & 0.950 & 1.000 & 0.966 & 0.984 & 0.301 & 0.858 & 0.111 & 0.006 \\
-SE-L 2 & 100 & $1 \times 10^{-3}$ & 192 & 1.000 & 0.999 & 0.868 & 0.936 & 0.675 & 0.861 & 0.185 & 0.018 \\
-SM-L 1 & 300 & $1 \times 10^{-4}$ & 64  & 0.940 & 1.000 & 0.973 & 0.980 & 0.424 & 0.859 & 0.159 & 0.013 \\
-SM-L 2 & 300 & $1 \times 10^{-4}$ & 64  & \textbf{0.962} & 1.000 & 0.943 & \textbf{0.988} & \textbf{0.179} & 0.859 & \textbf{0.093} & 0.008 \\
+SM-G 2 & 100 & $1 \times 10^{-4}$ & 64  & 0.950 & 1.000 & 0.966 & 0.984 & 0.301 & 0.858 & 0.111 & \textbf{0.006} \\
+SE-L 2 & 100 & $1 \times 10^{-3}$ & 192 & \textbf{1.000} & 0.999 & 0.868 & 0.936 & 0.675 & \textbf{0.861} & 0.185 & 0.018 \\
+SM-L 1 & 300 & $1 \times 10^{-4}$ & 64  & 0.940 & 1.000 & \textbf{0.973} & 0.980 & 0.424 & 0.859 & 0.159 & 0.013 \\
+SM-L 2 & 300 & $1 \times 10^{-4}$ & 64  & 0.962 & 1.000 & 0.943 & \textbf{0.988} & \textbf{0.179} & 0.859 & \textbf{0.093} & 0.008 \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -702,9 +702,9 @@ La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para 
 \label{subsec:discusion_mrp1}
 \label{sec:discusion}
 
-La formulación del diseño molecular optimizando simultáneamente la afinidad por acoplamiento en \gls{mrp1}, la potencia inhibitoria predicha pChEMBL, el \gls{qed} y la accesibilidad sintética SA, sujeta a restricciones de saturación ($F_{\text{sp3}}$) y lipofilicidad ($\log P$), permite orientar con éxito la exploración del espacio latente hacia regiones de interés biológico. En este entorno multiobjetivo con restricciones, el operador de cruce SBX ofrece un rendimiento superior a PCX. A diferencia de formulaciones más simples donde PCX favorecía la dispersión en zonas extremas, en este problema SBX preserva una validez química marcadamente más alta y alcanza mayores hipervolúmenes, lo que confirma que perturba en menor medida la coherencia estructural de los vectores latentes del \gls{vae}.
+La formulación del diseño molecular optimizando simultáneamente la afinidad por acoplamiento en \gls{mrp1}, la potencia inhibitoria predicha pChEMBL, el \gls{qed} y la accesibilidad sintética SA, sujeta a restricciones de saturación ($F_{\text{sp3}}$) y lipofilicidad ($\log P$), permite orientar con éxito la exploración del espacio latente hacia regiones de interés biológico. En este entorno multiobjetivo con restricciones, el operador de cruce SBX ofrece un rendimiento superior a PCX. A diferencia de formulaciones más simples donde PCX favorecía la dispersión en zonas extremas, en este problema SBX preserva una validez química marcadamente más alta y alcanza mayores hipervolúmenes, lo que indica que se mantiene en zonas del espacio latente que el modelo puede decodificar correctamente.
 
 En la comparación entre algoritmos, los tres métodos muestran complementariedad al aportar soluciones al Frente No Dominado Conjunto Global. No obstante, \acrshort{nsga3} con SBX presenta el desempeño más consistente en la exploración de este espacio, alcanzando el mayor hipervolumen y el promedio más alto de pChEMBL. Esta ventaja se debe a que el uso de puntos de referencia estructurados en \acrshort{nsga3} guía la búsqueda de forma más equilibrada que la distancia de apiñamiento de \acrshort{nsga2} o la estimación geométrica de \acrshort{agemoea}, evitando el agrupamiento prematuro y logrando un balance favorable entre afinidad de unión, potencia y facilidad sintética.
 
-Por otra parte, las pruebas con PoseBusters confirman que las poses generadas son físicamente viables y no presentan choques estéricos con \gls{mrp1}. Finalmente, al contrastar estos resultados con los modelos de referencia basados en ajuste fino (\textit{fine-tuning}), se evidencia la ventaja del enfoque propuesto: mientras que el \textit{fine-tuning} mejora la afinidad a expensas de degradar el \gls{qed}, empeorar la accesibilidad sintética y reducir drásticamente la validez química en modelos como la GAN, la optimización multiobjetivo en el espacio latente preserva la calidad molecular y asegura un perfil \gls{admet} favorable (alta absorción HIA, adecuada permeabilidad, lipofilicidad balanceada y menor riesgo en ClinTox), generando candidatos activos sin comprometer su viabilidad sintética ni farmacológica.
+Por otra parte, las pruebas con PoseBusters confirman que las poses generadas son físicamente viables y no presentan choques estéricos con \gls{mrp1}. Finalmente, al contrastar estos resultados con los modelos de referencia basados en ajuste fino (\textit{fine-tuning}), se evidencia la ventaja del enfoque propuesto, ya que mientras el \textit{fine-tuning} mejora la afinidad a expensas de degradar el \gls{qed}, empeorar la accesibilidad sintética y reducir drásticamente la validez química en modelos como la GAN, la optimización multiobjetivo en el espacio latente preserva la calidad molecular y asegura un perfil \gls{admet} favorable (alta absorción HIA, adecuada permeabilidad, lipofilicidad balanceada y menor riesgo en ClinTox), generando candidatos activos sin comprometer su viabilidad sintética ni farmacológica.
 
