@@ -89,7 +89,7 @@
 \raggedbottom
 
 %%% Load Babel Package (Language) %%%
-\expandafter\RequirePackage\expandafter[\LanguageOption]{babel}
+\expandafter\RequirePackage\expandafter[\LanguageOption,es-noquoting]{babel}
 
 %%% Required Packages %%%
 \RequirePackage{ifthen} % Provides conditional statements.
