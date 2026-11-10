@@ -140,7 +140,7 @@ Para alejar la búsqueda de estructuras planas, se considera que una mayor propo
 
 Esta propiedad se aplica como restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$). Este límite coincide con los promedios observados en etapas iniciales de descubrimiento ($\sim 0.32\text{--}0.36$), intervalo a partir del cual la promiscuidad comienza a descender de forma sostenida~\cite{Lovering2013Flatland2}.
 
-Para gestionar esta restricción, los algoritmos emplean el criterio de dominancia restringida~\cite{deb2002nsga2}, donde las soluciones factibles siempre dominan a las infactibles, y entre infactibles se prioriza la de menor violación. Asimismo, si un vector latente decodifica en una estructura químicamente inválida según RDKit, se le asigna la máxima penalización en ambos objetivos y en la violación de restricción, forzando a la búsqueda a mantenerse dentro de las regiones viables del espacio latente.
+Para gestionar esta restricción, los algoritmos emplean el criterio de dominancia restringida~\cite{deb2002nsga2}, donde las soluciones factibles siempre dominan a las infactibles, y entre infactibles se prioriza la de menor violación de restricciones. Asimismo, si un vector latente decodifica en una estructura químicamente inválida según RDKit, se le asigna la máxima penalización en ambos objetivos y en la violación de restricción, forzando a la búsqueda a mantenerse dentro de las regiones viables del espacio latente.
 
 \subsubsection{Protocolo Experimental del Ajuste}
 \label{subsec:protocolo_ajuste}
@@ -148,20 +148,20 @@ Para gestionar esta restricción, los algoritmos emplean el criterio de dominanc
 Para cada algoritmo se define un espacio de hiperparámetros que se explora mediante un barrido en grilla (\textit{grid search}). Los hiperparámetros se organizan en tres niveles: el reparto del total de evaluaciones (común a todos los algoritmos), los operadores y probabilidades de los algoritmos genéticos, y los parámetros propios de \acrshort{cmopso}.
 
 \subsubsection*{Total de Evaluaciones y Tamaño de Población}
-Se fija un total de 100\,000 evaluaciones por ejecución, repartido en tres combinaciones de tamaño de población y número de generaciones (Tabla~\ref{tab:evaluaciones}). Esta elección permite evaluar el compromiso entre diversidad poblacional (más individuos) y profundidad de búsqueda (más generaciones) bajo un mismo costo computacional.
+Se fija un total de 100000 evaluaciones por ejecución, repartido en tres combinaciones de tamaño de población y número de generaciones (Tabla~\ref{tab:evaluaciones}). Esta elección permite evaluar el compromiso entre diversidad poblacional (más individuos) y profundidad de búsqueda (más generaciones) bajo un mismo costo computacional.
 
 \begin{table}[H]
 \centering
 \small
-\caption{Combinaciones de tamaño de población y generaciones evaluadas. Todas mantienen un total fijo de 100\,000 evaluaciones.}
+\caption{Combinaciones de tamaño de población y generaciones evaluadas. Todas mantienen un total fijo de 100000 evaluaciones.}
 \label{tab:evaluaciones}
 \begin{tabular}{ccc}
 \toprule
 Población & Generaciones & Evaluaciones \\
 \midrule
-100 & 1\,000 & 100\,000 \\
-200 & 500   & 100\,000 \\
-400 & 250   & 100\,000 \\
+100 & 1000 & 100000 \\
+200 & 500  & 100000 \\
+400 & 250  & 100000 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -221,21 +221,21 @@ Tasa de velocidad máxima ($v_{\text{max}}$) & 0.1, 0.2, 0.35 \\
 \end{tabular}
 \end{table}
 
-Aquí, $\gamma$ fija la cantidad de partículas que compiten para orientar la búsqueda y $v_{\text{max}}$ regula la velocidad máxima de desplazamiento.
+Donde, $\gamma$ fija la cantidad de partículas que compiten para orientar la búsqueda y $v_{\text{max}}$ regula la velocidad máxima de desplazamiento.
 
 \subsubsection{Etapas del Protocolo Experimental}
 \label{subsubsec:etapas_protocolo}
 
-El estudio comprende cuatro etapas. Se utiliza el hipervolumen como criterio principal para elegir las mejores configuraciones porque evalúa a la vez la convergencia y la diversidad de las soluciones, sin requerir un frente de referencia previo:
+El estudio comprende cuatro etapas. Se utiliza el hipervolumen como criterio principal para elegir las mejores configuraciones porque evalúa a la vez la convergencia hacia el frente de Pareto óptimo y la diversidad de las soluciones, sin requerir un frente de referencia previo:
 
 \begin{enumerate}
-    \item \textbf{Estudio de hiperparámetros:} Se ejecutan 20 semillas independientes por configuración ($(108 \times 4 + 81) \times 20 = 10\,260$ ejecuciones en total). Para cada combinación de operadores (\texttt{pcx/pm}, \texttt{pcx/gauss}, \texttt{sbx/pm}, \texttt{sbx/gauss}) en los algoritmos genéticos y para \acrshort{cmopso}, se selecciona la mejor configuración interna basándose en el menor rango medio de hipervolumen entre las 20 semillas.
+    \item \textbf{Estudio de hiperparámetros:} Se ejecutan 20 semillas independientes por configuración ($(108 \times 4 + 81) \times 20 = 10260$ ejecuciones en total). Para cada combinación de operadores (\texttt{pcx/pm}, \texttt{pcx/gauss}, \texttt{sbx/pm}, \texttt{sbx/gauss}) en los algoritmos genéticos y para \acrshort{cmopso}, se selecciona la mejor configuración interna basándose en el menor rango medio de hipervolumen entre las 20 semillas.
     \item \textbf{Comparativa de operadores genéticos:} Fijando la mejor configuración de cada combinación de operadores, se analizan las cuatro variantes por algoritmo para evaluar el impacto del cruce y la mutación mediante pruebas estadísticas sobre el hipervolumen e indicadores químicos.
     \item \textbf{Comparación global entre metaheurísticas multiobjetivo:} Se seleccionan las configuraciones con mejor desempeño de los cinco algoritmos y se comparan exhaustivamente entre sí sobre todos los indicadores multiobjetivo y químicos, analizando además sus dinámicas de convergencia y la distribución de sus frentes de Pareto.
     \item \textbf{Análisis del frente conjunto global y moléculas representativas:} Evaluación del frente no dominado conjunto obtenido a partir de las combinaciones de operadores (incorporando las familias de cruce \acrshort{pcx} y \acrshort{sbx} de todos los algoritmos genéticos y \acrshort{cmopso}) y análisis de las moléculas representativas.
 \end{enumerate}
 
-En total, el estudio comprende $10\,260$ ejecuciones independientes, cada una con un número fijo de 100\,000 evaluaciones.
+En total, el estudio comprende 10260 ejecuciones independientes, cada una con un número fijo de 100000 evaluaciones.
 
 \section{FASE 2: Diseño de Inhibidores de la Proteína MRP1}
 \label{sec:fase2_mrp1}
@@ -250,7 +250,7 @@ El procedimiento propuesto se organiza en una serie de etapas consecutivas que p
 
 \input{Figures/pipeline_preparacion_mrp1.tex}
 
-\textbf{Estructura de referencia.} Como no existen estructuras en el \textit{Protein Data Bank} que contengan los quimioterápicos de interés unidos a \gls{mrp1}, se recurre a la literatura. Se utiliza la estructura 8VUX, correspondiente a \gls{abcc1} (\gls{mrp1}) humano cocristalizado con \gls{cgamp} y determinada por microscopía crioelectrónica con una resolución de 3.54~Å (ángstroms, unidad de medida de distancias a escala atómica equivalente a $0.1\text{ nm}$)~\cite{shinde2025structures}. El \gls{cgamp} es un nucleótido cíclico mensajero que desempeña un papel clave en la inmunidad innata y en la respuesta contra infecciones y tumores. Si bien el \gls{cgamp} no es un quimioterapéutico, los autores del trabajo que reporta la estructura señalan que el sitio donde se une es el sitio de unión del sustrato de \gls{mrp1}, localizado en el dominio transmembrana TMD2~\cite{shinde2025structures}.
+\textbf{Estructura de referencia.} Como no existen estructuras en el \textit{Protein Data Bank} que contengan los quimioterápicos de interés unidos al \gls{mrp1}, se recurre a la literatura. Se utiliza la estructura 8VUX, correspondiente a \gls{abcc1} (\gls{mrp1}) humano cocristalizado con \gls{cgamp} y determinada por microscopía crioelectrónica con una resolución de 3.54~Å (ángstroms, unidad de medida de distancias a escala atómica equivalente a $0.1\text{ nm}$)~\cite{shinde2025structures}. El \gls{cgamp} es un nucleótido cíclico mensajero que desempeña un papel clave en la inmunidad innata y en la respuesta contra infecciones y tumores. Si bien el \gls{cgamp} no es un quimioterapéutico, los autores del trabajo que reporta la estructura señalan que el sitio donde se une es el sitio de unión del sustrato de \gls{mrp1}, localizado en el dominio transmembrana TMD2~\cite{shinde2025structures}.
 
 \textbf{Preparación del receptor.} Puesto que la proteína en la estructura 8VUX se encuentra como un homodímero, los experimentos de esta tesina se centran únicamente en la cadena B como receptor. Sobre esta se eliminan el \gls{cgamp}, el hemisuccinato de colesterol y las moléculas de agua. Posteriormente se añaden los átomos de hidrógeno, se asignan los estados de protonación estándar de cada residuo y las cargas parciales, y se genera el archivo en formato PDBQT con Meeko~\cite{santosmartins2025meeko}. El receptor resultante comprende 1005 residuos y 9587 átomos, de los cuales 1658 son hidrógenos polares.
 
@@ -345,7 +345,7 @@ Se mantiene la restricción de complejidad estructural $F_{\text{sp3}} \ge 0.30$
 \subsection{Protocolo de Generación de Candidatos}
 \label{subsec:protocolo_mrp1}
 
-Se ejecuta la búsqueda dirigida en el espacio latente con las mejores configuraciones seleccionadas en la sección~\ref{sec:farmacos_genericos}, con el mismo total de 100\,000 evaluaciones por ejecución y 5 semillas independientes. El acoplamiento se realiza con el receptor rígido, dentro de la caja de docking definida en la subsección~\ref{subsec:prep_proteina}.
+Se ejecuta la búsqueda dirigida en el espacio latente con las mejores configuraciones seleccionadas en la sección~\ref{sec:farmacos_genericos}, con el mismo total de 100000 evaluaciones por ejecución y 5 semillas independientes. El acoplamiento se realiza con el receptor rígido, dentro de la caja de docking definida en la subsección~\ref{subsec:prep_proteina}.
 
 Las moléculas generadas se evalúan en términos de \gls{qed}, \gls{sas}, afinidad, potencia predicha, $F_{\text{sp3}}$ y características de unión. Adicionalmente, se evalúan la validez, la unicidad y la diversidad de las moléculas generadas.
 
