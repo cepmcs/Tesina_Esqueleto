@@ -1,34 +1,32 @@
 \chapter{Metodología}
 \label{ch:metodologia}
 
-En este capítulo se describe la metodología empleada en esta tesina de grado. Se explica el proceso de ajuste de hiperparámetros y evaluación de metaheurísticas multiobjetivo en el reccorido del espacio latente del modelo generativo, seguido por la formulación del problema de diseño de inhibidores dirigidos a la inhibición de la extracción de quimioterapeúticos del interior de la célula tumoral por parte de \gls{mrp1}.
+En este capítulo se describe la metodología empleada en esta tesina de grado. Se explica el proceso de ajuste de hiperparámetros y evaluación de metaheurísticas multiobjetivo en el recorrido del espacio latente del modelo generativo, seguido por la formulación del problema de diseño de inhibidores dirigidos a la inhibición de la extracción de quimioterapéuticos del interior de la célula tumoral por parte de \gls{mrp1}.
 
 \section{Visión General de la Metodología}
 \label{sec:vision_general}
 
 % Explicación del flujo completo: preentrenamiento del VAE, optimización multiobjetivo en espacio latente y evaluación de candidatos.
 
-Se propone un esquema estructurado en dos etapas. La primera abarca el desarrollo, ajuste y evaluación comparativa de un \gls{vae}. La segunda consiste en la exploración de su espacio latente mediante metaheurísticas multiobjetivo para la generación de moléculas. El objetivo de la primera etapa es determinar la configuración con mejor desempeño en la generación molecular y utilizar dicha configuración como base para la posterior búsqueda y optimización de compuestos dirigidos a la diana \gls{mrp1}.
-
-En la primera etapa se entrena un \gls{vae} sobre el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. El propósito del modelo es comprimir la estructura química de los compuestos en un espacio latente continuo. Su evaluación se realiza bajo el protocolo y las métricas estándar de \gls{moses} para seleccionar la mejor combinación de representación molecular, arquitectura e hiperparámetros.
-
-En la segunda etapa se emplean algoritmos metaheurísticos multiobjetivo para explorar el espacio latente continuo del \gls{vae}. Este proceso se divide en dos fases:
-
-\begin{enumerate}
-    \item \textbf{Ajuste de hiperparámetros y evaluación en fármacos genéricos:} Se optimizan simultáneamente propiedades fisicoquímicas para comparar el desempeño de los algoritmos y calibrar sus hiperparámetros mediante indicadores químicos y multiobjetivo.
-    \item \textbf{Diseño de inhibidores de \gls{mrp1}:} Primero se identifica el sitio de unión del sustrato. Con base en esto, se emplean las mejores configuraciones de los algoritmos para optimizar la afinidad hacia la diana, dirigiendo la búsqueda hacia moléculas con interacciones en ese sitio.
-\end{enumerate}
-
-La Figura~\ref{fig:pipeline_metodologia} resume este flujo de trabajo, combinando el \gls{vae} con las metaheurísticas para la búsqueda de moléculas candidatas.
+La presente tesina de grado se desarrolla mediante un esquema estructurado en dos etapas, resumido en la Figura~\ref{fig:pipeline_metodologia}.
 
 \input{Figures/pipeline_metodologia.tex}
 
-A partir de este esquema se analiza el rendimiento de los algoritmos y la calidad de las moléculas generadas, comparando además los frentes de Pareto obtenidos. Posteriormente en los experimentos dirigidos hacia la diana, se evalúa su afinidad de unión y la formación de interacciones en el sitio de interés. En las siguientes secciones se explica cada uno de estos pasos con mayor detalle.
+La primera etapa es el desarrollo, ajuste y evaluación comparativa del \gls{vae}, que busca determinar la configuración de parámetros que otorga el mejor desempeño en la generación molecular. Para el entrenamiento del \gls{vae}, se utiliza el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. La evaluación de las distintas configuraciones consideradas se realiza bajo el protocolo y las métricas estándar de \gls{moses}.
+
+Una vez determinada la mejor configuración del \gls{vae}, se pasa a la segunda etapa, en la que se integran los algoritmos multiobjetivo para explorar el espacio latente continuo del \gls{vae}. Esta etapa se divide en dos actividades principales:
+
+\begin{enumerate}
+    \item \textbf{Ajuste de hiperparámetros y evaluación en la generación de fármacos genéricos:} Se optimizan simultáneamente propiedades fisicoquímicas para comparar el desempeño de los algoritmos y calibrar sus hiperparámetros mediante indicadores químicos y multiobjetivo.
+    \item \textbf{Diseño de inhibidores de \gls{mrp1}:} Primero se identifica el sitio de unión del sustrato. Con base en esto, se emplean las mejores configuraciones de los algoritmos para optimizar la afinidad hacia la diana, dirigiendo la búsqueda hacia moléculas con interacciones en ese sitio.
+\end{enumerate}
+
+En ambas actividades de la segunda etapa, se comparan los resultados obtenidos por las metaheurísticas evaluadas mediante métricas de rendimiento multiobjetivo, el análisis de los frentes de Pareto generados y la calidad de generación de moléculas. En las secciones subsiguientes se especifican los detalles de las evaluaciones realizadas.
 
 \section{Datos de Entrada}
 \label{sec:datos_entrada}
 
-En esta sección se presentan los datos y las codificaciones utilizadas para el entrenamiento del modelo generativo. Se detalla el conjunto de datos químicos empleado, sus características y las particiones adoptadas. Se describen ademas las representaciones moleculares evaluadas, sus esquemas de tokenización y los mecanismos de decodificación a partir del espacio latente.
+En esta sección se detalla el conjunto de datos químico empleado, presentando sus características y particiones adoptadas. Se describen además las representaciones moleculares evaluadas, sus esquemas de tokenización y los mecanismos de decodificación a partir del espacio latente.
 
 \subsection{Conjuntos de Datos y Preprocesamiento}
 \label{subsec:datasets}
@@ -47,7 +45,7 @@ La Figura~\ref{fig:muestras_moses} muestra seis moléculas seleccionadas al azar
 \subsection{Representaciones Moleculares y Decodificación}
 \label{subsec:rep_solucion}
 
-En este trabajo se exploran y comparan dos representaciones lineales: \gls{smiles} y \gls{selfies}. Se utiliza \gls{smiles} por ser el formato estándar del benchmark \gls{moses}, mientras que \gls{selfies} se incorpora para evitar la generación de estructuras sintéticamente inválidas. Comparar ambas permite evaluar el impacto de esta robustez sobre la calidad del espacio latente. En el caso de \gls{smiles}, las cadenas se tokenizan mediante la expresión regular propuesta por Cretu et al.~\cite{cretu2023standardizing}, preservando átomos multicarácter (como $\text{Br}$ y $\text{Cl}$), enlaces, ramas y ciclos como unidades individuales. Para \gls{selfies}, la tokenización se realiza de forma nativa a partir de sus identificadores entre corchetes~\cite{Krenn2019SELFIES}. En ambas representaciones se incorporan los tokens de control de inicio (\texttt{[SOS]}), fin (\texttt{[EOS]}), símbolo desconocido (\texttt{[UNK]}) y relleno (\texttt{[PAD]}) para homogeneizar la longitud de las secuencias en los lotes de entrenamiento. La Figura~\ref{fig:codificacion_tokens} muestra un ejemplo de esta tokenización para una molécula en ambas representaciones.
+En este trabajo se exploran y comparan dos representaciones lineales: \gls{smiles} y \gls{selfies}. Se utiliza \gls{smiles} por ser el formato estándar del benchmark \gls{moses}, mientras que \gls{selfies} se incorpora para evitar la generación de estructuras químicamente inválidas. Comparar ambas permite evaluar el impacto de garantizar dicha validez sobre la calidad del espacio latente. En el caso de \gls{smiles}, las cadenas se tokenizan mediante la expresión regular propuesta por Cretu et al.~\cite{cretu2023standardizing}, preservando átomos multicarácter (como $\text{Br}$ y $\text{Cl}$), enlaces, ramas y ciclos como unidades individuales. Para \gls{selfies}, la tokenización se realiza de forma nativa a partir de sus identificadores entre corchetes~\cite{Krenn2019SELFIES}. En ambas representaciones se incorporan los tokens de control de inicio (\texttt{[SOS]}), fin (\texttt{[EOS]}), símbolo desconocido (\texttt{[UNK]}) y relleno (\texttt{[PAD]}) para homogeneizar la longitud de las secuencias en los lotes de entrenamiento. La Figura~\ref{fig:codificacion_tokens} muestra un ejemplo de esta tokenización para una molécula en ambas representaciones.
 
 \input{Figures/codificacion_tokens.tex}
 
@@ -73,7 +71,7 @@ Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, e
     \item \textbf{Optimización del entrenamiento:} Sobre los cuatro modelos representativos con mejor balance del análisis previo, se exploraron dos tasas de aprendizaje ($1 \times 10^{-3}$ y $1 \times 10^{-4}$) y tres tamaños de lote (64, 128 y 192), sumando 24 ejecuciones adicionales. El objetivo fue comprobar si una tasa de aprendizaje más baja ($1 \times 10^{-4}$) permitía un mejor ajuste y evaluar el efecto de variar el tamaño de lote en el entrenamiento.
 \end{itemize}
 
-El cuadro~\ref{tab:espacio_busqueda_vae} resume las variables y los valores explorados en cada parte del análisis.
+La Tabla~\ref{tab:espacio_busqueda_vae} resume las variables y los valores explorados en cada parte del análisis.
 
 \begin{table}[htbp]
 \centering
@@ -286,7 +284,7 @@ Para el irinotecán se obtuvo una puntuación de docking de $-12.060$~kcal/mol y
 
 Como paso siguiente se realiza un docking sesgado, considerando como flexibles los cinco aminoácidos con mayor interacción (ASN590, TRP1246, VAL554, TYR1243 y THR1242). Se observa una reducción de la energía de unión del orden de $-1.180$~kcal/mol, por lo que se infiere que la interacción ligando/proteína mejora al flexibilizar los aminoácidos seleccionados.
 
-\textbf{Caracterización de la interacción.} La figura~\ref{fig:irinotecan_sitio} muestra cómo el irinotecán se inserta en la cavidad de \gls{mrp1}. El ligando se encuentra dentro de una cavidad delimitada por la superficie proteica, en lugar de estar expuesto al solvente, y la molécula parece extenderse a lo largo de un canal o surco. La figura~\ref{fig:irinotecan_residuos} muestra el top 5 de aminoácidos que más frecuentemente interactúan con el irinotecán y otros aminoácidos cercanos, indicando cómo se posiciona el ligando con respecto a los aminoácidos de interés. Al calcular las distancias entre cada aminoácido y los átomos del ligando se obtienen los valores de la Tabla~\ref{tab:distancias_residuos}.
+\textbf{Caracterización de la interacción.} La Figura~\ref{fig:irinotecan_sitio} muestra cómo el irinotecán se inserta en la cavidad de \gls{mrp1}. El ligando se encuentra dentro de una cavidad delimitada por la superficie proteica, en lugar de estar expuesto al solvente, y la molécula parece extenderse a lo largo de un canal o surco. La Figura~\ref{fig:irinotecan_residuos} muestra el top 5 de aminoácidos que más frecuentemente interactúan con el irinotecán y otros aminoácidos cercanos, indicando cómo se posiciona el ligando con respecto a los aminoácidos de interés. Al calcular las distancias entre cada aminoácido y los átomos del ligando se obtienen los valores de la Tabla~\ref{tab:distancias_residuos}.
 
 \begin{figure}[htbp]
 \centering
@@ -397,15 +395,15 @@ donde $T(m_1, m_2)$ evalúa la similitud de Tanimoto entre pares de moléculas g
 \label{subsec:indicadores_multiobjetivo}
 \label{sec:indicadores_multiobjetivo}
 
-La evaluación de metaheurísticas multiobjetivo representa un desafío particular ya que el resultado del proceso de optimización no es una única solución, sino un conjunto de soluciones no dominadas. Por lo tanto para evaluar el rendimiento de diferentes algoritmos es necesario comparar conjuntos enteros de soluciones. No existe un estándar único para evaluar estas soluciones los indicadores de calidad o métricas de desempeño se clasifican según sus propiedades y según el objetivo que evalúan~\cite{talbi2009metaheuristics}:
+La evaluación de metaheurísticas multiobjetivo representa un desafío particular ya que el resultado del proceso de optimización no es una única solución, sino un conjunto de soluciones no dominadas. Por lo tanto, para evaluar el rendimiento de diferentes algoritmos es necesario comparar conjuntos enteros de soluciones. Al no existir un estándar único para evaluar estas soluciones, los indicadores de calidad o métricas de desempeño se clasifican según sus propiedades y según el objetivo que evalúan~\cite{talbi2009metaheuristics}:
 
 \begin{itemize}
     \item \textbf{Indicadores de convergencia:} Evalúan la eficacia de las soluciones en términos de su cercanía al frente de Pareto óptimo. Ejemplos destacados incluyen la \gls{gd} y la \gls{igd}, que calculan la distancia promedio entre el conjunto aproximado y un conjunto de referencia, y el Indicador $\epsilon$, que determina el factor mínimo de traslación necesario para que una aproximación domine a otra.
     \item \textbf{Indicadores de diversidad:} Miden la uniformidad y extensión de la distribución de las soluciones obtenidas a lo largo del frente. Indicadores como el Espaciado (\textit{Spread}) o la Entropía penalizan los frentes donde las soluciones se agrupan excesivamente en una sola región del espacio de objetivos. Suelen tener un costo computacional mayor que los indicadores de convergencia.
-    \item \textbf{Indicadores híbridos:} Evalúan tanto la convergencia como la diversidad del conjunto de soluciones. Tales como el \gls{hv}, un indicador que calcula el volumen del espacio de objetivos que es débilmente dominado por el conjunto de aproximación respecto a un punto de referencia~\cite{talbi2009metaheuristics}.
+    \item \textbf{Indicadores híbridos:} Evalúan tanto la convergencia como la diversidad del conjunto de soluciones, tales como el \gls{hv}, un indicador que calcula el volumen del espacio de objetivos que es débilmente dominado por el conjunto de aproximación respecto a un punto de referencia~\cite{talbi2009metaheuristics}.
 \end{itemize}
 
-A partir de esta clasificación, los indicadores de rendimiento considerados en el marco metodologico son los siguientes:
+A partir de esta clasificación, los indicadores de rendimiento considerados en el marco metodológico son los siguientes:
 
 \textbf{Hipervolumen (\acrshort{hv}).} Mide el volumen de la región del espacio de objetivos que domina el conjunto de soluciones obtenido, acotada por un punto de referencia (Figura~\ref{fig:indicadores_rendimiento}a). Cuanto mayor es ese volumen, mejor es el conjunto tanto en convergencia como en diversidad, de modo que resume ambos aspectos. Su ventaja práctica es que no exige conocer el frente de Pareto óptimo, sino únicamente el punto de referencia.
 
@@ -424,7 +422,7 @@ Los dos indicadores basados en distancias, \acrshort{igd}$^+$ y el indicador $\e
 \subsection{Validación y Perfilado de las Moléculas Candidatas}
 \label{subsec:validacion_perfilado_candidatos}
 
-Con el fin de evaluar y caracterizar las moléculas candidatas obtenidas para \gls{mrp1}, se realiza un análisis sobre sus soluciones del frente de pareto. En esta sección se describen los criterios empleados para evaluar la calidad física de las poses de acoplamiento, la estimación de su potencia inhibitoria y el perfil farmacocinético, fisicoquímico y toxicológico (\gls{admet}).
+Con el fin de evaluar y caracterizar las moléculas candidatas obtenidas para \gls{mrp1}, se realiza un análisis sobre sus soluciones del frente de Pareto. En esta sección se describen los criterios empleados para evaluar la calidad física de las poses de acoplamiento, la estimación de su potencia inhibitoria y el perfil farmacocinético, fisicoquímico y toxicológico (\gls{admet}).
 
 \textbf{Validación de poses de acoplamiento.} Para evaluar las moléculas obtenidas del frente de Pareto, se utiliza PoseBusters~\cite{buttenschoen2024posebusters}, que permite verificar si las conformaciones generadas son físicamente viables. La métrica corresponde al porcentaje de moléculas que supera las 20 pruebas de la herramienta.
 
