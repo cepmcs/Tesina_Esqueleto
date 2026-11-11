@@ -331,16 +331,16 @@ El TRP1246 presenta 11 pares de átomos con distancias de 2,98 a 3,87~Å en su a
 \subsubsection{Funciones Objetivo}
 \label{subsec:fo_mrp1}
 
-Para el diseño dirigido hacia \gls{mrp1} se añaden la energía de unión y el pChEMBL predicho junto a \gls{qed} y \gls{sas}, con el fin de guiar la búsqueda hacia la interacción con la diana objetivo. De este modo, se optimizan simultáneamente sobre el espacio latente del \gls{vae}:
+Para el diseño dirigido hacia \gls{mrp1} se añaden la energía de unión y el pChEMBL predicho junto a \gls{qed} y \gls{sas}, para guiar la búsqueda hacia la interacción con la diana objetivo. De este modo, se optimizan simultáneamente sobre el espacio latente del \gls{vae}:
 
 \begin{itemize}
-    \item \textbf{Energía de unión:} [Minimizar] Energía libre de afinidad de unión de la molécula con \gls{mrp1}, estimada mediante acoplamiento molecular con la función de puntuación de AutoDock Vina~\cite{trott2010vina}. Se utiliza su implementación en \gls{gpu}, Uni-Dock~\cite{yu2023unidock}, que reproduce dicha función de puntuación y evalúa un lote de moléculas en paralelo.
+    \item \textbf{Energía de unión:} [Minimizar] Energía libre de afinidad de unión de la molécula con \gls{mrp1}, estimada mediante acoplamiento molecular con la función de puntuación de AutoDock Vina~\cite{trott2010vina}. Se utiliza su implementación en \gls{gpu}, Uni-Dock~\cite{yu2023unidock}, que reproduce dicha función de puntuación.
     \item \textbf{pChEMBL predicho:} [Maximizar] Busca maximizar la potencia inhibitoria esperada de cada molécula frente a \gls{mrp1}. El pChEMBL expresa el $\text{IC}_{50}$ en escala logarítmica, de modo que un valor mayor corresponde a una mayor potencia. Dado que no es posible determinar experimentalmente el $\text{IC}_{50}$ de moléculas recién generadas, este valor se estima con un modelo Random Forest entrenado con compuestos de \gls{mrp1} cuyo $\text{IC}_{50}$ está reportado en ChEMBL~\cite{mendez2019chembl}.
     \item \textbf{\gls{qed}:} [Maximizar] Definida en la sección~\ref{subsec:fo_genericos}.
     \item \textbf{\gls{sas}:} [Minimizar] Definida en la sección~\ref{subsec:fo_genericos}.
 \end{itemize}
 
-Cada molécula se acopla con el receptor rígido descrito en la subsección~\ref{subsec:prep_proteina}, dentro de la caja de docking de los experimentos de diseño, con un modo de búsqueda balanceado y una semilla fija, y se toma la energía de la mejor pose como valor del objetivo.
+Cada molécula se acopla con el receptor rígido descrito en la subsección~\ref{subsec:prep_proteina} dentro de la caja de docking, con un modo de búsqueda balanceado y una semilla fija, y se toma la energía de la mejor pose como valor del objetivo.
 
 Se mantiene la restricción de complejidad estructural $F_{\text{sp3}} \ge 0.30$ descrita en la sección~\ref{subsec:fo_genericos}, evaluada bajo el mismo criterio de dominancia restringida. Si una molécula no puede prepararse o el acoplamiento no produce una pose, se le asigna la máxima penalización en el objetivo de energía ($+1.0$~kcal/mol). Para el cálculo del hipervolumen, la energía de unión se normaliza entre $-15.0$ y $+1.0$~kcal/mol.
 
