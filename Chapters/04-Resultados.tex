@@ -241,6 +241,17 @@ Los resultados muestran que \acrshort{nsga2} alcanza el mayor hipervolumen prome
 
 Estas diferencias podrían deberse a cómo busca y selecciona cada algoritmo. En \acrshort{nsga2}, la distancia de apiñamiento permite que las soluciones se expandan libremente hacia los extremos del frente, lo que junto con PCX facilita descubrir moléculas tanto de bajo SA como de alto \gls{qed} y acumular más soluciones no dominadas. En cambio, \acrshort{cmopso} mueve sus partículas hacia las mejores soluciones encontradas, las cuales suelen concentrarse en la zona de alto \gls{qed}, lo que reduce la exploración hacia otras regiones. En \acrshort{moead}, cruzar únicamente entre vecinos cercanos favorece la búsqueda local pero limita la dispersión. Finalmente, \acrshort{nsga3} y \acrshort{agemoea} reparten las soluciones de forma más uniforme a lo largo del frente, logrando una buena convergencia sin acumular tantas moléculas como \acrshort{nsga2}.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/boxplots_mo_popfinal.pdf}
+    \caption{Distribución de los indicadores multiobjetivo de cada algoritmo sobre las veinte ejecuciones independientes.}
+    \label{fig:boxplots_mo}
+\end{figure}
+
+La Figura~\ref{fig:boxplots_mo} ilustra la distribución de los indicadores multiobjetivo de la Tabla~\ref{tab:comparison_multiobjective} mediante diagramas de caja. \acrshort{nsga2} obtiene las medianas más favorables en hipervolumen ($\approx 1.126$), $\text{IGD}^+$ y $\epsilon^+$, junto con el mayor número de soluciones no dominadas (mediana de $29$). \acrshort{agemoea} y \acrshort{nsga3} muestran distribuciones similares entre sí en todas las métricas, manteniendo una buena aproximación y cobertura del frente.
+
+Por su parte, \acrshort{moead} y \acrshort{cmopso} presentan medianas menores de espaciamiento ($1.05$ y $0.95$) debido a que sus soluciones se concentran en el tramo de alto \gls{qed}. Sin embargo, al no explorar la rama de bajo SA, registran valores peores en $\text{IGD}^+$ y $\epsilon^+$, ya que dejar ese sector sin cubrir aumenta la distancia respecto al frente de referencia. Además, al enfocarse en una zona más acotada, obtienen menos soluciones no dominadas (medianas de $20$ y $18$ moléculas, respectivamente).
+
 \begin{table}[H]
 \centering
 \caption{Comparación de indicadores químicos - mejores configuraciones.}
@@ -260,7 +271,6 @@ Algoritmo & QED $\uparrow$ & SA $\downarrow$ & Factibilidad $\uparrow$ & $F_{\te
 }
 \end{table}
 
-
 La Tabla~\ref{tab:comparison_chemical} presenta la comparación de las propiedades químicas entre los cinco algoritmos. \gls{qed} y SA se promedian sobre el frente no dominado acumulado, mientras que validez, factibilidad, unicidad, novedad y $F_{\text{sp3}}$ describen el comportamiento de la búsqueda sobre el espacio químico.
 
 Los resultados dividen a los algoritmos en dos grupos definidos. Por un lado, \acrshort{cmopso} y \acrshort{moead} obtienen los valores promedio más altos de \gls{qed}, junto con una validez química cercana al cien por ciento. Sin embargo, este comportamiento reduce la diversidad de la población final, registrando una baja unicidad y menor novedad frente a las moléculas de entrenamiento.
@@ -268,6 +278,19 @@ Los resultados dividen a los algoritmos en dos grupos definidos. Por un lado, \a
 Por otro lado, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} conservan una unicidad y novedad elevadas, con niveles moderados de validez y factibilidad. Su menor \gls{qed} promedio en el frente se explica porque estos algoritmos incorporan soluciones a lo largo de toda la curva de compromiso, incluyendo el extremo de baja dificultad sintética. Además, todos los métodos cumplen la restricción de tridimensionalidad ($F_{\text{sp3}} \ge 0.30$), destacando \acrshort{nsga2} con el valor medio más alto.
 
 Estas diferencias en la diversidad química podrían explicarse por la dinámica de búsqueda en el espacio latente. \acrshort{cmopso} y \acrshort{moead} tienden a concentrar a sus individuos en zonas densas del modelo generativo, lo que asegura que casi todas las moléculas decodificadas sean válidas pero a costa de repetir estructuras conocidas. En cambio, los algoritmos genéticos combinados con PCX exploran regiones más diversas del espacio latente, lo que genera compuestos estructuralmente únicos y novedosos, aunque con una leve disminución en la tasa de validez.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/boxplots_chemical_popfinal.pdf}
+    \caption{Distribución de las propiedades químicas del frente de Pareto obtenido por cada algoritmo.}
+    \label{fig:boxplots_chemical}
+\end{figure}
+
+La Figura~\ref{fig:boxplots_chemical} ilustra mediante diagramas de caja las distribuciones de la Tabla~\ref{tab:comparison_chemical} a lo largo de las veinte ejecuciones. En ella, \gls{qed}, SA y $F_{\text{sp3}}$ se evalúan sobre las moléculas del frente no dominado, mientras que la validez, unicidad y novedad describen la generación global de cada ejecución.
+
+En los objetivos, \acrshort{cmopso} y \acrshort{moead} concentran sus valores de \gls{qed} en torno a~$0.88$, mientras que \acrshort{nsga2} presenta mayor dispersión con valores entre $0.70$ y~$0.88$, reflejando su cobertura sobre el frente. En accesibilidad sintética, todos los métodos obtienen valores favorables con medianas entre $1.60$ y~$1.66$. Finalmente, todos los algoritmos cumplen la restricción {$F_{\text{sp3}} \ge 0.30$}, alcanzando \acrshort{nsga2} los valores más elevados (~$0.47$).
+
+En las métricas de generación, \acrshort{moead} y \acrshort{cmopso} alcanzan una validez próxima al $99\%$, aunque su unicidad desciende a medianas de $0.45$ y~$0.32$, con una novedad menor y dispersa en \acrshort{cmopso}. En contraste, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} sostienen unicidad y novedad cercanas a $1.0$ y~$0.98$, con una validez entre el $80\%$ y el~$86\%$.
 
 \begin{table}[H]
 \centering
@@ -292,30 +315,6 @@ Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \end{table}
 
 La Tabla~\ref{tab:comparacion_grupos} confirma diferencias significativas entre los algoritmos sobre el hipervolumen ($p < 0.001$ en el test de Friedman). \acrshort{nsga2} se posiciona como el algoritmo con mejor desempeño global, superando a todos los demás de forma estadísticamente significativa ($p \le 0.005, r_{\text{rb}} \ge +0.762$). En el segundo escalón homogéneo se ubican \acrshort{agemoea} y \acrshort{nsga3} sin diferencias significativas entre sí ($p = 0.571$), seguidos por \acrshort{moead} en tercer lugar ($p = 0.008$ frente a \acrshort{cmopso}) y finalmente \acrshort{cmopso}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/boxplots_mo_popfinal.pdf}
-    \caption{Distribución de los indicadores multiobjetivo de cada algoritmo sobre las veinte ejecuciones independientes.}
-    \label{fig:boxplots_mo}
-\end{figure}
-
-La Figura~\ref{fig:boxplots_mo} ilustra la distribución de los indicadores multiobjetivo de la Tabla~\ref{tab:comparison_multiobjective} mediante diagramas de caja. \acrshort{nsga2} obtiene las medianas más favorables en hipervolumen ($\approx 1.126$), $\text{IGD}^+$ y $\epsilon^+$, junto con el mayor número de soluciones no dominadas (mediana de $29$). \acrshort{agemoea} y \acrshort{nsga3} muestran distribuciones similares entre sí en todas las métricas, manteniendo una buena aproximación y cobertura del frente.
-
-Por su parte, \acrshort{moead} y \acrshort{cmopso} presentan medianas menores de espaciamiento ($1.05$ y $0.95$) debido a que sus soluciones se concentran en el tramo de alto \gls{qed}. Sin embargo, al no explorar la rama de bajo SA, registran valores peores en $\text{IGD}^+$ y $\epsilon^+$, ya que dejar ese sector sin cubrir aumenta la distancia respecto al frente de referencia. Además, al enfocarse en una zona más acotada, obtienen menos soluciones no dominadas (medianas de $20$ y $18$ moléculas, respectivamente).
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/boxplots_chemical_popfinal.pdf}
-    \caption{Distribución de las propiedades químicas del frente de Pareto obtenido por cada algoritmo.}
-    \label{fig:boxplots_chemical}
-\end{figure}
-
-La Figura~\ref{fig:boxplots_chemical} ilustra mediante diagramas de caja las distribuciones de la Tabla~\ref{tab:comparison_chemical} a lo largo de las veinte ejecuciones. En ella, \gls{qed}, SA y $F_{\text{sp3}}$ se evalúan sobre las moléculas del frente no dominado, mientras que la validez, unicidad y novedad describen la generación global de cada ejecución.
-
-En los objetivos, \acrshort{cmopso} y \acrshort{moead} concentran sus resultados de \gls{qed} en torno a $0.88$, mientras que \acrshort{nsga2} presenta mayor dispersión con valores entre $0.70$ y $0.88$, reflejando su cobertura sobre el frente. En accesibilidad sintética, todos los métodos obtienen valores favorables con medianas entre $1.60$ y $1.66$. Respecto a la restricción $F_{\text{sp3}} \ge 0.30$, todos los algoritmos la cumplen, alcanzando \acrshort{nsga2} los valores más altos cerca de $0.47$.
-
-En las métricas de generación, \acrshort{moead} y \acrshort{cmopso} alcanzan una validez próxima al $99\%$, pero su unicidad desciende a medianas de $0.45$ y $0.32$, y su novedad resulta menor y dispersa en \acrshort{cmopso}. En contraste, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} mantienen unicidad y novedad cercanas a $1.0$ y $0.98$, con una validez situada entre el $80\%$ y el $86\%$.
 
 \subsection{Convergencia, Cobertura y Diversidad de las Soluciones}
 \label{subsec:convergencia_cobertura_diversidad}
