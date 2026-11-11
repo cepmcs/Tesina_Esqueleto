@@ -28,17 +28,17 @@ La etapa de optimización del entrenamiento se centra en probar diferentes tasas
 \toprule
 \textbf{ID} & \textbf{Épocas} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} \\
 \midrule
-SM-G 2 & 100 & 0.945 & 1.000 & 0.969 & 0.982 & 0.470 & 0.859 & 0.115 & \textbf{0.005} \\
-SE-L 2 & 100 & \textbf{1.000} & 1.000 & 0.881 & 0.928 & 0.764 & \textbf{0.861} & 0.201 & 0.020 \\
-SM-L 1 & 300 & 0.946 & 1.000 & \textbf{0.972} & 0.981 & 0.459 & 0.859 & 0.155 & 0.011 \\
-SM-L 2 & 300 & 0.951 & 1.000 & 0.956 & \textbf{0.986} & \textbf{0.321} & 0.858 & \textbf{0.113} & 0.013 \\
+SM-G 2 & 100 & 0,945 & 1,000 & 0,969 & 0,982 & 0,470 & 0,859 & 0,115 & \textbf{0,005} \\
+SE-L 2 & 100 & \textbf{1,000} & 1,000 & 0,881 & 0,928 & 0,764 & \textbf{0,861} & 0,201 & 0,020 \\
+SM-L 1 & 300 & 0,946 & 1,000 & \textbf{0,972} & 0,981 & 0,459 & 0,859 & 0,155 & 0,011 \\
+SM-L 2 & 300 & 0,951 & 1,000 & 0,956 & \textbf{0,986} & \textbf{0,321} & 0,858 & \textbf{0,113} & 0,013 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-A partir de los entrenamientos de 100 épocas se eligió \textbf{SM-G 2}, que a pesar de la inestabilidad de \gls{gru} a 300 épocas tuvo un desempeño temprano destacado con un FCD de 0.470 y validez de 0.945, y \textbf{SE-L 2}, que obtuvo los mejores resultados dentro de la representación \gls{selfies} con el menor FCD (0.764), siendo de interés evaluar si su novedad (0.881) mejora al ajustar los hiperparámetros.
+A partir de los entrenamientos de 100 épocas se eligió \textbf{SM-G 2}, que a pesar de la inestabilidad de \gls{gru} a 300 épocas tuvo un desempeño temprano destacado con un FCD de 0,470 y validez de 0,945, y \textbf{SE-L 2}, que obtuvo los mejores resultados dentro de la representación \gls{selfies} con el menor FCD (0,764), siendo de interés evaluar si su novedad (0,881) mejora al ajustar los hiperparámetros.
 
-En cuanto a las 300 épocas, se seleccionó \textbf{SM-L 1}, una opción con menor profundidad de red que alcanzó el segundo mejor FCD (0.459) con una validez de 0.946, y \textbf{SM-L 2}, que logró el FCD más bajo de todos los registros (0.321) manteniendo una alta validez (0.951) y excelentes distancias para \gls{sas} (0.113) y \gls{qed} (0.013).
+En cuanto a las 300 épocas, se seleccionó \textbf{SM-L 1}, una opción con menor profundidad de red que alcanzó el segundo mejor FCD (0,459) con una validez de 0,946, y \textbf{SM-L 2}, que logró el FCD más bajo de todos los registros (0,321) manteniendo una alta validez (0,951) y excelentes distancias para \gls{sas} (0,113) y \gls{qed} (0,013).
 
 
 
@@ -56,28 +56,28 @@ Los resultados completos de la optimización con todas las combinaciones de tasa
 \toprule
 \textbf{Modelo} & \textbf{Épocas} & \textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} \\
 \midrule
-SM-G 2 & 100 & $1 \times 10^{-4}$ & 64  & 0.950 & 1.000 & 0.966 & 0.984 & 0.301 & 0.858 & 0.111 & \textbf{0.006} \\
-SE-L 2 & 100 & $1 \times 10^{-3}$ & 192 & \textbf{1.000} & 0.999 & 0.868 & 0.936 & 0.675 & \textbf{0.861} & 0.185 & 0.018 \\
-SM-L 1 & 300 & $1 \times 10^{-4}$ & 64  & 0.940 & 1.000 & \textbf{0.973} & 0.980 & 0.424 & 0.859 & 0.159 & 0.013 \\
-SM-L 2 & 300 & $1 \times 10^{-4}$ & 64  & 0.962 & 1.000 & 0.943 & \textbf{0.988} & \textbf{0.179} & 0.859 & \textbf{0.093} & 0.008 \\
+SM-G 2 & 100 & $1 \times 10^{-4}$ & 64  & 0,950 & 1,000 & 0,966 & 0,984 & 0,301 & 0,858 & 0,111 & \textbf{0,006} \\
+SE-L 2 & 100 & $1 \times 10^{-3}$ & 192 & \textbf{1,000} & 0,999 & 0,868 & 0,936 & 0,675 & \textbf{0,861} & 0,185 & 0,018 \\
+SM-L 1 & 300 & $1 \times 10^{-4}$ & 64  & 0,940 & 1,000 & \textbf{0,973} & 0,980 & 0,424 & 0,859 & 0,159 & 0,013 \\
+SM-L 2 & 300 & $1 \times 10^{-4}$ & 64  & 0,962 & 1,000 & 0,943 & \textbf{0,988} & \textbf{0,179} & 0,859 & \textbf{0,093} & 0,008 \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
 Al optimizar el entrenamiento, la reducción de la tasa de aprendizaje de $1 \times 10^{-3}$ a $1 \times 10^{-4}$ y el uso de lotes más pequeños de 64 produjo una mejora consistente en las arquitecturas con representación \gls{smiles}, alcanzando las mejores puntuaciones de \gls{fcd} y menores distancias de Wasserstein. Aunque esta configuración elevó los tiempos de cómputo por encima de las 20 horas en los modelos de 300 épocas, asumir este costo fue necesario para conseguir los mejores resultados.
 
-En los entrenamientos de 100 épocas, \textbf{SM-G 2} registró su mejor comportamiento con este LR de $1 \times 10^{-4}$ y Batch de 64, donde consiguió un \gls{fcd} competitivo de 0.301, una validez de 0.950 y distancias de Wasserstein bajas (\gls{sas} de 0.111 y \gls{qed} de 0.006), demostrando capacidad para generar un espacio químico de calidad en menos épocas de entrenamiento y aligerando la carga computacional. En contraste, la representación \gls{selfies} en \textbf{SE-L 2} requirió una tasa de $1 \times 10^{-3}$ y un lote de 192 para lograr su mejor \gls{fcd} (0.675) a costa de una novedad baja (0.868). Si bien mantiene una validez perfecta (1.000), si se intenta mejorar esa novedad reduciendo la tasa de aprendizaje a $1 \times 10^{-4}$, el \gls{fcd} empeora significativamente a 2.893.
+En los entrenamientos de 100 épocas, \textbf{SM-G 2} registró su mejor comportamiento con este LR de $1 \times 10^{-4}$ y Batch de 64, donde consiguió un \gls{fcd} competitivo de 0,301, una validez de 0,950 y distancias de Wasserstein bajas (\gls{sas} de 0,111 y \gls{qed} de 0,006), demostrando capacidad para generar un espacio químico de calidad en menos épocas de entrenamiento y aligerando la carga computacional. En contraste, la representación \gls{selfies} en \textbf{SE-L 2} requirió una tasa de $1 \times 10^{-3}$ y un lote de 192 para lograr su mejor \gls{fcd} (0,675) a costa de una novedad baja (0,868). Si bien mantiene una validez perfecta (1,000), si se intenta mejorar esa novedad reduciendo la tasa de aprendizaje a $1 \times 10^{-4}$, el \gls{fcd} empeora significativamente a 2,893.
 
-A las 300 épocas, la variante de red menos profunda, \textbf{SM-L 1}, consiguió su mayor eficacia también con LR de $1 \times 10^{-4}$ y Batch de 64, registrando un \gls{fcd} de 0.424 y una validez de 0.940. Al comparar estos números con el modelo de dos capas (\textbf{SM-L 2}), se observa que si bien la arquitectura de una capa es más ligera, agregar una segunda capa mejora sistemáticamente las métricas. \textbf{SM-L 2} mostró los mejores resultados de toda la etapa experimental con dicha configuración, ya que alcanzó conjuntamente la validez más alta de las arquitecturas \gls{smiles} (0.962), el \gls{fcd} más bajo de todos los registros analizados (0.179) y la menor distancia de Wasserstein para \gls{sas} (0.093), con una novedad de 0.943.
+A las 300 épocas, la variante de red menos profunda, \textbf{SM-L 1}, consiguió su mayor eficacia también con LR de $1 \times 10^{-4}$ y Batch de 64, registrando un \gls{fcd} de 0,424 y una validez de 0,940. Al comparar estos números con el modelo de dos capas (\textbf{SM-L 2}), se observa que si bien la arquitectura de una capa es más ligera, agregar una segunda capa mejora sistemáticamente las métricas. \textbf{SM-L 2} mostró los mejores resultados de toda la etapa experimental con dicha configuración, ya que alcanzó conjuntamente la validez más alta de las arquitecturas \gls{smiles} (0,962), el \gls{fcd} más bajo de todos los registros analizados (0,179) y la menor distancia de Wasserstein para \gls{sas} (0,093), con una novedad de 0,943.
 
 \subsection{Evaluación en MOSES y Comparación con el Estado del Arte}
 \label{subsec:res_vae_moses}
 
 \subsubsection{Modelo seleccionado}
 
-Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor \gls{fcd} de todos los experimentos (0.179), la mayor validez entre los modelos \gls{smiles} (0.962) y la menor distancia de Wasserstein para \gls{sas} (0.093). A cambio, presentó una novedad levemente menor (0.943) y el mayor tiempo de entrenamiento.
+Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor \gls{fcd} de todos los experimentos (0,179), la mayor validez entre los modelos \gls{smiles} (0,962) y la menor distancia de Wasserstein para \gls{sas} (0,093). A cambio, presentó una novedad levemente menor (0,943) y el mayor tiempo de entrenamiento.
 
-En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0.008 para \gls{qed} y 0.093 para \gls{sas}). Por otra parte, la Figura~\ref{fig:pca_latente} presenta la proyección mediante análisis de componentes principales (PCA) del espacio latente para 30\,000 moléculas del conjunto \gls{moses}, observándose una distribución continua y homogénea.
+En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0,008 para \gls{qed} y 0,093 para \gls{sas}). Por otra parte, la Figura~\ref{fig:pca_latente} presenta la proyección mediante análisis de componentes principales (PCA) del espacio latente para 30\,000 moléculas del conjunto \gls{moses}, observándose una distribución continua y homogénea.
 
 \begin{figure}[htbp]
 \centering
@@ -105,21 +105,21 @@ En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed
 \toprule
 Model & Valid ($\uparrow$) & Unique ($\uparrow$) & Novelty ($\uparrow$) & Filters ($\uparrow$) & FCD ($\downarrow$) & IntDiv ($\uparrow$) & SA ($\downarrow$) & QED ($\downarrow$) \\
 \midrule
-Train & 1.000 & 1.000 & 1.000 & 1.000 & 0.008 & 0.857 & - & - \\
-HMM & 0.076 & 0.567 & 0.999 & 0.902 & 24.466 & 0.847 & 0.742 & 0.269 \\
-NGram & 0.238 & 0.922 & 0.969 & 0.958 & 5.507 & 0.874 & 0.231 & 0.089 \\
-Combinatorial & 1.000 & 0.991 & 0.988 & 0.956 & 4.238 & 0.873 & 0.280 & 0.151 \\
-CharRNN & 0.975 & 0.999 & 0.842 & 0.994 & 0.073 & 0.856 & 0.017 & 0.003 \\
-AAE & 0.937 & 0.997 & 0.793 & 0.996 & 0.556 & 0.856 & 0.045 & 0.004 \\
-LatentGAN & 0.897 & 0.997 & 0.950 & 0.974 & 0.297 & 0.857 & 0.088 & 0.006 \\
-FRATTVAE & 1.000 & 1.000 & 0.974 & N/R & 0.865 & N/R & 2.591 & 0.030 \\
-PCF-VAE & 0.980 & 1.000 & 0.938 & 0.990 & 0.296 & 0.859 & N/R & N/R \\
-\textbf{SM-L VAE} & 0.962 & 1.000 & 0.943 & 0.988 & 0.179 & 0.859 & 0.093 & 0.008 \\
+Train & 1,000 & 1,000 & 1,000 & 1,000 & 0,008 & 0,857 & - & - \\
+HMM & 0,076 & 0,567 & 0,999 & 0,902 & 24,466 & 0,847 & 0,742 & 0,269 \\
+NGram & 0,238 & 0,922 & 0,969 & 0,958 & 5,507 & 0,874 & 0,231 & 0,089 \\
+Combinatorial & 1,000 & 0,991 & 0,988 & 0,956 & 4,238 & 0,873 & 0,280 & 0,151 \\
+CharRNN & 0,975 & 0,999 & 0,842 & 0,994 & 0,073 & 0,856 & 0,017 & 0,003 \\
+AAE & 0,937 & 0,997 & 0,793 & 0,996 & 0,556 & 0,856 & 0,045 & 0,004 \\
+LatentGAN & 0,897 & 0,997 & 0,950 & 0,974 & 0,297 & 0,857 & 0,088 & 0,006 \\
+FRATTVAE & 1,000 & 1,000 & 0,974 & N/R & 0,865 & N/R & 2,591 & 0,030 \\
+PCF-VAE & 0,980 & 1,000 & 0,938 & 0,990 & 0,296 & 0,859 & N/R & N/R \\
+\textbf{SM-L VAE} & 0,962 & 1,000 & 0,943 & 0,988 & 0,179 & 0,859 & 0,093 & 0,008 \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance competitivo frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0.179, manteniendo al mismo tiempo una alta tasa de novedad (0.943) y diversidad interna (0.859). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0.073), este comportamiento suele estar asociado a una caída en la novedad (0.842), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} está en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
+Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance competitivo frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0,179, manteniendo al mismo tiempo una alta tasa de novedad (0,943) y diversidad interna (0,859). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0,073), este comportamiento suele estar asociado a una caída en la novedad (0,842), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} está en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
 
 \section{Optimización Multiobjetivo de Propiedades Moleculares sin Diana Específica}
 \label{sec:res_genericos}
@@ -277,16 +277,16 @@ Estas diferencias en la diversidad química podrían explicarse por la dinámica
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-\acrshort{nsga2} vs \acrshort{nsga3} & 0.005 & $+$0.762 & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{moead} & $<$0.001 & $+$1.000 & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{agemoea} & 0.004 & $+$0.790 & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{cmopso} & $<$0.001 & $+$1.000 & \acrshort{nsga2} \\
-\acrshort{nsga3} vs \acrshort{moead} & $<$0.001 & $+$1.000 & \acrshort{nsga3} \\
-\acrshort{nsga3} vs \acrshort{agemoea} & 0.571 & $+$0.152 & - \\
-\acrshort{nsga3} vs \acrshort{cmopso} & $<$0.001 & $+$1.000 & \acrshort{nsga3} \\
-\acrshort{moead} vs \acrshort{agemoea} & $<$0.001 & $-$0.990 & \acrshort{agemoea} \\
-\acrshort{moead} vs \acrshort{cmopso} & 0.008 & $+$0.705 & \acrshort{moead} \\
-\acrshort{agemoea} vs \acrshort{cmopso} & $<$0.001 & $+$1.000 & \acrshort{agemoea} \\
+\acrshort{nsga2} vs \acrshort{nsga3} & 0,005 & $+$0.762 & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{moead} & $<$0,001 & $+$1.000 & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{agemoea} & 0,004 & $+$0.790 & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{cmopso} & $<$0,001 & $+$1.000 & \acrshort{nsga2} \\
+\acrshort{nsga3} vs \acrshort{moead} & $<$0,001 & $+$1.000 & \acrshort{nsga3} \\
+\acrshort{nsga3} vs \acrshort{agemoea} & 0,571 & $+$0.152 & - \\
+\acrshort{nsga3} vs \acrshort{cmopso} & $<$0,001 & $+$1.000 & \acrshort{nsga3} \\
+\acrshort{moead} vs \acrshort{agemoea} & $<$0,001 & $-$0.990 & \acrshort{agemoea} \\
+\acrshort{moead} vs \acrshort{cmopso} & 0,008 & $+$0.705 & \acrshort{moead} \\
+\acrshort{agemoea} vs \acrshort{cmopso} & $<$0,001 & $+$1.000 & \acrshort{agemoea} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -329,11 +329,11 @@ En las métricas de generación, \acrshort{moead} y \acrshort{cmopso} alcanzan u
 
 La Figura~\ref{fig:convergence_mo} presenta la convergencia de los indicadores multiobjetivo en función del número de evaluaciones, promediada sobre las veinte ejecuciones independientes. Estas curvas muestran el progreso del frente no dominado a lo largo de las evaluaciones y convergen hacia los valores reportados en la Tabla~\ref{tab:comparison_multiobjective}.
 
-En hipervolumen, todos los algoritmos experimentan un avance rápido durante las primeras $20{,}000$ evaluaciones, superando valores de $1.10$, para luego ingresar en una fase de mejora gradual. \acrshort{nsga2} mantiene el valor más alto a lo largo de todo el proceso ($1.125$), seguido por \acrshort{nsga3} ($1.121$) y \acrshort{agemoea} ($1.121$), mientras que \acrshort{cmopso} ($1.109$) y \acrshort{moead} ($1.107$) se estabilizan en niveles inferiores desde etapas tempranas, en concordancia con las pruebas estadísticas.
+En hipervolumen, todos los algoritmos experimentan un avance rápido durante las primeras 20.000 evaluaciones, superando valores de $1.10$, para luego ingresar en una fase de mejora gradual. \acrshort{nsga2} mantiene el valor más alto a lo largo de todo el proceso ($1.125$), seguido por \acrshort{nsga3} ($1.121$) y \acrshort{agemoea} ($1.121$), mientras que \acrshort{cmopso} ($1.109$) y \acrshort{moead} ($1.107$) se estabilizan en niveles inferiores desde etapas tempranas, en concordancia con las pruebas estadísticas.
 
-En $\text{IGD}^+$ y $\epsilon^+$, las curvas muestran diferencias en la dinámica de búsqueda. \acrshort{cmopso} desciende durante las primeras $10{,}000$ evaluaciones al concentrar sus partículas en la zona de alto \gls{qed}, alcanzando $\text{IGD}^+ \approx 0.073$ y $\epsilon^+ \approx 0.210$. Sin embargo, su progreso se detiene a partir de las $40{,}000$ evaluaciones y finaliza con los valores más desfavorables ($0.059$ y $0.191$). \acrshort{moead} muestra un descenso más progresivo pero igualmente limitado, concluyendo en $0.057$ y $0.173$. Este comportamiento confirma que ambos métodos dejan sectores periféricos del frente de referencia sin cubrir.
+En $\text{IGD}^+$ y $\epsilon^+$, las curvas muestran diferencias en la dinámica de búsqueda. \acrshort{cmopso} desciende durante las primeras 10.000 evaluaciones al concentrar sus partículas en la zona de alto \gls{qed}, alcanzando $\text{IGD}^+ \approx 0.073$ y $\epsilon^+ \approx 0.210$. Sin embargo, su progreso se detiene a partir de las 40.000 evaluaciones y finaliza con los valores más desfavorables ($0.059$ y $0.191$). \acrshort{moead} muestra un descenso más progresivo pero igualmente limitado, concluyendo en $0.057$ y $0.173$. Este comportamiento confirma que ambos métodos dejan sectores periféricos del frente de referencia sin cubrir.
 
-Por el contrario, los algoritmos \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} logran una mejora sostenida a lo largo de todo el proceso de optimización. \acrshort{nsga2} registra el menor $\epsilon^+$ desde las $10{,}000$ evaluaciones y concluye en $0.101$, mientras que el menor $\text{IGD}^+$ lo alcanza \acrshort{nsga3} ($0.036$), seguido de \acrshort{nsga2} ($0.038$) y \acrshort{agemoea} ($0.040$). La capacidad de estos algoritmos para extender soluciones hacia el extremo de bajo SA explica que continúen descubriendo nuevas alternativas no dominadas a lo largo de la optimización.
+Por el contrario, los algoritmos \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} logran una mejora sostenida a lo largo de todo el proceso de optimización. \acrshort{nsga2} registra el menor $\epsilon^+$ desde las 10.000 evaluaciones y concluye en $0.101$, mientras que el menor $\text{IGD}^+$ lo alcanza \acrshort{nsga3} ($0.036$), seguido de \acrshort{nsga2} ($0.038$) y \acrshort{agemoea} ($0.040$). La capacidad de estos algoritmos para extender soluciones hacia el extremo de bajo SA explica que continúen descubriendo nuevas alternativas no dominadas a lo largo de la optimización.
 
 \begin{figure}[H]
     \centering
@@ -342,7 +342,7 @@ Por el contrario, los algoritmos \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{
     \label{fig:convergence_chemical}
 \end{figure}
 
-La Figura~\ref{fig:convergence_chemical} muestra la dinámica de las propiedades químicas en la población activa a lo largo de las evaluaciones. \acrshort{moead} y \acrshort{cmopso} sostienen una validez química muy alta durante toda la optimización, pero su unicidad cae de forma temprana durante las primeras $5{,}000$ evaluaciones y se mantiene baja hasta el final. Por el contrario, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} conservan niveles elevados de unicidad y novedad a lo largo de todo el proceso, con una validez moderada. En el espacio de objetivos, \acrshort{cmopso} y \acrshort{moead} concentran su población en valores altos de \gls{qed}, mientras que los algoritmos genéticos mantienen individuos repartidos en diversas regiones del frente.
+La Figura~\ref{fig:convergence_chemical} muestra la dinámica de las propiedades químicas en la población activa a lo largo de las evaluaciones. \acrshort{moead} y \acrshort{cmopso} sostienen una validez química muy alta durante toda la optimización, pero su unicidad cae de forma temprana durante las primeras 5.000 evaluaciones y se mantiene baja hasta el final. Por el contrario, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} conservan niveles elevados de unicidad y novedad a lo largo de todo el proceso, con una validez moderada. En el espacio de objetivos, \acrshort{cmopso} y \acrshort{moead} concentran su población en valores altos de \gls{qed}, mientras que los algoritmos genéticos mantienen individuos repartidos en diversas regiones del frente.
 
 \subsubsection{Frentes de Pareto}
 
@@ -378,19 +378,19 @@ La Tabla~\ref{tab:contribucion_pool} presenta la contribución de cada algoritmo
 \toprule
 Configuración & Operadores & Aporta & Exclusivas & \% & QED $\uparrow$ & SA $\downarrow$ & $F_{\text{sp3}}$ \\
 \midrule
-\multirow{2}{*}{\acrshort{nsga2}} & pcx\_pm & 15 & 4 & 46.9 & 0.598 & 1.220 & 0.570 \\
- & sbx\_gauss & 16 & 6 & 50.0 & 0.874 & 1.590 & 0.338 \\
+\multirow{2}{*}{\acrshort{nsga2}} & pcx\_pm & 15 & 4 & 46,9 & 0,598 & 1,220 & 0,570 \\
+ & sbx\_gauss & 16 & 6 & 50,0 & 0,874 & 1,590 & 0,338 \\
 \midrule
-\multirow{2}{*}{\acrshort{nsga3}} & pcx\_pm & 15 & 2 & 46.9 & 0.726 & 1.470 & 0.475 \\
- & sbx\_pm & 9 & 1 & 28.1 & 0.829 & 1.480 & 0.347 \\
+\multirow{2}{*}{\acrshort{nsga3}} & pcx\_pm & 15 & 2 & 46,9 & 0,726 & 1,470 & 0,475 \\
+ & sbx\_pm & 9 & 1 & 28,1 & 0,829 & 1,480 & 0,347 \\
 \midrule
-\multirow{2}{*}{\acrshort{moead}} & pcx\_pm & 9 & 0 & 28.1 & 0.841 & 1.410 & 0.343 \\
- & sbx\_pm & 6 & 0 & 18.8 & 0.828 & 1.370 & 0.359 \\
+\multirow{2}{*}{\acrshort{moead}} & pcx\_pm & 9 & 0 & 28,1 & 0,841 & 1,410 & 0,343 \\
+ & sbx\_pm & 6 & 0 & 18,8 & 0,828 & 1,370 & 0,359 \\
 \midrule
-\multirow{2}{*}{\acrshort{agemoea}} & pcx\_pm & 11 & 1 & 34.4 & 0.615 & 1.240 & 0.587 \\
- & sbx\_pm & 7 & 0 & 21.9 & 0.811 & 1.350 & 0.350 \\
+\multirow{2}{*}{\acrshort{agemoea}} & pcx\_pm & 11 & 1 & 34,4 & 0,615 & 1,240 & 0,587 \\
+ & sbx\_pm & 7 & 0 & 21,9 & 0,811 & 1,350 & 0,350 \\
 \midrule
-\acrshort{cmopso} & - & 10 & 3 & 31.2 & 0.865 & 1.620 & 0.360 \\
+\acrshort{cmopso} & - & 10 & 3 & 31,2 & 0,865 & 1,620 & 0,360 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -424,29 +424,29 @@ Para analizar la calidad de las moléculas generadas y comparar cómo explora ca
 \textbf{Algoritmo} & \textbf{Punto del Frente} & \textbf{QED} $\uparrow$ & \textbf{SA} $\downarrow$ & \textbf{$F_{\text{sp3}}$} & \textbf{SMILES} \\
 \midrule
 \multirow{3}{*}{\acrshort{nsga2}}
- & Extremo de menor SA & 0.223 & 1.060 & 1.000 & \texttt{CCCCCCCCCCCCCCCCCCCCC} \\
- & Mayor QED & 0.948 & 1.800 & 0.333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccn3)CC2)cc1} \\
- & Extremo de mayor SA & 0.948 & 2.730 & 0.333 & \texttt{Cn1cc(NC(=O)C2CCCO2)c(-c2ccccc2Cl)n1} \\
+ & Extremo de menor SA & 0,223 & 1,060 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCCCCC} \\
+ & Mayor QED & 0,948 & 1,800 & 0,333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccn3)CC2)cc1} \\
+ & Extremo de mayor SA & 0,948 & 2,730 & 0,333 & \texttt{Cn1cc(NC(=O)C2CCCO2)c(-c2ccccc2Cl)n1} \\
 \midrule
 \multirow{3}{*}{\acrshort{nsga3}}
- & Extremo de menor SA & 0.270 & 1.070 & 1.000 & \texttt{CCCCCCCCCCCCCCCCCC} \\
- & Mayor QED & 0.948 & 1.710 & 0.316 & \texttt{Cc1cc(C(=O)N2CCN(Cc3ccccc3)CC2)ccc1O} \\
- & Extremo de mayor SA & 0.948 & 3.550 & 0.312 & \texttt{Cc1cc(CO)c(Cl)c(-c2cccn2C2COCC2=O)c1} \\
+ & Extremo de menor SA & 0,270 & 1,070 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCC} \\
+ & Mayor QED & 0,948 & 1,710 & 0,316 & \texttt{Cc1cc(C(=O)N2CCN(Cc3ccccc3)CC2)ccc1O} \\
+ & Extremo de mayor SA & 0,948 & 3,550 & 0,312 & \texttt{Cc1cc(CO)c(Cl)c(-c2cccn2C2COCC2=O)c1} \\
 \midrule
 \multirow{3}{*}{\acrshort{moead}}
- & Extremo de menor SA & 0.706 & 1.220 & 0.300 & \texttt{O=C(Nc1ccccc1)C1CC1} \\
- & Mayor QED & 0.948 & 1.810 & 0.333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3cccnc3)CC2)cc1} \\
- & Extremo de mayor SA & 0.948 & 3.110 & 0.333 & \texttt{Cc1nc(C(O)c2ccccc2Cl)n(CC(F)(F)F)n1} \\
+ & Extremo de menor SA & 0,706 & 1,220 & 0,300 & \texttt{O=C(Nc1ccccc1)C1CC1} \\
+ & Mayor QED & 0,948 & 1,810 & 0,333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3cccnc3)CC2)cc1} \\
+ & Extremo de mayor SA & 0,948 & 3,110 & 0,333 & \texttt{Cc1nc(C(O)c2ccccc2Cl)n(CC(F)(F)F)n1} \\
 \midrule
 \multirow{3}{*}{\acrshort{agemoea}}
- & Extremo de menor SA & 0.252 & 1.070 & 1.000 & \texttt{CCCCCCCCCCCCCCCCCCC} \\
- & Mayor QED & 0.948 & 1.810 & 0.333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cn1} \\
- & Extremo de mayor SA & 0.948 & 2.030 & 0.375 & \texttt{O=C(c1csc(-c2cccc(CO)c2)n1)N1CCCCC1} \\
+ & Extremo de menor SA & 0,252 & 1,070 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCCC} \\
+ & Mayor QED & 0,948 & 1,810 & 0,333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cn1} \\
+ & Extremo de mayor SA & 0,948 & 2,030 & 0,375 & \texttt{O=C(c1csc(-c2cccc(CO)c2)n1)N1CCCCC1} \\
 \midrule
 \multirow{3}{*}{\acrshort{cmopso}}
- & Extremo de menor SA & 0.792 & 1.300 & 0.364 & \texttt{CCCNC(=O)c1ccc(OC)cc1} \\
- & Mayor QED & 0.948 & 2.060 & 0.333 & \texttt{O=C(NC1CCN(c2nccs2)CC1)c1ccccc1F} \\
- & Extremo de mayor SA & 0.948 & 2.570 & 0.333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
+ & Extremo de menor SA & 0,792 & 1,300 & 0,364 & \texttt{CCCNC(=O)c1ccc(OC)cc1} \\
+ & Mayor QED & 0,948 & 2,060 & 0,333 & \texttt{O=C(NC1CCN(c2nccs2)CC1)c1ccccc1F} \\
+ & Extremo de mayor SA & 0,948 & 2,570 & 0,333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
 \bottomrule
 \end{tabular}%
 }
