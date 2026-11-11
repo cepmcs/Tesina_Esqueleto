@@ -118,14 +118,14 @@ AAE & 0,937 & 0,997 & 0,793 & 0,996 & 0,556 & 0,856 & 0,045 & 0,004 \\
 LatentGAN & 0,897 & 0,997 & 0,950 & 0,974 & 0,297 & 0,857 & 0,088 & 0,006 \\
 FRATTVAE & 1,000 & 1,000 & 0,974 & N/R & 0,865 & N/R & 2,591 & 0,030 \\
 PCF-VAE & 0,980 & 1,000 & 0,938 & 0,990 & 0,296 & 0,859 & N/R & N/R \\
-\textbf{SM-L VAE} & 0,962 & 1,000 & 0,943 & 0,988 & 0,179 & 0,859 & 0,093 & 0,008 \\
+\textbf{SM-L VAE} & 0,962 & 1,000 & 0,944 & 0,989 & 0,183 & 0,859 & 0,100 & 0,008 \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-A partir de la Tabla~\ref{tab:resultados_reducidos}, se observa que el modelo propuesto (SM-L VAE) ofrece un balance competitivo frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0,179, manteniendo al mismo tiempo una alta tasa de novedad (0,943) y diversidad interna (0,859). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0,073), este comportamiento suele estar asociado a una caída en la novedad (0,842), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} está en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
+A partir de la Tabla~\ref{tab:resultados_reducidos}, se observa que el modelo propuesto (SM-L VAE) ofrece un balance competitivo frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0,183, manteniendo al mismo tiempo una alta tasa de novedad (0,944) y diversidad interna (0,859). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0,073), este comportamiento suele estar asociado a una caída en la novedad (0,842), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} está en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
 
-\section{Etapa 2 -- Actividad 1: Optimización Multiobjetivo de Propiedades Moleculares sin Diana Específica}
+\section{Etapa 2 -- Actividad 1: Optimización en Fármacos Genéricos}
 \label{sec:res_genericos}
 
 En esta sección se aborda la optimización multiobjetivo de propiedades moleculares sin diana específica mediante metaheurísticas en el espacio latente del \gls{vae}. Se describen los resultados del ajuste de hiperparámetros y la influencia de los operadores de cruce y mutación, para luego contrastar el desempeño global de los cinco algoritmos y caracterizar las moléculas candidatas obtenidas en el frente de Pareto conjunto.
