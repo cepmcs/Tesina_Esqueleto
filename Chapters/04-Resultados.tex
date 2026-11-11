@@ -14,7 +14,7 @@ En esta sección se aborda la evaluación del modelo generativo sobre el conjunt
 
 En esta etapa se evaluaron diversas configuraciones del modelo generativo \gls{vae} con 100 y 300 épocas de entrenamiento, cuyos resultados completos se presentan detalladamente en el Apéndice~\ref{apendice:vae_experimentos} (Tabla~\ref{tab:log_experimentos_completo}). Cada configuración se identifica con la representación (SM para \gls{smiles}, SE para \gls{selfies}), la arquitectura (L para \gls{lstm}, G para \gls{gru}), el número de capas y la dimensión latente. Por ejemplo, SM-L 2 256 corresponde a \gls{smiles}, \gls{lstm}, 2 capas y latente de 256. A partir de estos resultados, surgen distintos patrones respecto a cada componente.
 
-En primer lugar, si bien la representación de \gls{selfies} cumple con su diseño garantizando una validez perfecta en todas las ejecuciones, las redes entrenadas con \gls{smiles} logran capturar con mayor precisión la distribución estadística y las propiedades de las moléculas reales, lo cual se refleja en puntuaciones de \gls{fcd} y distancias de Wasserstein (\gls{sas} y \gls{qed}) notablemente inferiores a las de los modelos \gls{selfies}. Asimismo, el espacio latente de 256 dimensiones superó a las configuraciones de 64 y 128 en todas las arquitecturas evaluadas. Al incrementar la dimensión a 256 se observa una reducción constante en el \gls{fcd} (por ejemplo, descendiendo de 0.983 a 0.412 en SM-L 2), junto con un incremento sostenido en la validez de los modelos \gls{smiles} (que en dicha configuración pasa de 0.816 a 0.943) y menores distancias de Wasserstein.
+En primer lugar, si bien la representación de \gls{selfies} cumple con su diseño garantizando una validez perfecta en todas las ejecuciones, las redes entrenadas con \gls{smiles} logran capturar con mayor precisión la distribución estadística y las propiedades de las moléculas reales, lo cual se refleja en puntuaciones de \gls{fcd} y distancias de Wasserstein (\gls{sas} y \gls{qed}) notablemente inferiores a las de los modelos \gls{selfies}. Asimismo, el espacio latente de 256 dimensiones superó a las configuraciones de 64 y 128 en todas las arquitecturas evaluadas. Al incrementar la dimensión a 256 se observa una reducción constante en el \gls{fcd} (por ejemplo, descendiendo de 0,983 a 0,412 en SM-L 2), junto con un incremento sostenido en la validez de los modelos \gls{smiles} (que en dicha configuración pasa de 0,816 a 0,943) y menores distancias de Wasserstein.
 
 En cuanto a la arquitectura, las redes \gls{lstm} soportaron mejor los entrenamientos prolongados. Al pasar de 100 a 300 épocas, tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al alcanzar las 300 épocas, reduciendo fuertemente la validez general de las moléculas generadas. Esta mayor estabilidad de las redes \gls{lstm} podría explicarse por la presencia de una compuerta de salida que permite regular la magnitud de su memoria antes de transmitirla. En contraste, al carecer \gls{gru} de este mecanismo \cite{chung2014empirical}, es posible que en épocas avanzadas se produzca un conflicto numérico con la regularización del \gls{vae} que favorezca el colapso del modelo. Cabe destacar que las ejecuciones evaluadas corresponden a configuraciones experimentales individuales y no a repeticiones de cada una, por lo que la variabilidad entre entrenamientos no queda caracterizada.
 
@@ -277,16 +277,16 @@ Estas diferencias en la diversidad química podrían explicarse por la dinámica
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-\acrshort{nsga2} vs \acrshort{nsga3} & 0,005 & $+$0.762 & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{moead} & $<$0,001 & $+$1.000 & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{agemoea} & 0,004 & $+$0.790 & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{cmopso} & $<$0,001 & $+$1.000 & \acrshort{nsga2} \\
-\acrshort{nsga3} vs \acrshort{moead} & $<$0,001 & $+$1.000 & \acrshort{nsga3} \\
-\acrshort{nsga3} vs \acrshort{agemoea} & 0,571 & $+$0.152 & - \\
-\acrshort{nsga3} vs \acrshort{cmopso} & $<$0,001 & $+$1.000 & \acrshort{nsga3} \\
-\acrshort{moead} vs \acrshort{agemoea} & $<$0,001 & $-$0.990 & \acrshort{agemoea} \\
-\acrshort{moead} vs \acrshort{cmopso} & 0,008 & $+$0.705 & \acrshort{moead} \\
-\acrshort{agemoea} vs \acrshort{cmopso} & $<$0,001 & $+$1.000 & \acrshort{agemoea} \\
+\acrshort{nsga2} vs \acrshort{nsga3} & 0,005 & $+0,762$ & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{moead} & $<$0,001 & $+1,000$ & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{agemoea} & 0,004 & $+0,790$ & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{cmopso} & $<$0,001 & $+1,000$ & \acrshort{nsga2} \\
+\acrshort{nsga3} vs \acrshort{moead} & $<$0,001 & $+1,000$ & \acrshort{nsga3} \\
+\acrshort{nsga3} vs \acrshort{agemoea} & 0,571 & $+0,152$ & - \\
+\acrshort{nsga3} vs \acrshort{cmopso} & $<$0,001 & $+1,000$ & \acrshort{nsga3} \\
+\acrshort{moead} vs \acrshort{agemoea} & $<$0,001 & $-0,990$ & \acrshort{agemoea} \\
+\acrshort{moead} vs \acrshort{cmopso} & 0,008 & $+0,705$ & \acrshort{moead} \\
+\acrshort{agemoea} vs \acrshort{cmopso} & $<$0,001 & $+1,000$ & \acrshort{agemoea} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -475,7 +475,7 @@ Finalmente, optimizar únicamente propiedades generales como \gls{qed} y SA bajo
 \section{Generación de Inhibidores de la Proteína \texorpdfstring{\gls{mrp1}}{MRP1}}
 \label{sec:res_mrp1}
 
-En esta sección se aborda la optimización dirigida hacia \gls{mrp1} con los algoritmos seleccionados. Como calcular el acoplamiento molecular en cuatro objetivos tiene un costo de cómputo alto, se descartaron \acrshort{moead} y \acrshort{cmopso}, ya que en la etapa previa se concentraron casi únicamente en zonas de alto \gls{qed} descuidando la facilidad de síntesis y con peor convergencia. Por esto, se continuó con \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} bajo el reparto de 100 individuos y 1.000 generaciones, que dio mejores resultados que poblaciones más grandes. Para los operadores genéticos, se conservaron SBX y PCX combinados con mutación polinomial. Siguiendo los resultados del Apéndice~\ref{ap:mutacion}, se fijó una tasa de 0.1 para SBX y de 0.012 para PCX, ajustando la mutación a las características de cada cruce para no degradar la validez química.
+En esta sección se aborda la optimización dirigida hacia \gls{mrp1} con los algoritmos seleccionados. Como calcular el acoplamiento molecular en cuatro objetivos tiene un costo de cómputo alto, se descartaron \acrshort{moead} y \acrshort{cmopso}, ya que en la etapa previa se concentraron casi únicamente en zonas de alto \gls{qed} descuidando la facilidad de síntesis y con peor convergencia. Por esto, se continuó con \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} bajo el reparto de 100 individuos y 1.000 generaciones, que dio mejores resultados que poblaciones más grandes. Para los operadores genéticos, se conservaron SBX y PCX combinados con mutación polinomial. Siguiendo los resultados del Apéndice~\ref{ap:mutacion}, se fijó una tasa de 0,1 para SBX y de 0,012 para PCX, ajustando la mutación a las características de cada cruce para no degradar la validez química.
 
 Por otra parte, en los ensayos preliminares de formulación hacia \gls{mrp1} (Apéndice~\ref{ap:formulaciones_mrp1}) se evaluaron distintas alternativas comparando el modelo base frente al ajustado por fine-tuning, junto con el impacto de incorporar pChEMBL y la restricción de $\log P$. Estas pruebas mostraron que optimizar únicamente la afinidad de acoplamiento no garantizaba bioactividad sin la guía de pChEMBL, que el modelo base conservaba mejor la solubilidad y presentaba menor riesgo de toxicidad que las variantes ajustadas, y que la restricción de $\log P$ ayudaba a evitar moléculas excesivamente hidrofóbicas. Con base en estas observaciones, se adoptó la formulación de cuatro objetivos y dos restricciones sobre el modelo \gls{vae} original.
 
@@ -508,7 +508,7 @@ En contraste, las configuraciones con PCX obtienen un \gls{qed} promedio menor, 
 
 La Tabla~\ref{tab:generacion} presenta la comparación de las métricas de calidad generativa, correspondientes a la validez, novedad y unicidad para cada configuración. La validez y la novedad se calculan sobre el total de evaluaciones realizadas a lo largo de las 100.000 evaluaciones, mientras que la unicidad se evalúa sobre las moléculas válidas generadas en la última generación.
 
-Los resultados muestran diferencias en la tasa de validez química entre ambos operadores de cruce. Las variantes con SBX alcanzan porcentajes de validez superiores al 94\% en todos los algoritmos, con un máximo de 0.963 en \acrshort{agemoea} y 0.960 en \acrshort{nsga3}, superando a las configuraciones con PCX, las cuales se sitúan entre el 57.0\% y el 58.3\%. Por su parte, todas las configuraciones conservan niveles elevados de novedad y unicidad, con una leve ventaja para las variantes con PCX, las cuales alcanzan un 1.000 en unicidad en todos los algoritmos y valores de novedad cercanos a 0.995.
+Los resultados muestran diferencias en la tasa de validez química entre ambos operadores de cruce. Las variantes con SBX alcanzan porcentajes de validez superiores al 94\% en todos los algoritmos, con un máximo de 0,963 en \acrshort{agemoea} y 0,960 en \acrshort{nsga3}, superando a las configuraciones con PCX, las cuales se sitúan entre el 57,0\% y el 58,3\%. Por su parte, todas las configuraciones conservan niveles elevados de novedad y unicidad, con una leve ventaja para las variantes con PCX, las cuales alcanzan un 1,000 en unicidad en todos los algoritmos y valores de novedad cercanos a 0,995.
 
 A diferencia de los experimentos con dos objetivos donde PCX presentaba una ventaja exploratoria, la incorporación simultánea de la afinidad de unión y la bioactividad inhibitoria pChEMBL favoreció a las variantes con SBX. SBX explota de manera conservadora las regiones densas de validez en el espacio latente, generando soluciones viables y no dominadas de manera regular. En cambio, el mecanismo direccional de PCX genera descendientes hacia los extremos del espacio de búsqueda, produciendo una mayor cantidad de estructuras químicamente inválidas o fuera de las restricciones fisicoquímicas.
 
@@ -521,7 +521,7 @@ A diferencia de los experimentos con dos objetivos donde PCX presentaba una vent
 
 La Figura~\ref{fig:distribucion_propiedades} muestra la distribución de densidad de los cuatro objetivos de optimización en los frentes obtenidos por cada configuración.
 
-En el gráfico de \gls{qed} se aprecian las tendencias observadas. Las variantes con SBX concentran sus soluciones en un pico estrecho y elevado cerca de 0.88--0.94, mientras que PCX dispersa sus moléculas en un rango más amplio con valores menores de \gls{qed}. En la accesibilidad sintética (SA), todos los algoritmos ubican el grueso de sus soluciones en valores favorables (entre 1.8 y 2.5). Al mirar la afinidad de acoplamiento, las curvas de SBX se desplazan hacia energías más negativas, logrando una mayor densidad de soluciones con afinidades entre $-8$ y $-11\text{ kcal/mol}$. Finalmente, en la bioactividad predicha, todas las configuraciones sitúan su distribución por encima del umbral de 5.0, centradas entre 5.25 y 5.50 y llegando en algunos casos a valores superiores a 6, lo que indica que se requieren concentraciones en escala nanomolar para lograr la mitad del efecto deseado ($\text{IC}_{50}$).
+En el gráfico de \gls{qed} se aprecian las tendencias observadas. Las variantes con SBX concentran sus soluciones en un pico estrecho y elevado cerca de 0,88--0,94, mientras que PCX dispersa sus moléculas en un rango más amplio con valores menores de \gls{qed}. En la accesibilidad sintética (SA), todos los algoritmos ubican el grueso de sus soluciones en valores favorables (entre 1,8 y 2,5). Al mirar la afinidad de acoplamiento, las curvas de SBX se desplazan hacia energías más negativas, logrando una mayor densidad de soluciones con afinidades entre $-8$ y $-11\text{ kcal/mol}$. Finalmente, en la bioactividad predicha, todas las configuraciones sitúan su distribución por encima del umbral de 5,0, centradas entre 5,25 y 5,50 y llegando en algunos casos a valores superiores a 6, lo que indica que se requieren concentraciones en escala nanomolar para lograr la mitad del efecto deseado ($\text{IC}_{50}$).
 
 \subsubsection{Análisis de Convergencia}
 \label{subsubsec:convergencia}
@@ -535,7 +535,7 @@ En el gráfico de \gls{qed} se aprecian las tendencias observadas. Las variantes
 
 La Figura~\ref{fig:convergencia_multiobjetivo} muestra la evolución de los indicadores multiobjetivo a lo largo de las 100.000 evaluaciones, promediada sobre las cinco ejecuciones independientes.
 
-En el hipervolumen se observa un crecimiento rápido durante las primeras 20.000 evaluaciones en todas las configuraciones. A partir de esa etapa, \acrshort{nsga3} con SBX presenta un mejor comportamiento y sostiene el valor más alto hasta concluir la búsqueda ($\approx 0.514$). Por su parte, las variantes con PCX se estabilizan alrededor de las 40.000 evaluaciones. La diferencia entre operadores se hace todavía más clara en los indicadores $\text{IGD}^+$ y $\epsilon^+$. Aunque todas las configuraciones inician en valores semejantes ($\text{IGD}^+ \approx 0.24$), las variantes con SBX experimentan un descenso rápido, situándose por debajo de 0.05 antes de las 40.000 evaluaciones, lo cual se traduce en un mejor acercamiento al frente.
+En el hipervolumen se observa un crecimiento rápido durante las primeras 20.000 evaluaciones en todas las configuraciones. A partir de esa etapa, \acrshort{nsga3} con SBX presenta un mejor comportamiento y sostiene el valor más alto hasta concluir la búsqueda ($\approx 0.514$). Por su parte, las variantes con PCX se estabilizan alrededor de las 40.000 evaluaciones. La diferencia entre operadores se hace todavía más clara en los indicadores $\text{IGD}^+$ y $\epsilon^+$. Aunque todas las configuraciones inician en valores semejantes ($\text{IGD}^+ \approx 0.24$), las variantes con SBX experimentan un descenso rápido, situándose por debajo de 0,05 antes de las 40.000 evaluaciones, lo cual se traduce en un mejor acercamiento al frente.
 
 \begin{figure}[H]
     \centering
@@ -546,9 +546,9 @@ En el hipervolumen se observa un crecimiento rápido durante las primeras 20.000
 
 La Figura~\ref{fig:convergencia_quimica} presenta la evolución de las métricas de generación y de los cuatro objetivos de optimización a lo largo de la búsqueda.
 
-Las variantes con SBX mantienen una validez química elevada y estable (superior al 94\%--96\%) durante toda la optimización. En cambio, en las configuraciones con PCX la validez cae aceleradamente en las primeras 20.000 evaluaciones. En lo referente a la novedad, todas las variantes exhiben tasas elevadas cercanas a 1.0, con una leve ventaja para las variantes con PCX.
+Las variantes con SBX mantienen una validez química elevada y estable (superior al 94\%--96\%) durante toda la optimización. En cambio, en las configuraciones con PCX la validez cae aceleradamente en las primeras 20.000 evaluaciones. En lo referente a la novedad, todas las variantes exhiben tasas elevadas cercanas a 1,0, con una leve ventaja para las variantes con PCX.
 
-Al analizar la convergencia de los cuatro objetivos, SBX vuelve a presentar un mejor comportamiento. En cuanto a \gls{qed}, las configuraciones con SBX sostienen un promedio superior durante toda la búsqueda. En la afinidad de acoplamiento, las variantes con SBX continúan mejorando de manera sostenida hasta el final, alcanzando \acrshort{nsga3} y \acrshort{agemoea} los valores más bajos, seguidos por \acrshort{nsga2}. Asimismo, la convergencia de pChEMBL muestra que todas las configuraciones inician cerca de 5.0 y progresan hacia valores superiores, destacando \acrshort{nsga3} con SBX al superar consistentemente a sus contrapartes.
+Al analizar la convergencia de los cuatro objetivos, SBX vuelve a presentar un mejor comportamiento. En cuanto a \gls{qed}, las configuraciones con SBX sostienen un promedio superior durante toda la búsqueda. En la afinidad de acoplamiento, las variantes con SBX continúan mejorando de manera sostenida hasta el final, alcanzando \acrshort{nsga3} y \acrshort{agemoea} los valores más bajos, seguidos por \acrshort{nsga2}. Asimismo, la convergencia de pChEMBL muestra que todas las configuraciones inician cerca de 5,0 y progresan hacia valores superiores, destacando \acrshort{nsga3} con SBX al superar consistentemente a sus contrapartes.
 
 \subsubsection{Frentes de Pareto y Frente No Dominado Conjunto Global}
 \label{subsubsec:frentes_pareto_mrp1}
@@ -575,7 +575,7 @@ Para evaluar la capacidad exploratoria global, se combinan las soluciones obteni
 
 La Figura~\ref{fig:frentes_pareto_3d} muestra el Frente No Dominado Conjunto Global en cuatro perspectivas tridimensionales. En las gráficas se muestra el compromiso entre las propiedades optimizadas. Se preserva una alta densidad de moléculas en la franja de alto \gls{qed} ($\text{QED} > 0.85$) y síntesis accesible ($\text{SA} < 2.5$), alcanzando simultáneamente afinidades de acoplamiento por debajo de $-10\text{ kcal/mol}$. La escala de color refleja que al aumentar el valor de accesibilidad sintética también aumenta la afinidad predicha, por lo que el espacio de búsqueda presenta un compromiso entre estos dos objetivos.
 
-En cuanto al aporte de cada método al frente global, los tres algoritmos muestran complementariedad, \acrshort{nsga3} aporta un total de 682 soluciones (525 exclusivas), \acrshort{agemoea} contribuye con 514 soluciones (360 exclusivas) y \acrshort{nsga2} provee 464 soluciones (303 exclusivas). Asimismo, 205 moléculas (un 14.7\% del frente) fueron descubiertas conjuntamente por más de un algoritmo.
+En cuanto al aporte de cada método al frente global, los tres algoritmos muestran complementariedad, \acrshort{nsga3} aporta un total de 682 soluciones (525 exclusivas), \acrshort{agemoea} contribuye con 514 soluciones (360 exclusivas) y \acrshort{nsga2} provee 464 soluciones (303 exclusivas). Asimismo, 205 moléculas (un 14,7\% del frente) fueron descubiertas conjuntamente por más de un algoritmo.
 
 \subsubsection{Moléculas Representativas}
 \label{subsubsec:moleculas_representativas}
@@ -657,7 +657,7 @@ La bioactividad frente a \gls{mrp1} se evaluó mediante un modelo de Random Fore
 
 La Figura~\ref{fig:distribucion_pchembl} y la Tabla~\ref{tab:pchembl_predicho} presentan los estadísticos descriptivos y las funciones de densidad del pChEMBL predicho sobre las moléculas generadas por cada método.
 
-Como se observa, todas las configuraciones multiobjetivo desplazan su distribución por encima del umbral de 5.0, logrando que la gran mayoría de las moléculas generadas sean predichas como activas. Entre los algoritmos evaluados, \acrshort{nsga3} presenta los valores promedio más altos de bioactividad (tanto con SBX como con PCX) y alcanza el valor máximo del conjunto cercano a 6.28 en su variante con SBX, seguido de cerca por \acrshort{agemoea} y \acrshort{nsga2}.
+Como se observa, todas las configuraciones multiobjetivo desplazan su distribución por encima del umbral de 5,0, logrando que la gran mayoría de las moléculas generadas sean predichas como activas. Entre los algoritmos evaluados, \acrshort{nsga3} presenta los valores promedio más altos de bioactividad (tanto con SBX como con PCX) y alcanza el valor máximo del conjunto cercano a 6,28 en su variante con SBX, seguido de cerca por \acrshort{agemoea} y \acrshort{nsga2}.
 
 En cambio, los modelos de referencia (tanto base como con fine-tuning) concentran gran parte de sus soluciones alrededor o por debajo del umbral, produciendo una proporción importante de compuestos inactivos. Esto confirma que la optimización guiada en el espacio latente favorece la obtención de moléculas activas frente a~\gls{mrp1}.
 

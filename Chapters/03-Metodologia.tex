@@ -250,11 +250,11 @@ El procedimiento propuesto se organiza en una serie de etapas consecutivas que p
 
 \input{Figures/pipeline_preparacion_mrp1.tex}
 
-\textbf{Estructura de referencia.} Como no existen estructuras en el \textit{Protein Data Bank} que contengan los quimioterápicos de interés unidos al \gls{mrp1}, se recurre a la literatura. Se utiliza la estructura 8VUX, correspondiente a \gls{abcc1} (\gls{mrp1}) humano cocristalizado con \gls{cgamp} y determinada por microscopía crioelectrónica con una resolución de 3.54~Å (ángstroms, unidad de medida de distancias a escala atómica equivalente a $0.1\text{ nm}$)~\cite{shinde2025structures}. El \gls{cgamp} es un nucleótido cíclico mensajero que desempeña un papel clave en la inmunidad innata y en la respuesta contra infecciones y tumores. Si bien el \gls{cgamp} no es un quimioterapéutico, los autores del trabajo que reporta la estructura señalan que el sitio donde se une es el sitio de unión del sustrato de \gls{mrp1}, localizado en el dominio transmembrana TMD2~\cite{shinde2025structures}.
+\textbf{Estructura de referencia.} Como no existen estructuras en el \textit{Protein Data Bank} que contengan los quimioterápicos de interés unidos al \gls{mrp1}, se recurre a la literatura. Se utiliza la estructura 8VUX, correspondiente a \gls{abcc1} (\gls{mrp1}) humano cocristalizado con \gls{cgamp} y determinada por microscopía crioelectrónica con una resolución de 3,54~Å (ángstroms, unidad de medida de distancias a escala atómica equivalente a $0.1\text{ nm}$)~\cite{shinde2025structures}. El \gls{cgamp} es un nucleótido cíclico mensajero que desempeña un papel clave en la inmunidad innata y en la respuesta contra infecciones y tumores. Si bien el \gls{cgamp} no es un quimioterapéutico, los autores del trabajo que reporta la estructura señalan que el sitio donde se une es el sitio de unión del sustrato de \gls{mrp1}, localizado en el dominio transmembrana TMD2~\cite{shinde2025structures}.
 
 \textbf{Preparación del receptor.} Puesto que la proteína en la estructura 8VUX se encuentra como un homodímero (proteína formada por la unión de dos subunidades idénticas), los experimentos de esta tesina se centran únicamente en la cadena B como receptor. Sobre esta se eliminan el \gls{cgamp}, el hemisuccinato de colesterol y las moléculas de agua. Posteriormente se añaden los átomos de hidrógeno, se asignan los estados de protonación estándar de cada residuo y las cargas parciales, y se genera el archivo en formato PDBQT con Meeko~\cite{santosmartins2025meeko}. El receptor resultante comprende 1005 residuos y 9587 átomos, de los cuales 1658 son hidrógenos polares.
 
-\textbf{Identificación del sitio de unión.} Se procede a identificar los sitios drogables de 8VUX posteriormente a la separación de la proteína del ligando, con énfasis en TMD2 por su asociación con el sitio de unión del sustrato. Para ello se utiliza FPocketWeb~\cite{kochnev2022fpocketweb}, que arrojó como resultado una cavidad drogable en TMD2, el bolsillo número 78, con una drogabilidad reportada de 0.738 (probabilidad de drogabilidad elevada), y que además coincide con el sitio de unión del \gls{cgamp}. Como resultado, se selecciona el bolsillo 78 como sitio de unión probable de los quimioterápicos. Los demás bolsillos con elevada drogabilidad no se consideran porque corresponden a las cavidades donde se une el \gls{atp} para accionar el mecanismo de extracción de \gls{mrp1}.
+\textbf{Identificación del sitio de unión.} Se procede a identificar los sitios drogables de 8VUX posteriormente a la separación de la proteína del ligando, con énfasis en TMD2 por su asociación con el sitio de unión del sustrato. Para ello se utiliza FPocketWeb~\cite{kochnev2022fpocketweb}, que arrojó como resultado una cavidad drogable en TMD2, el bolsillo número 78, con una drogabilidad reportada de 0,738 (probabilidad de drogabilidad elevada), y que además coincide con el sitio de unión del \gls{cgamp}. Como resultado, se selecciona el bolsillo 78 como sitio de unión probable de los quimioterápicos. Los demás bolsillos con elevada drogabilidad no se consideran porque corresponden a las cavidades donde se une el \gls{atp} para accionar el mecanismo de extracción de \gls{mrp1}.
 
 \textbf{Docking ciego y elección de los aminoácidos flexibles.} Como no existe una estructura que cocristalice \gls{mrp1} con los quimioterápicos de interés, los aminoácidos relevantes se identifican de manera computacional. Para ello se utiliza AutoDock Vina~\cite{trott2010vina,eberhardt2021vina} en un docking ciego sobre el bolsillo 78, con el irinotecán como ligando de referencia (PubChem, CID 60838), con el objetivo de determinar las poses más probables y los aminoácidos con los que más interacciona. Vina se configuró con un centro en $(164.6835,\ 130.2140,\ 120.1165)$~Å y una caja de $29.2 \times 35.6 \times 35.0$~Å, una exhaustividad de 32 y la generación de 100 poses.
 
@@ -308,19 +308,19 @@ Como paso siguiente se realiza un docking sesgado, considerando como flexibles l
 \toprule
 \textbf{Residuo} & \textbf{Distancia mínima (\AA)} & \textbf{Pares de átomos $\le$ 4~\AA} \\
 \midrule
-TYR1243 & 2.79 & 11 \\
-TRP1246 & 2.98 & 11 \\
-ASN590  & 3.15 & 2 \\
-VAL554  & 3.17 & 10 \\
-PHE558  & 3.51 & 3 \\
-ARG593  & 3.61 & 7 \\
-THR1242 & 3.63 & 1 \\
-LEU596  & 8.51 & 0 \\
+TYR1243 & 2,79 & 11 \\
+TRP1246 & 2,98 & 11 \\
+ASN590  & 3,15 & 2 \\
+VAL554  & 3,17 & 10 \\
+PHE558  & 3,51 & 3 \\
+ARG593  & 3,61 & 7 \\
+THR1242 & 3,63 & 1 \\
+LEU596  & 8,51 & 0 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-El TRP1246 presenta 11 pares de átomos con distancias de 2.98 a 3.87~Å en su anillo indólico, lo que es compatible con un contacto de tipo aromático. En la TYR1243, el grupo hidroxilo se ubica a 2.79~Å de un carbono del ligando y a 3.28~Å de un nitrógeno, lo que corresponde a un contacto muy cercano. La VAL554 presenta contactos con el carbono CG1 entre 3.17 y 3.51~Å, compatibles con un entorno hidrofóbico, y la ASN590 ubica su oxígeno OD1 a 3.15~Å de un carbono del ligando, lo que indica proximidad pero no demuestra un puente de hidrógeno. La LEU596 se encuentra a 8.51~Å y no participa directamente en esta pose. En consecuencia, se toman TYR1243, TRP1246 y VAL554 como núcleo de la región de interacción, manteniendo ASN590 y ARG593 como residuos de interés para el reconocimiento del ligando, mientras que THR1242 y PHE558 contribuyen a delimitar la geometría de la cavidad sin asumirlos como anclajes esenciales.
+El TRP1246 presenta 11 pares de átomos con distancias de 2,98 a 3,87~Å en su anillo indólico, lo que es compatible con un contacto de tipo aromático. En la TYR1243, el grupo hidroxilo se ubica a 2,79~Å de un carbono del ligando y a 3,28~Å de un nitrógeno, lo que corresponde a un contacto muy cercano. La VAL554 presenta contactos con el carbono CG1 entre 3,17 y 3,51~Å, compatibles con un entorno hidrofóbico, y la ASN590 ubica su oxígeno OD1 a 3,15~Å de un carbono del ligando, lo que indica proximidad pero no demuestra un puente de hidrógeno. La LEU596 se encuentra a 8,51~Å y no participa directamente en esta pose. En consecuencia, se toman TYR1243, TRP1246 y VAL554 como núcleo de la región de interacción, manteniendo ASN590 y ARG593 como residuos de interés para el reconocimiento del ligando, mientras que THR1242 y PHE558 contribuyen a delimitar la geometría de la cavidad sin asumirlos como anclajes esenciales.
 
 \textbf{Caja de docking para la generación de candidatos.} Para los experimentos de diseño se configura una caja de docking con centro en $(166,\ 125,\ 124)$~Å y dimensiones de $25 \times 22 \times 25$~Å, determinada a partir de los aminoácidos con mayor prevalencia en la interacción del irinotecán con el sitio de unión.
 
@@ -426,7 +426,7 @@ Con el fin de evaluar y caracterizar las moléculas candidatas obtenidas para \g
 
 \textbf{Validación de poses de acoplamiento.} Para evaluar las moléculas obtenidas del frente de Pareto, se utiliza PoseBusters~\cite{buttenschoen2024posebusters}, que permite verificar si las conformaciones generadas son físicamente viables. La métrica corresponde al porcentaje de moléculas que supera las 20 pruebas de la herramienta.
 
-\textbf{Predicción de potencia y bioactividad inhibitoria.} Se entrenó un modelo de \textit{Random Forest} con inhibidores conocidos de \gls{mrp1} extraídos de ChEMBL~\cite{mendez2019chembl} para predecir la bioactividad de las moléculas. Como métrica se utiliza el valor pChEMBL predicho, fijando un umbral de 5.0 para considerar activo al compuesto.
+\textbf{Predicción de potencia y bioactividad inhibitoria.} Se entrenó un modelo de \textit{Random Forest} con inhibidores conocidos de \gls{mrp1} extraídos de ChEMBL~\cite{mendez2019chembl} para predecir la bioactividad de las moléculas. Como métrica se utiliza el valor pChEMBL predicho, fijando un umbral de 5,0 para considerar activo al compuesto.
 
 \textbf{Perfil farmacocinético, fisicoquímico y toxicológico.} Se utilizó ADMET-AI~\cite{swanson2024admetai} para predecir las propiedades de los candidatos a partir de modelos de \textit{Therapeutics Data Commons}. Se analizaron descriptores de absorción y permeabilidad intestinal (HIA, Caco-2, PAMPA y biodisponibilidad oral), propiedades fisicoquímicas de solubilidad y lipofilicidad ($\log P$), y el perfil de toxicidad clínica y aguda ($\text{ClinTox}$ y $\text{LD}_{50}$).
 
