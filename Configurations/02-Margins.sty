@@ -12,3 +12,12 @@
 \setlength{\headheight}{20pt} % Set header height
 
 \raggedbottom % Evita que LaTeX estire verticalmente páginas cortas o con títulos agrupados
+
+%%% Parámetros de flotantes (optimizan la ubicación de figuras y tablas para evitar huecos en blanco) %%%
+\renewcommand{\topfraction}{0.85}       % Fracción máx. de la página para flotantes en el tope
+\renewcommand{\bottomfraction}{0.80}    % Fracción máx. de la página para flotantes al pie
+\renewcommand{\textfraction}{0.15}      % Fracción mín. de texto por página
+\renewcommand{\floatpagefraction}{0.70} % Ocupación mín. para generar una página dedicada de figuras
+\setcounter{topnumber}{3}               % Máx. flotantes en el tope
+\setcounter{bottomnumber}{2}            % Máx. flotantes al pie
+\setcounter{totalnumber}{4}             % Máx. flotantes por página
