@@ -1,7 +1,7 @@
 \chapter{Metodología}
 \label{ch:metodologia}
 
-En este capítulo se describe la metodología empleada en esta tesina de grado. Se explica el proceso de ajuste de hiperparámetros y evaluación de metaheurísticas multiobjetivo en el recorrido del espacio latente del modelo generativo, seguido por la formulación del problema de diseño de inhibidores dirigidos a la inhibición de la extracción de quimioterapéuticos del interior de la célula tumoral por parte de \gls{mrp1}.
+En este capítulo se describe la metodología empleada en esta tesina de grado. Se explica el desarrollo y evaluación del modelo generativo \gls{vae}, seguido por el proceso de ajuste de hiperparámetros y evaluación de metaheurísticas multiobjetivo en su espacio latente, y finalmente la formulación del problema de diseño de inhibidores dirigidos a la inhibición de la extracción de quimioterapéuticos del interior de la célula tumoral por parte de \gls{mrp1}.
 
 \section{Visión General de la Metodología}
 \label{sec:vision_general}
@@ -51,18 +51,14 @@ En este trabajo se exploran y comparan dos representaciones lineales: \gls{smile
 
 Esta representación en secuencias de tokens sirve como base para el proceso de decodificación, mediante el cual el modelo reconstruye o genera nuevas moléculas a partir del espacio latente. Para ello, la red decodificadora toma un vector latente $\mathbf{z}$ muestreado en el espacio continuo y genera de manera autorregresiva una nueva cadena token a token, iniciando con el delimitador \texttt{[SOS]} hasta emitir \texttt{[EOS]}. Finalmente, la secuencia obtenida se interpreta como una estructura molecular bajo las reglas de la representación empleada (\gls{smiles} o \gls{selfies}).
 
-\section{FASE 1: Ajuste de Hiperparámetros y Evaluación en Fármacos Genéricos}
-\label{sec:fase1_ajuste}
-\label{sec:farmacos_genericos}
-\label{sec:ajuste_hiperparametros}
-
-En esta sección se describe la primera etapa metodológica, orientada a dos objetivos principales: seleccionar la mejor configuración del modelo generativo (\gls{vae}) a través de un espacio de búsqueda estructurado, y calibrar los hiperparámetros de las metaheurísticas multiobjetivo al optimizar propiedades generales en su espacio latente.
-
-\subsection{Ajustes de Hiperparámetros del VAE}
+\section{Etapa 1: Desarrollo, Ajuste y Selección del Modelo Generativo (VAE)}
+\label{sec:etapa1_vae}
 \label{subsec:hiperparametros_vae}
 \label{subsubsec:hiperparametros_vae}
 \label{sec:vae_metodologia}
 \label{sec:modelo_generativo}
+
+En esta sección se describe la primera etapa metodológica, orientada a determinar y seleccionar la mejor configuración del modelo generativo (\gls{vae}) a través de un espacio de búsqueda estructurado.
 
 Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, el espacio de búsqueda de hiperparámetros se dividió en dos partes, totalizando 72 entrenamientos independientes. Se optó por evaluar primero la estructura del autoencoder y posteriormente sus parámetros de optimización, evitando así escalar el tiempo de cómputo de forma desmedida. Así, la exploración inicial define la representación y la arquitectura base, y la optimización posterior afina la tasa de aprendizaje y el tamaño de lote en las mejores configuraciones:
 
@@ -97,13 +93,13 @@ Batch 128) & Capas ocultas & 1, 2 & \\
 
 \textbf{Esquema de entrenamiento y regularización.} Todos los modelos se entrenaron utilizando el optimizador Adam~\cite{kingma2014adam}. Para evitar el colapso del espacio latente, se aplicó un aumento gradual del peso de la divergencia KL, inspirado en la implementación \textit{Chemical VAE}~\cite{GBWHLDSA18} y en el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. En este esquema, el parámetro $\beta$ se incrementa linealmente desde 0 hasta un valor máximo de $0.3$ durante el primer 25\% de las épocas de entrenamiento.
 
-\subsection{Ajuste de Hiperparámetros de las Metaheurísticas}
-\label{subsec:ajuste_metaheuristicas}
+\section{Etapa 2: Optimización Multiobjetivo en el Espacio Latente}
+\label{sec:etapa2_optimizacion}
 \label{sec:optimizacion_multiobjetivo}
 
-Una vez determinado el modelo generativo base, esta subsección aborda la calibración de las metaheurísticas multiobjetivo en su espacio latente. Se presentan los cinco algoritmos evaluados, las funciones objetivo y restricciones químicas consideradas, y el diseño experimental adoptado para ajustar sus parámetros.
+Una vez determinado el modelo generativo base, esta sección aborda la segunda etapa metodológica, orientada a explorar su espacio latente continuo mediante metaheurísticas multiobjetivo. A continuación se presentan los cinco algoritmos evaluados, para luego detallar las dos actividades principales de esta etapa: el ajuste y evaluación en la generación de moléculas genéricas, y el diseño dirigido de inhibidores de \gls{mrp1}.
 
-\subsubsection{Metaheurísticas Consideradas}
+\subsection{Metaheurísticas Consideradas}
 \label{subsec:metaheuristicas}
 \label{subsubsec:metaheuristicas}
 \label{sec:metaheuristicas}
@@ -119,6 +115,12 @@ Se consideran cinco algoritmos metaheurísticos multiobjetivo para la experiment
 \textbf{\acrshort{cmopso} (Competitive Mechanism Based Multi-objective Particle Swarm Optimizer).} Pertenece a la familia de la optimización por enjambre de partículas. El rendimiento de los optimizadores convencionales de esta familia depende en gran medida de las mejores soluciones globales y personales guardadas en un archivo externo. \acrshort{cmopso}, en cambio, selecciona en cada generación un conjunto de partículas élite del propio enjambre, según el frente de no dominancia y la distancia de apiñamiento, y actualiza cada partícula mediante una competencia por pares entre dos élites elegidas al azar: gana la que forma el ángulo menor con la partícula~\cite{zhang2018competitive}.
 
 \textbf{\acrshort{agemoea} (Adaptive Geometry Estimation Based MOEA).} Parte de que el desempeño de los algoritmos multiobjetivo depende de la geometría del frente de Pareto, que puede ser una hipersuperficie euclídea, esférica o hiperbólica. Sobre el esquema de \acrshort{nsga2}, reemplaza la distancia de apiñamiento por un puntaje de supervivencia que combina diversidad y proximidad mediante una norma $L_p$ adaptativa. La estimación de dicha geometría se realiza mediante un procedimiento de complejidad $O(n \times N)$, donde $n$ es el número de objetivos y $N$ el tamaño de la población. De este modo mantiene un rendimiento competitivo ante frentes de geometrías diversas, donde los algoritmos que suponen una geometría fija tienden a degradarse~\cite{panichella2019adaptive}.
+
+\subsection{Actividad 1: Ajuste de Hiperparámetros y Evaluación en Fármacos Genéricos}
+\label{sec:fase1_ajuste}
+\label{sec:farmacos_genericos}
+\label{sec:ajuste_hiperparametros}
+\label{subsec:ajuste_metaheuristicas}
 
 \subsubsection{Funciones Objetivo y Restricciones}
 \label{subsec:fo_genericos}
@@ -223,10 +225,10 @@ Tasa de velocidad máxima ($v_{\text{max}}$) & 0,1; 0,2; 0,35 \\
 
 Donde, $\gamma$ fija la cantidad de partículas que compiten para orientar la búsqueda y $v_{\text{max}}$ regula la velocidad máxima de desplazamiento.
 
-\subsubsection{Etapas del Protocolo Experimental}
+\subsubsection{Fases del Protocolo Experimental}
 \label{subsubsec:etapas_protocolo}
 
-El estudio comprende cuatro etapas. Se utiliza el hipervolumen como criterio principal para elegir las mejores configuraciones porque evalúa a la vez la convergencia hacia el frente de Pareto óptimo y la diversidad de las soluciones, sin requerir un frente de referencia previo:
+El estudio comprende cuatro fases. Se utiliza el hipervolumen como criterio principal para elegir las mejores configuraciones porque evalúa a la vez la convergencia hacia el frente de Pareto óptimo y la diversidad de las soluciones, sin requerir un frente de referencia previo:
 
 \begin{enumerate}
     \item \textbf{Estudio de hiperparámetros:} Se ejecutan 20 semillas independientes por configuración ($(108 \times 4 + 81) \times 20 = \text{10.260}$ ejecuciones en total). Para cada combinación de operadores (\texttt{pcx/pm}, \texttt{pcx/gauss}, \texttt{sbx/pm}, \texttt{sbx/gauss}) en los algoritmos genéticos y para \acrshort{cmopso}, se selecciona la mejor configuración interna basándose en el menor rango medio de hipervolumen entre las 20 semillas.
@@ -237,13 +239,13 @@ El estudio comprende cuatro etapas. Se utiliza el hipervolumen como criterio pri
 
 En total, el estudio comprende 10.260 ejecuciones independientes, cada una con un número fijo de 100.000 evaluaciones.
 
-\section{FASE 2: Diseño de Inhibidores de la Proteína MRP1}
+\subsection{Actividad 2: Diseño de Inhibidores de la Proteína MRP1}
 \label{sec:fase2_mrp1}
 \label{sec:diseno_inhibidores_mrp1}
 
-Una vez seleccionada la mejor configuración de las metaheurísticas, se aplica el esquema tomando como diana a \gls{mrp1}, con el objetivo específico de inhibir la expulsión del irinotecán del espacio intracelular. En esta sección se describe la preparación de la proteína y la identificación de su sitio de unión, la formulación de las funciones objetivo junto con el acoplamiento molecular, y el protocolo de generación de los candidatos.
+Una vez seleccionada la mejor configuración de las metaheurísticas, se aplica el esquema tomando como diana a \gls{mrp1}, con el objetivo específico de inhibir la expulsión del irinotecán del espacio intracelular. En este apartado se describe la preparación de la proteína y la identificación de su sitio de unión, la formulación de las funciones objetivo junto con el acoplamiento molecular, y el protocolo de generación de los candidatos.
 
-\subsection{Preparación de la Proteína y Sitio de Unión}
+\subsubsection{Preparación de la Proteína y Sitio de Unión}
 \label{subsec:prep_proteina}
 
 El procedimiento propuesto se organiza en una serie de etapas consecutivas que permiten definir las condiciones necesarias para evaluar las moléculas generadas. Como se muestra en la Figura~\ref{fig:pipeline_preparacion_mrp1}, las primeras etapas se centran en la selección y preparación del receptor, seguidas por la identificación y caracterización del sitio de unión mediante simulaciones con un ligando de referencia. Esta información se utiliza posteriormente para delimitar la región de búsqueda que se empleará en los experimentos de docking. Por último, se preparan las estructuras tridimensionales de las moléculas candidatas para llevar a cabo dicha evaluación.
@@ -326,7 +328,7 @@ El TRP1246 presenta 11 pares de átomos con distancias de 2,98 a 3,87~Å en su a
 
 \textbf{Preparación de las moléculas candidatas.} Las secuencias lineales decodificadas por el \gls{vae} se convierten a su estructura tridimensional con RDKit~\cite{landrum2026rdkit} y se preparan con Meeko~\cite{santosmartins2025meeko}, que asigna los tipos de átomo, las cargas parciales y las torsiones activas.
 
-\subsection{Funciones Objetivo}
+\subsubsection{Funciones Objetivo}
 \label{subsec:fo_mrp1}
 
 Para el diseño dirigido hacia \gls{mrp1} se añaden la energía de unión y el pChEMBL predicho junto a \gls{qed} y \gls{sas}, con el fin de guiar la búsqueda hacia la interacción con la diana objetivo. De este modo, se optimizan simultáneamente sobre el espacio latente del \gls{vae}:
@@ -342,7 +344,7 @@ Cada molécula se acopla con el receptor rígido descrito en la subsección~\ref
 
 Se mantiene la restricción de complejidad estructural $F_{\text{sp3}} \ge 0.30$ descrita en la sección~\ref{subsec:fo_genericos}, evaluada bajo el mismo criterio de dominancia restringida. Si una molécula no puede prepararse o el acoplamiento no produce una pose, se le asigna la máxima penalización en el objetivo de energía ($+1.0$~kcal/mol). Para el cálculo del hipervolumen, la energía de unión se normaliza entre $-15.0$ y $+1.0$~kcal/mol.
 
-\subsection{Protocolo de Generación de Candidatos}
+\subsubsection{Protocolo de Generación de Candidatos}
 \label{subsec:protocolo_mrp1}
 
 Se ejecuta la búsqueda dirigida en el espacio latente con las mejores configuraciones seleccionadas en la sección~\ref{sec:farmacos_genericos}, con el mismo total de 100.000 evaluaciones por ejecución y 5 semillas independientes. El acoplamiento se realiza con el receptor rígido, dentro de la caja de docking definida en la subsección~\ref{subsec:prep_proteina}.
