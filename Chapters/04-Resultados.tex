@@ -18,11 +18,11 @@ En primer lugar, si bien la representación de \gls{selfies} cumple con su dise�
 
 En cuanto a la arquitectura, las redes \gls{lstm} soportaron mejor los entrenamientos prolongados. Al pasar de 100 a 300 épocas, tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al alcanzar las 300 épocas, reduciendo fuertemente la validez general de las moléculas generadas. Esta mayor estabilidad de las redes \gls{lstm} podría explicarse por la presencia de una compuerta de salida que permite regular la magnitud de su memoria antes de transmitirla. En contraste, al carecer \gls{gru} de este mecanismo \cite{chung2014empirical}, es posible que en épocas avanzadas se produzca un conflicto numérico con la regularización del \gls{vae} que favorezca el colapso del modelo. Cabe destacar que las ejecuciones evaluadas corresponden a configuraciones experimentales individuales y no a repeticiones de cada una, por lo que la variabilidad entre entrenamientos no queda caracterizada.
 
-Para optimizar la tasa de aprendizaje y el tamaño de lote, se seleccionaron cuatro configuraciones con dimensión latente de 256, correspondientes a la mejor con \gls{gru} y la mejor con \gls{selfies} a 100 épocas, junto con las dos mejores con \gls{lstm} a 300 épocas. Dado que todos los modelos seleccionados comparten este espacio latente, dicho valor se omite en su nomenclatura. La Tabla~\ref{tab:mejores_modelos_vae} presenta estas configuraciones junto con sus métricas de generación (validez, unicidad, novedad y filtros) y de fidelidad molecular (\gls{fcd}, diversidad interna y distancias de SA y \gls{qed}).
+Para optimizar la tasa de aprendizaje y el tamaño de lote, se seleccionaron cuatro configuraciones con dimensión latente de 256, correspondientes a la mejor con \gls{gru} y la mejor con \gls{selfies} a 100 épocas, junto con las dos mejores con \gls{lstm} a 300 épocas. Dado que todos los modelos seleccionados comparten este espacio latente, dicho valor se omite en su nomenclatura. La Tabla~\ref{tab:mejores_modelos_vae} presenta estas configuraciones junto con sus métricas de generación (validez, unicidad, novedad y filtros) y de fidelidad molecular (\gls{fcd}, diversidad interna y distancias de SA y \gls{qed}), calculadas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES.
 
 \begin{table}[htbp]
 \centering
-\caption{Configuraciones seleccionadas para la optimización del entrenamiento (espacio latente de 256~dimensiones).}
+\caption{Configuraciones seleccionadas para la optimización del entrenamiento (espacio latente de 256~dimensiones). Métricas calculadas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES.}
 \label{tab:mejores_modelos_vae}
 \begin{tabular}{lccccccccc}
 \toprule
