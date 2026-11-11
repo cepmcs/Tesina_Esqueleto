@@ -18,7 +18,7 @@ En primer lugar, si bien la representación de \gls{selfies} cumple con su dise�
 
 En cuanto a la arquitectura, las redes \gls{lstm} soportaron mejor los entrenamientos prolongados. Al pasar de 100 a 300 épocas, tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al alcanzar las 300 épocas, reduciendo fuertemente la validez general de las moléculas generadas. Esta mayor estabilidad de las redes \gls{lstm} podría explicarse por la presencia de una compuerta de salida que permite regular la magnitud de su memoria antes de transmitirla. En contraste, al carecer \gls{gru} de este mecanismo \cite{chung2014empirical}, es posible que en épocas avanzadas se produzca un conflicto numérico con la regularización del \gls{vae} que favorezca el colapso del modelo. Cabe destacar que las ejecuciones evaluadas corresponden a configuraciones experimentales individuales y no a repeticiones de cada una, por lo que la variabilidad entre entrenamientos no queda caracterizada.
 
-La etapa de optimización del entrenamiento se centra en probar diferentes tasas de aprendizaje y tamaños de lote. Por esta razón, se seleccionaron aquellas configuraciones que mostraron tanto una buena calidad estructural como un mejor balance en las métricas de calidad molecular (\gls{fcd}, \gls{sas}, \gls{qed}). Dado que todos los modelos seleccionados comparten un espacio latente de 256 dimensiones, este valor se omitirá en su nomenclatura. La Tabla~\ref{tab:mejores_modelos_vae} resume las configuraciones elegidas.
+Para optimizar la tasa de aprendizaje y el tamaño de lote, se seleccionaron cuatro configuraciones con dimensión latente de 256, correspondientes a la mejor con \gls{gru} y la mejor con \gls{selfies} a 100 épocas, junto con las dos mejores con \gls{lstm} a 300 épocas. Dado que todos los modelos seleccionados comparten este espacio latente, dicho valor se omite en su nomenclatura. La Tabla~\ref{tab:mejores_modelos_vae} resume las configuraciones elegidas.
 
 \begin{table}[htbp]
 \centering
@@ -212,7 +212,7 @@ En cuanto a las moléculas obtenidas (que se muestran en detalle en las Figuras~
 \label{subsec:comparacion_final}
 \label{subsec:calidad_gen_moleculas}
 
-En esta sección se comparan los cinco algoritmos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead}, \acrshort{agemoea} y \acrshort{cmopso}) seleccionando la mejor configuración de cada uno a partir del estudio de hiperparámetros y operadores presentado anteriormente. Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead} y \acrshort{agemoea}) emplean la combinación pcx\_pm, acorde a las comparaciones de la Sección~\ref{subsec:comparativa_operadores}. \acrshort{cmopso} usa su configuración de hiperparámetros ganadora ($100\times 1000$, $\text{élite}=10$, $p_m=0.031$, $v_{\text{max}}=0.1$).
+En esta sección se comparan los cinco algoritmos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead}, \acrshort{agemoea} y \acrshort{cmopso}) seleccionando la mejor configuración de cada uno a partir del estudio de hiperparámetros y operadores presentado anteriormente. Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead} y \acrshort{agemoea}) emplean la combinación pcx\_pm, acorde a las comparaciones de la Sección~\ref{subsec:comparativa_operadores}. \acrshort{cmopso} usa su configuración de hiperparámetros ganadora ($100\times \text{1.000}$, $\text{élite}=10$, $p_m=0.031$, $v_{\text{max}}=0.1$).
 
 \subsubsection{Indicadores Multiobjetivo y Químicos}
 
@@ -566,12 +566,12 @@ La Figura~\ref{fig:frentes_por_configuracion} presenta los frentes no dominados 
 
 Se aprecian contrastes definidos entre ambos operadores de cruce. Las variantes con SBX generan frentes con un número considerablemente mayor de soluciones, concentrándose en la región de alto \gls{qed} ($\text{QED} > 0.80$) y bajo SA ($\text{SA} < 2.5$). Además, estas configuraciones concentran una alta proporción de puntos con afinidades muy favorables. Por el contrario, las variantes con PCX dispersan sus soluciones y exploran zonas de menor similitud a fármacos conocidos ($\text{QED} < 0.60$), logrando algunas moléculas con baja complejidad sintética ($\text{SA} \approx 1.2$), pero con afinidades de unión más débiles.
 
-Para evaluar la capacidad exploratoria global, se combinan las soluciones obtenidas por las variantes con PCX y SBX en los tres algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea}) a lo largo de las cinco ejecuciones independientes. Se recalcula la no dominancia considerando los cuatro objetivos simultáneos, conformando un Frente No Dominado Conjunto Global de 1396 moléculas únicas.
+Para evaluar la capacidad exploratoria global, se combinan las soluciones obtenidas por las variantes con PCX y SBX en los tres algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea}) a lo largo de las cinco ejecuciones independientes. Se recalcula la no dominancia considerando los cuatro objetivos simultáneos, conformando un Frente No Dominado Conjunto Global de 1.396 moléculas únicas.
 
 \begin{figure}[H]
     \centering
     \makebox[\textwidth][c]{\includegraphics[width=1.05\textwidth]{Figures/mrp1/5_frente_3d_pchembl_conjunto.pdf}}
-    \caption{Frente No Dominado Conjunto Global (1396 soluciones) en el espacio tridimensional de objetivos (\gls{qed}, SA y afinidad de docking en kcal/mol), con el valor de pChEMBL predicho indicado mediante la escala de color, visualizado desde cuatro ángulos tridimensionales distintos.}
+    \caption{Frente No Dominado Conjunto Global (1.396 soluciones) en el espacio tridimensional de objetivos (\gls{qed}, SA y afinidad de docking en kcal/mol), con el valor de pChEMBL predicho indicado mediante la escala de color, visualizado desde cuatro ángulos tridimensionales distintos.}
     \label{fig:frentes_pareto_3d}
 \end{figure}
 
