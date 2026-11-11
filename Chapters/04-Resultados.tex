@@ -650,7 +650,7 @@ La Figura~\ref{fig:posebusters} presenta la tasa de validez obtenida en las prue
 
 La bioactividad frente a \gls{mrp1} se evaluó mediante un modelo de Random Forest entrenado con inhibidores de ChEMBL~\cite{mendez2019chembl}. Como métrica se utiliza el valor de pChEMBL predicho, fijando el umbral estándar de $5.0$ ($\text{IC}_{50} \le 10\,\mu\text{M}$) empleado habitualmente para clasificar compuestos activos en ChEMBL~\cite{mervin2021probabilistic}.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.88\textwidth]{Figures/mrp1/pchembl.pdf}
     \caption{Distribución de densidad (KDE) del valor pChEMBL predicho para cada algoritmo y modelo de referencia. La línea vertical discontinua indica el umbral de actividad biológica ($\text{pChEMBL} \ge 5.0$).}
