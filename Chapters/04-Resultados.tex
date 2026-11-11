@@ -681,6 +681,7 @@ El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando AD
 
 La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para los seis descriptores con mayor variabilidad (permeabilidad epitelial, biodisponibilidad oral, solubilidad acuosa, toxicidad clínica, toxicidad aguda y lipofilicidad), mientras que la Tabla~\ref{tab:admet_resumen} resume los valores medios de todas las propiedades \gls{admet} evaluadas, incluyendo la absorción intestinal humana HIA y la permeabilidad pasiva PAMPA:
 
+\needspace{4\baselineskip}
 \paragraph{Absorción y Permeabilidad.}
 \begin{itemize}
     \item \textbf{Absorción Intestinal Humana (HIA\_Hou):} Estima la probabilidad de absorción oral (favorable $>0.8$). Todas las variantes multiobjetivo alcanzan valores óptimos de $1.0$, situándose ligeramente por encima de los modelos de referencia.
@@ -689,12 +690,14 @@ La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para 
     \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma):} Probabilidad de alcanzar la circulación sistémica vía oral (favorable $>0.50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
 \end{itemize}
 
+\needspace{4\baselineskip}
 \paragraph{Propiedades Fisicoquímicas.}
 \begin{itemize}
     \item \textbf{Solubilidad Acuosa (Solubility\_AqSolDB):} Expresada en $\log(\text{mol/L})$, donde valores entre $-4$ y $-2$ indican solubilidad moderada y $<-4$ baja solubilidad. Las configuraciones multiobjetivo se mantienen dentro del rango moderado, con \acrshort{nsga2} (SBX) alcanzando la mejor solubilidad y evitando los valores deficientes observados en la GAN con fine-tuning.
     \item \textbf{Lipofilicidad ($\log P$):} Coeficiente de partición octanol/agua (rango ideal entre $0$ y $3$). Como resultado de la restricción aplicada, las moléculas optimizadas convergen de manera homogénea en valores cercanos a $2.8$, lo que favorece el cruce de membranas sin comprometer la solubilidad, a diferencia de los modelos con fine-tuning que superan el umbral recomendado.
 \end{itemize}
 
+\needspace{4\baselineskip}
 \paragraph{Toxicidad y Seguridad.}
 \begin{itemize}
     \item \textbf{Toxicidad Clínica (ClinTox):} Probabilidad estimada de fracaso o toxicidad en ensayos clínicos (perfil seguro $<0.30$). Las configuraciones multiobjetivo presentan probabilidades bajas de riesgo, destacando las variantes con PCX (en especial \acrshort{nsga2} y \acrshort{nsga3}) con los valores más seguros, mejorando consistentemente a los modelos con fine-tuning.

@@ -100,6 +100,7 @@
 \RequirePackage{xltabular} % Same as tabularx but to be used in long tables.
 \RequirePackage{booktabs} % Professional table styling.
 \RequirePackage{multirow} % Support for multirow cells in tables.
+\RequirePackage{needspace} % Keeps run-in headings together with the text that follows.
 \RequirePackage{longtable} % Tables spanning multiple pages.
 \RequirePackage{pdflscape} % Landscape environment for wide tables and figures.
 \RequirePackage{caption} % Customisation of captions.
