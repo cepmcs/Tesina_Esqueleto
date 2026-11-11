@@ -199,7 +199,7 @@ Probabilidad de mutación ($p_m$) & 0,004; 0,012; 0,031 \\
 \end{tabular}
 \end{table}
 
-Para el cruce se evalúan valores de $0.7$, $0.9$ y $1.0$, tomando como referencia el valor $p_c = 0.9$ propuesto en~\cite{deb2002nsga2}. Las probabilidades de mutación parten de la regla $p_m = 1/n$~\cite{deb2002nsga2}, que con $n = 256$ dimensiones da $p_m \approx 0.004$; los niveles $0.012$ y $0.031$ corresponden a perturbar unas 3 y 8 dimensiones por individuo.
+Para el cruce se evalúan valores de $0.7$, $0.9$ y $1.0$, tomando como referencia el valor $p_c = 0.9$ propuesto en~\cite{deb2002nsga2}. Las probabilidades de mutación parten de la regla $p_m = 1/n$~\cite{deb2002nsga2}, que con $n = 256$ dimensiones da $p_m \approx 0.004$, los niveles $0.012$ y $0.031$ corresponden a perturbar unas 3 y 8 dimensiones por individuo.
 
 \subsubsection{Operadores e Hiperparámetros de CMOPSO}
 \label{subsubsec:hp_cmopso}
@@ -260,7 +260,7 @@ El procedimiento propuesto se organiza en una serie de etapas consecutivas que p
 
 \textbf{Docking ciego y elección de los aminoácidos flexibles.} Como no existe una estructura que cocristalice \gls{mrp1} con los quimioterápicos de interés, los aminoácidos relevantes se identifican de manera computacional. Para ello se utiliza AutoDock Vina~\cite{trott2010vina,eberhardt2021vina} en un docking ciego sobre el bolsillo 78, con el irinotecán como ligando de referencia (PubChem, CID 60838), con el objetivo de determinar las poses más probables y los aminoácidos con los que más interacciona. Vina se configuró con un centro en $(164.6835,\ 130.2140,\ 120.1165)$~Å y una caja de $29.2 \times 35.6 \times 35.0$~Å, una exhaustividad de 32 y la generación de 100 poses.
 
-Para el irinotecán se obtuvo una puntuación de docking de $-12.060$~kcal/mol y 5 poses. Posteriormente se analizaron los aminoácidos situados a menos de 4~Å del ligando, con el fin de caracterizar las interacciones potenciales en la región de unión; los resultados se resumen en la Tabla~\ref{tab:frecuencia_residuos}.
+Para el irinotecán se obtuvo una puntuación de docking de $-12.060$~kcal/mol y 5 poses. Posteriormente se analizaron los aminoácidos situados a menos de 4~Å del ligando, con el fin de caracterizar las interacciones potenciales en la región de unión, los resultados se resumen en la Tabla~\ref{tab:frecuencia_residuos}.
 
 \begin{table}[htbp]
 \centering
