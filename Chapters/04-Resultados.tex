@@ -68,7 +68,7 @@ Al optimizar el entrenamiento, la reducción de la tasa de aprendizaje de $1 \ti
 
 En los entrenamientos de 100 épocas, \textbf{SM-G 2} registró su mejor comportamiento con este LR de $1 \times 10^{-4}$ y Batch de 64, donde consiguió un \gls{fcd} competitivo de 0,301, una validez de 0,950 y distancias de Wasserstein bajas (\gls{sas} de 0,111 y \gls{qed} de 0,006), demostrando capacidad para generar un espacio químico de calidad en menos épocas de entrenamiento y aligerando la carga computacional. En contraste, la representación \gls{selfies} en \textbf{SE-L 2} requirió una tasa de $1 \times 10^{-3}$ y un lote de 192 para lograr su mejor \gls{fcd} (0,675) a costa de una novedad baja (0,868). Si bien mantiene una validez perfecta (1,000), si se intenta mejorar esa novedad reduciendo la tasa de aprendizaje a $1 \times 10^{-4}$, el \gls{fcd} empeora significativamente a 2,893.
 
-A las 300 épocas, la variante de red menos profunda, \textbf{SM-L 1}, consiguió su mayor eficacia también con LR de $1 \times 10^{-4}$ y Batch de 64, registrando un \gls{fcd} de 0,424 y una validez de 0,940. Al comparar estos números con el modelo de dos capas (\textbf{SM-L 2}), se observa que si bien la arquitectura de una capa es más ligera, agregar una segunda capa mejora sistemáticamente las métricas. \textbf{SM-L 2} mostró los mejores resultados de toda la etapa experimental con dicha configuración, ya que alcanzó conjuntamente la validez más alta de las arquitecturas \gls{smiles} (0,962), el \gls{fcd} más bajo de todos los registros analizados (0,179) y la menor distancia de Wasserstein para \gls{sas} (0,093), con una novedad de 0,943.
+Entre los modelos que realizan 300 épocas, la variante de red menos profunda, \textbf{SM-L~1}, consiguió su mayor eficacia también con LR de $1 \times 10^{-4}$ y Batch de 64, registrando un \gls{fcd} de 0,424 y una validez de 0,940. Al comparar estos números con el modelo de dos capas (\textbf{SM-L~2}), se observa que si bien la arquitectura de una capa es más ligera, agregar una segunda capa mejora sistemáticamente las métricas. \textbf{SM-L~2} mostró los mejores resultados de toda la etapa experimental con dicha configuración, ya que alcanzó conjuntamente la validez más alta de las arquitecturas \gls{smiles} (0,962), el \gls{fcd} más bajo de todos los registros analizados (0,179) y la menor distancia de Wasserstein para \gls{sas} (0,093), con una novedad de 0,943.
 
 \subsection{Evaluación en MOSES y Comparación con el Estado del Arte}
 \label{subsec:res_vae_moses}
@@ -79,7 +79,7 @@ En esta subsección se presenta el modelo generativo elegido tras las etapas de 
 
 Se seleccionó SM-L 2 (300 épocas), con LR de $1 \times 10^{-4}$ y batch de 64, por obtener el menor \gls{fcd} de todos los experimentos (0,179), la mayor validez entre los modelos \gls{smiles} (0,962) y la menor distancia de Wasserstein para \gls{sas} (0,093). A cambio, presentó una novedad levemente menor (0,943) y el mayor tiempo de entrenamiento.
 
-En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que concuerda con las distancias de Wasserstein obtenidas (0,008 para \gls{qed} y 0,093 para \gls{sas}). Por otra parte, la Figura~\ref{fig:pca_latente} presenta la proyección mediante análisis de componentes principales (PCA) del espacio latente para 30\,000 moléculas del conjunto \gls{moses}, observándose una distribución continua y homogénea.
+En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed} y \gls{sas} de las moléculas generadas por este modelo frente a las del conjunto de prueba de \gls{moses}. Las curvas se superponen casi por completo, lo que indica coincidencias en el comportamiento tanto de \gls{moses} como del modelo seleccionado. Por otra parte, la Figura~\ref{fig:pca_latente} presenta la proyección mediante análisis de componentes principales (PCA) del espacio latente para 30.000 moléculas del conjunto \gls{moses}, observándose una distribución continua y homogénea.
 
 \begin{figure}[htbp]
 \centering
@@ -91,7 +91,7 @@ En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.65\textwidth]{Figures/pca_latente.pdf}
-\caption{Proyección PCA del espacio latente del VAE para 30\,000 moléculas de MOSES. Cada punto representa una molécula.}
+\caption{Proyección PCA del espacio latente del VAE para 30.000 moléculas de MOSES. Cada punto representa una molécula.}
 \label{fig:pca_latente}
 \end{figure}
 
