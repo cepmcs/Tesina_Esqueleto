@@ -45,11 +45,11 @@ En cuanto a los modelos de 300 épocas de entrenamiento, \textbf{SM-L~2} es el q
 \subsection{Optimización del Entrenamiento y Selección del Modelo Final}
 \label{subsec:res_vae_fase2}
 
-Los resultados completos de la optimización se detallan en el Apéndice~\ref{apendice:vae_experimentos} (Tabla~\ref{tab:log_experimentos_fase2_completo}). La Tabla~\ref{tab:mejores_fase2} resume la mejor configuración por arquitectura, informando el modelo, las épocas, la tasa de aprendizaje (LR), el tamaño de lote (Batch) y las métricas moleculares obtenidas: validez (Val), unicidad (Uni), novedad (Nov), filtros de MOSES (Filter), \acrshort{fcd}, diversidad interna (IntDiv) y distancias de Wasserstein en accesibilidad sintética (SA) y \gls{qed}.
+Los resultados completos de la optimización se detallan en el Apéndice~\ref{apendice:vae_experimentos} (Tabla~\ref{tab:log_experimentos_fase2_completo}). La Tabla~\ref{tab:mejores_fase2} resume la mejor configuración por arquitectura (todas con espacio latente de 256~dimensiones), informando el modelo, las épocas, la tasa de aprendizaje (LR), el tamaño de lote (Batch) y las métricas moleculares obtenidas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES: validez (Val), unicidad (Uni), novedad (Nov), filtros de MOSES (Filter), \acrshort{fcd}, diversidad interna (IntDiv) y distancias de Wasserstein en accesibilidad sintética (SA) y \gls{qed}.
 
 \begin{table}[htbp]
 \centering
-\caption{Mejores configuraciones obtenidas en la optimización del entrenamiento.}
+\caption{Mejores configuraciones obtenidas en la optimización del entrenamiento (espacio latente de 256~dimensiones). Métricas calculadas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES.}
 \label{tab:mejores_fase2}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccccccc}
@@ -98,9 +98,11 @@ En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed
 
 \subsubsection{Comparación con el estado del arte}
 
+La Tabla~\ref{tab:resultados_reducidos} compara a \textbf{SM-L VAE} con las líneas base de MOSES y modelos recientes de la literatura. Todos los valores corresponden a promedios obtenidos sobre 3 evaluaciones independientes de 30.000 moléculas generadas.
+
 \begin{table}[htbp]
 \centering
-\caption{Comparación con el estado del arte utilizando el dataset MOSES}
+\caption{Comparación con el estado del arte en el \textit{benchmark} MOSES (valores promedio sobre 30.000 moléculas generadas).}
 \label{tab:resultados_reducidos}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{l c c c c c c c c}
@@ -121,7 +123,7 @@ PCF-VAE & 0,980 & 1,000 & 0,938 & 0,990 & 0,296 & 0,859 & N/R & N/R \\
 \end{tabular}}
 \end{table}
 
-Los resultados indican que el modelo propuesto (SM-L VAE) ofrece un balance competitivo frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0,179, manteniendo al mismo tiempo una alta tasa de novedad (0,943) y diversidad interna (0,859). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0,073), este comportamiento suele estar asociado a una caída en la novedad (0,842), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} está en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
+A partir de la Tabla~\ref{tab:resultados_reducidos}, se observa que el modelo propuesto (SM-L VAE) ofrece un balance competitivo frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0,179, manteniendo al mismo tiempo una alta tasa de novedad (0,943) y diversidad interna (0,859). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0,073), este comportamiento suele estar asociado a una caída en la novedad (0,842), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} está en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
 
 \section{Etapa 2 -- Actividad 1: Optimización Multiobjetivo de Propiedades Moleculares sin Diana Específica}
 \label{sec:res_genericos}
