@@ -46,7 +46,7 @@ Algoritmo & Operadores & Configuración & Rango medio & $\mu \pm \sigma$ \\
 \section{Comparaciones Estadísticas por Pares (Test de Wilcoxon)}
 \label{sec:apendice_wilcoxon_operadores}
 
-Para cada metaheurística basada en operadores genéticos (\acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3}), se evaluó la significancia estadística sobre el hipervolumen a lo largo de las 20 semillas independientes mediante la prueba de rangos con signo de Wilcoxon con corrección de Holm para comparaciones múltiples ($\alpha = 0.05$). En cada par se reporta el valor $p$ ajustado, el estimador del tamaño del efecto mediante la correlación rango-biserial ($r_{\text{rb}}$) y el operador dominante.
+Para cada metaheurística basada en operadores genéticos (\acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3}), se evaluó la significancia estadística sobre el hipervolumen a lo largo de las 20 semillas independientes mediante la prueba de rangos con signo de Wilcoxon con corrección de Holm para comparaciones múltiples ($\alpha = 0,05$). En cada par se reporta el valor $p$ ajustado, el estimador del tamaño del efecto mediante la correlación rango-biserial ($r_{\text{rb}}$) y el operador dominante.
 
 \begin{table}[H]
 \centering
@@ -56,12 +56,12 @@ Para cada metaheurística basada en operadores genéticos (\acrshort{agemoea}, \
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0.818 & $-$0.219 & - \\
-pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.971 & pcx\_pm \\
-pcx\_pm vs sbx\_gauss & $<$0.001 & $+$0.962 & pcx\_pm \\
-pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
-pcx\_gauss vs sbx\_gauss & $<$0.001 & $+$1.000 & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0.818 & $-$0.190 & - \\
+pcx\_pm vs pcx\_gauss & 0,818 & $-0,219$ & - \\
+pcx\_pm vs sbx\_pm & $<$0,001 & $+0,971$ & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0,001 & $+0,962$ & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0,001 & $+1,000$ & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0,001 & $+1,000$ & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0,818 & $-0,190$ & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -74,12 +74,12 @@ sbx\_pm vs sbx\_gauss & 0.818 & $-$0.190 & - \\
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0.624 & $-$0.200 & - \\
-pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.933 & pcx\_pm \\
-pcx\_pm vs sbx\_gauss & 0.011 & $+$0.714 & pcx\_pm \\
-pcx\_gauss vs sbx\_pm & $<$0.001 & $+$0.886 & pcx\_gauss \\
-pcx\_gauss vs sbx\_gauss & 0.001 & $+$0.848 & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0.624 & $-$0.267 & - \\
+pcx\_pm vs pcx\_gauss & 0,624 & $-0,200$ & - \\
+pcx\_pm vs sbx\_pm & $<$0,001 & $+0,933$ & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & 0,011 & $+0,714$ & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0,001 & $+0,886$ & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & 0,001 & $+0,848$ & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0,624 & $-0,267$ & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -92,12 +92,12 @@ sbx\_pm vs sbx\_gauss & 0.624 & $-$0.267 & - \\
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0.388 & $-$0.229 & - \\
-pcx\_pm vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_pm \\
-pcx\_pm vs sbx\_gauss & $<$0.001 & $+$1.000 & pcx\_pm \\
-pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
-pcx\_gauss vs sbx\_gauss & $<$0.001 & $+$0.981 & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0.002 & $-$0.800 & sbx\_gauss \\
+pcx\_pm vs pcx\_gauss & 0,388 & $-0,229$ & - \\
+pcx\_pm vs sbx\_pm & $<$0,001 & $+1,000$ & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0,001 & $+1,000$ & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0,001 & $+1,000$ & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0,001 & $+0,981$ & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0,002 & $-0,800$ & sbx\_gauss \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -110,12 +110,12 @@ sbx\_pm vs sbx\_gauss & 0.002 & $-$0.800 & sbx\_gauss \\
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0.729 & $+$0.095 & - \\
-pcx\_pm vs sbx\_pm & $<$0.001 & $+$0.971 & pcx\_pm \\
-pcx\_pm vs sbx\_gauss & $<$0.001 & $+$0.914 & pcx\_pm \\
-pcx\_gauss vs sbx\_pm & $<$0.001 & $+$1.000 & pcx\_gauss \\
-pcx\_gauss vs sbx\_gauss & $<$0.001 & $+$0.943 & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0.286 & $-$0.381 & - \\
+pcx\_pm vs pcx\_gauss & 0,729 & $+0,095$ & - \\
+pcx\_pm vs sbx\_pm & $<$0,001 & $+0,971$ & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0,001 & $+0,914$ & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0,001 & $+1,000$ & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0,001 & $+0,943$ & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0,286 & $-0,381$ & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -200,39 +200,39 @@ En la Tabla~\ref{tab:moleculas_representativas_completo} se detallan las cinco m
 \textbf{Algoritmo} & \textbf{Puesto} & \textbf{QED} $\uparrow$ & \textbf{SA} $\downarrow$ & \textbf{$F_{\text{sp3}}$} & \textbf{SMILES} \\
 \midrule
 \multirow{5}{*}{\acrshort{nsga2}}
- & 1 & 0.948 & 2.730 & 0.333 & \texttt{Cn1cc(NC(=O)C2CCCO2)c(-c2ccccc2Cl)n1} \\
- & 2 & 0.948 & 2.060 & 0.357 & \texttt{O=C(Nc1nnc(Cc2ccc(F)cc2)s1)N1CCCC1} \\
- & 3 & 0.948 & 1.850 & 0.312 & \texttt{O=C(Nc1ccc(F)cc1)N1CCN(Cc2ccco2)CC1} \\
- & 4 & 0.948 & 1.800 & 0.333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccn3)CC2)cc1} \\
- & 5 & 0.947 & 1.760 & 0.368 & \texttt{O=C(NCC(=O)N1CCCCCC1)c1ccc2ccccc2c1} \\
+ & 1 & 0,948 & 2,730 & 0,333 & \texttt{Cn1cc(NC(=O)C2CCCO2)c(-c2ccccc2Cl)n1} \\
+ & 2 & 0,948 & 2,060 & 0,357 & \texttt{O=C(Nc1nnc(Cc2ccc(F)cc2)s1)N1CCCC1} \\
+ & 3 & 0,948 & 1,850 & 0,312 & \texttt{O=C(Nc1ccc(F)cc1)N1CCN(Cc2ccco2)CC1} \\
+ & 4 & 0,948 & 1,800 & 0,333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccn3)CC2)cc1} \\
+ & 5 & 0,947 & 1,760 & 0,368 & \texttt{O=C(NCC(=O)N1CCCCCC1)c1ccc2ccccc2c1} \\
 \midrule
 \multirow{5}{*}{\acrshort{nsga3}}
- & 1 & 0.948 & 2.800 & 0.333 & \texttt{Cn1nc(NC(=O)C2CCCO2)cc1-c1ccccc1Cl} \\
- & 2 & 0.948 & 2.740 & 0.308 & \texttt{Nc1cc(Br)n(COc2ccc3c(c2)CCC3)n1} \\
- & 3 & 0.948 & 2.570 & 0.333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
- & 4 & 0.948 & 2.130 & 0.357 & \texttt{O=C(Nc1nnc(Cc2ccccc2F)s1)N1CCCC1} \\
- & 5 & 0.948 & 1.820 & 0.333 & \texttt{Cc1ccccc1NC(=O)N1CCN(Cc2ccccn2)CC1} \\
+ & 1 & 0,948 & 2,800 & 0,333 & \texttt{Cn1nc(NC(=O)C2CCCO2)cc1-c1ccccc1Cl} \\
+ & 2 & 0,948 & 2,740 & 0,308 & \texttt{Nc1cc(Br)n(COc2ccc3c(c2)CCC3)n1} \\
+ & 3 & 0,948 & 2,570 & 0,333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
+ & 4 & 0,948 & 2,130 & 0,357 & \texttt{O=C(Nc1nnc(Cc2ccccc2F)s1)N1CCCC1} \\
+ & 5 & 0,948 & 1,820 & 0,333 & \texttt{Cc1ccccc1NC(=O)N1CCN(Cc2ccccn2)CC1} \\
 \midrule
 \multirow{5}{*}{\acrshort{moead}}
- & 1 & 0.948 & 2.400 & 0.333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3ccccn3)C2)s1} \\
- & 2 & 0.948 & 1.810 & 0.333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3cccnc3)CC2)cc1} \\
- & 3 & 0.946 & 1.650 & 0.316 & \texttt{Cc1ccc(N2CCN(C(=O)NCc3ccccc3)CC2)cc1} \\
- & 4 & 0.944 & 1.580 & 0.316 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cc1} \\
- & 5 & 0.908 & 1.580 & 0.467 & \texttt{CCC(=O)Nc1ccc(C(=O)N2CCCCC2)cc1} \\
+ & 1 & 0,948 & 2,400 & 0,333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3ccccn3)C2)s1} \\
+ & 2 & 0,948 & 1,810 & 0,333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3cccnc3)CC2)cc1} \\
+ & 3 & 0,946 & 1,650 & 0,316 & \texttt{Cc1ccc(N2CCN(C(=O)NCc3ccccc3)CC2)cc1} \\
+ & 4 & 0,944 & 1,580 & 0,316 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cc1} \\
+ & 5 & 0,908 & 1,580 & 0,467 & \texttt{CCC(=O)Nc1ccc(C(=O)N2CCCCC2)cc1} \\
 \midrule
 \multirow{5}{*}{\acrshort{agemoea}}
- & 1 & 0.948 & 2.030 & 0.375 & \texttt{O=C(c1csc(-c2cccc(CO)c2)n1)N1CCCCC1} \\
- & 2 & 0.948 & 1.810 & 0.333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cn1} \\
- & 3 & 0.944 & 1.800 & 0.312 & \texttt{O=C(Nc1ccc(CN2CCOCC2)cc1)c1cccs1} \\
- & 4 & 0.944 & 1.790 & 0.300 & \texttt{O=C(Nc1ccc(C(=O)N2CCc3ccccc3C2)cc1)C1CC1} \\
- & 5 & 0.943 & 1.720 & 0.333 & \texttt{O=C(NCc1ccc(N2CCCCC2)nc1)c1ccccc1} \\
+ & 1 & 0,948 & 2,030 & 0,375 & \texttt{O=C(c1csc(-c2cccc(CO)c2)n1)N1CCCCC1} \\
+ & 2 & 0,948 & 1,810 & 0,333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cn1} \\
+ & 3 & 0,944 & 1,800 & 0,312 & \texttt{O=C(Nc1ccc(CN2CCOCC2)cc1)c1cccs1} \\
+ & 4 & 0,944 & 1,790 & 0,300 & \texttt{O=C(Nc1ccc(C(=O)N2CCc3ccccc3C2)cc1)C1CC1} \\
+ & 5 & 0,943 & 1,720 & 0,333 & \texttt{O=C(NCc1ccc(N2CCCCC2)nc1)c1ccccc1} \\
 \midrule
 \multirow{5}{*}{\acrshort{cmopso}}
- & 1 & 0.948 & 2.570 & 0.333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
- & 2 & 0.948 & 2.500 & 0.333 & \texttt{O=C(c1cc[nH]n1)N1CCC(Oc2ccccc2Cl)CC1} \\
- & 3 & 0.948 & 2.060 & 0.333 & \texttt{O=C(NC1CCN(c2nccs2)CC1)c1ccccc1F} \\
- & 4 & 0.946 & 1.900 & 0.389 & \texttt{O=C(Nc1ccc2c(N3CCOCC3)cccc2c1)C1CC1} \\
- & 5 & 0.944 & 1.850 & 0.312 & \texttt{O=C(Nc1cccc(CN2CCOCC2)c1)c1cccs1} \\
+ & 1 & 0,948 & 2,570 & 0,333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
+ & 2 & 0,948 & 2,500 & 0,333 & \texttt{O=C(c1cc[nH]n1)N1CCC(Oc2ccccc2Cl)CC1} \\
+ & 3 & 0,948 & 2,060 & 0,333 & \texttt{O=C(NC1CCN(c2nccs2)CC1)c1ccccc1F} \\
+ & 4 & 0,946 & 1,900 & 0,389 & \texttt{O=C(Nc1ccc2c(N3CCOCC3)cccc2c1)C1CC1} \\
+ & 5 & 0,944 & 1,850 & 0,312 & \texttt{O=C(Nc1cccc(CN2CCOCC2)c1)c1cccs1} \\
 \bottomrule
 \end{tabular}%
 }
