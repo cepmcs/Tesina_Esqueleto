@@ -614,7 +614,7 @@ De cada modelo de referencia se generaron 10.000 moléculas mediante muestreo al
 
 \input{Chapters/Tables/mrp1/tab_comparacion_modelos_mrp1.tex}
 
-Como se observa en la Tabla~\ref{tab:comparacion_modelos}, los enfoques multiobjetivo logran un mejor balance de propiedades frente a los modelos generativos de referencia. En particular, \acrshort{nsga3} con SBX alcanza los promedios más altos de \gls{qed} y de bioactividad predicha junto con una afinidad de docking favorable, conservando una validez y diversidad elevadas. Por su parte, \acrshort{agemoea} con SBX consigue la mejor accesibilidad sintética media, mientras que las variantes con PCX destacan por su alta novedad y unicidad, aunque con una tasa de validez química menor.
+La Tabla~\ref{tab:comparacion_modelos} resume la comparación entre las variantes multiobjetivo y los modelos generativos de referencia. A partir de estos resultados, se observa que los enfoques multiobjetivo logran un mejor balance de propiedades frente a los modelos de referencia. En particular, \acrshort{nsga3} con SBX alcanza los promedios más altos de \gls{qed} y de bioactividad predicha junto con una afinidad de docking favorable, conservando una validez y diversidad elevadas. Por su parte, \acrshort{agemoea} con SBX consigue la mejor accesibilidad sintética media, mientras que las variantes con PCX destacan por su alta novedad y unicidad, aunque con una tasa de validez química menor.
 
 En los modelos de referencia sin optimización guiada (\gls{vae} y GAN base), las afinidades de unión son más débiles y la bioactividad promedio apenas alcanza el umbral de corte. Por otro lado, el ajuste mediante fine-tuning mejora la afinidad hacia \gls{mrp1} y eleva ligeramente el pChEMBL, pero provoca una fuerte caída en el \gls{qed}, aumenta la dificultad de síntesis y reduce la validez química, especialmente en la GAN.
 
@@ -644,7 +644,7 @@ Como se observa en la Figura~\ref{fig:posebusters}, todas las configuraciones mu
 \subsubsection{Predicción de Potencia y Bioactividad Inhibitoria}
 \label{subsubsec:potencia_bioactividad}
 
-La bioactividad frente a \gls{mrp1} se evaluó mediante un modelo de Random Forest entrenado con inhibidores de ChEMBL \cite{mendez2019chembl}. Como métrica se utiliza el valor de pChEMBL predicho, fijando un umbral de $5.0$ para considerar activo al compuesto ($\text{IC}_{50} \le 10\,\mu\text{M}$).
+La bioactividad frente a \gls{mrp1} se evaluó mediante un modelo de Random Forest entrenado con inhibidores de ChEMBL~\cite{mendez2019chembl}. Como métrica se utiliza el valor de pChEMBL predicho, fijando el umbral estándar de $5.0$ ($\text{IC}_{50} \le 10\,\mu\text{M}$) empleado habitualmente para clasificar compuestos activos en ChEMBL~\cite{mervin2021probabilistic}.
 
 \begin{figure}[H]
     \centering
@@ -659,7 +659,7 @@ La Figura~\ref{fig:distribucion_pchembl} y la Tabla~\ref{tab:pchembl_predicho} p
 
 Como se observa, todas las configuraciones multiobjetivo desplazan su distribución por encima del umbral de 5.0, logrando que la gran mayoría de las moléculas generadas sean predichas como activas. Entre los algoritmos evaluados, \acrshort{nsga3} presenta los valores promedio más altos de bioactividad (tanto con SBX como con PCX) y alcanza el valor máximo del conjunto cercano a 6.28 en su variante con SBX, seguido de cerca por \acrshort{agemoea} y \acrshort{nsga2}.
 
-En cambio, los modelos de referencia (tanto base como con fine-tuning) concentran gran parte de sus soluciones alrededor o por debajo del umbral, produciendo una proporción importante de compuestos inactivos. Esto confirma que la optimización guiada en el espacio latente favorece de forma efectiva la obtención de moléculas activas frente a \gls{mrp1}.
+En cambio, los modelos de referencia (tanto base como con fine-tuning) concentran gran parte de sus soluciones alrededor o por debajo del umbral, produciendo una proporción importante de compuestos inactivos. Esto confirma que la optimización guiada en el espacio latente favorece la obtención de moléculas activas frente a~\gls{mrp1}.
 
 \subsubsection{Perfil Farmacocinético, Fisicoquímico y Toxicológico (\texorpdfstring{\gls{admet}}{ADMET})}
 \label{subsubsec:perfil_admet}
@@ -680,8 +680,8 @@ La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para 
 \paragraph{Absorción y Permeabilidad.}
 \begin{itemize}
     \item \textbf{Absorción Intestinal Humana (HIA\_Hou):} Estima la probabilidad de absorción oral (favorable $>0.8$). Todas las variantes multiobjetivo alcanzan valores óptimos de $1.0$, situándose ligeramente por encima de los modelos de referencia.
-    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang):} Mide la tasa de paso por células intestinales (alta permeabilidad $> -5.15$). Todas las variantes multiobjetivo se sitúan plenamente en la zona de permeabilidad alta, superando a los modelos ajustados por fine-tuning.
-    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS):} Evalúa el tránsito a través de membranas lipídicas (cruce óptimo $>0.70$). Las moléculas generadas presentan valores altos y homogéneos en todas las configuraciones, por encima de los modelos base y fine-tuning.
+    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang):} Mide la tasa de paso por células intestinales (alta permeabilidad $> -5.15$). Todas las variantes multiobjetivo se sitúan plenamente en la zona de permeabilidad alta.
+    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS):} Evalúa el tránsito a través de membranas lipídicas (cruce óptimo $>0.70$). En todas las configuraciones las moléculas generadas son capaces de cruzar la membrana.
     \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma):} Probabilidad de alcanzar la circulación sistémica vía oral (favorable $>0.50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
 \end{itemize}
 
