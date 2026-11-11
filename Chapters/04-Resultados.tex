@@ -605,9 +605,9 @@ Se comparó el enfoque multiobjetivo propuesto con cuatro modelos generativos de
 
 \begin{itemize}
     \item \textbf{\gls{vae}:} El \gls{vae} utilizado en el modelo propuesto, entrenado con \gls{moses}.
-    \item \textbf{\gls{vae} con fine-tuning:} El mismo \gls{vae} ajustado mediante fine-tuning con ligandos conocidos asociados a \gls{mrp1} para sesgar la generación hacia la diana.
+    \item \textbf{\gls{vae} con fine-tuning:} El mismo \gls{vae} ajustado mediante fine-tuning con ligandos conocidos de \gls{mrp1} extraídos de BindingDB~\cite{liu2007bindingdb} para sesgar la generación hacia la diana.
     \item \textbf{GAN:} Red generativa adversaria del benchmark \gls{moses} (LatentGAN).
-    \item \textbf{GAN con fine-tuning:} La misma GAN ajustada con ligandos conocidos de \gls{mrp1}.
+    \item \textbf{GAN con fine-tuning:} La misma GAN ajustada con el mismo conjunto de ligandos.
 \end{itemize}
 
 De cada modelo de referencia se generaron 10.000 moléculas mediante muestreo aleatorio sobre cinco semillas independientes, utilizando una partición distinta de los datos en cada fine-tuning.
