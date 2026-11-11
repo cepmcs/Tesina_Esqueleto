@@ -10,31 +10,31 @@ Con el fin de determinar la asignación de evaluaciones y la calibración de los
 
 \begin{table}[htbp]
 \centering
-\caption{Comparación del reparto de evaluaciones (100$\times$1000 frente a 200$\times$500) con mutación 0,1 sobre 20 semillas independientes.}
+\caption{Comparación del reparto de evaluaciones (100$\times$1.000 frente a 200$\times$500) con mutación 0,1 sobre 20 semillas independientes.}
 \label{tab:presupuesto_multiobjetivo}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llcccccc}
 \toprule
 Algoritmo & Reparto & Hipervolumen $\uparrow$ & IGD$^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Espaciamiento $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) \\
 \midrule
-\acrshort{nsga2} & 100$\times$1000 & $1.1207 \pm 0.0050$ & $0.0415 \pm 0.0075$ & $0.1330 \pm 0.0362$ & $1.1448 \pm 0.3869$ & $23.8 \pm 4.3$ & $88.2 \pm 14.7$ \\
+\acrshort{nsga2} & 100$\times$1.000 & $1.1207 \pm 0.0050$ & $0.0415 \pm 0.0075$ & $0.1330 \pm 0.0362$ & $1.1448 \pm 0.3869$ & $23.8 \pm 4.3$ & $88.2 \pm 14.7$ \\
  & 200$\times$500 & $1.1201 \pm 0.0051$ & $0.0436 \pm 0.0072$ & $0.1358 \pm 0.0361$ & $1.1072 \pm 0.3720$ & $24.4 \pm 4.1$ & $82.7 \pm 16.9$ \\
 \midrule
-\acrshort{nsga3} & 100$\times$1000 & $1.1204 \pm 0.0046$ & $0.0409 \pm 0.0089$ & $0.1340 \pm 0.0313$ & $1.1594 \pm 0.4272$ & $23.5 \pm 4.4$ & $90.9 \pm 13.9$ \\
+\acrshort{nsga3} & 100$\times$1.000 & $1.1204 \pm 0.0046$ & $0.0409 \pm 0.0089$ & $0.1340 \pm 0.0313$ & $1.1594 \pm 0.4272$ & $23.5 \pm 4.4$ & $90.9 \pm 13.9$ \\
  & 200$\times$500 & $1.1171 \pm 0.0035$ & $0.0476 \pm 0.0091$ & $0.1536 \pm 0.0280$ & $1.0727 \pm 0.3587$ & $22.9 \pm 4.6$ & $87.0 \pm 14.1$ \\
 \midrule
-\acrshort{agemoea} & 100$\times$1000 & $1.1178 \pm 0.0051$ & $0.0449 \pm 0.0087$ & $0.1516 \pm 0.0392$ & $1.0536 \pm 0.3740$ & $22.4 \pm 4.4$ & $102.2 \pm 17.0$ \\
+\acrshort{agemoea} & 100$\times$1.000 & $1.1178 \pm 0.0051$ & $0.0449 \pm 0.0087$ & $0.1516 \pm 0.0392$ & $1.0536 \pm 0.3740$ & $22.4 \pm 4.4$ & $102.2 \pm 17.0$ \\
  & 200$\times$500 & $1.1181 \pm 0.0053$ & $0.0465 \pm 0.0085$ & $0.1499 \pm 0.0372$ & $1.1047 \pm 0.3535$ & $22.9 \pm 5.4$ & $102.5 \pm 7.6$ \\
 \bottomrule
 \end{tabular}
 }
 \end{table}
 
-A continuación, las Tablas~\ref{tab:mutacion_nsga2}, \ref{tab:mutacion_nsga3} y \ref{tab:mutacion_agemoea} presentan el estudio de operadores de cruce y mutación bajo el esquema seleccionado de 100$\times$1000 sobre 20 semillas independientes para \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea}. Los valores 0,004; 0,012 y 0,031 corresponden a la fase de ajuste de hiperparámetros, mientras que 0,05; 0,1 y el esquema adaptativo corresponden al experimento complementario de mutación. En negrita se destaca la mejor configuración de cada combinación de operadores.
+A continuación, las Tablas~\ref{tab:mutacion_nsga2}, \ref{tab:mutacion_nsga3} y \ref{tab:mutacion_agemoea} presentan el estudio de operadores de cruce y mutación bajo el esquema seleccionado de 100$\times$1.000 sobre 20 semillas independientes para \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea}. Los valores 0,004; 0,012 y 0,031 corresponden a la fase de ajuste de hiperparámetros, mientras que 0,05; 0,1 y el esquema adaptativo corresponden al experimento complementario de mutación. En negrita se destaca la mejor configuración de cada combinación de operadores.
 
 \begin{table}[htbp]
 \centering
-\caption{\acrshort{nsga2} — reparto 100$\times$1000, $p_c = 1.0$ (PCX) y $0.9$ (SBX). Media y desvío sobre 20 semillas.}
+\caption{\acrshort{nsga2} — reparto 100$\times$1.000, $p_c = 1.0$ (PCX) y $0.9$ (SBX). Media y desvío sobre 20 semillas.}
 \label{tab:mutacion_nsga2}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llccccccc}
@@ -79,7 +79,7 @@ SBX gauss & 0,004 & $1.1117 \pm 0.0029$ & $0.0582 \pm 0.0079$ & $0.1890 \pm 0.01
 
 \begin{table}[htbp]
 \centering
-\caption{\acrshort{nsga3} — reparto 100$\times$1000, $p_c = 1.0$ (PCX) y $0.9$ (SBX). Media y desvío sobre 20 semillas.}
+\caption{\acrshort{nsga3} — reparto 100$\times$1.000, $p_c = 1.0$ (PCX) y $0.9$ (SBX). Media y desvío sobre 20 semillas.}
 \label{tab:mutacion_nsga3}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llccccccc}
@@ -124,7 +124,7 @@ SBX gauss & 0,004 & $1.1131 \pm 0.0030$ & $0.0542 \pm 0.0065$ & $0.1815 \pm 0.02
 
 \begin{table}[htbp]
 \centering
-\caption{\acrshort{agemoea} — reparto 100$\times$1000, $p_c = 1.0$ (PCX) y $1.0$ (SBX). Media y desvío sobre 20 semillas.}
+\caption{\acrshort{agemoea} — reparto 100$\times$1.000, $p_c = 1.0$ (PCX) y $1.0$ (SBX). Media y desvío sobre 20 semillas.}
 \label{tab:mutacion_agemoea}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llccccccc}
