@@ -18,11 +18,11 @@ En primer lugar, si bien la representación de \gls{selfies} cumple con su dise�
 
 En cuanto a la arquitectura, las redes \gls{lstm} soportaron mejor los entrenamientos prolongados. Al pasar de 100 a 300 épocas, tendieron a mejorar sus métricas. Por el contrario, varios modelos \gls{gru} sufrieron un colapso o inestabilidad al alcanzar las 300 épocas, reduciendo fuertemente la validez general de las moléculas generadas. Esta mayor estabilidad de las redes \gls{lstm} podría explicarse por la presencia de una compuerta de salida que permite regular la magnitud de su memoria antes de transmitirla. En contraste, al carecer \gls{gru} de este mecanismo \cite{chung2014empirical}, es posible que en épocas avanzadas se produzca un conflicto numérico con la regularización del \gls{vae} que favorezca el colapso del modelo. Cabe destacar que las ejecuciones evaluadas corresponden a configuraciones experimentales individuales y no a repeticiones de cada una, por lo que la variabilidad entre entrenamientos no queda caracterizada.
 
-Para optimizar la tasa de aprendizaje y el tamaño de lote, se seleccionaron cuatro configuraciones con dimensión latente de 256, correspondientes a la mejor con \gls{gru} y la mejor con \gls{selfies} a 100 épocas, junto con las dos mejores con \gls{lstm} a 300 épocas. Dado que todos los modelos seleccionados comparten este espacio latente, dicho valor se omite en su nomenclatura. La Tabla~\ref{tab:mejores_modelos_vae} resume las configuraciones elegidas.
+Para optimizar la tasa de aprendizaje y el tamaño de lote, se seleccionaron cuatro configuraciones con dimensión latente de 256, correspondientes a la mejor con \gls{gru} y la mejor con \gls{selfies} a 100 épocas, junto con las dos mejores con \gls{lstm} a 300 épocas. Dado que todos los modelos seleccionados comparten este espacio latente, dicho valor se omite en su nomenclatura. La Tabla~\ref{tab:mejores_modelos_vae} presenta estas configuraciones junto con sus métricas de generación (validez, unicidad, novedad y filtros) y de fidelidad molecular (\gls{fcd}, diversidad interna y distancias de SA y \gls{qed}).
 
 \begin{table}[htbp]
 \centering
-\caption{Configuraciones seleccionadas para la optimización del entrenamiento.}
+\caption{Configuraciones seleccionadas para la optimización del entrenamiento (espacio latente de 256~dimensiones).}
 \label{tab:mejores_modelos_vae}
 \begin{tabular}{lccccccccc}
 \toprule
@@ -36,9 +36,9 @@ SM-L 2 & 300 & 0,951 & 1,000 & 0,956 & \textbf{0,986} & \textbf{0,321} & 0,858 &
 \end{tabular}
 \end{table}
 
-A partir de los entrenamientos de 100 épocas se eligió \textbf{SM-G 2}, que a pesar de la inestabilidad de \gls{gru} a 300 épocas tuvo un desempeño temprano destacado con un FCD de 0,470 y validez de 0,945, y \textbf{SE-L 2}, que obtuvo los mejores resultados dentro de la representación \gls{selfies} con el menor FCD (0,764), siendo de interés evaluar si su novedad (0,881) mejora al ajustar los hiperparámetros.
+Si consideramos los resultados de los modelos de 100 épocas de entrenamiento, \textbf{SM-G 2} obtiene los mejores resultados informando un FCD de 0,470 y una validez de 0,945. Por su parte, \textbf{SE-L 2} registra el mejor desempeño dentro de la representación \gls{selfies} con el menor FCD (0,764), siendo de interés evaluar si su novedad (0,881) mejora al ajustar los hiperparámetros.
 
-En cuanto a las 300 épocas, se seleccionó \textbf{SM-L 1}, una opción con menor profundidad de red que alcanzó el segundo mejor FCD (0,459) con una validez de 0,946, y \textbf{SM-L 2}, que logró el FCD más bajo de todos los registros (0,321) manteniendo una alta validez (0,951) y excelentes distancias para \gls{sas} (0,113) y \gls{qed} (0,013).
+En cuanto a los modelos de 300 épocas de entrenamiento, \textbf{SM-L~2} es el que presenta el mejor rendimiento global al alcanzar el FCD más bajo de todo el estudio (0,321), junto con una validez de 0,951 y distancias favorables para \gls{sas} (0,113) y \gls{qed} (0,013). Por su parte, \textbf{SM-L~1} representa una variante más liviana de una sola capa que obtiene el segundo mejor FCD (0,459) con una validez de 0,946.
 
 
 
@@ -72,6 +72,8 @@ A las 300 épocas, la variante de red menos profunda, \textbf{SM-L 1}, consigui�
 
 \subsection{Evaluación en MOSES y Comparación con el Estado del Arte}
 \label{subsec:res_vae_moses}
+
+En esta subsección se presenta el modelo generativo elegido tras las etapas de ajuste. Se analiza la distribución de sus propiedades, la estructura de su espacio latente y su desempeño frente a otros modelos en el benchmark \gls{moses}.
 
 \subsubsection{Modelo seleccionado}
 
