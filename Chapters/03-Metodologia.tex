@@ -131,20 +131,20 @@ En esta actividad se ajustan los hiperparámetros de los cinco algoritmos metahe
 En este apartado se describen las funciones objetivo y la restricción estructural empleadas para guiar la búsqueda de los algoritmos en el espacio latente continuo del \gls{vae}, todas ellas calculadas con RDKit~\cite{landrum2026rdkit}, una librería de quimioinformática utilizada para el análisis y cálculo de descriptores moleculares:
 
 \begin{itemize}
-    \item \textbf{\gls{qed} (\textit{Quantitative Estimate of Drug-likeness})~\cite{Bickerton2012QED}:} [Problema de maximización] Cuantifica la probabilidad de que una molécula presente propiedades farmacológicas adecuadas. Asigna una puntuación continua entre $0$ y $1$ mediante funciones de deseabilidad derivadas de múltiples descriptores fisicoquímicos.
-    \item \textbf{\gls{sas} (\textit{Synthetic Accessibility Score})~\cite{Ertl2009SAScore}:} [Problema de minimización] Evalúa la dificultad teórica para sintetizar la molécula en un laboratorio químico. Asigna una puntuación continua en el rango $[1, 10]$, donde valores menores indican mayor accesibilidad sintética.
+    \item \textbf{\gls{qed} (\textit{Quantitative Estimate of Drug-likeness})~\cite{Bickerton2012QED}:} [Problema de maximización] Estima qué tan similares son las propiedades fisicoquímicas de una molécula a las de fármacos aprobados. Asigna una puntuación continua entre $0$ y $1$ mediante funciones de deseabilidad derivadas de múltiples descriptores fisicoquímicos.
+    \item \textbf{\gls{sas} (\textit{Synthetic Accessibility Score})~\cite{Ertl2009SAScore}:} [Problema de minimización] Estima la dificultad teórica de síntesis química a partir de características estructurales de la molécula. Asigna una puntuación continua en el rango $[1, 10]$, donde valores menores indican mayor accesibilidad sintética.
 \end{itemize}
 
 Para alejar la búsqueda de estructuras planas, se considera que una mayor proporción de carbonos saturados suele favorecer la solubilidad acuosa~\cite{Lovering2009Flatland} y disminuir tanto la promiscuidad biológica como la inhibición de citocromos CYP450, factores asociados al riesgo de toxicidad fuera de la diana y de interacciones fármaco-fármaco~\cite{Lovering2013Flatland2}.
 
-\textbf{Restricción de complejidad estructural.} La fracción de carbonos con hibridación $sp^3$ ($F_{\text{sp3}}$) se define como:
+\textbf{Restricción sobre la fracción de carbonos $sp^3$ ($F_{\text{sp3}}$).} La fracción de carbonos con hibridación $sp^3$ ($F_{\text{sp3}}$) se define como:
 \begin{equation}
     F_{\text{sp3}} = \frac{\text{número de carbonos } sp^3}{\text{número total de carbonos}}
 \end{equation}
 
-Esta propiedad se aplica como restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$). Este límite coincide con los promedios observados en etapas iniciales de descubrimiento ($\sim 0.32\text{--}0.36$), intervalo a partir del cual la promiscuidad comienza a descender de forma sostenida~\cite{Lovering2013Flatland2}.
+Esta propiedad se aplica como restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$). Este límite coincide con los promedios observados en etapas iniciales de descubrimiento ($\sim 0.32\text{--}0.36$), intervalo asociado en dicho estudio con una menor promiscuidad~\cite{Lovering2013Flatland2}.
 
-Para gestionar esta restricción, los algoritmos emplean el criterio de dominancia restringida~\cite{deb2002nsga2}, donde las soluciones factibles siempre dominan a las infactibles, y entre infactibles se prioriza la de menor violación de restricciones. Asimismo, si un vector latente decodifica en una estructura químicamente inválida según RDKit, se le asigna la máxima penalización en ambos objetivos y en la violación de restricción, forzando a la búsqueda a mantenerse dentro de las regiones viables del espacio latente.
+Para gestionar esta restricción, los algoritmos emplean el criterio de dominancia restringida~\cite{deb2002nsga2}, donde las soluciones factibles siempre dominan a las infactibles, y entre infactibles se prioriza la de menor violación de restricciones. Asimismo, si un vector latente decodifica en una estructura químicamente inválida según RDKit, se le asignan valores penalizados de $-1.0$ para \gls{qed}, $12.0$ para \gls{sas} y $1.0$ en la violación de restricción, forzando a la búsqueda a mantenerse dentro de las regiones viables del espacio latente.
 
 \subsubsection{Protocolo Experimental del Ajuste}
 \label{subsec:protocolo_ajuste}
@@ -152,7 +152,7 @@ Para gestionar esta restricción, los algoritmos emplean el criterio de dominanc
 Para cada algoritmo se define un espacio de hiperparámetros que se explora mediante un barrido en grilla (\textit{grid search}). Los hiperparámetros se organizan en tres niveles: el reparto del total de evaluaciones (común a todos los algoritmos), los operadores y probabilidades de los algoritmos genéticos, y los parámetros propios de \acrshort{cmopso}.
 
 \subsubsection*{Total de Evaluaciones y Tamaño de Población}
-Se fija un total de 100.000 evaluaciones por ejecución, repartido en tres combinaciones de tamaño de población y número de generaciones (Tabla~\ref{tab:evaluaciones}). Esta elección permite evaluar el compromiso entre diversidad poblacional (más individuos) y profundidad de búsqueda (más generaciones) bajo un mismo costo computacional.
+Se fija un total de 100.000 evaluaciones por ejecución, repartido en tres combinaciones de tamaño de población y número de generaciones (Tabla~\ref{tab:evaluaciones}). Esta elección permite evaluar el compromiso entre diversidad poblacional (más individuos) y profundidad de búsqueda (más generaciones) manteniendo fijo el total de evaluaciones.
 
 \begin{table}[H]
 \centering
