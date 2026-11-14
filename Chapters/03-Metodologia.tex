@@ -233,7 +233,7 @@ Donde, $\gamma$ fija la cantidad de partículas que compiten para orientar la b�
 El estudio comprende cuatro fases. Se utiliza el hipervolumen como criterio principal para elegir las mejores configuraciones porque evalúa a la vez la convergencia hacia el frente de Pareto óptimo y la diversidad de las soluciones, sin requerir un frente de referencia previo:
 
 \begin{enumerate}
-    \item \textbf{Estudio de hiperparámetros:} Se ejecutan 20 semillas independientes por configuración ($(108 \times 4 + 81) \times 20 = \text{10.260}$ ejecuciones en total). Para cada combinación de operadores (\texttt{pcx/pm}, \texttt{pcx/gauss}, \texttt{sbx/pm}, \texttt{sbx/gauss}) en los algoritmos genéticos y para \acrshort{cmopso}, se selecciona la mejor configuración interna basándose en el menor rango medio de hipervolumen entre las 20 semillas.
+    \item \textbf{Estudio de hiperparámetros:} Se ejecutan 20 semillas independientes por configuración ($(108 \times 4 + 81) \times 20 = \text{10.260}$ ejecuciones en total). Para cada combinación de operadores (\texttt{pcx/pm}, \texttt{pcx/gauss}, \texttt{sbx/pm}, \texttt{sbx/gauss}) en los algoritmos genéticos y para \acrshort{cmopso}, se ordenan las configuraciones dentro de cada semilla según su hipervolumen (rango 1 para el mejor valor, promediando en caso de empate) y se selecciona la de menor rango medio entre las 20 semillas.
     \item \textbf{Comparativa de operadores genéticos:} Fijando la mejor configuración de cada combinación de operadores, se analizan las cuatro variantes por algoritmo para evaluar el impacto del cruce y la mutación mediante pruebas estadísticas sobre el hipervolumen e indicadores químicos.
     \item \textbf{Comparación global entre metaheurísticas multiobjetivo:} Se seleccionan las configuraciones con mejor desempeño de los cinco algoritmos y se comparan exhaustivamente entre sí sobre todos los indicadores multiobjetivo y químicos, analizando además sus dinámicas de convergencia y la distribución de sus frentes de Pareto.
     \item \textbf{Análisis del frente conjunto global y moléculas representativas:} Evaluación del frente no dominado conjunto obtenido a partir de las combinaciones de operadores (incorporando las familias de cruce \acrshort{pcx} y \acrshort{sbx} de todos los algoritmos genéticos y \acrshort{cmopso}) y análisis de las moléculas representativas.
@@ -245,7 +245,7 @@ En total, el estudio comprende 10.260 ejecuciones independientes, cada una con u
 \label{sec:fase2_mrp1}
 \label{sec:diseno_inhibidores_mrp1}
 
-Una vez seleccionada la mejor configuración de las metaheurísticas, se aplica el esquema tomando como diana a \gls{mrp1}, con el objetivo específico de inhibir la expulsión del irinotecán del espacio intracelular. En este apartado se describe la preparación de la proteína y la identificación de su sitio de unión, la formulación de las funciones objetivo junto con el acoplamiento molecular, y el protocolo de generación de los candidatos.
+Una vez seleccionada la mejor configuración de las metaheurísticas, se aplica el esquema tomando como diana a \gls{mrp1}, con el objetivo de identificar computacionalmente candidatos con potencial para inhibir la expulsión del irinotecán del espacio intracelular. En este apartado se describe la preparación de la proteína y la identificación de su sitio de unión, la formulación de las funciones objetivo junto con el acoplamiento molecular, y el protocolo de generación de los candidatos.
 
 \subsubsection{Preparación de la Proteína y Sitio de Unión}
 \label{subsec:prep_proteina}
