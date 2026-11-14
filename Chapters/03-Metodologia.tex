@@ -428,7 +428,7 @@ Los dos indicadores basados en distancias, \acrshort{igd}$^+$ y el indicador $\e
 
 Con el fin de evaluar y caracterizar las moléculas candidatas obtenidas para \gls{mrp1}, se realiza un análisis sobre sus soluciones del frente de Pareto. En esta sección se describen los criterios empleados para evaluar la calidad física de las poses de acoplamiento, la estimación de su potencia inhibitoria y el perfil farmacocinético, fisicoquímico y toxicológico (\gls{admet}).
 
-\textbf{Validación de poses de acoplamiento.} Para evaluar las moléculas obtenidas del frente de Pareto, se utiliza PoseBusters~\cite{buttenschoen2024posebusters}, que permite verificar si las conformaciones generadas son físicamente viables. La métrica corresponde al porcentaje de moléculas que supera las 20 pruebas de la herramienta.
+\textbf{Validación de poses de acoplamiento.} Para evaluar las moléculas obtenidas del frente de Pareto, se utiliza PoseBusters~\cite{buttenschoen2024posebusters}, que permite evaluar la plausibilidad física y geométrica de las conformaciones generadas. La métrica corresponde al porcentaje de moléculas que supera las 20 pruebas de la herramienta.
 
 \textbf{Predicción de potencia y bioactividad inhibitoria.} Se entrenó un modelo de \textit{Random Forest} con inhibidores conocidos de \gls{mrp1} extraídos de ChEMBL~\cite{mendez2019chembl} para predecir la bioactividad de las moléculas. Como métrica se utiliza el valor pChEMBL predicho, fijando un umbral de 5,0 para considerar activo al compuesto.
 
