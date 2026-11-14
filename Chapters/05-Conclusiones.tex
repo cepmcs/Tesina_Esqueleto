@@ -6,22 +6,26 @@ Este capítulo presenta las conclusiones generales de esta tesina de grado. Se r
 \section{Conclusiones}
 \label{sec:conclusiones}
 
-En este trabajo se presentó un enfoque híbrido que, a través de un modelo generativo y metaheurísticas multiobjetivo, evaluó la generación y optimización dirigida de nuevos compuestos químicos para inhibir la proteína \gls{mrp1}.
+En este trabajo se presentó un enfoque híbrido que, a través de un modelo generativo y metaheurísticas multiobjetivo, evaluó la generación y optimización dirigida de nuevos compuestos químicos con potencial actividad inhibitoria frente a la proteína \gls{mrp1}. Para ello, se combinó una representación latente continua del espacio molecular con métodos de búsqueda poblacionales capaces de equilibrar múltiples criterios de diseño, junto con una etapa posterior de evaluación computacional sobre los candidatos obtenidos. En relación con los objetivos específicos planteados al inicio de esta tesina (Sección~\ref{sec:objetivos}), a continuación se presentan los principales logros y conclusiones.
 
-En relación con los objetivos específicos planteados al inicio de esta tesina (Sección~\ref{sec:objetivos}), se destacan los siguientes logros y conclusiones:
+En primer lugar, se diseñó, entrenó y evaluó mediante \textit{benchmarks} estandarizados un modelo generativo de tipo autoencoder variacional (\gls{vae}), capaz de proyectar estructuras moleculares discretas en un espacio latente continuo. La evaluación mostró una alta tasa de validez química en la reconstrucción y decodificación, junto con elevados niveles de novedad y diversidad en las moléculas generadas al muestrear dicho espacio, consolidando una base adecuada para la optimización continua.
 
-\begin{itemize}
-    \item Se diseñó, entrenó y evaluó mediante \textit{benchmarks} estandarizados un modelo generativo de tipo autoencoder variacional (\gls{vae}), logrando una alta tasa de validez química, novedad y diversidad en la reconstrucción y decodificación del espacio molecular. Al aplicar las metaheurísticas sobre este espacio, la elección del operador de cruce resultó determinante. Cruces de múltiples padres como PCX favorecieron la dispersión en problemas de pocas dimensiones, mientras que esquemas como SBX y algoritmos como \acrshort{nsga3} mostraron un comportamiento más efectivo al incorporar múltiples objetivos y restricciones biológicas, manteniendo la búsqueda dentro de estructuras químicas viables.
+En segundo lugar, se implementaron y compararon distintos algoritmos metaheurísticos multiobjetivo para optimizar propiedades moleculares sobre el espacio latente del modelo, donde tanto el rendimiento de cada algoritmo como la elección del operador de cruce resultaron determinantes según el número de objetivos. En el escenario genérico de dos objetivos, cruces de múltiples padres como PCX favorecieron una mayor dispersión de las soluciones. En cambio, al escalar a la formulación de cuatro objetivos e incorporar restricciones fisicoquímicas, esquemas como SBX y algoritmos como \acrshort{nsga3} mostraron un comportamiento más efectivo, manteniendo la búsqueda dentro de regiones con estructuras químicas válidas.
 
-    \item Las metaheurísticas multiobjetivo demostraron ser eficaces para explorar el espacio latente continuo del modelo, resolviendo el compromiso entre múltiples métricas en conflicto y permitiendo encontrar moléculas candidatas con perfiles fisicoquímicos estables y potencial inhibitorio frente a \gls{mrp1}. Las evaluaciones posteriores confirmaron que los compuestos candidatos logran conformaciones de acoplamiento bien orientadas en la cavidad de la proteína sin presentar choques entre átomos, acompañadas por un perfil favorable de permeabilidad de membrana, absorción oral y seguridad biológica.
-\end{itemize}
+En tercer lugar, al aplicar los algoritmos seleccionados a la optimización dirigida frente a \gls{mrp1}, las metaheurísticas multiobjetivo permitieron equilibrar criterios en conflicto y generar moléculas candidatas con propiedades favorables según el conjunto de métricas utilizado. En particular, la formulación integró simultáneamente propiedades fisicoquímicas, accesibilidad sintética estimada, afinidad estimada mediante \textit{docking} molecular y bioactividad predicha, obteniendo compuestos con potencial actividad inhibitoria frente al blanco de interés.
 
-En resumen, la integración propuesta valida que la combinación de modelos generativos continuos y metaheurísticas multiobjetivo constituye una herramienta computacional sólida para el diseño dirigido de moléculas, dando cumplimiento satisfactorio a los propósitos planteados para este trabajo de grado.
+En cuarto lugar, la caracterización computacional de los candidatos obtenidos mostró conformaciones de acoplamiento bien orientadas en la cavidad de la proteína y libres de choques entre átomos según indicadores de plausibilidad geométrica, junto con predicciones favorables de permeabilidad de membrana, absorción oral y toxicidad. No obstante, estos hallazgos se sustentan en evaluaciones \textit{in silico} y modelos predictivos, por lo que no permiten confirmar eficacia terapéutica ni seguridad biológica real sin una etapa posterior de validación experimental \textit{in vitro} e \textit{in vivo}.
+
+En resumen, la integración propuesta muestra que la combinación de modelos generativos continuos y metaheurísticas multiobjetivo constituye una herramienta computacional sólida para el diseño dirigido de moléculas, dando cumplimiento a los propósitos planteados para este trabajo de grado.
 
 \section{Reflexión Final}
 \label{sec:reflexion_final}
 
-Desde una perspectiva personal, el desarrollo de esta tesina final de grado representó una experiencia fructífera. Abordar un desafío interdisciplinario como el diseño de fármacos no solo demandó poner en práctica conceptos de las ciencias de la computación, sino también aplicarlos a un campo complejo, demostrando la capacidad de la disciplina para aportar soluciones a problemas de otras áreas.
+El desarrollo de esta tesina final de grado representó una experiencia desafiante. Trabajar en un problema relacionado con el diseño de fármacos requirió adquirir conocimientos nuevos en los que no tenía una base teórica sólida. Esto me permitió aplicar herramientas y conceptos de las ciencias de la computación en un contexto diferente al de los problemas que había abordado durante la carrera.
+
+Llevar adelante una investigación implicó realizar un proceso sistemático y planificado. A lo largo del trabajo fue necesario diseñar experimentos, revisar decisiones frente a resultados que no siempre eran los esperados e interpretar métricas y observaciones según el contexto de cada resultado, entendiendo hasta dónde llega la evidencia que aportan las herramientas computacionales.
+
+Haber completado esta tesina representa el cierre de la carrera y la integración de muchos de los conocimientos aprendidos. Más allá de los resultados obtenidos, sostener un proyecto largo y complejo de principio a fin sirve como una gran experiencia que me acompañará en mi futuro, tanto laboral como académico.
 
 \section{Dificultades Encontradas}
 \label{sec:dificultades_encontradas}
@@ -44,11 +48,11 @@ Superar estas dificultades hizo posible la obtención de los resultados presenta
 Los resultados y metodologías desarrolladas en esta tesina sientan las bases para diversas líneas de investigación a futuro:
 
 \begin{itemize}
-    \item En primer lugar, se plantea la exploración de otras técnicas, tanto metaheurísticas como de inteligencia artificial, así como representaciones moleculares tridimensionales que permitan incorporar directamente información geométrica.
+    \item En primer lugar, se plantea la exploración de otras técnicas, tanto metaheurísticas como de inteligencia artificial, así como representaciones moleculares tridimensionales que permitan incorporar directamente información geométrica, con el fin de mejorar la diversidad estructural y la cobertura del frente de Pareto.
 
     \item En segundo lugar, se propone ampliar el conjunto de entrenamiento mediante la integración de librerías químicas de mayor escala y diversidad estructural, permitiendo al modelo aprender una distribución más amplia y representativa del espacio químico.
 
-    \item Por último, se plantea la extensión de la metodología hacia otras dianas biológicas. El enfoque híbrido desarrollado en este trabajo no está restringido exclusivamente a \gls{mrp1}, por lo que una línea prometedora consiste en aplicar este mismo esquema al diseño de candidatos dirigidos contra otras proteínas de relevancia terapéutica en el tratamiento del cáncer.
+    \item Por último, se plantea la extensión de la metodología hacia otras dianas biológicas. El enfoque híbrido desarrollado en este trabajo no está restringido exclusivamente a \gls{mrp1}, por lo que una línea prometedora consiste en adaptar este enfoque al diseño de candidatos dirigidos contra otras proteínas de relevancia terapéutica en el tratamiento del cáncer, ajustando los datos, las funciones objetivo y los predictores correspondientes a cada diana.
 \end{itemize}
 
 De este modo, las líneas propuestas abren un camino claro para continuar evolucionando esta metodología, ampliando su capacidad de exploración en el diseño computacional de nuevos~compuestos.
