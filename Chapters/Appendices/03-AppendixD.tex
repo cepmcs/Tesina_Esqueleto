@@ -1,0 +1,69 @@
+\chapter{Entrenamiento y Evaluación del Predictor de pChEMBL}
+\label{ap:predictor_pchembl}
+
+En este apéndice se documenta la construcción, selección y evaluación del modelo \textit{Random Forest} utilizado para estimar el valor $\text{pChEMBL}$ frente a \gls{mrp1} durante la optimización multiobjetivo descrita en la Subsección~\ref{subsec:fo_mrp1}.
+
+\section{Conjunto de Datos y Representación Molecular}
+\label{sec:ap_rf_datos}
+
+Los datos experimentales se obtuvieron de ChEMBL~\cite{mendez2019chembl} a partir de los registros asociados a la diana \gls{mrp1} (\texttt{CHEMBL3004}) con valor $\text{pChEMBL}$ reportado. Para preparar los datos se aplicaron tres filtros con \texttt{RDKit}: verificación de validez sintáctica de cada \gls{smiles}, eliminación de duplicados estructurales mediante su identificador \textit{InChIKey} y descarte de entradas con valores faltantes. Tras esta limpieza se conservaron 381 compuestos únicos.
+
+Cada molécula se representó mediante huellas moleculares de Morgan (\textit{ECFP4}) con radio 2 y 2048 bits, generando vectores binarios de presencia o ausencia de subestructuras. El conjunto final se dividió de forma aleatoria en una proporción 80/20 (\texttt{random\_state = 42}), con 304 moléculas para entrenamiento y 77 para validación.
+
+\section{Comparación de Modelos de Regresión}
+\label{sec:ap_rf_comparacion}
+
+Sobre las mismas particiones de entrenamiento y validación se evaluaron trece modelos de regresión sin ajuste fino de hiperparámetros ni normalización adicional, dado que las huellas de Morgan constituyen vectores binarios. La Tabla~\ref{tab:ap_comparacion_pchembl} resume los errores absolutos medios (MAE), las raíces del error cuadrático medio (RMSE) y los coeficientes de determinación ($R^2$) ordenados según el MAE de validación.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de trece modelos de regresión sobre huellas de Morgan (\textit{ECFP4}, 2048 bits) para la predicción de pChEMBL frente a MRP1.}
+\label{tab:ap_comparacion_pchembl}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Modelo} & \textbf{MAE Entr.} & \textbf{MAE Val.} & \textbf{RMSE Entr.} & \textbf{RMSE Val.} & \textbf{$R^2$ Entr.} & \textbf{$R^2$ Val.} \\
+\midrule
+\texttt{KNN\_5}        & 0,288 & 0,382 & 0,420 & 0,529 & 0,756 & 0,569 \\
+\texttt{KNN\_7}        & 0,298 & 0,387 & 0,440 & 0,524 & 0,732 & 0,578 \\
+\texttt{RandomForest}  & 0,132 & 0,396 & 0,193 & 0,539 & 0,948 & 0,553 \\
+\texttt{KNN\_9}        & 0,317 & 0,398 & 0,466 & 0,516 & 0,699 & 0,590 \\
+\texttt{XGBoost}       & 0,225 & 0,410 & 0,283 & 0,528 & 0,889 & 0,571 \\
+\texttt{SVR\_RBF}      & 0,158 & 0,411 & 0,284 & 0,521 & 0,889 & 0,583 \\
+\texttt{KNN\_3}        & 0,252 & 0,426 & 0,359 & 0,570 & 0,822 & 0,500 \\
+\texttt{DT}            & 0,290 & 0,435 & 0,399 & 0,568 & 0,779 & 0,505 \\
+\texttt{MLP\_logistic} & 0,136 & 0,439 & 0,219 & 0,604 & 0,933 & 0,438 \\
+\texttt{Ridge}         & 0,089 & 0,470 & 0,130 & 0,635 & 0,976 & 0,380 \\
+\texttt{ExtraTrees}    & 0,007 & 0,511 & 0,050 & 0,673 & 0,996 & 0,304 \\
+\texttt{SVR\_linear}   & 0,103 & 0,521 & 0,137 & 0,706 & 0,974 & 0,233 \\
+\texttt{MLP\_RELU}     & 0,082 & 0,580 & 0,145 & 0,771 & 0,971 & 0,087 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Si bien los métodos basados en vecinos cercanos y \texttt{SVR\_RBF} lograron métricas competitivas en validación sin ajuste de parámetros, \texttt{RandomForest} obtuvo el menor MAE de validación entre los ensambles basados en árboles, superando a \texttt{XGBoost} y \texttt{ExtraTrees}.
+
+\section{Ajuste de Hiperparámetros y Desempeño Final}
+\label{sec:ap_rf_final}
+
+Los hiperparámetros del modelo \textit{Random Forest} se ajustaron mediante búsqueda aleatoria (\texttt{RandomizedSearchCV}) con 60 iteraciones y validación cruzada de 5 pliegues sobre el conjunto de entrenamiento, tomando el MAE como criterio de selección. La configuración elegida utilizó 500 árboles, profundidad máxima de 30, \texttt{max\_features = 0,5}, \texttt{min\_samples\_split = 2}, \texttt{min\_samples\_leaf = 2} y \texttt{bootstrap = True}.
+
+Con esta configuración, el modelo evaluado sobre los 77 compuestos de validación obtuvo los resultados de la Tabla~\ref{tab:ap_rf_final}.
+
+\begin{table}[htbp]
+\centering
+\caption{Métricas de desempeño del modelo \textit{Random Forest} ajustado sobre el conjunto de validación.}
+\label{tab:ap_rf_final}
+\small
+\begin{tabular}{lc}
+\toprule
+\textbf{Métrica} & \textbf{Valor en validación} \\
+\midrule
+MAE   & 0,389 \\
+RMSE  & 0,516 \\
+$R^2$ & 0,591 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El ajuste mejoró el desempeño frente a la versión sin optimizar y alcanzó los mejores valores de RMSE y $R^2$ de toda la comparación.
