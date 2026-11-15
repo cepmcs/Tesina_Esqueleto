@@ -153,12 +153,12 @@ En este apartado se describen las funciones objetivo y la restricción estructur
 
 Para alejar la búsqueda de estructuras planas, se considera que una mayor proporción de carbonos saturados suele favorecer la solubilidad acuosa~\cite{Lovering2009Flatland} y disminuir tanto la promiscuidad biológica como la inhibición de citocromos CYP450, factores asociados al riesgo de toxicidad fuera de la diana y de interacciones fármaco-fármaco~\cite{Lovering2013Flatland2}.
 
-\textbf{Restricción sobre la fracción de carbonos $sp^3$ ($F_{\text{sp3}}$).} La fracción de carbonos con hibridación $sp^3$ ($F_{\text{sp3}}$) se define como:
+\textbf{Restricción sobre la fracción de carbonos $sp^3$ ($\text{Fsp}^3$).} La fracción de carbonos con hibridación $sp^3$ ($\text{Fsp}^3$) se define como:
 \begin{equation}
-    F_{\text{sp3}} = \frac{\text{número de carbonos } sp^3}{\text{número total de carbonos}}
+    \text{Fsp}^3 = \frac{\text{número de carbonos } sp^3}{\text{número total de carbonos}}
 \end{equation}
 
-Esta propiedad se aplica como restricción de factibilidad ($F_{\text{sp3}} \ge 0.30$). Este límite coincide con los promedios observados en etapas iniciales de descubrimiento ($\sim 0.32\text{--}0.36$), intervalo asociado en dicho estudio con una menor promiscuidad~\cite{Lovering2013Flatland2}.
+Esta propiedad se aplica como restricción de factibilidad ($\text{Fsp}^3 \ge 0.30$). Este límite coincide con los promedios observados en etapas iniciales de descubrimiento ($\sim 0.32\text{--}0.36$), intervalo asociado en dicho estudio con una menor promiscuidad~\cite{Lovering2013Flatland2}.
 
 Para gestionar esta restricción, los algoritmos emplean el criterio de dominancia restringida~\cite{deb2002nsga2}, donde las soluciones factibles siempre dominan a las infactibles, y entre infactibles se prioriza la de menor violación de restricciones. Asimismo, si un vector latente decodifica en una estructura químicamente inválida según RDKit, se le asignan valores penalizados de $-1.0$ para \gls{qed}, $12.0$ para \gls{sas} y $1.0$ en la violación de restricción, forzando a la búsqueda a mantenerse dentro de las regiones viables del espacio latente.
 
@@ -360,14 +360,14 @@ Para el diseño dirigido hacia \gls{mrp1} se evaluaron de manera incremental dis
 
 Cada molécula se acopla con el receptor rígido descrito en la subsección~\ref{subsec:prep_proteina} dentro de la caja de docking, con un modo de búsqueda balanceado y una semilla fija, y se toma la energía de la mejor pose como valor del objetivo.
 
-Además de la restricción $F_{\text{sp3}} \ge 0,30$ descrita en la sección~\ref{subsec:fo_genericos}, se añade la restricción de lipofilicidad $1,0 \le \log P \le 4,0$ calculada con RDKit~\cite{landrum2026rdkit}, evaluadas conjuntamente mediante dominancia restringida. Solo las moléculas factibles se someten a acoplamiento molecular, asignando $+1,0$~kcal/mol como penalización ante infactibilidad, fallos de preparación o ausencia de pose. Para el hipervolumen, la energía de unión se normaliza entre $-15,0$ y $+1,0$~kcal/mol y el pChEMBL predicho entre $4,0$ y $8,5$. En conjunto, estas funciones dependen de aproximaciones computacionales sujetas a incertidumbre que orientan la búsqueda sin reemplazar la validación experimental.
+Además de la restricción $\text{Fsp}^3 \ge 0,30$ descrita en la sección~\ref{subsec:fo_genericos}, se añade la restricción de lipofilicidad $1,0 \le \log P \le 4,0$ calculada con RDKit~\cite{landrum2026rdkit}, evaluadas conjuntamente mediante dominancia restringida. Solo las moléculas factibles se someten a acoplamiento molecular, asignando $+1,0$~kcal/mol como penalización ante infactibilidad, fallos de preparación o ausencia de pose. Para el hipervolumen, la energía de unión se normaliza entre $-15,0$ y $+1,0$~kcal/mol y el pChEMBL predicho entre $4,0$ y $8,5$. En conjunto, estas funciones dependen de aproximaciones computacionales sujetas a incertidumbre que orientan la búsqueda sin reemplazar la validación experimental.
 
 \subsubsection{Protocolo de Generación de Candidatos}
 \label{subsec:protocolo_mrp1}
 
 Se ejecuta la búsqueda dirigida en el espacio latente con las mejores configuraciones seleccionadas en la sección~\ref{sec:farmacos_genericos}, manteniendo el total de 100.000 evaluaciones por ejecución con 5 semillas independientes debido al elevado costo computacional del acoplamiento molecular. El acoplamiento se realiza con el receptor rígido, dentro de la caja de docking definida en la subsección~\ref{subsec:prep_proteina}.
 
-Las moléculas generadas se evalúan en términos de \gls{qed}, \gls{sas}, afinidad, potencia predicha, $F_{\text{sp3}}$ y características de unión. Adicionalmente, se evalúan la validez, la unicidad y la diversidad de las moléculas generadas.
+Las moléculas generadas se evalúan en términos de \gls{qed}, \gls{sas}, afinidad, potencia predicha, $\text{Fsp}^3$ y características de unión. Adicionalmente, se evalúan la validez, la unicidad y la diversidad de las moléculas generadas.
 
 \section{Métricas de Evaluación del Rendimiento de los Modelos Considerados}
 \label{sec:metricas_evaluacion}
@@ -458,7 +458,7 @@ En esta sección se describen las herramientas y tecnologías empleadas en el en
 \begin{itemize}
     \item \textbf{PyTorch (Versión 2.12.1):} Utilizado para construir y entrenar las redes neuronales recurrentes (\gls{gru} y \gls{lstm}) del \gls{vae}.
     \item \textbf{pymoo (Versión 0.6.1.6):} Utilizado para ejecutar los algoritmos de optimización multiobjetivo, sus operadores y las métricas de rendimiento.
-    \item \textbf{RDKit (Versión 2026.03.3):} Utilizado para validar estructuras químicas, calcular propiedades moleculares (\gls{qed}, \gls{sas}, $F_{\text{sp3}}$) y generar conformaciones 3D.
+    \item \textbf{RDKit (Versión 2026.03.3):} Utilizado para validar estructuras químicas, calcular propiedades moleculares (\gls{qed}, \gls{sas}, $\text{Fsp}^3$) y generar conformaciones 3D.
     \item \textbf{SELFIES (Versión 2.2.0):} Representación molecular basada en cadenas válidas, empleada como alternativa a \gls{smiles}.
     \item \textbf{MOSES (Versión 0.3.1):} Benchmark para evaluar el modelo generativo y calcular métricas de distribución y calidad química.
     \item \textbf{Uni-Dock (Versión 1.2.0):} Motor de acoplamiento molecular en \gls{gpu}, utilizado para evaluar la afinidad de unión contra \gls{mrp1}.

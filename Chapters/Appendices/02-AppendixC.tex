@@ -172,9 +172,9 @@ SBX gauss & 0,004 & $1.1070 \pm 0.0033$ & $0.0668 \pm 0.0078$ & $0.2090 \pm 0.02
 
 En esta sección se presentan los resultados de las cinco formulaciones preliminares evaluadas para definir los objetivos y restricciones de la optimización hacia \gls{mrp1}:
 \begin{itemize}
-    \item \textbf{VAE + pChEMBL:} Modelo base con optimización de \gls{qed}, SA, afinidad de acoplamiento y pChEMBL, bajo restricción de $F_{\text{sp3}}$.
+    \item \textbf{VAE + pChEMBL:} Modelo base con optimización de \gls{qed}, SA, afinidad de acoplamiento y pChEMBL, bajo restricción de $\text{Fsp}^3$.
     \item \textbf{VAE + pChEMBL + $\log P$:} Modelo base agregando la restricción de $\log P$ (configuración final adoptada).
-    \item \textbf{VAE-ft:} Modelo ajustado por fine-tuning optimizando únicamente docking, \gls{qed} y SA bajo restricción de $F_{\text{sp3}}$, sin pChEMBL ni $\log P$.
+    \item \textbf{VAE-ft:} Modelo ajustado por fine-tuning optimizando únicamente docking, \gls{qed} y SA bajo restricción de $\text{Fsp}^3$, sin pChEMBL ni $\log P$.
     \item \textbf{VAE-ft + pChEMBL:} Modelo ajustado por fine-tuning incorporando pChEMBL.
     \item \textbf{VAE-ft + pChEMBL + $\log P$:} Modelo ajustado por fine-tuning con pChEMBL y ambas restricciones.
 \end{itemize}
@@ -208,7 +208,7 @@ Por su parte, las Tablas~\ref{tab:admet_exp5_1} y \ref{tab:admet_exp5_2} resumen
 \resizebox{\textwidth}{!}{
 \begin{tabular}{lcccccc}
 \toprule
-Formulación & QED & SA & $F_{\text{sp3}}$ & HIA\_Hou & Caco2\_Wang & PAMPA\_NCATS \\
+Formulación & QED & SA & $\text{Fsp}^3$ & HIA\_Hou & Caco2\_Wang & PAMPA\_NCATS \\
 \midrule
 VAE + pChEMBL & $0.824$ & $2.277$ & $0.404$ & $1.000$ & $-4.669$ & $0.945$ \\
 VAE + pChEMBL + $\log P$ & $0.847$ & $2.208$ & $0.407$ & $1.000$ & $-4.632$ & $0.948$ \\
