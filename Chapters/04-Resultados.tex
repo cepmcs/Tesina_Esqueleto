@@ -629,7 +629,7 @@ En conjunto, estos contrastes muestran que la optimización multiobjetivo en el 
 \label{subsec:mejores_moleculas}
 \label{sec:validacion_perfilado}
 
-Con el fin de evaluar y caracterizar las moléculas obtenidas para \gls{mrp1}, se realiza un análisis sobre las soluciones del frente de Pareto de cada configuración y los modelos de referencia. Esta sección examina la calidad física de las conformaciones de acoplamiento mediante PoseBusters \cite{buttenschoen2024posebusters}, la potencia y bioactividad inhibitoria predicha con Random Forest a partir de ChEMBL \cite{mendez2019chembl}, y el perfil farmacocinético, fisicoquímico y toxicológico mediante ADMET-AI \cite{swanson2024admetai}.
+Con el fin de evaluar y caracterizar las moléculas obtenidas para \gls{mrp1}, se realiza un análisis sobre las soluciones del frente de Pareto de cada configuración y los modelos de referencia. Esta sección examina las propiedades químicas y geométricas de las conformaciones de acoplamiento mediante PoseBusters~\cite{buttenschoen2024posebusters}, la potencia y bioactividad inhibitoria predicha con Random Forest a partir de ChEMBL \cite{mendez2019chembl}, y el perfil farmacocinético, fisicoquímico y toxicológico mediante ADMET-AI \cite{swanson2024admetai}.
 
 \subsubsection{Validación de Poses de Acoplamiento (PoseBusters)}
 \label{subsubsec:posebusters}
@@ -643,7 +643,7 @@ Para evaluar los criterios químicos y geométricos de las conformaciones tridim
     \label{fig:posebusters}
 \end{figure}
 
-La Figura~\ref{fig:posebusters} presenta la tasa de validez obtenida en las pruebas de PoseBusters para cada variante y modelo de referencia. Como se observa, todas las configuraciones multiobjetivo y los modelos de referencia alcanzan entre un 98\% y un 100\% de validez dentro del subconjunto evaluado. Estos resultados indican que la gran mayoría de las poses seleccionadas cumple los criterios químicos y geométricos evaluados frente al sitio de unión de \gls{mrp1}.
+La Figura~\ref{fig:posebusters} presenta la tasa de validez obtenida en las pruebas de PoseBusters para cada variante y modelo de referencia. Como se observa, todas las configuraciones multiobjetivo y los modelos de referencia alcanzan entre un 98\% y un 100\% de validez dentro del subconjunto evaluado. Estos resultados indican que la gran mayoría de las poses seleccionadas supera las pruebas aplicadas frente al sitio de unión de \gls{mrp1}.
 
 \subsubsection{Predicción de Potencia y Bioactividad Inhibitoria}
 \label{subsubsec:potencia_bioactividad}
@@ -654,7 +654,7 @@ La Tabla~\ref{tab:pchembl_predicho} y la Figura~\ref{fig:distribucion_pchembl} p
 
 Las distribuciones se desplazan hacia valores más altos y sus medianas superan 5,0. Aunque siguen incluyendo moléculas con predicciones inferiores al umbral, la gran mayoría corresponde a moléculas con actividad inhibitoria predicha favorable. Entre los algoritmos evaluados, \acrshort{nsga3} presenta los valores promedio más altos de bioactividad predicha (tanto con SBX como con PCX) y alcanza el máximo entre las metaheurísticas evaluadas (6,28) en su variante con SBX, seguido de cerca por \acrshort{agemoea} y \acrshort{nsga2}.
 
-En cambio, los modelos de referencia (tanto base como con fine-tuning) concentran gran parte de sus soluciones alrededor o por debajo del umbral, con una proporción importante de moléculas sin actividad inhibitoria predicha favorable. Esto refleja que incorporar el predictor en la optimización guiada del espacio latente desplaza las soluciones hacia mayores puntuaciones de actividad inhibitoria predicha frente a~\gls{mrp1}.
+En cambio, los modelos de referencia (tanto base como con fine-tuning) concentran gran parte de sus soluciones alrededor o por debajo del umbral de 5,0. Esto refleja que incorporar el predictor en la optimización guiada del espacio latente desplaza las soluciones hacia mayores valores predichos frente a~\gls{mrp1}.
 
 \input{Chapters/Tables/mrp1/tab_pchembl_mrp1.tex}
 
@@ -679,29 +679,29 @@ El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando AD
 
 \input{Chapters/Tables/mrp1/tab_admet_resumen_mrp1.tex}
 
-La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para los seis descriptores con mayor variabilidad (permeabilidad epitelial, biodisponibilidad oral, solubilidad acuosa, toxicidad clínica, toxicidad aguda y lipofilicidad), mientras que la Tabla~\ref{tab:admet_resumen} resume los valores medios de todas las propiedades \gls{admet} evaluadas, incluyendo la absorción intestinal humana HIA y la permeabilidad pasiva PAMPA:
+La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para los seis descriptores con mayor variabilidad (permeabilidad epitelial, biodisponibilidad oral, solubilidad acuosa, toxicidad clínica, toxicidad aguda y lipofilicidad), mientras que la Tabla~\ref{tab:admet_resumen} resume los valores medios de todas las propiedades \gls{admet} evaluadas, incluyendo la absorción intestinal humana HIA y la permeabilidad pasiva PAMPA.
 
 \needspace{4\baselineskip}
 \paragraph{Absorción y Permeabilidad.}
 \begin{itemize}
-    \item \textbf{Absorción Intestinal Humana (HIA\_Hou):} Estima la probabilidad de absorción oral (favorable $>0.8$). Todas las variantes multiobjetivo obtienen puntuaciones predichas en el máximo de la escala del modelo ($1.0$), en línea con los modelos de referencia y dentro del rango favorable del predictor.
-    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang):} Estima la tasa de paso por células intestinales (alta permeabilidad $> -5.15$). Todas las variantes multiobjetivo presentan valores estimados dentro de ese rango.
-    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS):} Estima el tránsito pasivo a través de membranas lipídicas (favorable $>0.70$). En todas las configuraciones, las moléculas obtienen puntuaciones de permeabilidad pasiva predicha favorables según el criterio empleado.
-    \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma):} Probabilidad estimada de alcanzar la circulación sistémica vía oral (favorable $>0.50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
+    \item \textbf{Absorción Intestinal Humana (HIA\_Hou):} Estima la probabilidad de absorción oral (favorable $>0,8$). Todas las variantes multiobjetivo alcanzan el máximo de la escala ($1,0$), en línea con los modelos de referencia y dentro del rango favorable del predictor.
+    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang):} Estima la tasa de paso por células intestinales (alta permeabilidad $> -5,15$). Todas las variantes multiobjetivo presentan valores estimados dentro de ese rango.
+    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS):} Estima el tránsito pasivo a través de membranas lipídicas (favorable $>0,70$). En todas las configuraciones, las moléculas obtienen puntuaciones de permeabilidad pasiva predicha favorables según el criterio empleado.
+    \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma):} Probabilidad estimada de alcanzar la circulación sistémica vía oral (favorable $>0,50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
 \end{itemize}
 
 \needspace{4\baselineskip}
 \paragraph{Propiedades Fisicoquímicas.}
 \begin{itemize}
     \item \textbf{Solubilidad Acuosa (Solubility\_AqSolDB):} Solubilidad estimada en $\log(\text{mol/L})$, donde valores entre $-4$ y $-2$ indican solubilidad moderada y $<-4$ baja solubilidad. Las configuraciones multiobjetivo se mantienen dentro del rango moderado, con \acrshort{nsga2} (SBX) alcanzando la mejor solubilidad predicha entre los modelos multiobjetivo, evitando los valores bajos estimados en la GAN con fine-tuning.
-    \item \textbf{Lipofilicidad ($\log P$):} Coeficiente de partición octanol/agua (rango ideal entre $0$ y $3$). Como resultado de la restricción aplicada, las moléculas optimizadas convergen de manera homogénea en valores cercanos a $2.8$, lo que favorece el cruce de membranas sin comprometer la solubilidad, a diferencia de los modelos con fine-tuning que superan el umbral recomendado.
+    \item \textbf{Lipofilicidad ($\log P$):} Coeficiente de partición octanol/agua (rango ideal entre $0$ y $3$). Como resultado de la restricción aplicada, las moléculas optimizadas convergen de manera homogénea en valores cercanos a $2,8$, lo que favorece el cruce de membranas sin comprometer la solubilidad, a diferencia de los modelos con fine-tuning que superan el umbral recomendado.
 \end{itemize}
 
 \needspace{4\baselineskip}
 \paragraph{Toxicidad y Seguridad.}
 \begin{itemize}
-    \item \textbf{Toxicidad Clínica (ClinTox):} Probabilidad estimada de fracaso o toxicidad en ensayos clínicos (bajo riesgo predicho $<0.30$). Las configuraciones multiobjetivo obtienen probabilidades predichas bajas, destacando las variantes con PCX (en especial \acrshort{nsga2} y \acrshort{nsga3}) con las menores puntuaciones medias de riesgo estimado, por debajo de los modelos con fine-tuning.
-    \item \textbf{Toxicidad Aguda (LD50\_Zhu):} Dosis letal media estimada en ratas expresada como $-\log(\text{mol/kg})$, donde valores más altos indican mayor toxicidad y el rango habitual oscila entre $2.0$ y $3.0$. Todas las variantes optimizadas obtienen predicciones dentro de este intervalo, en niveles comparables a los modelos generativos base.
+    \item \textbf{Toxicidad Clínica (ClinTox):} Probabilidad estimada de fracaso o toxicidad en ensayos clínicos (bajo riesgo predicho $<0,30$). Las configuraciones multiobjetivo obtienen probabilidades predichas bajas, destacando las variantes con PCX (en especial \acrshort{nsga2} y \acrshort{nsga3}) con las menores puntuaciones medias de riesgo estimado, por debajo de los modelos con fine-tuning.
+    \item \textbf{Toxicidad Aguda (LD50\_Zhu):} Dosis letal media estimada en ratas expresada como $-\log(\text{mol/kg})$, donde valores más altos indican mayor toxicidad y el rango habitual oscila entre $2,0$ y $3,0$. Todas las variantes optimizadas obtienen predicciones dentro de este intervalo, en niveles comparables a los modelos generativos base.
 \end{itemize}
 
 % -----------------------------------------------------------------------------
@@ -709,7 +709,7 @@ La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para 
 \label{subsec:discusion_mrp1}
 \label{sec:discusion}
 
-La formulación del diseño molecular optimizando simultáneamente la afinidad por acoplamiento en \gls{mrp1}, la potencia inhibitoria predicha pChEMBL, el \gls{qed} y la accesibilidad sintética SA, sujeta a restricciones de saturación ($\text{Fsp}^3$) y lipofilicidad ($\log P$), permite orientar con éxito la exploración del espacio latente hacia regiones de interés biológico. En este entorno multiobjetivo con restricciones, el operador de cruce SBX logra mejores valores de hipervolumen, convergencia y validez química, mientras que PCX conserva ventajas relativas en novedad, unicidad y espaciamiento. A diferencia de formulaciones más simples donde PCX favorecía la dispersión en zonas extremas, en este problema SBX preserva una validez química mucho más alta y alcanza mayores hipervolúmenes, lo que indica que se mantiene en zonas del espacio latente que el modelo puede decodificar correctamente.
+La formulación del diseño molecular optimizando simultáneamente la afinidad por acoplamiento en \gls{mrp1}, la potencia inhibitoria predicha pChEMBL, el \gls{qed} y la accesibilidad sintética SA, sujeta a restricciones de saturación ($\text{Fsp}^3$) y lipofilicidad ($\log P$), permite orientar la exploración del espacio latente hacia regiones de interés biológico. En este entorno multiobjetivo con restricciones, el operador de cruce SBX logra mejores valores de hipervolumen, convergencia y validez química, mientras que PCX conserva ventajas relativas en novedad, unicidad y espaciamiento. A diferencia de formulaciones más simples donde PCX favorecía la dispersión en zonas extremas, en este problema SBX preserva una validez química mucho más alta y alcanza mayores hipervolúmenes, lo que indica que se mantiene en zonas del espacio latente que el modelo puede decodificar correctamente.
 
 En la comparación entre algoritmos, los tres métodos muestran complementariedad al aportar soluciones al Frente No Dominado Conjunto Global. No obstante, \acrshort{nsga3} con SBX obtiene los valores promedio más favorables en la exploración de este espacio, alcanzando el mayor hipervolumen y el promedio más alto de pChEMBL. Esta ventaja podría relacionarse con los puntos de referencia estructurados de \acrshort{nsga3}, pensados para equilibrar la búsqueda en cuatro objetivos mejor que la distancia de apiñamiento de \acrshort{nsga2} o la estimación geométrica de \acrshort{agemoea}.
 
