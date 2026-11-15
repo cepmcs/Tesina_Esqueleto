@@ -365,7 +365,7 @@ Se mantiene la restricción de complejidad estructural $F_{\text{sp3}} \ge 0.30$
 \subsubsection{Protocolo de Generación de Candidatos}
 \label{subsec:protocolo_mrp1}
 
-Se ejecuta la búsqueda dirigida en el espacio latente con las mejores configuraciones seleccionadas en la sección~\ref{sec:farmacos_genericos}, con el mismo total de 100.000 evaluaciones por ejecución y 5 semillas independientes. El acoplamiento se realiza con el receptor rígido, dentro de la caja de docking definida en la subsección~\ref{subsec:prep_proteina}.
+Se ejecuta la búsqueda dirigida en el espacio latente con las mejores configuraciones seleccionadas en la sección~\ref{sec:farmacos_genericos}, manteniendo el total de 100.000 evaluaciones por ejecución con 5 semillas independientes debido al elevado costo computacional del acoplamiento molecular. El acoplamiento se realiza con el receptor rígido, dentro de la caja de docking definida en la subsección~\ref{subsec:prep_proteina}.
 
 Las moléculas generadas se evalúan en términos de \gls{qed}, \gls{sas}, afinidad, potencia predicha, $F_{\text{sp3}}$ y características de unión. Adicionalmente, se evalúan la validez, la unicidad y la diversidad de las moléculas generadas.
 
@@ -380,7 +380,7 @@ En esta sección se describen las métricas empleadas para evaluar el rendimient
 
 Para evaluar y comparar el desempeño de los modelos de \gls{vae} entrenados sobre el conjunto de datos \gls{moses}~\cite{polykovskiy2020molecular}, se emplean las métricas estandarizadas del benchmark:
 
-\textbf{Validez.} Proporción de moléculas generadas que son químicamente viables, verificando que cada estructura respete las leyes de valencia y los criterios básicos de estabilidad química:
+\textbf{Validez.} Proporción de cadenas generadas que representan estructuras válidas según las reglas sintácticas y de valencia verificadas por RDKit:
 \begin{equation}
     \text{Validez} = \frac{\# \text{moléculas válidas}}{\# \text{moléculas generadas}}
 \end{equation}
@@ -390,7 +390,7 @@ Para evaluar y comparar el desempeño de los modelos de \gls{vae} entrenados sob
     \text{Unicidad} = \frac{\# \text{moléculas generadas únicas}}{\# \text{moléculas generadas}}
 \end{equation}
 
-\textbf{Novedad.} Porcentaje de moléculas generadas que aparecen en el conjunto de entrenamiento, evaluando si el modelo generaliza o si memoriza las estructuras conocidas:
+\textbf{Novedad.} Proporción de moléculas generadas que no aparecen en el conjunto de entrenamiento, evaluando si el modelo generaliza o si memoriza estructuras conocidas:
 \begin{equation}
     \text{Novedad} = 1 - \frac{\# \text{moléculas generadas} \cap \# \text{moléculas de entrenamiento}}{\# \text{moléculas generadas}}
 \end{equation}
@@ -401,7 +401,7 @@ Para evaluar y comparar el desempeño de los modelos de \gls{vae} entrenados sob
 \begin{equation}
     \text{FCD}(G, R) = \|m_G - m_R\|^2 + \text{Tr} \left( C_G + C_R - 2(C_G C_R)^{1/2} \right)
 \end{equation}
-donde $m$ representa el vector de medias y $C$ la matriz de covarianza de las activaciones para los conjuntos generado ($G$) y real ($R$). Los autores de \gls{moses} destacan a \acrshort{fcd} como una de las métricas centrales del benchmark porque captura de forma conjunta la distribución de propiedades químicas y la relevancia biológica de los compuestos. Una puntuación cercana a cero indica que el modelo replica con precisión el perfil del conjunto de referencia.
+donde $m$ representa el vector de medias y $C$ la matriz de covarianza de las activaciones para los conjuntos generado ($G$) y real ($R$). Los autores de \gls{moses} destacan a \acrshort{fcd} como una de las métricas centrales del benchmark porque refleja de forma conjunta la similitud química y estructural entre los compuestos generados y los de~referencia. Una puntuación cercana a cero indica que el modelo replica con precisión el perfil del conjunto de~referencia.
 
 \textbf{Diversidad Interna ($\text{IntDiv}$).} Cuantifica la variedad química dentro del conjunto generado para detectar colapso de modos (\textit{mode collapse}):
 \begin{equation}
