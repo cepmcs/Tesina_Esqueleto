@@ -6,7 +6,7 @@ En este apéndice se documenta la construcción, selección y evaluación del mo
 \section{Conjunto de Datos y Representación Molecular}
 \label{sec:ap_rf_datos}
 
-Los datos experimentales se obtuvieron de ChEMBL~\cite{mendez2019chembl} a partir de los registros asociados a la diana \gls{mrp1} (\texttt{CHEMBL3004}) con valor $\text{pChEMBL}$ reportado. Para preparar los datos se aplicaron tres filtros con \texttt{RDKit}: verificación de validez sintáctica de cada \gls{smiles}, eliminación de duplicados estructurales mediante su identificador \textit{InChIKey} y descarte de entradas con valores faltantes. Tras esta limpieza se conservaron 381 compuestos únicos.
+Los datos experimentales se obtuvieron de ChEMBL~\cite{mendez2019chembl} a partir de los registros asociados a la diana \gls{mrp1} (\texttt{CHEMBL3004}) con valor $\text{pChEMBL}$ reportado. Para preparar los datos se aplicaron tres filtros con \texttt{RDKit}, verificando la validez sintáctica de cada \gls{smiles}, eliminando duplicados estructurales mediante su identificador \textit{InChIKey} y descartando entradas con valores faltantes. Tras esta limpieza se conservaron 381 compuestos únicos.
 
 Cada molécula se representó mediante huellas moleculares de Morgan (\textit{ECFP4}) con radio 2 y 2048 bits, generando vectores binarios de presencia o ausencia de subestructuras. El conjunto final se dividió de forma aleatoria en una proporción 80/20 (\texttt{random\_state = 42}), con 304 moléculas para entrenamiento y 77 para validación.
 
