@@ -36,7 +36,23 @@ En esta sección se detalla el conjunto de datos químico empleado, presentando 
 
 Para el entrenamiento del modelo generativo se utiliza el conjunto de datos \gls{moses}~\cite{polykovskiy2020molecular}, obtenido a partir de la colección \textit{Clean Leads} de la base de datos pública ZINC~\cite{irwin2020zinc20}. Este conjunto reúne aproximadamente 1,93 millones de moléculas en formato \gls{smiles} con propiedades de compuestos tipo fármaco, previamente filtradas para descartar estructuras inestables, reactivas o con propiedades farmacológicas desfavorables. Estas moléculas son genéricas y no están dirigidas a ninguna diana biológica en particular. Cuentan con un peso molecular de entre $250$ y $350\text{ Da}$, $\log P \le 3.5$, hasta 7 enlaces rotables, ciclos de no más de 8 átomos y están formadas únicamente por átomos de C, N, O, S, F, Cl, Br e H.
 
-Para los experimentos se utilizan las particiones oficiales del conjunto de datos, utilizando el conjunto de entrenamiento ($\sim$1,58 millones de moléculas) para ajustar el modelo y el conjunto de prueba ($\sim$176 mil moléculas) para evaluar su desempeño.
+Para los experimentos se emplean las particiones oficiales de \gls{moses} detalladas en la Tabla~\ref{tab:particiones_moses}. El conjunto de entrenamiento se utilizó exclusivamente para ajustar los pesos del \gls{vae}, manteniendo separado el conjunto de prueba. Siguiendo el protocolo habitual de \gls{moses}~\cite{polykovskiy2020molecular}, que no define una partición oficial de validación, el conjunto de prueba se empleó tanto para seleccionar las configuraciones del \gls{vae} como para la comparación final frente al estado del arte, por lo que esta última evaluación no es estrictamente independiente de la selección de hiperparámetros.
+
+\begin{table}[htbp]
+\centering
+\caption{Particiones oficiales de \gls{moses} utilizadas en el estudio.}
+\label{tab:particiones_moses}
+\begin{tabular}{llcp{5.5cm}}
+\toprule
+\textbf{Rol} & \textbf{Partición MOSES} & \textbf{Moléculas} & \textbf{Uso en el estudio} \\
+\midrule
+Entrenamiento & \textit{train} & $\sim$1,58 millones & Ajuste de pesos del \gls{vae}. \\
+\midrule
+Validación & \multirow{2}{*}{\textit{test}} & \multirow{2}{*}{$\sim$176 mil} & Selección de configuraciones del \gls{vae}. \\
+Prueba & & & Comparación final frente al estado del arte. \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 La Figura~\ref{fig:muestras_moses} muestra seis moléculas seleccionadas al azar del conjunto de datos junto a su correspondiente notación \gls{smiles}.
 
