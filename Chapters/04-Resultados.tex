@@ -188,9 +188,9 @@ La Figura~\ref{fig:boxplots_mo} ilustra la distribución de los indicadores mult
 
 Por su parte, \acrshort{moead} y \acrshort{cmopso} presentan medianas menores de espaciamiento ($1.05$ y $0.95$) debido a que sus soluciones se concentran en el tramo de alto \gls{qed}. Sin embargo, al no explorar la rama de bajo SA, registran valores peores en $\text{IGD}^+$ y $\epsilon^+$, ya que dejar ese sector sin cubrir aumenta la distancia respecto al frente de referencia. Además, al enfocarse en una zona más acotada, obtienen menos soluciones no dominadas (medianas de $20$ y $18$ moléculas, respectivamente).
 
-\input{Chapters/Tables/tab_comparison_chemical.tex}
-
 La Tabla~\ref{tab:comparison_chemical} presenta la comparación de las propiedades químicas entre los cinco algoritmos. \gls{qed} y SA se promedian sobre el frente no dominado acumulado, mientras que validez, factibilidad, unicidad, novedad y $\text{Fsp}^3$ describen el comportamiento de la búsqueda sobre el espacio químico.
+
+\input{Chapters/Tables/tab_comparison_chemical.tex}
 
 Los resultados dividen a los algoritmos en dos grupos definidos. Por un lado, \acrshort{cmopso} y \acrshort{moead} obtienen los valores promedio más altos de \gls{qed}, junto con una validez química cercana al cien por ciento. Sin embargo, este comportamiento reduce la diversidad de la población final, registrando una baja unicidad y menor novedad frente a las moléculas de entrenamiento.
 
@@ -211,9 +211,10 @@ En los objetivos, \acrshort{cmopso} y \acrshort{moead} concentran sus valores de
 
 En las métricas de generación, \acrshort{moead} y \acrshort{cmopso} alcanzan una validez próxima al $99\%$, aunque su unicidad desciende a medianas de $0.45$ y~$0.32$, con una novedad menor y dispersa en \acrshort{cmopso}. En contraste, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} sostienen unicidad y novedad cercanas a $1.0$ y~$0.98$, con una validez entre el $80\%$ y el~$86\%$.
 
-\input{Chapters/Tables/tab_comparacion_grupos.tex}
 
 La Tabla~\ref{tab:comparacion_grupos} presenta la comparación estadística por pares entre los cinco algoritmos sobre el hipervolumen. Se reportan los valores $p$ ajustados mediante la corrección de Holm, el tamaño del efecto según la correlación de rango biserial ($r_{\text{rb}}$) y el algoritmo superior de cada comparación.
+
+\input{Chapters/Tables/tab_comparacion_grupos.tex}
 
 Los resultados confirman diferencias significativas entre los algoritmos ($p < 0.001$ en el test de Friedman). \acrshort{nsga2} se posiciona como el algoritmo con mejor desempeño global, superando a todos los demás de forma estadísticamente significativa ($p \le 0.005, r_{\text{rb}} \ge +0.762$). En el segundo escalón homogéneo se ubican \acrshort{agemoea} y \acrshort{nsga3} sin diferencias significativas entre sí ($p = 0.571$), seguidos por \acrshort{moead} en tercer lugar ($p = 0.008$ frente a \acrshort{cmopso}) y finalmente \acrshort{cmopso}.
 
@@ -293,6 +294,8 @@ Para analizar la calidad de las moléculas generadas y comparar cómo explora ca
 
 \input{Chapters/Tables/tab_moleculas_representativas.tex}
 
+La Tabla~\ref{tab:moleculas_representativas} y la Figura~\ref{fig:moleculas_representativas} muestran las moléculas generadas a lo largo del frente de Pareto. En la zona de menor SA, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} exploran el extremo del espacio generando cadenas lineales de carbono saturadas con bajo \gls{qed}. Aunque estas cadenas no presentan interés como fármacos, la capacidad de estos algoritmos para explorar los extremos del frente puede resultar útil al incorporar otros objetivos a optimizar. Por el contrario, \acrshort{moead} y \acrshort{cmopso} son más conservadores en esta región y generan moléculas pequeñas con mejor perfil farmacológico.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{Figures/metaheuristicas/frente_conjunto/moleculas_representativas.png}
@@ -300,7 +303,6 @@ Para analizar la calidad de las moléculas generadas y comparar cómo explora ca
     \label{fig:moleculas_representativas}
 \end{figure}
 
-La Tabla~\ref{tab:moleculas_representativas} y la Figura~\ref{fig:moleculas_representativas} muestran las moléculas generadas a lo largo del frente de Pareto. En la zona de menor SA, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} exploran el extremo del espacio generando cadenas lineales de carbono saturadas con bajo \gls{qed}. Aunque estas cadenas no presentan interés como fármacos, la capacidad de estos algoritmos para explorar los extremos del frente puede resultar útil al incorporar otros objetivos a optimizar. Por el contrario, \acrshort{moead} y \acrshort{cmopso} son más conservadores en esta región y generan moléculas pequeñas con mejor perfil farmacológico.
 
 En la zona de mayor \gls{qed}, todos los métodos convergen alrededor de $0.948$ y producen estructuras similares basadas en combinaciones de anillos aromáticos y heterociclos sencillos. En este punto, \acrshort{nsga3} destaca al obtener la molécula de mayor \gls{qed} con la menor dificultad sintética entre todos los algoritmos. Finalmente, en el extremo de mayor SA, el \gls{qed} se satura mientras el SA aumenta debido a la incorporación de más anillos y sustituyentes. Esto explica por qué el frente de Pareto se vuelve casi vertical en esa zona, ya que agregar más complejidad estructural no produce mejoras en el \gls{qed}.
 
@@ -329,25 +331,26 @@ En esta subsección se evalúa el desempeño de las configuraciones seleccionada
 \subsubsection{Indicadores Multiobjetivo y Propiedades Químicas}
 \label{subsubsec:indicadores_multiobjetivo_quimicos}
 
-\input{Chapters/Tables/mrp1/tab_multiobjetivo_mrp1.tex}
-
 La Tabla~\ref{tab:multiobjetivo} compara los indicadores multiobjetivo para cada configuración evaluada sobre cinco ejecuciones independientes. Se analizan indicadores de convergencia y proximidad al frente de referencia (hipervolumen, $\text{IGD}^+$ y $\epsilon^+$), la distribución (espaciamiento), el tamaño del frente factible y el tiempo de~ejecución.
+
+\input{Chapters/Tables/mrp1/tab_multiobjetivo_mrp1.tex}
 
 En comparación con los experimentos previos sin diana específica (Sección~\ref{sec:res_genericos}), la escala del hipervolumen varía debido a la incorporación simultánea de cuatro objetivos (\gls{qed}, SA, afinidad de unión y pChEMBL predicho) junto con las restricciones de viabilidad ($\text{Fsp}^3$ y $\log P$). Por otra parte, el tiempo de ejecución de los algoritmos aumenta considerablemente, debido a la carga computacional que conlleva el cálculo del acoplamiento molecular de las moléculas generadas. De igual manera, al optimizarse cuatro objetivos simultáneos, la cantidad de moléculas pertenecientes al frente de Pareto aumenta sustancialmente.
 
 Al observar las métricas multiobjetivo, las variantes con SBX superan a PCX en convergencia y volumen cubierto, aumentando el hipervolumen en hasta $0.049$ ($0.514$ frente a $0.465$ en \acrshort{nsga3}), reduciendo $\text{IGD}^+$ a menos de la mitad ($0.022$--$0.038$ frente a $0.076$--$0.077$) y logrando menores valores de $\epsilon^+$ junto con frentes más numerosos. En cambio, PCX conserva un espaciamiento promedio levemente menor ($0.573$--$0.635$ frente a $0.591$--$0.664$). Entre algoritmos, \acrshort{nsga3} con SBX alcanza el mayor hipervolumen ($0.514$) y el mejor $\text{IGD}^+$ ($0.022$ frente a $0.038$ en \acrshort{nsga2}), aunque su diferencia en hipervolumen respecto a \acrshort{nsga2} con SBX ($0.502$) es pequeña ($\Delta = 0.012$) y dentro de la variabilidad entre ejecuciones. Además, \acrshort{nsga2} con SBX mantiene ventaja en $\epsilon^+$ ($0.181$ frente a $0.198$), tamaño del frente y espaciamiento, mientras que \acrshort{agemoea} con SBX registra el menor tiempo de ejecución. Este resultado coincide con lo esperado para \acrshort{nsga3} en cuatro objetivos~\cite{deb2014nsga3}, pero muestra compromisos claros entre indicadores sin un ganador absoluto.
 
-\input{Chapters/Tables/mrp1/tab_propiedades_mrp1.tex}
 
 La Tabla~\ref{tab:propiedades} presenta la comparación de las propiedades químicas y biológicas sobre los frentes no dominados acumulados. Se consideran los cuatro objetivos de optimización, junto con las restricciones de la búsqueda.
+
+\input{Chapters/Tables/mrp1/tab_propiedades_mrp1.tex}
 
 Los resultados muestran que las variantes con SBX presentan un comportamiento más estable y favorable en tres de los cuatro objetivos considerados, alcanzando mayores valores promedio de \gls{qed}, menor dificultad sintética y puntuaciones de acoplamiento más negativas. En particular, \acrshort{nsga3} con SBX obtiene los mejores promedios de \gls{qed} ($0.870$) y afinidad estimada ($-8.182$~kcal/mol), mientras que \acrshort{agemoea} con SBX logra la mejor accesibilidad sintética ($\text{SA} = 2.115$).
 
 Sin embargo, esta tendencia no se mantiene de manera uniforme en la bioactividad predicha, ya que aunque \acrshort{nsga3} con SBX registra el promedio más alto de pChEMBL ($5.397$), las configuraciones con PCX de \acrshort{nsga2} y \acrshort{agemoea} obtienen valores ligeramente superiores a sus pares con SBX. En cualquier caso, todas las medias se agrupan en un rango estrecho ($5.318$--$5.397$), por lo que estas diferencias deben interpretarse considerando la variabilidad entre ejecuciones y el error predictivo del modelo \textit{Random Forest}. En conjunto, el desempeño depende de la propiedad evaluada y refleja compromisos entre objetivos, sin un ganador absoluto. Respecto a las restricciones fisicoquímicas, todas las variantes permanecen dentro de los límites establecidos, con $\text{Fsp}^3$ entre $0.399$ y $0.424$ y $\log P$ entre $2.75$ y $2.86$.
 
-\input{Chapters/Tables/mrp1/tab_generacion_mrp1.tex}
-
 La Tabla~\ref{tab:generacion} presenta la comparación de las métricas de calidad generativa, correspondientes a la validez, novedad y unicidad para cada configuración. La validez y la novedad se calculan sobre el total de evaluaciones realizadas a lo largo de las 100.000 evaluaciones, mientras que la unicidad se evalúa sobre las moléculas válidas generadas en la última generación.
+
+\input{Chapters/Tables/mrp1/tab_generacion_mrp1.tex}
 
 Los resultados muestran diferencias en la tasa de validez química entre ambos operadores de cruce. Las variantes con SBX alcanzan porcentajes de validez superiores al 94\% en todos los algoritmos, con un máximo de 0,963 en \acrshort{agemoea} y 0,960 en \acrshort{nsga3}, superando a las configuraciones con PCX, las cuales se sitúan entre el 57,0\% y el 58,3\%. Por su parte, todas las configuraciones conservan niveles elevados de novedad y unicidad, con una leve ventaja para las variantes con PCX, las cuales alcanzan un 1,000 en unicidad en todos los algoritmos y valores de novedad cercanos a 0,995.
 
@@ -453,9 +456,10 @@ Se comparó el enfoque multiobjetivo propuesto con cuatro modelos generativos de
 
 De cada modelo de referencia se generaron 100.000 moléculas mediante muestreo aleatorio sobre cinco semillas independientes, utilizando una partición distinta de los datos en cada fine-tuning.
 
-\input{Chapters/Tables/mrp1/tab_comparacion_modelos_mrp1.tex}
 
 La Tabla~\ref{tab:comparacion_modelos} resume la comparación entre las variantes multiobjetivo y los modelos generativos de referencia. A partir de estos resultados, se observa que los enfoques multiobjetivo logran un mejor balance de propiedades frente a los modelos de referencia. En particular, \acrshort{nsga3} con SBX alcanza los promedios más altos de \gls{qed} y de bioactividad predicha junto con una afinidad de docking favorable, conservando una validez y diversidad elevadas. Por su parte, \acrshort{agemoea} con SBX consigue la mejor accesibilidad sintética media, mientras que las variantes con PCX destacan por su alta novedad y unicidad, aunque con una tasa de validez química menor.
+
+\input{Chapters/Tables/mrp1/tab_comparacion_modelos_mrp1.tex}
 
 En los modelos de referencia sin optimización guiada (\gls{vae} y GAN base), las afinidades de unión son más débiles y la bioactividad promedio apenas alcanza el umbral de corte. Por otro lado, el ajuste mediante fine-tuning mejora la afinidad hacia \gls{mrp1} y eleva ligeramente el pChEMBL, pero provoca una fuerte caída en el \gls{qed}, aumenta la dificultad de síntesis y reduce la validez química, especialmente en la GAN.
 
