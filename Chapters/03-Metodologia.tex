@@ -98,7 +98,7 @@ Se consideran cinco algoritmos metaheurísticos multiobjetivo para la experiment
 
 \textbf{\acrshort{agemoea} (Adaptive Geometry Estimation Based MOEA).} Parte de que el desempeño de los algoritmos multiobjetivo depende de la geometría del frente de Pareto, que puede ser una hipersuperficie euclídea, esférica o hiperbólica. Sobre el esquema de \acrshort{nsga2}, reemplaza la distancia de apiñamiento por un puntaje de supervivencia que combina diversidad y proximidad mediante una norma $L_p$ adaptativa. La estimación de dicha geometría se realiza mediante un procedimiento de complejidad $O(n \times N)$, donde $n$ es el número de objetivos y $N$ el tamaño de la población. De este modo mantiene un rendimiento competitivo ante frentes de geometrías diversas, donde los algoritmos que suponen una geometría fija tienden a degradarse~\cite{panichella2019adaptive}.
 
-\subsection{Actividad 1: Ajuste de Hiperparámetros y Evaluación en Fármacos Genéricos}
+\subsection{Actividad 1: Ajuste de Hiperparámetros y Evaluación en Fármacos~Genéricos}
 \label{sec:fase1_ajuste}
 \label{sec:farmacos_genericos}
 \label{sec:ajuste_hiperparametros}
@@ -141,7 +141,7 @@ Se fija un total de 100.000 evaluaciones por ejecución, repartido en tres combi
 \subsubsection{Operadores e Hiperparámetros de los Algoritmos Genéticos}
 \label{subsubsec:hp_ga}
 
-Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead} y \acrshort{agemoea}) comparten el mismo espacio de hiperparámetros, definido por el tipo de operador de cruce y mutación. Se evalúan los siguientes operadores:
+Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead} y~\acrshort{agemoea}) comparten el mismo espacio de hiperparámetros, definido por el tipo de operador de cruce y mutación. Se evalúan los siguientes operadores:
 
 \begin{itemize}
     \item \textbf{Cruce Binario Simulado (\acrshort{sbx})~\cite{deb1995sbx}:} Genera dos hijos a partir de dos padres imitando el comportamiento del cruce de un punto en codificación binaria, pero adaptado a variables reales.
@@ -150,7 +150,7 @@ Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{
     \item \textbf{Mutación Gaussiana~\cite{back1993gaussian}:} Añade a cada variable un ruido aleatorio extraído de una distribución normal.
 \end{itemize}
 
-La Tabla~\ref{tab:hp_grid_ga} resume el espacio de hiperparámetros barrido para los algoritmos genéticos.
+La Tabla~\ref{tab:hp_grid_ga} resume el espacio de hiperparámetros barrido para los algoritmos~genéticos.
 
 \input{Chapters/Tables/metodologia/tab_hp_grid_ga.tex}
 
