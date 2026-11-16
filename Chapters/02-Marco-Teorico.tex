@@ -61,7 +61,7 @@ Uno de los primeros criterios para estimar si un compuesto químico presenta pro
 
 Esta regla se convirtió en un filtro en las primeras etapas del cribado virtual y diseño de fármacos, sin embargo, no es una regla absoluta, ya que existen fármacos que no cumplen con estas condiciones y son exitosos. Por ello, suele complementarse con métricas más detalladas para evaluar el perfil del compuesto.
 
-En particular, el $\log P$ mide la lipofilicidad del compuesto y resume el compromiso entre solubilidad en agua y permeabilidad en membranas. Por eso, más allá del límite superior de Lipinski ($\le 5$), en la práctica se busca mantenerlo en valores intermedios para evitar tanto problemas de absorción como baja solubilidad.
+En particular, el $\log P$ mide la lipofilicidad del compuesto y resume el compromiso entre solubilidad en agua y permeabilidad en membranas. Por eso, más allá del límite superior de Lipinski ($\le 5$), en la práctica se busca mantenerlo en valores intermedios para evitar tanto problemas de absorción como baja solubilidad~\cite{Waring2010Lipophilicity}.
 
 \subsubsection{Estimación cuantitativa de atributos de fármacos (QED)}
 \label{subsec:qed}
@@ -305,12 +305,14 @@ El modelo \textit{LEOMol}, introducido por Siddartha Reddy et al.~\cite{NGM+24},
 
 Aksamit et al.~\cite{Aksamit2024} proponen un marco de trabajo que integra la arquitectura Transformer con algoritmos metaheurísticos de muchos objetivos (\textit{many-objective optimization}) para el diseño molecular. Este enfoque busca optimizar simultáneamente perfiles farmacocinéticos \gls{admet} y la afinidad de unión estimada mediante acoplamiento molecular. Empleando el modelo ReLSO para proyectar las moléculas en un espacio latente continuo basado en \gls{selfies}, el estudio evalúa y compara el desempeño de diversas metaheurísticas (tales como MOEA/DD, GrEA, HypE, KnEA, A-\acrshort{nsga3} y NMPSO) en la búsqueda de ligandos dirigidos al receptor LPA1. Como principal limitación, los autores destacan el elevado costo computacional derivado de evaluar el acoplamiento molecular en cada evaluación de aptitud, lo que restringe la sintonización exhaustiva de los hiperparámetros del optimizador.
 
-\input{Chapters/Tables/marco_teorico/tab_metaheuristicas.tex}
-
-\enlargethispage{2\baselineskip}
 Xia et al.~\cite{XZZ+24} desarrollan \textit{MOMO} (\textit{Multiobjective Molecule Optimization}), un marco metodológico que guía la búsqueda evolutiva en el espacio químico fundamentándose en el principio de dominancia de Pareto. El método utiliza un codificador-decodificador preentrenado sobre secuencias \gls{smiles} para mapear las estructuras moleculares a vectores continuos, sobre los cuales aplica selección por torneo binario, cruce lineal combinado y perturbaciones de mutación. Su fortaleza radica en superar el rendimiento de algoritmos convencionales del estado del arte, reportando mejoras notables en tasa de éxito, novedad e hipervolumen en problemas de optimización de dos a cuatro propiedades simultáneas (incluyendo afinidad contra dianas 1SYH y 4LDE). Como debilidad, el modelo manifiesta susceptibilidad a producir ciertas estructuras químicamente poco realistas si no se imponen restricciones de valencia y filtros estructurales rigurosos durante la fase de decodificación.
 
 Abeer et al.~\cite{Abeer2024} introducen \textit{MO-LSO} (\textit{Multi-Objective Latent Space Optimization}), un método que optimiza el espacio latente de modelos preentrenados tipo JT-VAE a través de un esquema de reentrenamiento iterativo ponderado por la eficiencia de Pareto de las moléculas muestreadas. Esta estrategia permite equilibrar compromisos entre propiedades fisicoquímicas contrapuestas, generando moléculas de alta calidad (como potenciales inhibidores del receptor DRD2) incluso a partir de conjuntos de datos iniciales desprovistos de ligandos activos. Como contrapartida, el procedimiento iterativo tiende a concentrar las soluciones en regiones localizadas del espacio químico, reduciendo la diversidad estructural de los compuestos finales, a lo que se suma el incremento del costo computacional derivado de los ciclos sucesivos de reentrenamiento.
+
+\input{Chapters/Tables/marco_teorico/tab_metaheuristicas.tex}
+
+\enlargethispage{2\baselineskip}
+
 
 Beck et al.~\cite{Beck2025} presentan \textit{Paddy}, un algoritmo de optimización evolutiva inspirado en la dispersión reproductiva de las plantas de arrozal (\textit{paddy field algorithm}), diseñado para explorar sistemas y espacios químicos complejos. A diferencia de los algoritmos genéticos convencionales que dependen de operadores de recombinación cromosómica, Paddy propaga soluciones en el espacio latente de un modelo JT-VAE mediante mutaciones gaussianas reguladas por la densidad local de las soluciones y su aptitud. Esto proporciona una exploración rápida y flexible del espacio paramétrico continuo. Sin embargo, en su formulación para optimización molecular monoproyectada sobre una única función escalar agregada, el método tiende a simplificar las relaciones de compromiso no lineales inherentes a la optimización multiobjetivo de propiedades farmacológicas.
  
