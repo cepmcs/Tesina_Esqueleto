@@ -18,7 +18,7 @@ Una vez determinada la mejor configuración del \gls{vae}, se pasa a la segunda 
 
 \begin{enumerate}
     \item \textbf{Ajuste de hiperparámetros y evaluación en la generación de moléculas sin diana específica:} Se optimizan simultáneamente propiedades fisicoquímicas para comparar el desempeño de los algoritmos y calibrar sus hiperparámetros mediante indicadores químicos y multiobjetivo.
-    \item \textbf{Diseño de inhibidores de \gls{mrp1}:} Primero se identifica el sitio de unión del sustrato. Con base en esto, se emplean las mejores configuraciones de los algoritmos para optimizar la afinidad hacia la diana, dirigiendo la búsqueda hacia moléculas con interacciones en ese sitio.
+    \item \textbf{Diseño computacional de candidatos a inhibidores de \gls{mrp1}:} Primero se identifica el sitio de unión del sustrato. Con base en esto, se emplean las mejores configuraciones de los algoritmos para optimizar la afinidad hacia la diana, dirigiendo la búsqueda hacia moléculas con interacciones en ese sitio.
 \end{enumerate}
 
 En ambas actividades de la segunda etapa, se comparan los resultados obtenidos por las metaheurísticas evaluadas mediante métricas de rendimiento multiobjetivo, el análisis de los frentes de Pareto generados y la calidad de generación de moléculas. En las secciones subsiguientes se especifican los detalles de las evaluaciones realizadas.
@@ -62,7 +62,7 @@ Esta representación en secuencias de tokens sirve como base para el proceso de 
 
 En esta sección se describe la primera etapa metodológica, orientada a determinar y seleccionar la mejor configuración del modelo generativo (\gls{vae}) a través de un espacio de búsqueda estructurado.
 
-Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, el espacio de búsqueda de hiperparámetros se dividió en dos partes, totalizando 72 entrenamientos independientes. Se optó por evaluar primero la estructura del autoencoder y posteriormente sus parámetros de optimización, evitando así escalar el tiempo de cómputo de forma desmedida. Así, la exploración inicial define la representación y la arquitectura base, y la optimización posterior afina la tasa de aprendizaje y el tamaño de lote en las mejores configuraciones:
+Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, el espacio de búsqueda de hiperparámetros se dividió en dos partes, totalizando 72 entrenamientos independientes. Se optó por evaluar primero la estructura del autoencoder y posteriormente sus parámetros de optimización, para evitar que el costo computacional aumentara de manera excesiva. Así, la exploración inicial define la representación y la arquitectura base, y la optimización posterior afina la tasa de aprendizaje y el tamaño de lote en las mejores configuraciones:
 
 \begin{itemize}
     \item \textbf{Exploración de la estructura base:} Se evaluaron 48 configuraciones combinando la representación molecular (\gls{smiles} y \gls{selfies}), el tipo de celda recurrente (\gls{gru} y \gls{lstm}), la cantidad de capas ocultas (1 y 2), la dimensión latente (64, 128 y 256) y las épocas de entrenamiento (100 y 300). La tasa de aprendizaje y el tamaño de lote se mantuvieron fijos en $1 \times 10^{-3}$ y 128. Las dimensiones latentes se basan en trabajos previos de \glspl{vae} moleculares~\cite{GBWHLDSA18} para probar diferentes capacidades de representación, y las épocas buscan evaluar si un entrenamiento prolongado mejora los resultados.
@@ -73,7 +73,7 @@ La Tabla~\ref{tab:espacio_busqueda_vae} resume las variables y los valores explo
 
 \input{Chapters/Tables/metodologia/tab_espacio_busqueda_vae.tex}
 
-\textbf{Esquema de entrenamiento y regularización.} Todos los modelos se entrenaron utilizando el optimizador Adam~\cite{kingma2014adam}. Para reducir el riesgo de colapso del posterior en el espacio latente, se aplicó un aumento gradual del peso de la divergencia KL, inspirado en la implementación \textit{Chemical VAE}~\cite{GBWHLDSA18} y en el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. En este esquema, el parámetro $\beta$ se incrementa linealmente desde 0 hasta un valor máximo de $0.3$ durante el primer 25\% de las épocas de entrenamiento.
+\textbf{Esquema de entrenamiento y regularización.} Todos los modelos se entrenaron utilizando el optimizador Adam~\cite{kingma2014adam}. Para reducir el riesgo de colapso del posterior en el espacio latente, se aplicó un aumento gradual del peso de la divergencia KL, inspirado en la implementación \textit{Chemical VAE}~\cite{GBWHLDSA18} y en el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. En este esquema, el parámetro $\beta$ se incrementa linealmente desde 0 hasta un valor máximo de $0.3$ durante el 25\,\% inicial de las épocas de entrenamiento.
 
 \section{Etapa 2: Optimización Multiobjetivo en el Espacio Latente}
 \label{sec:etapa2_optimizacion}
@@ -88,7 +88,7 @@ Una vez determinado el modelo generativo base, esta sección aborda la segunda e
 
 Se consideran cinco algoritmos metaheurísticos multiobjetivo para la experimentación, todos ellos operando sobre el espacio latente continuo del \gls{vae}:
 
-\textbf{\acrshort{nsga2} (Non-dominated Sorting Genetic Algorithm II).} Es el algoritmo evolutivo multiobjetivo de referencia y se apoya en la profundidad de dominancia. En cada generación ordena la población en frentes sucesivos de no dominancia mediante un procedimiento de ordenamiento rápido. Los empates dentro de un mismo frente se resuelven con la \textit{distancia de apiñamiento} (\textit{crowding distance}), que mide qué tan poblado está el entorno de cada individuo y favorece a los que se encuentran en regiones menos densas. Estos dos mecanismos, junto con una estrategia elitista, le permiten mantener a la vez convergencia y diversidad~\cite{deb2002nsga2}.
+\textbf{\acrshort{nsga2} (Non-dominated Sorting Genetic Algorithm II).} Es el algoritmo evolutivo multiobjetivo de referencia y se apoya en la profundidad de dominancia. En cada generación ordena la población en frentes sucesivos de no dominancia mediante un procedimiento de ordenamiento rápido. En la selección de soluciones de un mismo frente se utiliza la \textit{distancia de apiñamiento} (\textit{crowding distance}) para favorecer regiones menos densas. Estos dos mecanismos, junto con una estrategia elitista, le permiten mantener a la vez convergencia y diversidad~\cite{deb2002nsga2}.
 
 \textbf{\acrshort{nsga3} (Non-dominated Sorting Genetic Algorithm III).} Conserva el esquema anterior, pero reemplaza la distancia de apiñamiento por un mecanismo de nichos basado en puntos de referencia distribuidos sobre un hiperplano normalizado. Cada solución se asocia al punto de referencia más cercano y sobreviven primero las soluciones asociadas a los puntos con menos representantes. De esta forma se logra una cobertura uniforme del frente incluso cuando crece el número de objetivos~\cite{deb2014nsga3}.
 
@@ -104,7 +104,7 @@ Se consideran cinco algoritmos metaheurísticos multiobjetivo para la experiment
 \label{sec:ajuste_hiperparametros}
 \label{subsec:ajuste_metaheuristicas}
 
-En esta actividad se ajustan los hiperparámetros de los cinco algoritmos metaheurísticos y se compara su desempeño sobre el espacio latente del \gls{vae} en \mbox{fármacos genéricos}.
+En esta actividad se ajustan los hiperparámetros de los cinco algoritmos metaheurísticos y se compara su desempeño en la generación de moléculas sin una diana biológica específica.
 
 \subsubsection{Funciones Objetivo y Restricciones}
 \label{subsec:fo_genericos}
@@ -198,7 +198,7 @@ El procedimiento propuesto se organiza en una serie de etapas consecutivas que p
 
 \textbf{Identificación del sitio de unión.} Se procede a identificar los sitios drogables de 8VUX posteriormente a la separación de la proteína del ligando, con énfasis en TMD2 por su asociación con el sitio de unión del sustrato. Para ello se utiliza FPocketWeb~\cite{kochnev2022fpocketweb}, que arrojó como resultado una cavidad drogable en TMD2, el bolsillo número 78, con una puntuación de drogabilidad elevada de 0,738, y que además coincide con el sitio de unión del \gls{cgamp}. Como resultado, se selecciona el bolsillo 78 como sitio de unión probable de los quimioterápicos. Los demás bolsillos con elevada drogabilidad no se consideran porque corresponden a las cavidades donde se une el \gls{atp} para accionar el mecanismo de extracción de \gls{mrp1}.
 
-\textbf{Docking ciego y elección de los aminoácidos flexibles.} Como no existe una estructura que cocristalice \gls{mrp1} con los quimioterápicos de interés, los aminoácidos relevantes se identifican de manera computacional. Para ello se utiliza AutoDock Vina~\cite{trott2010vina,eberhardt2021vina} en un docking ciego sobre el bolsillo 78, con el irinotecán como ligando de referencia (PubChem, CID 60838), con el objetivo de determinar las poses más probables y los aminoácidos con los que más interacciona. Vina se configuró con un centro en $(164.6835,\ 130.2140,\ 120.1165)$~Å y una caja de $29.2 \times 35.6 \times 35.0$~Å, una exhaustividad de 32 y la generación de 100 poses.
+\textbf{Docking ciego y elección de los aminoácidos flexibles.} Como no se dispone de una estructura experimental de \gls{mrp1} cocristalizada con los quimioterápicos de interés, los aminoácidos relevantes se identifican de manera computacional. Para ello se utiliza AutoDock Vina~\cite{trott2010vina,eberhardt2021vina} en un docking ciego sobre el bolsillo 78, con el irinotecán como ligando de referencia (PubChem, CID 60838), con el objetivo de determinar las poses más probables y los aminoácidos con los que más interacciona. Vina se configuró con un centro en $(164.6835,\ 130.2140,\ 120.1165)$~Å y una caja de $29.2 \times 35.6 \times 35.0$~Å, una exhaustividad de 32 y la generación de 100 poses.
 
 Para el irinotecán se obtuvo una puntuación de docking de $-12.060$~kcal/mol y 5 poses. Posteriormente se analizaron los aminoácidos situados a menos de 4~Å del ligando, con el fin de caracterizar las interacciones potenciales en la región de unión, los resultados se resumen en la Tabla~\ref{tab:frecuencia_residuos}.
 
@@ -233,7 +233,7 @@ El TRP1246 presenta 11 pares de átomos con distancias de 2,98 a 3,87~Å en su a
 \subsubsection{Funciones Objetivo}
 \label{subsec:fo_mrp1}
 
-Para el diseño dirigido hacia \gls{mrp1} se evaluaron de manera incremental distintas formulaciones preliminares (Apéndice~\ref{ap:formulaciones_mrp1}), probando el aporte de incorporar la energía de unión, el pChEMBL predicho y la restricción de $\log P$ junto a \gls{qed} y \gls{sas} en la búsqueda de moléculas candidatas. A partir de esta comparación, la formulación final adoptada considera cuatro funciones objetivo sobre el espacio latente del \gls{vae}:
+Para el diseño dirigido hacia \gls{mrp1} se evaluaron sucesivamente formulaciones con distintos objetivos y restricciones (Apéndice~\ref{ap:formulaciones_mrp1}), probando el aporte de incorporar la energía de unión, el pChEMBL predicho y la restricción de $\log P$ junto a \gls{qed} y \gls{sas} en la búsqueda de moléculas candidatas. A partir de esta comparación, la formulación final adoptada considera cuatro funciones objetivo sobre el espacio latente del \gls{vae}:
 
 \begin{itemize}
     \item \textbf{Energía de unión:} [Minimización] Puntuación de acoplamiento molecular frente a \gls{mrp1} obtenida con la función de puntuación de AutoDock Vina~\cite{trott2010vina} mediante su implementación en \gls{gpu}, Uni-Dock~\cite{yu2023unidock}, expresada en kcal/mol. Esta métrica constituye una aproximación computacional sujeta a incertidumbre y no representa una afinidad de unión medida experimentalmente.
@@ -256,7 +256,7 @@ Las moléculas generadas se evalúan en términos de \gls{qed}, \gls{sas}, afini
 \section{Métricas de Evaluación del Rendimiento de los Modelos Considerados}
 \label{sec:metricas_evaluacion}
 
-En esta sección se describen las métricas empleadas para evaluar el rendimiento de la metodología. Se presentan las métricas del benchmark \gls{moses} para medir la calidad química, validez y diversidad de las moléculas generadas por el \gls{vae}. Además, se detallan los indicadores multiobjetivo utilizados para comparar la convergencia y distribución de las soluciones obtenidas por las metaheurísticas en el espacio latente.
+En esta sección se describen las métricas empleadas para evaluar el rendimiento de la metodología. Se describen los indicadores de \gls{moses} utilizados para evaluar la calidad, la validez y la diversidad de las moléculas generadas por el \gls{vae}. Además, se detallan los indicadores multiobjetivo utilizados para comparar la convergencia y distribución de las soluciones obtenidas por las metaheurísticas en el espacio latente.
 
 \subsection{Métricas de Calidad de Generación}
 \label{subsec:metricas_moses}
@@ -309,7 +309,7 @@ La evaluación de metaheurísticas multiobjetivo representa un desafío particul
 
 A partir de esta clasificación, los indicadores de rendimiento considerados en el marco metodológico son los siguientes:
 
-\textbf{Hipervolumen (\acrshort{hv}).} Mide el volumen de la región del espacio de objetivos que domina el conjunto de soluciones obtenido, acotada por un punto de referencia (Figura~\ref{fig:indicadores_rendimiento}a). Cuanto mayor es ese volumen, mejor es el conjunto tanto en convergencia como en diversidad, de modo que resume ambos aspectos. Su ventaja práctica es que no exige conocer el frente de Pareto óptimo, sino únicamente el punto de referencia.
+\textbf{Hipervolumen (\acrshort{hv}).} Mide el volumen de la región del espacio de objetivos que domina el conjunto de soluciones obtenido, acotada por un punto de referencia (Figura~\ref{fig:indicadores_rendimiento}a). En condiciones comparables, un hipervolumen mayor suele indicar mejor cobertura de la región dominada y/o una mayor proximidad al frente, de modo que resume ambos aspectos. Su ventaja práctica es que no exige conocer el frente de Pareto óptimo, sino únicamente el punto de referencia.
 
 \textbf{Distancia generacional invertida modificada (\acrshort{igd}$^+$).} Promedia la distancia que separa a cada punto de un conjunto de referencia de la solución más próxima del conjunto obtenido, contabilizando solo las componentes en las que esa solución es peor (Figura~\ref{fig:indicadores_rendimiento}b). Valores bajos indican que el frente obtenido se aproxima al de referencia.
 
@@ -330,7 +330,7 @@ Con el fin de evaluar y caracterizar las moléculas candidatas obtenidas para \g
 
 \textbf{Validación de poses de acoplamiento.} Para evaluar las moléculas obtenidas del frente de Pareto, se utiliza PoseBusters~\cite{buttenschoen2024posebusters}, que permite evaluar la plausibilidad física y geométrica de las conformaciones generadas. La métrica corresponde al porcentaje de moléculas que supera las 20 pruebas de la herramienta.
 
-\textbf{Predicción de potencia y bioactividad inhibitoria.} Se empleó el modelo \textit{Random Forest} descrito en la Subsección~\ref{subsec:fo_mrp1} y detallado en el Apéndice~\ref{ap:predictor_pchembl}, entrenado con inhibidores conocidos de \gls{mrp1} extraídos de ChEMBL~\cite{mendez2019chembl}, para estimar la bioactividad de las moléculas. Como métrica se utiliza el valor pChEMBL predicho, fijando un umbral de 5,0 como criterio de actividad inhibitoria predicha favorable.
+\textbf{Predicción de potencia y bioactividad inhibitoria.} Se empleó el modelo \textit{Random Forest} descrito en la Subsección~\ref{subsec:fo_mrp1} y detallado en el Apéndice~\ref{ap:predictor_pchembl}, entrenado con inhibidores conocidos de \gls{mrp1} extraídos de ChEMBL~\cite{mendez2019chembl}, para predecir computacionalmente la bioactividad de las moléculas. Como métrica se utiliza el valor pChEMBL predicho, fijando un umbral de 5,0 como criterio de actividad inhibitoria predicha favorable.
 
 \textbf{Perfil farmacocinético, fisicoquímico y toxicológico.} Se utilizó ADMET-AI~\cite{swanson2024admetai} para predecir las propiedades de los candidatos a partir de modelos de \textit{Therapeutics Data Commons}. Se analizaron descriptores de absorción y permeabilidad intestinal (HIA, Caco-2, PAMPA y biodisponibilidad oral), propiedades fisicoquímicas de solubilidad y lipofilicidad ($\log P$), y el perfil de toxicidad clínica y aguda ($\text{ClinTox}$ y $\text{LD}_{50}$).
 
@@ -354,6 +354,6 @@ En esta sección se describen las herramientas y tecnologías empleadas en el en
     \item \textbf{ADMET-AI:} Utilizado para predecir perfiles farmacocinéticos y de toxicidad sobre los candidatos.
 \end{itemize}
 
-Además, para el desarrollo, redacción y diseño de esquemas se utilizaron Git para el control de versiones, LaTeX para la composición tipográfica de texto, fórmulas y bibliografía, Visual Studio Code como entorno integrado de desarrollo y TikZ para la creación de los diagramas y esquemas.
+Además, para el desarrollo, redacción y diseño de esquemas se utilizaron Git y GitHub para el control de versiones, LaTeX (compilado con XeLaTeX sobre TeX Live 2023) para la composición tipográfica de texto, fórmulas y bibliografía, Visual Studio Code como entorno integrado de desarrollo y TikZ para la creación de los diagramas y esquemas.
 
 En cuanto a los recursos de hardware, los experimentos se llevaron a cabo en el Clúster Toko (FCEN-UNCuyo) sobre nodos con 16 vCPUs y 64~GB de memoria RAM: se empleó una \gls{gpu} NVIDIA TITAN Xp para el entrenamiento del modelo generativo (\gls{vae}), y nodos equipados con \gls{gpu} NVIDIA GeForce RTX 4080 para las tareas de optimización multiobjetivo y acoplamiento molecular.

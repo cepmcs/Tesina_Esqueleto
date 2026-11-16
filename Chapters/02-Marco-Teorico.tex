@@ -82,9 +82,9 @@ El \gls{qed} se construye a partir de ocho propiedades moleculares relevantes en
     \item Número de \gls{alerts}
 \end{itemize}
 
-Cada una de estas propiedades se transforma mediante una función de deseabilidad, derivada de la distribución de estas propiedades en fármacos aprobados; el \gls{qed} final se calcula como la media geométrica ponderada de estas ocho funciones.
+Cada propiedad se transforma mediante una función de deseabilidad derivada de su distribución en fármacos aprobados. El \gls{qed} se calcula como la media geométrica ponderada de estas ocho funciones.
 
-\Gls{qed} se ha convertido en una de las métricas más utilizadas en los pipelines de diseño de fármacos, debido a que, a diferencia de los filtros discretos como Lipinski, genera una puntuación suave y continua~\cite{Xia2024MolecularOptimization}.
+El \Gls{qed} se ha convertido en una de las métricas más utilizadas en los pipelines de diseño de fármacos, debido a que, a diferencia de los filtros discretos como Lipinski, genera una puntuación suave y continua~\cite{Xia2024MolecularOptimization}.
 
 \subsubsection{Accesibilidad sintética}
 \label{subsec:sa}
@@ -108,7 +108,7 @@ La fracción de carbonos $\text{Fsp}^3$ es una métrica que evalúa la proporci�
 
 Sus valores oscilan entre 0 (sin carbonos $sp^3$) y 1 (moléculas totalmente saturadas).
 
-Esta métrica fue propuesta en el trabajo ``Escape from Flatland''~\cite{Lovering2009Flatland}, donde se observó que las moléculas candidatas a fármacos que tendían a ser excesivamente planas mostraban tasas menores de éxito clínico. A través de un análisis de bases de datos de compuestos en distintas etapas se encontró una correlación positiva entre el grado de saturación $\text{Fsp}^3$ y la probabilidad de que un compuesto avance a fases clínicas avanzadas. Asimismo, se encontró una correlación positiva entre el $\text{Fsp}^3$ y la solubilidad acuosa. Un trabajo posterior~\cite{Lovering2013Flatland2} expandió este análisis, relacionando nuevamente la saturación $sp^3$ con la promiscuidad farmacológica, es decir, la tendencia de una molécula a interactuar con dianas biológicas no deseadas, por lo que a mayor complejidad tridimensional, las moléculas tienden a reducir la promiscuidad y con ello el riesgo de efectos adversos fuera de la diana.
+Esta métrica fue propuesta en el trabajo ``Escape from Flatland''~\cite{Lovering2009Flatland}, donde se observó que las moléculas candidatas a fármacos que tendían a ser excesivamente planas mostraban tasas menores de éxito clínico. A través de un análisis de bases de datos de compuestos en distintas etapas se encontró una correlación positiva entre el grado de saturación $\text{Fsp}^3$ y la probabilidad de que un compuesto avance a fases clínicas avanzadas. Asimismo, se encontró una correlación positiva entre el $\text{Fsp}^3$ y la solubilidad acuosa. Un trabajo posterior~\cite{Lovering2013Flatland2} expandió este análisis, relacionando nuevamente la saturación $sp^3$ con la promiscuidad farmacológica, es decir, la tendencia de una molécula a interactuar con dianas biológicas no deseadas. De este modo, una mayor complejidad tridimensional se asocia con una menor promiscuidad farmacológica y, con ello, con un menor riesgo de efectos adversos fuera de la diana.
 
 \subsubsection{Métodos de docking molecular y afinidad de unión}
 \label{subsec:docking}
@@ -242,9 +242,9 @@ En la figura~\ref{fig:frontera_pareto} se ilustra la representación de solucion
 
 El tratamiento del cáncer colorrectal avanzado se maneja principalmente con regímenes de quimioterapia basados en fármacos citotóxicos como el \gls{5fu}, el oxaliplatino y el irinotecán. Sin embargo, la efectividad de estos fármacos se ve comprometida debido al desarrollo de \gls{mdr}, lo cual provoca recaídas en una elevada proporción de pacientes~\cite{abdallah2016, marin2022expression}.
 
-\Gls{mrp1} es una proteína transportadora de la familia \gls{abc} que usa energía del \gls{atp} para expulsar moléculas desde el interior de las células hacia el exterior~\cite{cole_targeting_2014, lu_mrp1_2015}. Entre estas moléculas se encuentran diversos fármacos quimioterápicos, al ser expulsados, se reduce su concentración intracelular y la célula tumoral adquiere resistencia a los mismos. Esta capacidad de reconocer y transportar activamente un amplio conjunto de quimioterápicos explica la resistencia farmacológica asociada a su sobreexpresión~\cite{cole_targeting_2014, lu_mrp1_2015}.
+\Gls{mrp1} es una proteína transportadora de la familia \gls{abc} que usa energía del \gls{atp} para expulsar moléculas desde el interior de las células hacia el exterior~\cite{cole_targeting_2014, lu_mrp1_2015}. Entre estas moléculas se encuentran diversos fármacos quimioterápicos, al ser expulsados, se reduce su concentración intracelular y la célula tumoral adquiere resistencia a dichos fármacos. Esta capacidad de reconocer y transportar activamente un amplio conjunto de quimioterápicos explica la resistencia farmacológica asociada a su sobreexpresión~\cite{cole_targeting_2014, lu_mrp1_2015}.
 
-En el cáncer colorrectal existe evidencia experimental sobre el papel de \gls{mrp1} en la resistencia a los fármacos mencionados~\cite{cao2017role}, además de que \gls{mrp1} funciona como biomarcador de resistencia al irinotecán~\cite{marin2022expression}. Se encontró que al reducir su producción en células tumorales resistentes, la sensibilidad a dichos fármacos se restablece y la muerte celular de las mismas vuelve a activarse. \Gls{mrp1} contribuye entonces a la resistencia del cáncer colorrectal, lo que la convierte en un blanco terapéutico de interés~\cite{cao2017role}.
+En el cáncer colorrectal existe evidencia experimental sobre el papel de \gls{mrp1} en la resistencia a los fármacos mencionados~\cite{cao2017role}, y se ha estudiado la expresión de \gls{mrp1} como posible biomarcador de resistencia al irinotecán~\cite{marin2022expression}. Se encontró que al reducir su producción en células tumorales resistentes, la sensibilidad a dichos fármacos se restablece y la muerte celular de las mismas vuelve a activarse. \Gls{mrp1} contribuye entonces a la resistencia del cáncer colorrectal, lo que la convierte en un blanco terapéutico de interés~\cite{cao2017role}.
 
 Si bien \gls{mrp1} cumple funciones fisiológicas en tejidos sanos, su sobreexpresión en tumores colorrectales representa una barrera terapéutica, por lo que diseñar inhibidores que reduzcan su actividad en células tumorales es un desafío significativo.
 
