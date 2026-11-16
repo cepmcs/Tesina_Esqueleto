@@ -2,10 +2,9 @@
 \centering
 \caption{Comparación con el estado del arte en el \textit{benchmark} MOSES (valores promedio sobre 30.000 moléculas generadas).}
 \label{tab:resultados_reducidos}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{l c c c c c c c c}
 \toprule
-Model & Valid ($\uparrow$) & Unique ($\uparrow$) & Novelty ($\uparrow$) & Filters ($\uparrow$) & FCD ($\downarrow$) & IntDiv ($\uparrow$) & SA ($\downarrow$) & QED ($\downarrow$) \\
+Modelo & Validez ($\uparrow$) & Unicidad ($\uparrow$) & Novedad ($\uparrow$) & Filtros ($\uparrow$) & FCD ($\downarrow$) & IntDiv ($\uparrow$) & SA ($\downarrow$) & QED ($\downarrow$) \\
 \midrule
 Train & 1,000 & 1,000 & 1,000 & 1,000 & 0,008 & 0,857 & - & - \\
 HMM & 0,076 & 0,567 & 0,999 & 0,902 & 24,466 & 0,847 & 0,742 & 0,269 \\
@@ -18,5 +17,5 @@ FRATTVAE & 1,000 & 1,000 & 0,974 & N/R & 0,865 & N/R & 2,591 & 0,030 \\
 PCF-VAE & 0,980 & 1,000 & 0,938 & 0,990 & 0,296 & 0,859 & N/R & N/R \\
 \textbf{SM-L VAE} & 0,962 & 1,000 & 0,944 & 0,989 & 0,183 & 0,859 & 0,100 & 0,008 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \end{table}

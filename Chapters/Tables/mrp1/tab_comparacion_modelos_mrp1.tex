@@ -2,23 +2,22 @@
 \centering
 \caption{Comparación con los modelos generativos de referencia sobre cinco réplicas independientes.}
 \label{tab:comparacion_modelos}
-\resizebox{\textwidth}{!}{
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{lccccccc}
 \toprule
 Modelo & QED $\uparrow$ & SA $\downarrow$ & Docking $\downarrow$ & pChEMBL $\uparrow$ & Validez $\uparrow$ & Unicidad $\uparrow$ & Novedad $\uparrow$ \\
 \midrule
-NSGA-II (SBX) & $0.840 \pm 0.015$ & $2.152 \pm 0.069$ & $-7.878 \pm 0.151$ & $5.341 \pm 0.034$ & $0.949 \pm 0.015$ & $0.996 \pm 0.010$ & $0.969 \pm 0.011$ \\
-NSGA-II (PCX) & $0.798 \pm 0.012$ & $2.299 \pm 0.027$ & $-7.802 \pm 0.071$ & $5.345 \pm 0.016$ & $0.583 \pm 0.015$ & $\mathbf{1.000 \pm 0.000}$ & $\mathbf{0.995 \pm 0.001}$ \\
-NSGA-III (SBX) & $\mathbf{0.870 \pm 0.009}$ & $2.170 \pm 0.078$ & $-8.182 \pm 0.079$ & $\mathbf{5.397 \pm 0.038}$ & $0.960 \pm 0.009$ & $0.985 \pm 0.016$ & $0.960 \pm 0.008$ \\
-NSGA-III (PCX) & $0.809 \pm 0.016$ & $2.292 \pm 0.043$ & $-7.781 \pm 0.023$ & $5.352 \pm 0.022$ & $0.570 \pm 0.010$ & $\mathbf{1.000 \pm 0.000}$ & $0.994 \pm 0.001$ \\
-AGE-MOEA (SBX) & $0.868 \pm 0.009$ & $\mathbf{2.115 \pm 0.126}$ & $-8.093 \pm 0.138$ & $5.318 \pm 0.073$ & $0.963 \pm 0.009$ & $0.992 \pm 0.008$ & $0.949 \pm 0.013$ \\
-AGE-MOEA (PCX) & $0.808 \pm 0.011$ & $2.335 \pm 0.051$ & $-7.884 \pm 0.029$ & $5.354 \pm 0.024$ & $0.576 \pm 0.027$ & $\mathbf{1.000 \pm 0.000}$ & $0.994 \pm 0.002$ \\
+\begin{tabular}{@{}l@{}}NSGA-II\\[-2pt](SBX)\end{tabular} & $0.840 \pm 0.015$ & $2.152 \pm 0.069$ & $-7.878 \pm 0.151$ & $5.341 \pm 0.034$ & $0.949 \pm 0.015$ & $0.996 \pm 0.010$ & $0.969 \pm 0.011$ \\
+\begin{tabular}{@{}l@{}}NSGA-II\\[-2pt](PCX)\end{tabular} & $0.798 \pm 0.012$ & $2.299 \pm 0.027$ & $-7.802 \pm 0.071$ & $5.345 \pm 0.016$ & $0.583 \pm 0.015$ & $\mathbf{1.000 \pm 0.000}$ & $\mathbf{0.995 \pm 0.001}$ \\
+\begin{tabular}{@{}l@{}}NSGA-III\\[-2pt](SBX)\end{tabular} & $\mathbf{0.870 \pm 0.009}$ & $2.170 \pm 0.078$ & $-8.182 \pm 0.079$ & $\mathbf{5.397 \pm 0.038}$ & $0.960 \pm 0.009$ & $0.985 \pm 0.016$ & $0.960 \pm 0.008$ \\
+\begin{tabular}{@{}l@{}}NSGA-III\\[-2pt](PCX)\end{tabular} & $0.809 \pm 0.016$ & $2.292 \pm 0.043$ & $-7.781 \pm 0.023$ & $5.352 \pm 0.022$ & $0.570 \pm 0.010$ & $\mathbf{1.000 \pm 0.000}$ & $0.994 \pm 0.001$ \\
+\begin{tabular}{@{}l@{}}AGE-MOEA\\[-2pt](SBX)\end{tabular} & $0.868 \pm 0.009$ & $\mathbf{2.115 \pm 0.126}$ & $-8.093 \pm 0.138$ & $5.318 \pm 0.073$ & $0.963 \pm 0.009$ & $0.992 \pm 0.008$ & $0.949 \pm 0.013$ \\
+\begin{tabular}{@{}l@{}}AGE-MOEA\\[-2pt](PCX)\end{tabular} & $0.808 \pm 0.011$ & $2.335 \pm 0.051$ & $-7.884 \pm 0.029$ & $5.354 \pm 0.024$ & $0.576 \pm 0.027$ & $\mathbf{1.000 \pm 0.000}$ & $0.994 \pm 0.002$ \\
 \midrule
 VAE & $0.800 \pm 0.001$ & $2.522 \pm 0.014$ & $-7.672 \pm 0.010$ & $5.082 \pm 0.003$ & $\mathbf{0.972 \pm 0.001}$ & $0.999 \pm 0.000$ & $0.941 \pm 0.002$ \\
-VAE con fine-tuning & $0.641 \pm 0.005$ & $2.664 \pm 0.015$ & $\mathbf{-8.322 \pm 0.028}$ & $5.112 \pm 0.003$ & $0.844 \pm 0.014$ & $\mathbf{1.000 \pm 0.000}$ & $0.990 \pm 0.001$ \\
+VAE-ft & $0.641 \pm 0.005$ & $2.664 \pm 0.015$ & $\mathbf{-8.322 \pm 0.028}$ & $5.112 \pm 0.003$ & $0.844 \pm 0.014$ & $\mathbf{1.000 \pm 0.000}$ & $0.990 \pm 0.001$ \\
 GAN & $0.796 \pm 0.003$ & $2.539 \pm 0.021$ & $-7.674 \pm 0.007$ & $5.062 \pm 0.003$ & $0.873 \pm 0.006$ & $0.985 \pm 0.001$ & $0.960 \pm 0.002$ \\
-GAN con fine-tuning & $0.636 \pm 0.004$ & $2.757 \pm 0.019$ & $-8.290 \pm 0.024$ & $5.134 \pm 0.007$ & $0.666 \pm 0.007$ & $0.988 \pm 0.002$ & $0.989 \pm 0.003$ \\
+GAN-ft & $0.636 \pm 0.004$ & $2.757 \pm 0.019$ & $-8.290 \pm 0.024$ & $5.134 \pm 0.007$ & $0.666 \pm 0.007$ & $0.988 \pm 0.002$ & $0.989 \pm 0.003$ \\
 \bottomrule
 \end{tabular}
-}
 \end{table}

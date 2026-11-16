@@ -19,10 +19,9 @@ Sobre las mismas particiones de entrenamiento y validación se evaluaron trece m
 \centering
 \caption{Comparación de trece modelos de regresión sobre huellas de Morgan (\textit{ECFP4}, 2048 bits) para la predicción de pChEMBL frente a MRP1.}
 \label{tab:ap_comparacion_pchembl}
-\small
 \begin{tabular}{lcccccc}
 \toprule
-\textbf{Modelo} & \textbf{MAE Entr.} & \textbf{MAE Val.} & \textbf{RMSE Entr.} & \textbf{RMSE Val.} & \textbf{$R^2$ Entr.} & \textbf{$R^2$ Val.} \\
+Modelo & MAE Entr. & MAE Val. & RMSE Entr. & RMSE Val. & $R^2$ Entr. & $R^2$ Val. \\
 \midrule
 \texttt{KNN\_5}        & 0,288 & 0,382 & 0,420 & 0,529 & 0,756 & 0,569 \\
 \texttt{KNN\_7}        & 0,298 & 0,387 & 0,440 & 0,524 & 0,732 & 0,578 \\
@@ -54,10 +53,9 @@ Con esta configuración, el modelo evaluado sobre los 77 compuestos de validaci�
 \centering
 \caption{Métricas de desempeño del modelo \textit{Random Forest} ajustado sobre el conjunto de validación.}
 \label{tab:ap_rf_final}
-\small
 \begin{tabular}{lc}
 \toprule
-\textbf{Métrica} & \textbf{Valor en validación} \\
+Métrica & Valor en validación \\
 \midrule
 MAE   & 0,389 \\
 RMSE  & 0,516 \\

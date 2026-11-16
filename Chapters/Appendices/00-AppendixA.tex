@@ -8,19 +8,17 @@ En este apéndice se presentan los resultados detallados de todas las configurac
 
 En la Tabla~\ref{tab:log_experimentos_completo} se presentan los resultados de las 48 configuraciones evaluadas a 100 y 300 épocas de entrenamiento.
 
-{
-\setlength{\tabcolsep}{4.5pt}
 \begin{longtable}{lccccccccc}
 \caption{Resultados Experimentales de Generación Molecular (100 y 300 Épocas)} \label{tab:log_experimentos_completo} \\
 \toprule
-\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+ID & Val $\uparrow$ & Uni $\uparrow$ & Nov $\uparrow$ & Filter $\uparrow$ & FCD $\downarrow$ & IntDiv $\uparrow$ & SA $\downarrow$ & QED $\downarrow$ & Tiempo \\
 \midrule
 \endfirsthead
 
 \multicolumn{10}{c}%
 {{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
 \toprule
-\textbf{ID} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+ID & Val $\uparrow$ & Uni $\uparrow$ & Nov $\uparrow$ & Filter $\uparrow$ & FCD $\downarrow$ & IntDiv $\uparrow$ & SA $\downarrow$ & QED $\downarrow$ & Tiempo \\
 \midrule
 \endhead
 
@@ -88,26 +86,23 @@ SE-L 2 64 & \textbf{1,000} & 1,000 & 0,998 & 0,708 & 8,368 & 0,881 & 1,093 & 0,1
 SE-L 2 128 & \textbf{1,000} & \textbf{1,000} & 0,986 & 0,827 & 3,305 & 0,871 & 0,628 & \textbf{0,056} & 05:20:24\\
 SE-L 2 256 & \textbf{1,000} & 0,997 & 0,999 & 0,497 & 15,008 & 0,893 & 1,562 & 0,197 & 10:57:46\\
 \end{longtable}
-}
 
 \section{Optimización de Hiperparámetros}
 \label{sec:apendice_vae_fase2}
 
 En la Tabla~\ref{tab:log_experimentos_fase2_completo} se detallan los resultados obtenidos al variar la tasa de aprendizaje y el tamaño de lote para los cuatro modelos seleccionados.
 
-{
-\setlength{\tabcolsep}{4.5pt}
 \begin{longtable}{cc ccccccccc}
 \caption{Resultados de Optimización de Hiperparámetros (Tasa de Aprendizaje y Tamaño de Lote)} \label{tab:log_experimentos_fase2_completo} \\
 \toprule
-\textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+LR & Batch & Val $\uparrow$ & Uni $\uparrow$ & Nov $\uparrow$ & Filter $\uparrow$ & FCD $\downarrow$ & IntDiv $\uparrow$ & SA $\downarrow$ & QED $\downarrow$ & Tiempo \\
 \midrule
 \endfirsthead
 
 \multicolumn{11}{c}%
 {{\bfseries \tablename\ \thetable{} -- Continuación de la página anterior}} \\
 \toprule
-\textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} & \textbf{Tiempo} \\
+LR & Batch & Val $\uparrow$ & Uni $\uparrow$ & Nov $\uparrow$ & Filter $\uparrow$ & FCD $\downarrow$ & IntDiv $\uparrow$ & SA $\downarrow$ & QED $\downarrow$ & Tiempo \\
 \midrule
 \endhead
 
@@ -158,4 +153,3 @@ $1 \times 10^{-4}$ & 64  & \textbf{0,962} & 1,000 & 0,943 & \textbf{0,988} & \te
 $1 \times 10^{-4}$ & 128 & 0,960 & 1,000 & 0,950 & 0,988 & 0,228 & \textbf{0,859} & 0,102 & \textbf{0,007} & 13:45:28 \\
 $1 \times 10^{-4}$ & 192 & 0,957 & \textbf{1,000} & \textbf{0,957} & 0,986 & 0,257 & 0,859 & 0,125 & 0,011 & 08:54:27 \\
 \end{longtable}
-}

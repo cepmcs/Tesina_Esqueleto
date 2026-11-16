@@ -1,5 +1,13 @@
 %%% Tables %%%
 \newcommand{\customtableformatting}{\renewcommand{\arraystretch}{1.1}\small}
+\newcommand{\useResultTableFormatting}{%
+    \renewcommand{\customtableformatting}{\renewcommand{\arraystretch}{1.15}\scriptsize}%
+    \setlength{\tabcolsep}{3.0pt}%
+}
+\newcommand{\useDefaultTableFormatting}{%
+    \renewcommand{\customtableformatting}{\renewcommand{\arraystretch}{1.1}\small}%
+    \setlength{\tabcolsep}{6.0pt}%
+}
 \AtBeginEnvironment{tabular}{\customtableformatting} % Apply to tabular.
 \AtBeginEnvironment{tabularx}{\customtableformatting} % Apply to tabularx.
 \preto\longtable{\customtableformatting} % Apply to longtable.
