@@ -1,0 +1,37 @@
+\begin{table}[H]
+\centering
+\caption{Moléculas representativas de cada algoritmo en tres puntos del frente de Pareto: extremo de menor SA, mayor QED y extremo de mayor SA.}
+\label{tab:moleculas_representativas}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llcccl}
+\toprule
+\textbf{Algoritmo} & \textbf{Punto del Frente} & \textbf{QED} $\uparrow$ & \textbf{SA} $\downarrow$ & \textbf{$\text{Fsp}^3$} & \textbf{SMILES} \\
+\midrule
+\multirow{3}{*}{\acrshort{nsga2}}
+ & Extremo de menor SA & 0,223 & 1,060 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCCCCC} \\
+ & Mayor QED & 0,948 & 1,800 & 0,333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccn3)CC2)cc1} \\
+ & Extremo de mayor SA & 0,948 & 2,730 & 0,333 & \texttt{Cn1cc(NC(=O)C2CCCO2)c(-c2ccccc2Cl)n1} \\
+\midrule
+\multirow{3}{*}{\acrshort{nsga3}}
+ & Extremo de menor SA & 0,270 & 1,070 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCC} \\
+ & Mayor QED & 0,948 & 1,710 & 0,316 & \texttt{Cc1cc(C(=O)N2CCN(Cc3ccccc3)CC2)ccc1O} \\
+ & Extremo de mayor SA & 0,948 & 3,550 & 0,312 & \texttt{Cc1cc(CO)c(Cl)c(-c2cccn2C2COCC2=O)c1} \\
+\midrule
+\multirow{3}{*}{\acrshort{moead}}
+ & Extremo de menor SA & 0,706 & 1,220 & 0,300 & \texttt{O=C(Nc1ccccc1)C1CC1} \\
+ & Mayor QED & 0,948 & 1,810 & 0,333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3cccnc3)CC2)cc1} \\
+ & Extremo de mayor SA & 0,948 & 3,110 & 0,333 & \texttt{Cc1nc(C(O)c2ccccc2Cl)n(CC(F)(F)F)n1} \\
+\midrule
+\multirow{3}{*}{\acrshort{agemoea}}
+ & Extremo de menor SA & 0,252 & 1,070 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCCC} \\
+ & Mayor QED & 0,948 & 1,810 & 0,333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cn1} \\
+ & Extremo de mayor SA & 0,948 & 2,030 & 0,375 & \texttt{O=C(c1csc(-c2cccc(CO)c2)n1)N1CCCCC1} \\
+\midrule
+\multirow{3}{*}{\acrshort{cmopso}}
+ & Extremo de menor SA & 0,792 & 1,300 & 0,364 & \texttt{CCCNC(=O)c1ccc(OC)cc1} \\
+ & Mayor QED & 0,948 & 2,060 & 0,333 & \texttt{O=C(NC1CCN(c2nccs2)CC1)c1ccccc1F} \\
+ & Extremo de mayor SA & 0,948 & 2,570 & 0,333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

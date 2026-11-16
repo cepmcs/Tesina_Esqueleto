@@ -20,21 +20,7 @@ En las configuraciones evaluadas, las redes \gls{lstm} soportaron mejor los entr
 
 Para optimizar la tasa de aprendizaje y el tamaño de lote, se seleccionaron cuatro configuraciones con dimensión latente de 256, correspondientes a la mejor con \gls{gru} y la mejor con \gls{selfies} a 100 épocas, junto con las dos mejores con \gls{lstm} a 300 épocas. Dado que todos los modelos seleccionados comparten este espacio latente, dicho valor se omite en su nomenclatura. La Tabla~\ref{tab:mejores_modelos_vae} presenta estas configuraciones junto con sus métricas de generación (validez, unicidad, novedad y filtros) y de fidelidad molecular (\gls{fcd}, diversidad interna y distancias de SA y \gls{qed}), calculadas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES.
 
-\begin{table}[htbp]
-\centering
-\caption{Configuraciones seleccionadas para la optimización del entrenamiento (espacio latente de 256~dimensiones). Métricas calculadas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES.}
-\label{tab:mejores_modelos_vae}
-\begin{tabular}{lccccccccc}
-\toprule
-\textbf{ID} & \textbf{Épocas} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} \\
-\midrule
-SM-G 2 & 100 & 0,945 & 1,000 & 0,969 & 0,982 & 0,470 & 0,859 & 0,115 & \textbf{0,005} \\
-SE-L 2 & 100 & \textbf{1,000} & 1,000 & 0,881 & 0,928 & 0,764 & \textbf{0,861} & 0,201 & 0,020 \\
-SM-L 1 & 300 & 0,946 & 1,000 & \textbf{0,972} & 0,981 & 0,459 & 0,859 & 0,155 & 0,011 \\
-SM-L 2 & 300 & 0,951 & 1,000 & 0,956 & \textbf{0,986} & \textbf{0,321} & 0,858 & \textbf{0,113} & 0,013 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/tab_mejores_modelos_vae.tex}
 
 Si consideramos los resultados de los modelos de 100 épocas de entrenamiento, \textbf{SM-G 2} obtiene los mejores resultados informando un FCD de 0,470 y una validez de 0,945. Por su parte, \textbf{SE-L 2} registra el mejor desempeño dentro de la representación \gls{selfies} con el menor FCD (0,764), siendo de interés evaluar si su novedad (0,881) mejora al ajustar los hiperparámetros.
 
@@ -47,22 +33,7 @@ En cuanto a los modelos de 300 épocas de entrenamiento, \textbf{SM-L~2} es el q
 
 Los resultados completos de la optimización se detallan en el Apéndice~\ref{apendice:vae_experimentos} (Tabla~\ref{tab:log_experimentos_fase2_completo}). La Tabla~\ref{tab:mejores_fase2} resume la mejor configuración por arquitectura (todas con espacio latente de 256~dimensiones), informando el modelo, las épocas, la tasa de aprendizaje (LR), el tamaño de lote (Batch) y las métricas moleculares obtenidas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES: validez (Val), unicidad (Uni), novedad (Nov), filtros de MOSES (Filter), \acrshort{fcd}, diversidad interna (IntDiv) y distancias de Wasserstein en accesibilidad sintética (SA) y \gls{qed}.
 
-\begin{table}[htbp]
-\centering
-\caption{Mejores configuraciones obtenidas en la optimización del entrenamiento (espacio latente de 256~dimensiones). Métricas calculadas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES.}
-\label{tab:mejores_fase2}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccccccc}
-\toprule
-\textbf{Modelo} & \textbf{Épocas} & \textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} \\
-\midrule
-SM-G 2 & 100 & $1 \times 10^{-4}$ & 64  & 0,950 & 1,000 & 0,966 & 0,984 & 0,301 & 0,858 & 0,111 & \textbf{0,006} \\
-SE-L 2 & 100 & $1 \times 10^{-3}$ & 192 & \textbf{1,000} & 0,999 & 0,868 & 0,936 & 0,675 & \textbf{0,861} & 0,185 & 0,018 \\
-SM-L 1 & 300 & $1 \times 10^{-4}$ & 64  & 0,940 & 1,000 & \textbf{0,973} & 0,980 & 0,424 & 0,859 & 0,159 & 0,013 \\
-SM-L 2 & 300 & $1 \times 10^{-4}$ & 64  & 0,962 & 1,000 & 0,943 & \textbf{0,988} & \textbf{0,179} & 0,859 & \textbf{0,093} & 0,008 \\
-\bottomrule
-\end{tabular}}
-\end{table}
+\input{Chapters/Tables/tab_mejores_fase2.tex}
 
 Al optimizar el entrenamiento, la reducción de la tasa de aprendizaje de $1 \times 10^{-3}$ a $1 \times 10^{-4}$ y el uso de lotes más pequeños de 64 produjo una mejora consistente en las arquitecturas con representación \gls{smiles}, alcanzando las mejores puntuaciones de \gls{fcd} y menores distancias de Wasserstein. Aunque esta configuración elevó los tiempos de cómputo por encima de las 20 horas en los modelos de 300 épocas, asumir este costo fue necesario para conseguir los mejores resultados.
 
@@ -100,28 +71,7 @@ En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed
 
 La Tabla~\ref{tab:resultados_reducidos} compara a \textbf{SM-L VAE} con las líneas base de MOSES y modelos recientes de la literatura. Todos los valores corresponden a promedios obtenidos sobre 3 evaluaciones independientes de 30.000 moléculas generadas.
 
-\begin{table}[htbp]
-\centering
-\caption{Comparación con el estado del arte en el \textit{benchmark} MOSES (valores promedio sobre 30.000 moléculas generadas).}
-\label{tab:resultados_reducidos}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{l c c c c c c c c}
-\toprule
-Model & Valid ($\uparrow$) & Unique ($\uparrow$) & Novelty ($\uparrow$) & Filters ($\uparrow$) & FCD ($\downarrow$) & IntDiv ($\uparrow$) & SA ($\downarrow$) & QED ($\downarrow$) \\
-\midrule
-Train & 1,000 & 1,000 & 1,000 & 1,000 & 0,008 & 0,857 & - & - \\
-HMM & 0,076 & 0,567 & 0,999 & 0,902 & 24,466 & 0,847 & 0,742 & 0,269 \\
-NGram & 0,238 & 0,922 & 0,969 & 0,958 & 5,507 & 0,874 & 0,231 & 0,089 \\
-Combinatorial & 1,000 & 0,991 & 0,988 & 0,956 & 4,238 & 0,873 & 0,280 & 0,151 \\
-CharRNN & 0,975 & 0,999 & 0,842 & 0,994 & 0,073 & 0,856 & 0,017 & 0,003 \\
-AAE & 0,937 & 0,997 & 0,793 & 0,996 & 0,556 & 0,856 & 0,045 & 0,004 \\
-LatentGAN & 0,897 & 0,997 & 0,950 & 0,974 & 0,297 & 0,857 & 0,088 & 0,006 \\
-FRATTVAE & 1,000 & 1,000 & 0,974 & N/R & 0,865 & N/R & 2,591 & 0,030 \\
-PCF-VAE & 0,980 & 1,000 & 0,938 & 0,990 & 0,296 & 0,859 & N/R & N/R \\
-\textbf{SM-L VAE} & 0,962 & 1,000 & 0,944 & 0,989 & 0,183 & 0,859 & 0,100 & 0,008 \\
-\bottomrule
-\end{tabular}}
-\end{table}
+\input{Chapters/Tables/tab_resultados_reducidos.tex}
 
 A partir de la Tabla~\ref{tab:resultados_reducidos}, se observa que el modelo propuesto (SM-L VAE) ofrece un balance competitivo frente a otras arquitecturas recientes de espacio latente, como PCF-VAE y FRATTVAE. El modelo logra un \gls{fcd} de 0,183, manteniendo al mismo tiempo una alta tasa de novedad (0,944) y diversidad interna (0,859). Si bien enfoques autorregresivos como CharRNN alcanzan un \gls{fcd} numéricamente menor (0,073), este comportamiento suele estar asociado a una caída en la novedad (0,842), lo que sugiere una tendencia del modelo a replicar el conjunto de entrenamiento. La principal ventaja de los modelos \gls{vae} está en su espacio latente continuo. A diferencia de las secuencias discretas de CharRNN, esta representación vectorial permite aplicar metaheurísticas multiobjetivo para buscar moléculas con propiedades específicas o afines a un target determinado.
 
@@ -220,24 +170,7 @@ En esta sección se comparan los cinco algoritmos (\acrshort{nsga2}, \acrshort{n
 
 La Tabla~\ref{tab:comparison_multiobjective} compara las mejores configuraciones de los cinco algoritmos en el espacio multiobjetivo. Se evalúan indicadores de convergencia y proximidad al frente de referencia (hipervolumen, $\text{IGD}^+$ y $\epsilon^+$), junto con la distribución (espaciamiento), el número de soluciones no dominadas factibles y el tiempo de~ejecución.
 
-\begin{table}[!htbp]
-\centering
-\caption{Comparación de indicadores multiobjetivo - mejores configuraciones.}
-\label{tab:comparison_multiobjective}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccc}
-\toprule
-Algoritmo & Hipervolumen $\uparrow$ & Espaciamiento $\downarrow$ & $\text{IGD}^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) $\downarrow$ \\
-\midrule
-\acrshort{nsga2} (PCX+PM) & $\mathbf{1.125 \pm 0.004}$ & $1.228 \pm 0.446$ & $0.038 \pm 0.006$ & $\mathbf{0.101 \pm 0.023}$ & $\mathbf{29.4 \pm 4.7}$ & $99.0 \pm 4.1$ \\
-\acrshort{nsga3} (PCX+PM) & $1.121 \pm 0.003$ & $1.171 \pm 0.390$ & $\mathbf{0.036 \pm 0.006}$ & $0.121 \pm 0.021$ & $22.7 \pm 5.1$ & $108.3 \pm 3.7$ \\
-\acrshort{moead} (PCX+PM) & $1.113 \pm 0.004$ & $\mathbf{1.042 \pm 0.272}$ & $0.057 \pm 0.011$ & $0.173 \pm 0.032$ & $19.9 \pm 3.5$ & $\mathbf{43.9 \pm 2.4}$ \\
-\acrshort{agemoea} (PCX+PM) & $1.121 \pm 0.003$ & $1.170 \pm 0.352$ & $0.040 \pm 0.005$ & $0.118 \pm 0.020$ & $24.1 \pm 4.4$ & $110.7 \pm 5.1$ \\
-\acrshort{cmopso} ($v_{\max}=0.1$) & $1.109 \pm 0.004$ & $1.053 \pm 0.380$ & $0.059 \pm 0.003$ & $0.191 \pm 0.011$ & $17.8 \pm 3.4$ & $50.2 \pm 1.9$ \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
+\input{Chapters/Tables/tab_comparison_multiobjective.tex}
 
 
 Los resultados muestran que \acrshort{nsga2} alcanza el mayor hipervolumen promedio, la mejor cobertura ($\epsilon^+$) y el frente más numeroso, mientras que \acrshort{nsga3} obtiene el menor valor de $\text{IGD}^+$. En un segundo nivel muy cercano se sitúan \acrshort{nsga3} y \acrshort{agemoea}, con valores de convergencia y tamaños de frente similares entre sí. Por su parte, \acrshort{moead} y \acrshort{cmopso} presentan hipervolúmenes menores y distancias más desfavorables en $\text{IGD}^+$ y $\epsilon^+$, lo que indica que dejan sectores del frente de referencia sin explorar. Sin embargo, ambos métodos destacan por requerir aproximadamente la mitad del tiempo de cómputo que los demás y por registrar un espaciamiento menor al concentrar sus soluciones en la región de alto \gls{qed}.
@@ -255,24 +188,7 @@ La Figura~\ref{fig:boxplots_mo} ilustra la distribución de los indicadores mult
 
 Por su parte, \acrshort{moead} y \acrshort{cmopso} presentan medianas menores de espaciamiento ($1.05$ y $0.95$) debido a que sus soluciones se concentran en el tramo de alto \gls{qed}. Sin embargo, al no explorar la rama de bajo SA, registran valores peores en $\text{IGD}^+$ y $\epsilon^+$, ya que dejar ese sector sin cubrir aumenta la distancia respecto al frente de referencia. Además, al enfocarse en una zona más acotada, obtienen menos soluciones no dominadas (medianas de $20$ y $18$ moléculas, respectivamente).
 
-\begin{table}[!htbp]
-\centering
-\caption{Comparación de indicadores químicos - mejores configuraciones.}
-\label{tab:comparison_chemical}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccc}
-\toprule
-Algoritmo & QED $\uparrow$ & SA $\downarrow$ & Factibilidad $\uparrow$ & $\text{Fsp}^3$ & Validez $\uparrow$ & Unicidad $\uparrow$ & Novedad $\uparrow$ \\
-\midrule
-\acrshort{nsga2} (PCX+PM) & $0.803 \pm 0.058$ & $1.620 \pm 0.080$ & $0.735 \pm 0.023$ & $0.464 \pm 0.064$ & $0.798 \pm 0.036$ & $0.991 \pm 0.010$ & $\mathbf{0.983 \pm 0.003}$ \\
-\acrshort{nsga3} (PCX+PM) & $0.854 \pm 0.044$ & $\mathbf{1.600 \pm 0.090}$ & $0.744 \pm 0.042$ & $0.408 \pm 0.049$ & $0.863 \pm 0.036$ & $\mathbf{0.999 \pm 0.003}$ & $0.973 \pm 0.007$ \\
-\acrshort{moead} (PCX+PM) & $0.877 \pm 0.017$ & $1.660 \pm 0.070$ & $0.882 \pm 0.050$ & $0.388 \pm 0.020$ & $0.991 \pm 0.005$ & $0.445 \pm 0.070$ & $0.745 \pm 0.091$ \\
-\acrshort{agemoea} (PCX+PM) & $0.848 \pm 0.040$ & $1.620 \pm 0.090$ & $0.746 \pm 0.038$ & $0.413 \pm 0.041$ & $0.864 \pm 0.026$ & $0.986 \pm 0.022$ & $0.974 \pm 0.007$ \\
-\acrshort{cmopso} ($v_{\max}=0.1$) & $\mathbf{0.887 \pm 0.009}$ & $1.650 \pm 0.080$ & $\mathbf{0.930 \pm 0.025}$ & $0.407 \pm 0.030$ & $\mathbf{0.996 \pm 0.005}$ & $0.320 \pm 0.064$ & $0.665 \pm 0.211$ \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
+\input{Chapters/Tables/tab_comparison_chemical.tex}
 
 La Tabla~\ref{tab:comparison_chemical} presenta la comparación de las propiedades químicas entre los cinco algoritmos. \gls{qed} y SA se promedian sobre el frente no dominado acumulado, mientras que validez, factibilidad, unicidad, novedad y $\text{Fsp}^3$ describen el comportamiento de la búsqueda sobre el espacio químico.
 
@@ -295,27 +211,7 @@ En los objetivos, \acrshort{cmopso} y \acrshort{moead} concentran sus valores de
 
 En las métricas de generación, \acrshort{moead} y \acrshort{cmopso} alcanzan una validez próxima al $99\%$, aunque su unicidad desciende a medianas de $0.45$ y~$0.32$, con una novedad menor y dispersa en \acrshort{cmopso}. En contraste, \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} sostienen unicidad y novedad cercanas a $1.0$ y~$0.98$, con una validez entre el $80\%$ y el~$86\%$.
 
-\begin{table}[!htbp]
-\centering
-\caption{Comparación entre algoritmos sobre hipervolumen. Grupos homogéneos: \{\acrshort{nsga2}\} $>$ \{\acrshort{agemoea}, \acrshort{nsga3}\} $>$ \{\acrshort{moead}\} $>$ \{\acrshort{cmopso}\}.}
-\label{tab:comparacion_grupos}
-\begin{tabular}{lrrl}
-\toprule
-Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
-\midrule
-\acrshort{nsga2} vs \acrshort{nsga3} & 0,005 & $+0,762$ & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{moead} & $<$0,001 & $+1,000$ & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{agemoea} & 0,004 & $+0,790$ & \acrshort{nsga2} \\
-\acrshort{nsga2} vs \acrshort{cmopso} & $<$0,001 & $+1,000$ & \acrshort{nsga2} \\
-\acrshort{nsga3} vs \acrshort{moead} & $<$0,001 & $+1,000$ & \acrshort{nsga3} \\
-\acrshort{nsga3} vs \acrshort{agemoea} & 0,571 & $+0,152$ & - \\
-\acrshort{nsga3} vs \acrshort{cmopso} & $<$0,001 & $+1,000$ & \acrshort{nsga3} \\
-\acrshort{moead} vs \acrshort{agemoea} & $<$0,001 & $-0,990$ & \acrshort{agemoea} \\
-\acrshort{moead} vs \acrshort{cmopso} & 0,008 & $+0,705$ & \acrshort{moead} \\
-\acrshort{agemoea} vs \acrshort{cmopso} & $<$0,001 & $+1,000$ & \acrshort{agemoea} \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/tab_comparacion_grupos.tex}
 
 La Tabla~\ref{tab:comparacion_grupos} presenta la comparación estadística por pares entre los cinco algoritmos sobre el hipervolumen. Se reportan los valores $p$ ajustados mediante la corrección de Holm, el tamaño del efecto según la correlación de rango biserial ($r_{\text{rb}}$) y el algoritmo superior de cada comparación.
 
@@ -374,30 +270,7 @@ Para evaluar la capacidad exploratoria conjunta y caracterizar el espacio quími
 
 La Tabla~\ref{tab:contribucion_pool} presenta la contribución de cada algoritmo y combinación de operadores al frente no dominado conjunto global, indicando el número de moléculas aportadas, las exclusivas, el porcentaje sobre el total y los promedios de los objetivos en las soluciones aportadas.
 
-\begin{table}[!htbp]
-\centering
-\caption{Contribución de cada algoritmo y combinación de operadores al frente no dominado conjunto global (32 soluciones).}
-\label{tab:contribucion_pool}
-\begin{tabular}{llrrrrrr}
-\toprule
-Configuración & Operadores & Aporta & Exclusivas & \% & QED $\uparrow$ & SA $\downarrow$ & $\text{Fsp}^3$ \\
-\midrule
-\multirow{2}{*}{\acrshort{nsga2}} & pcx\_pm & 15 & 4 & 46,9 & 0,598 & 1,220 & 0,570 \\
- & sbx\_gauss & 16 & 6 & 50,0 & 0,874 & 1,590 & 0,338 \\
-\midrule
-\multirow{2}{*}{\acrshort{nsga3}} & pcx\_pm & 15 & 2 & 46,9 & 0,726 & 1,470 & 0,475 \\
- & sbx\_pm & 9 & 1 & 28,1 & 0,829 & 1,480 & 0,347 \\
-\midrule
-\multirow{2}{*}{\acrshort{moead}} & pcx\_pm & 9 & 0 & 28,1 & 0,841 & 1,410 & 0,343 \\
- & sbx\_pm & 6 & 0 & 18,8 & 0,828 & 1,370 & 0,359 \\
-\midrule
-\multirow{2}{*}{\acrshort{agemoea}} & pcx\_pm & 11 & 1 & 34,4 & 0,615 & 1,240 & 0,587 \\
- & sbx\_pm & 7 & 0 & 21,9 & 0,811 & 1,350 & 0,350 \\
-\midrule
-\acrshort{cmopso} & - & 10 & 3 & 31,2 & 0,865 & 1,620 & 0,360 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/tab_contribucion_pool.tex}
 
 En la Tabla~\ref{tab:contribucion_pool} se observa que \acrshort{nsga2} lidera la contribución al frente global, aportando cerca de la mitad de las soluciones tanto con SBX como con PCX y logrando el mayor número de moléculas exclusivas. \acrshort{nsga3} y \acrshort{agemoea} también realizan aportes relevantes al frente conjunto, mientras que \acrshort{cmopso} incorpora soluciones exclusivas en la zona de alto \gls{qed}. Por su parte, las moléculas encontradas por \acrshort{moead} resultan compartidas con las descubiertas por los demás métodos.
 
@@ -418,43 +291,7 @@ La Figura~\ref{fig:frente_conjunto_poppool} presenta la distribución de las 32 
 
 Para analizar la calidad de las moléculas generadas y comparar cómo explora cada metaheurística las distintas regiones del frente de Pareto, se seleccionan tres soluciones representativas por algoritmo: la de menor dificultad sintética (menor SA), la de mayor valor de \gls{qed}, y la del extremo de mayor SA dentro del frente no dominado. La Tabla~\ref{tab:moleculas_representativas} y la Figura~\ref{fig:moleculas_representativas} presentan sus propiedades fisicoquímicas y estructuras 2D. El catálogo completo de las cinco moléculas de mayor \gls{qed} por algoritmo se encuentra disponible en el Apéndice~\ref{sec:apendice_moleculas_top_qed} (Tabla~\ref{tab:moleculas_representativas_completo}).
 
-\begin{table}[H]
-\centering
-\caption{Moléculas representativas de cada algoritmo en tres puntos del frente de Pareto: extremo de menor SA, mayor QED y extremo de mayor SA.}
-\label{tab:moleculas_representativas}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llcccl}
-\toprule
-\textbf{Algoritmo} & \textbf{Punto del Frente} & \textbf{QED} $\uparrow$ & \textbf{SA} $\downarrow$ & \textbf{$\text{Fsp}^3$} & \textbf{SMILES} \\
-\midrule
-\multirow{3}{*}{\acrshort{nsga2}}
- & Extremo de menor SA & 0,223 & 1,060 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCCCCC} \\
- & Mayor QED & 0,948 & 1,800 & 0,333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccn3)CC2)cc1} \\
- & Extremo de mayor SA & 0,948 & 2,730 & 0,333 & \texttt{Cn1cc(NC(=O)C2CCCO2)c(-c2ccccc2Cl)n1} \\
-\midrule
-\multirow{3}{*}{\acrshort{nsga3}}
- & Extremo de menor SA & 0,270 & 1,070 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCC} \\
- & Mayor QED & 0,948 & 1,710 & 0,316 & \texttt{Cc1cc(C(=O)N2CCN(Cc3ccccc3)CC2)ccc1O} \\
- & Extremo de mayor SA & 0,948 & 3,550 & 0,312 & \texttt{Cc1cc(CO)c(Cl)c(-c2cccn2C2COCC2=O)c1} \\
-\midrule
-\multirow{3}{*}{\acrshort{moead}}
- & Extremo de menor SA & 0,706 & 1,220 & 0,300 & \texttt{O=C(Nc1ccccc1)C1CC1} \\
- & Mayor QED & 0,948 & 1,810 & 0,333 & \texttt{Cc1ccc(CN2CCN(C(=O)Nc3cccnc3)CC2)cc1} \\
- & Extremo de mayor SA & 0,948 & 3,110 & 0,333 & \texttt{Cc1nc(C(O)c2ccccc2Cl)n(CC(F)(F)F)n1} \\
-\midrule
-\multirow{3}{*}{\acrshort{agemoea}}
- & Extremo de menor SA & 0,252 & 1,070 & 1,000 & \texttt{CCCCCCCCCCCCCCCCCCC} \\
- & Mayor QED & 0,948 & 1,810 & 0,333 & \texttt{Cc1ccc(NC(=O)N2CCN(Cc3ccccc3)CC2)cn1} \\
- & Extremo de mayor SA & 0,948 & 2,030 & 0,375 & \texttt{O=C(c1csc(-c2cccc(CO)c2)n1)N1CCCCC1} \\
-\midrule
-\multirow{3}{*}{\acrshort{cmopso}}
- & Extremo de menor SA & 0,792 & 1,300 & 0,364 & \texttt{CCCNC(=O)c1ccc(OC)cc1} \\
- & Mayor QED & 0,948 & 2,060 & 0,333 & \texttt{O=C(NC1CCN(c2nccs2)CC1)c1ccccc1F} \\
- & Extremo de mayor SA & 0,948 & 2,570 & 0,333 & \texttt{O=C(NC1(c2nccs2)CCOCC1)c1ccccc1F} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
+\input{Chapters/Tables/tab_moleculas_representativas.tex}
 
 \begin{figure}[H]
     \centering
@@ -498,15 +335,15 @@ La Tabla~\ref{tab:multiobjetivo} compara los indicadores multiobjetivo para cada
 
 En comparación con los experimentos previos sin diana específica (Sección~\ref{sec:res_genericos}), la escala del hipervolumen varía debido a la incorporación simultánea de cuatro objetivos (\gls{qed}, SA, afinidad de unión y pChEMBL predicho) junto con las restricciones de viabilidad ($\text{Fsp}^3$ y $\log P$). Por otra parte, el tiempo de ejecución de los algoritmos aumenta considerablemente, debido a la carga computacional que conlleva el cálculo del acoplamiento molecular de las moléculas generadas. De igual manera, al optimizarse cuatro objetivos simultáneos, la cantidad de moléculas pertenecientes al frente de Pareto aumenta sustancialmente.
 
-Al observar las métricas multiobjetivo, las variantes con SBX superan a PCX en convergencia y volumen cubierto, aumentando el hipervolumen en hasta $0,049$ ($0,514$ frente a $0,465$ en \acrshort{nsga3}), reduciendo $\text{IGD}^+$ a menos de la mitad ($0,022$--$0,038$ frente a $0,076$--$0,077$) y logrando menores valores de $\epsilon^+$ junto con frentes más numerosos. En cambio, PCX conserva un espaciamiento promedio levemente menor ($0,573$--$0,635$ frente a $0,591$--$0,664$). Entre algoritmos, \acrshort{nsga3} con SBX alcanza el mayor hipervolumen ($0,514$) y el mejor $\text{IGD}^+$ ($0,022$ frente a $0,038$ en \acrshort{nsga2}), aunque su diferencia en hipervolumen respecto a \acrshort{nsga2} con SBX ($0,502$) es pequeña ($\Delta = 0,012$) y dentro de la variabilidad entre ejecuciones. Además, \acrshort{nsga2} con SBX mantiene ventaja en $\epsilon^+$ ($0,181$ frente a $0,198$), tamaño del frente y espaciamiento, mientras que \acrshort{agemoea} con SBX registra el menor tiempo de ejecución. Este resultado coincide con lo esperado para \acrshort{nsga3} en cuatro objetivos~\cite{deb2014nsga3}, pero muestra compromisos claros entre indicadores sin un ganador absoluto.
+Al observar las métricas multiobjetivo, las variantes con SBX superan a PCX en convergencia y volumen cubierto, aumentando el hipervolumen en hasta $0.049$ ($0.514$ frente a $0.465$ en \acrshort{nsga3}), reduciendo $\text{IGD}^+$ a menos de la mitad ($0.022$--$0.038$ frente a $0.076$--$0.077$) y logrando menores valores de $\epsilon^+$ junto con frentes más numerosos. En cambio, PCX conserva un espaciamiento promedio levemente menor ($0.573$--$0.635$ frente a $0.591$--$0.664$). Entre algoritmos, \acrshort{nsga3} con SBX alcanza el mayor hipervolumen ($0.514$) y el mejor $\text{IGD}^+$ ($0.022$ frente a $0.038$ en \acrshort{nsga2}), aunque su diferencia en hipervolumen respecto a \acrshort{nsga2} con SBX ($0.502$) es pequeña ($\Delta = 0.012$) y dentro de la variabilidad entre ejecuciones. Además, \acrshort{nsga2} con SBX mantiene ventaja en $\epsilon^+$ ($0.181$ frente a $0.198$), tamaño del frente y espaciamiento, mientras que \acrshort{agemoea} con SBX registra el menor tiempo de ejecución. Este resultado coincide con lo esperado para \acrshort{nsga3} en cuatro objetivos~\cite{deb2014nsga3}, pero muestra compromisos claros entre indicadores sin un ganador absoluto.
 
 \input{Chapters/Tables/mrp1/tab_propiedades_mrp1.tex}
 
 La Tabla~\ref{tab:propiedades} presenta la comparación de las propiedades químicas y biológicas sobre los frentes no dominados acumulados. Se consideran los cuatro objetivos de optimización, junto con las restricciones de la búsqueda.
 
-Los resultados muestran que las variantes con SBX presentan un comportamiento más estable y favorable en tres de los cuatro objetivos considerados, alcanzando mayores valores promedio de \gls{qed}, menor dificultad sintética y puntuaciones de acoplamiento más negativas. En particular, \acrshort{nsga3} con SBX obtiene los mejores promedios de \gls{qed} ($0,870$) y afinidad estimada ($-8,182$~kcal/mol), mientras que \acrshort{agemoea} con SBX logra la mejor accesibilidad sintética ($\text{SA} = 2,115$).
+Los resultados muestran que las variantes con SBX presentan un comportamiento más estable y favorable en tres de los cuatro objetivos considerados, alcanzando mayores valores promedio de \gls{qed}, menor dificultad sintética y puntuaciones de acoplamiento más negativas. En particular, \acrshort{nsga3} con SBX obtiene los mejores promedios de \gls{qed} ($0.870$) y afinidad estimada ($-8.182$~kcal/mol), mientras que \acrshort{agemoea} con SBX logra la mejor accesibilidad sintética ($\text{SA} = 2.115$).
 
-Sin embargo, esta tendencia no se mantiene de manera uniforme en la bioactividad predicha, ya que aunque \acrshort{nsga3} con SBX registra el promedio más alto de pChEMBL ($5,397$), las configuraciones con PCX de \acrshort{nsga2} y \acrshort{agemoea} obtienen valores ligeramente superiores a sus pares con SBX. En cualquier caso, todas las medias se agrupan en un rango estrecho ($5,318$--$5,397$), por lo que estas diferencias deben interpretarse considerando la variabilidad entre ejecuciones y el error predictivo del modelo \textit{Random Forest}. En conjunto, el desempeño depende de la propiedad evaluada y refleja compromisos entre objetivos, sin un ganador absoluto. Respecto a las restricciones fisicoquímicas, todas las variantes permanecen dentro de los límites establecidos, con $\text{Fsp}^3$ entre $0,399$ y $0,424$ y $\log P$ entre $2,75$ y $2,86$.
+Sin embargo, esta tendencia no se mantiene de manera uniforme en la bioactividad predicha, ya que aunque \acrshort{nsga3} con SBX registra el promedio más alto de pChEMBL ($5.397$), las configuraciones con PCX de \acrshort{nsga2} y \acrshort{agemoea} obtienen valores ligeramente superiores a sus pares con SBX. En cualquier caso, todas las medias se agrupan en un rango estrecho ($5.318$--$5.397$), por lo que estas diferencias deben interpretarse considerando la variabilidad entre ejecuciones y el error predictivo del modelo \textit{Random Forest}. En conjunto, el desempeño depende de la propiedad evaluada y refleja compromisos entre objetivos, sin un ganador absoluto. Respecto a las restricciones fisicoquímicas, todas las variantes permanecen dentro de los límites establecidos, con $\text{Fsp}^3$ entre $0.399$ y $0.424$ y $\log P$ entre $2.75$ y $2.86$.
 
 \input{Chapters/Tables/mrp1/tab_generacion_mrp1.tex}
 
@@ -648,7 +485,7 @@ La Figura~\ref{fig:posebusters} presenta la tasa de validez obtenida en las prue
 \subsubsection{Predicción de Potencia y Bioactividad Inhibitoria}
 \label{subsubsec:potencia_bioactividad}
 
-La potencia predicha frente a \gls{mrp1} se comparó mediante el mismo modelo de \textit{Random Forest} optimizado en la búsqueda, entrenado con inhibidores de ChEMBL~\cite{mendez2019chembl}. Como métrica se utiliza el valor de pChEMBL predicho, fijando el umbral estándar de $5,0$ ($\text{IC}_{50} \le 10\,\mu\text{M}$) empleado habitualmente para clasificar compuestos activos en ChEMBL~\cite{mervin2021probabilistic}.
+La potencia predicha frente a \gls{mrp1} se comparó mediante el mismo modelo de \textit{Random Forest} optimizado en la búsqueda, entrenado con inhibidores de ChEMBL~\cite{mendez2019chembl}. Como métrica se utiliza el valor de pChEMBL predicho, fijando el umbral estándar de $5.0$ ($\text{IC}_{50} \le 10\,\mu\text{M}$) empleado habitualmente para clasificar compuestos activos en ChEMBL~\cite{mervin2021probabilistic}.
 
 La Tabla~\ref{tab:pchembl_predicho} y la Figura~\ref{fig:distribucion_pchembl} presentan los estadísticos descriptivos y las funciones de densidad del pChEMBL predicho sobre las moléculas generadas por cada método.
 
@@ -684,24 +521,24 @@ La Figura~\ref{fig:admet_ranks} muestra las distribuciones de densidad KDE para 
 \needspace{4\baselineskip}
 \paragraph{Absorción y Permeabilidad.}
 \begin{itemize}
-    \item \textbf{Absorción Intestinal Humana (HIA\_Hou):} Estima la probabilidad de absorción oral (favorable $>0,8$). Todas las variantes multiobjetivo alcanzan el máximo de la escala ($1,0$), en línea con los modelos de referencia y dentro del rango favorable del predictor.
-    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang):} Estima la tasa de paso por células intestinales (alta permeabilidad $> -5,15$). Todas las variantes multiobjetivo presentan valores estimados dentro de ese rango.
-    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS):} Estima el tránsito pasivo a través de membranas lipídicas (favorable $>0,70$). En todas las configuraciones, las moléculas obtienen puntuaciones de permeabilidad pasiva predicha favorables según el criterio empleado.
-    \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma):} Probabilidad estimada de alcanzar la circulación sistémica vía oral (favorable $>0,50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
+    \item \textbf{Absorción Intestinal Humana (HIA\_Hou):} Estima la probabilidad de absorción oral (favorable $>0.8$). Todas las variantes multiobjetivo alcanzan el máximo de la escala ($1.0$), en línea con los modelos de referencia y dentro del rango favorable del predictor.
+    \item \textbf{Permeabilidad Epitelial (Caco2\_Wang):} Estima la tasa de paso por células intestinales (alta permeabilidad $> -5.15$). Todas las variantes multiobjetivo presentan valores estimados dentro de ese rango.
+    \item \textbf{Permeabilidad Pasiva (PAMPA\_NCATS):} Estima el tránsito pasivo a través de membranas lipídicas (favorable $>0.70$). En todas las configuraciones, las moléculas obtienen puntuaciones de permeabilidad pasiva predicha favorables según el criterio empleado.
+    \item \textbf{Biodisponibilidad Oral (Bioavailability\_Ma):} Probabilidad estimada de alcanzar la circulación sistémica vía oral (favorable $>0.50$). Todas las configuraciones multiobjetivo logran promedios favorables, destacando \acrshort{agemoea} y \acrshort{nsga3} con SBX, y superando a los modelos con fine-tuning.
 \end{itemize}
 
 \needspace{4\baselineskip}
 \paragraph{Propiedades Fisicoquímicas.}
 \begin{itemize}
     \item \textbf{Solubilidad Acuosa (Solubility\_AqSolDB):} Solubilidad estimada en $\log(\text{mol/L})$, donde valores entre $-4$ y $-2$ indican solubilidad moderada y $<-4$ baja solubilidad. Las configuraciones multiobjetivo se mantienen dentro del rango moderado, con \acrshort{nsga2} (SBX) alcanzando la mejor solubilidad predicha entre los modelos multiobjetivo, evitando los valores bajos estimados en la GAN con fine-tuning.
-    \item \textbf{Lipofilicidad ($\log P$):} Coeficiente de partición octanol/agua (rango de referencia entre $0$ y $3$). Como resultado de la restricción aplicada ($1,0 \le \log P \le 4,0$), las moléculas optimizadas convergen en valores medios cercanos a $2,8$, lo que favorece el equilibrio entre permeabilidad y solubilidad estimadas, a diferencia de los modelos con fine-tuning que superan el umbral recomendado.
+    \item \textbf{Lipofilicidad ($\log P$):} Coeficiente de partición octanol/agua (rango de referencia entre $0$ y $3$). Como resultado de la restricción aplicada ($1.0 \le \log P \le 4.0$), las moléculas optimizadas convergen en valores medios cercanos a $2.8$, lo que favorece el equilibrio entre permeabilidad y solubilidad estimadas, a diferencia de los modelos con fine-tuning que superan el umbral recomendado.
 \end{itemize}
 
 \needspace{4\baselineskip}
 \paragraph{Toxicidad y Seguridad.}
 \begin{itemize}
-    \item \textbf{Toxicidad Clínica (ClinTox):} Probabilidad estimada de fracaso o toxicidad en ensayos clínicos (bajo riesgo predicho $<0,30$). Las configuraciones multiobjetivo obtienen probabilidades predichas bajas, destacando las variantes con PCX (en especial \acrshort{nsga2} y \acrshort{nsga3}) con las menores puntuaciones medias de riesgo estimado, por debajo de los modelos con fine-tuning.
-    \item \textbf{Toxicidad Aguda (LD50\_Zhu):} Dosis letal media estimada en ratas expresada como $-\log(\text{mol/kg})$, donde valores más altos indican mayor toxicidad y el rango habitual oscila entre $2,0$ y $3,0$. Todas las variantes optimizadas obtienen predicciones dentro de este intervalo, en niveles comparables a los modelos generativos base.
+    \item \textbf{Toxicidad Clínica (ClinTox):} Probabilidad estimada de fracaso o toxicidad en ensayos clínicos (bajo riesgo predicho $<0.30$). Las configuraciones multiobjetivo obtienen probabilidades predichas bajas, destacando las variantes con PCX (en especial \acrshort{nsga2} y \acrshort{nsga3}) con las menores puntuaciones medias de riesgo estimado, por debajo de los modelos con fine-tuning.
+    \item \textbf{Toxicidad Aguda (LD50\_Zhu):} Dosis letal media estimada en ratas expresada como $-\log(\text{mol/kg})$, donde valores más altos indican mayor toxicidad y el rango habitual oscila entre $2.0$ y $3.0$. Todas las variantes optimizadas obtienen predicciones dentro de este intervalo, en niveles comparables a los modelos generativos base.
 \end{itemize}
 
 % -----------------------------------------------------------------------------

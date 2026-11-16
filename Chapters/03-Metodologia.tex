@@ -38,21 +38,7 @@ Para el entrenamiento del modelo generativo se utiliza el conjunto de datos \gls
 
 Para los experimentos se emplean las particiones oficiales de \gls{moses} detalladas en la Tabla~\ref{tab:particiones_moses}. El conjunto de entrenamiento se utilizó exclusivamente para ajustar los pesos del \gls{vae}, manteniendo separado el conjunto de prueba. Siguiendo el protocolo habitual de \gls{moses}~\cite{polykovskiy2020molecular}, que no define una partición oficial de validación, el conjunto de prueba se empleó tanto para seleccionar las configuraciones del \gls{vae} como para la comparación final frente al estado del arte, por lo que esta última evaluación no es estrictamente independiente de la selección de hiperparámetros.
 
-\begin{table}[htbp]
-\centering
-\caption{Particiones oficiales de \gls{moses} utilizadas en el estudio.}
-\label{tab:particiones_moses}
-\begin{tabular}{llcp{5.5cm}}
-\toprule
-\textbf{Rol} & \textbf{Partición MOSES} & \textbf{Moléculas} & \textbf{Uso en el estudio} \\
-\midrule
-Entrenamiento & \textit{train} & $\sim$1,58 millones & Ajuste de pesos del \gls{vae}. \\
-\midrule
-Validación & \multirow{2}{*}{\textit{test}} & \multirow{2}{*}{$\sim$176 mil} & Selección de configuraciones del \gls{vae}. \\
-Prueba & & & Comparación final frente al estado del arte. \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/metodologia/tab_particiones_moses.tex}
 
 La Figura~\ref{fig:muestras_moses} muestra seis moléculas seleccionadas al azar del conjunto de datos junto a su correspondiente notación \gls{smiles}.
 
@@ -85,27 +71,7 @@ Con el fin de determinar la configuración con mejor desempeño del \gls{vae}, e
 
 La Tabla~\ref{tab:espacio_busqueda_vae} resume las variables y los valores explorados en cada parte del análisis.
 
-\begin{table}[htbp]
-\centering
-\caption{Espacio de búsqueda de hiperparámetros del \gls{vae}.}
-\label{tab:espacio_busqueda_vae}
-\begin{tabular}{lllc}
-\toprule
-\textbf{Configuración} & \textbf{Variable} & \textbf{Valores Explorados} & \textbf{Total} \\
-\midrule
-\textbf{Estructura base} & Representación & SMILES, SELFIES & \\
-(Fijos: LR $1 \times 10^{-3}$, & Arquitectura & GRU, LSTM & 48 \\
-Batch 128) & Capas ocultas & 1, 2 & \\
- & Dimensión Latente & 64, 128, 256 & \\
- & Épocas de Entrenamiento & 100, 300 & \\
-\midrule
-\textbf{Optimización de entrenamiento} & Tasa de Aprendizaje (LR) & $1 \times 10^{-3}$, $1 \times 10^{-4}$ & \\
-(Mejores 4 Modelos seleccionados) & Tamaño de Lote (Batch) & 64, 128, 192 & 24 \\
-\midrule
-\multicolumn{3}{r}{\textbf{Total de ejecuciones:}} & \textbf{72} \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/metodologia/tab_espacio_busqueda_vae.tex}
 
 \textbf{Esquema de entrenamiento y regularización.} Todos los modelos se entrenaron utilizando el optimizador Adam~\cite{kingma2014adam}. Para reducir el riesgo de colapso del posterior en el espacio latente, se aplicó un aumento gradual del peso de la divergencia KL, inspirado en la implementación \textit{Chemical VAE}~\cite{GBWHLDSA18} y en el benchmark \gls{moses}~\cite{polykovskiy2020molecular}. En este esquema, el parámetro $\beta$ se incrementa linealmente desde 0 hasta un valor máximo de $0.3$ durante el primer 25\% de las épocas de entrenamiento.
 
@@ -170,21 +136,7 @@ Para cada algoritmo se define un espacio de hiperparámetros que se explora medi
 \subsubsection*{Total de Evaluaciones y Tamaño de Población}
 Se fija un total de 100.000 evaluaciones por ejecución, repartido en tres combinaciones de tamaño de población y número de generaciones (Tabla~\ref{tab:evaluaciones}). Esta elección permite evaluar el compromiso entre diversidad poblacional (más individuos) y profundidad de búsqueda (más generaciones) manteniendo fijo el total de evaluaciones.
 
-\begin{table}[H]
-\centering
-\small
-\caption{Combinaciones de tamaño de población y generaciones evaluadas. Todas mantienen un total fijo de 100.000 evaluaciones.}
-\label{tab:evaluaciones}
-\begin{tabular}{ccc}
-\toprule
-Población & Generaciones & Evaluaciones \\
-\midrule
-100 & 1.000 & 100.000 \\
-200 & 500   & 100.000 \\
-400 & 250   & 100.000 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/metodologia/tab_evaluaciones.tex}
 
 \subsubsection{Operadores e Hiperparámetros de los Algoritmos Genéticos}
 \label{subsubsec:hp_ga}
@@ -200,22 +152,7 @@ Los cuatro algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{
 
 La Tabla~\ref{tab:hp_grid_ga} resume el espacio de hiperparámetros barrido para los algoritmos genéticos.
 
-\begin{table}[H]
-\centering
-\small
-\caption{Espacio de hiperparámetros para los algoritmos genéticos (\acrshort{nsga2}, \acrshort{nsga3}, \acrshort{moead}, \acrshort{agemoea}).}
-\label{tab:hp_grid_ga}
-\begin{tabular}{ll}
-\toprule
-Hiperparámetro & Valores evaluados \\
-\midrule
-Tipo de cruce & SBX, PCX \\
-Tipo de mutación & PM, Gaussiana \\
-Probabilidad de cruce ($p_c$) & 0,7; 0,9; 1,0 \\
-Probabilidad de mutación ($p_m$) & 0,004; 0,012; 0,031 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/metodologia/tab_hp_grid_ga.tex}
 
 Para el cruce se evalúan valores de $0.7$, $0.9$ y $1.0$, tomando como referencia el valor $p_c = 0.9$ propuesto en~\cite{deb2002nsga2}. Las probabilidades de mutación parten de la regla $p_m = 1/n$~\cite{deb2002nsga2}, que con $n = 256$ dimensiones da $p_m \approx 0.004$, los niveles $0.012$ y $0.031$ corresponden a perturbar unas 3 y 8 dimensiones por individuo.
 
@@ -224,22 +161,7 @@ Para el cruce se evalúan valores de $0.7$, $0.9$ y $1.0$, tomando como referenc
 
 A diferencia de los algoritmos genéticos, \acrshort{cmopso} no emplea operadores de cruce, sino una dinámica de enjambre de partículas donde la búsqueda se guía mediante competencias por pares entre partículas seleccionadas de un conjunto élite~\cite{zhang2018competitive}. Sin embargo, para preservar la diversidad del enjambre y evitar el estancamiento en óptimos locales, el algoritmo sí aplica un operador de mutación polinomial tras la actualización de posiciones. La Tabla~\ref{tab:hp_grid_cmopso} muestra los hiperparámetros explorados.
 
-\begin{table}[H]
-\centering
-\small
-\caption{Espacio de hiperparámetros para \acrshort{cmopso}. Se evalúan todas las combinaciones del grid, resultando en $3 \times 3 \times 3 = 27$ configuraciones por tamaño de población, para un total de 81 configuraciones.}
-\label{tab:hp_grid_cmopso}
-\label{tab:hp_cmopso}
-\begin{tabular}{ll}
-\toprule
-Hiperparámetro & Valores evaluados \\
-\midrule
-Tamaño del conjunto élite ($\gamma$) & 5, 10, 25 \\
-Probabilidad de mutación polinomial ($p_m$) & 0,004; 0,012; 0,031 \\
-Tasa de velocidad máxima ($v_{\text{max}}$) & 0,1; 0,2; 0,35 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/metodologia/tab_hp_grid_cmopso.tex}
 
 Donde, $\gamma$ fija la cantidad de partículas que compiten para orientar la búsqueda y $v_{\text{max}}$ regula la velocidad máxima de desplazamiento.
 
@@ -280,27 +202,7 @@ El procedimiento propuesto se organiza en una serie de etapas consecutivas que p
 
 Para el irinotecán se obtuvo una puntuación de docking de $-12.060$~kcal/mol y 5 poses. Posteriormente se analizaron los aminoácidos situados a menos de 4~Å del ligando, con el fin de caracterizar las interacciones potenciales en la región de unión, los resultados se resumen en la Tabla~\ref{tab:frecuencia_residuos}.
 
-\begin{table}[htbp]
-\centering
-\caption{Aminoácidos que con mayor frecuencia se ubicaron a menos de 4~Å del irinotecán en las poses generadas por Vina.}
-\label{tab:frecuencia_residuos}
-\begin{tabular}{clc}
-\toprule
-\textbf{Rank.} & \textbf{Aminoácido} & \textbf{Frecuencia} \\
-\midrule
-1  & ASN590  & 5/5 \\
-2  & TRP1246 & 5/5 \\
-3  & VAL554  & 4/5 \\
-4  & TYR1243 & 4/5 \\
-5  & THR1242 & 4/5 \\
-6  & MET1093 & 3/5 \\
-7  & PRO557  & 3/5 \\
-8  & ASN1100 & 3/5 \\
-9  & ARG1249 & 3/5 \\
-10 & PHE594  & 3/5 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/metodologia/tab_frecuencia_residuos.tex}
 
 Como paso siguiente se realiza un docking sesgado, considerando como flexibles los cinco aminoácidos con mayor interacción (ASN590, TRP1246, VAL554, TYR1243 y THR1242). Se observa una puntuación de docking más favorable en $1.180$~kcal/mol respecto al protocolo rígido, lo que sugiere un mejor acomodamiento computacional del ligando al flexibilizar las cadenas laterales seleccionadas.
 
@@ -320,25 +222,7 @@ Como paso siguiente se realiza un docking sesgado, considerando como flexibles l
 \label{fig:irinotecan_residuos}
 \end{figure}
 
-\begin{table}[htbp]
-\centering
-\caption{Distancia entre los aminoácidos de interés y los átomos del irinotecán en la pose analizada.}
-\label{tab:distancias_residuos}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Residuo} & \textbf{Distancia mínima (\AA)} & \textbf{Pares de átomos $\le$ 4~\AA} \\
-\midrule
-TYR1243 & 2,79 & 11 \\
-TRP1246 & 2,98 & 11 \\
-ASN590  & 3,15 & 2 \\
-VAL554  & 3,17 & 10 \\
-PHE558  & 3,51 & 3 \\
-ARG593  & 3,61 & 7 \\
-THR1242 & 3,63 & 1 \\
-LEU596  & 8,51 & 0 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{Chapters/Tables/metodologia/tab_distancias_residuos.tex}
 
 El TRP1246 presenta 11 pares de átomos con distancias de 2,98 a 3,87~Å en su anillo indólico, lo que es compatible con un contacto de tipo aromático. En la TYR1243, el grupo hidroxilo se ubica a 2,79~Å de un carbono del ligando y a 3,28~Å de un nitrógeno, lo que corresponde a un contacto muy cercano. La VAL554 presenta contactos con el carbono CG1 entre 3,17 y 3,51~Å, compatibles con un entorno hidrofóbico, y la ASN590 ubica su oxígeno OD1 a 3,15~Å de un carbono del ligando, lo que indica proximidad pero no demuestra un puente de hidrógeno. La LEU596 se encuentra a 8,51~Å y no participa directamente en esta pose. En consecuencia, se toman TYR1243, TRP1246 y VAL554 como núcleo de la región de interacción, manteniendo ASN590 y ARG593 como residuos de interés para el reconocimiento del ligando, mientras que THR1242 y PHE558 contribuyen a delimitar la geometría de la cavidad sin asumirlos como anclajes esenciales.
 
@@ -360,7 +244,7 @@ Para el diseño dirigido hacia \gls{mrp1} se evaluaron de manera incremental dis
 
 Cada molécula se acopla con el receptor rígido descrito en la subsección~\ref{subsec:prep_proteina} dentro de la caja de docking, empleando el modo de búsqueda \textit{balance} de Uni-Dock con una pose generada por molécula y una semilla fija, tomando la energía obtenida como valor del objetivo.
 
-Además de la restricción $\text{Fsp}^3 \ge 0,30$ descrita en la sección~\ref{subsec:fo_genericos}, se añade la restricción de lipofilicidad $1,0 \le \log P \le 4,0$ calculada con RDKit~\cite{landrum2026rdkit}. Una solución se considera factible únicamente cuando el \gls{smiles} decodificado es químicamente válido y satisface ambas restricciones de forma simultánea bajo dominancia restringida. Ante un \gls{smiles} inválido, la solución se marca como infactible y se penaliza en los cuatro objetivos con valores peores al rango válido, asignando $-1,0$ en \gls{qed}, $12,0$ en \gls{sas}, $+1,0$~kcal/mol en energía de unión y $4,0$ en pChEMBL predicho. Solo las moléculas factibles se someten a acoplamiento molecular, recibiendo $+1,0$~kcal/mol como penalización ante infactibilidad, fallos de preparación o ausencia de pose. Para el cálculo del hipervolumen tras expresar todos los objetivos en sentido de minimización, cada componente se normaliza a $[0, 1]$ mediante las cotas $[0, 1]$ para \gls{qed}, $[1, 10]$ para \gls{sas}, $[-15,0, +1,0]$~kcal/mol para energía de unión y $[4,0, 8,5]$ para pChEMBL predicho, fijando el punto de referencia en $1,1$ en cada eje. En conjunto, estas funciones dependen de aproximaciones computacionales sujetas a incertidumbre que orientan la búsqueda sin reemplazar la validación experimental.
+Además de la restricción $\text{Fsp}^3 \ge 0.30$ descrita en la sección~\ref{subsec:fo_genericos}, se añade la restricción de lipofilicidad $1.0 \le \log P \le 4.0$ calculada con RDKit~\cite{landrum2026rdkit}. Una solución se considera factible únicamente cuando el \gls{smiles} decodificado es químicamente válido y satisface ambas restricciones de forma simultánea bajo dominancia restringida. Ante un \gls{smiles} inválido, la solución se marca como infactible y se penaliza en los cuatro objetivos con valores peores al rango válido, asignando $-1.0$ en \gls{qed}, $12.0$ en \gls{sas}, $+1.0$~kcal/mol en energía de unión y $4.0$ en pChEMBL predicho. Solo las moléculas factibles se someten a acoplamiento molecular, recibiendo $+1.0$~kcal/mol como penalización ante infactibilidad, fallos de preparación o ausencia de pose. Para el cálculo del hipervolumen tras expresar todos los objetivos en sentido de minimización, cada componente se normaliza a $[0, 1]$ mediante las cotas $[0, 1]$ para \gls{qed}, $[1, 10]$ para \gls{sas}, $[-15.0, +1.0]$~kcal/mol para energía de unión y $[4.0, 8.5]$ para pChEMBL predicho, fijando el punto de referencia en $1.1$ en cada eje. En conjunto, estas funciones dependen de aproximaciones computacionales sujetas a incertidumbre que orientan la búsqueda sin reemplazar la validación experimental.
 
 \subsubsection{Protocolo de Generación de Candidatos}
 \label{subsec:protocolo_mrp1}

@@ -1,0 +1,68 @@
+\begin{landscape}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{xltabular}{\linewidth}{@{} l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+    \caption{Optimización del espacio latente mediante metaheurísticas en diseño de fármacos.}
+    \label{tab:metaheuristicas} \\
+    \toprule
+    \textbf{Método (Año)} & \textbf{Descripción} & \textbf{Configuraciones} & \textbf{Métricas} & \textbf{Target / Objetivo} \\
+    \midrule
+    \endfirsthead
+
+    \multicolumn{5}{c}{\tablename\ \thetable\ -- \textit{Continuación}} \\[4pt]
+    \toprule
+    \textbf{Método (Año)} & \textbf{Descripción} & \textbf{Configuraciones} & \textbf{Métricas} & \textbf{Target / Objetivo} \\
+    \midrule
+    \endhead
+
+    \midrule
+    \multicolumn{5}{r}{\footnotesize\textit{Continúa en la siguiente página...}} \\
+    \endfoot
+
+    \bottomrule
+    \endlastfoot
+
+    MSO (2019) & 
+    \textit{Particle Swarm Optimization} (PSO) sobre un espacio latente continuo construido a partir de representaciones SMILES. & 
+    50 o 200 partículas; 100 o 200 iteraciones. Puntos de inicio: benceno o ChEMBL. & 
+    Continuas: afinidad a blanco, QED, $\log P$ penalizado, SA y solubilidad. Binarias: filtros de toxicidad y peso molecular. & 
+    Optimización mono y multiobjetivo para compuestos contra los blancos EGFR y BACE1. \\
+    \midrule
+    ADEL (2022) & 
+    \textit{Deep Evolutionary Learning} (DEL) sobre el espacio latente continuo de un autoencoder adversarial (AAE) entrenado con secuencias SMILES, con reentrenamiento iterativo incorporando nuevas moléculas generadas. & 
+    Población de 20.000 individuos, 10 generaciones. & 
+    Continuas: QED, $\log P$, SAS y afinidad de unión (\textit{docking}). Binarias: validez, novedad y unicidad. & 
+    Optimización multiobjetivo (QED, $\log P$ y SAS). Filtrado de la última población para cribado virtual contra CA9. \\
+    \midrule
+    LEOMol (2024) & 
+    Algoritmos evolutivos (GA y evolución diferencial) en el espacio latente continuo de un VAE que utiliza representación SELFIES. & 
+    Población de 20 individuos, 20 generaciones, tasa de cruce de 0,8 y mutación de 0,4. & 
+    Continuas: $\log P$, QED, peso molecular y similitud de Tanimoto. Binarias: restricción de toxicidad. & 
+    Optimización maximizando propiedades fisicoquímicas ($\log P$, QED). \\
+    \midrule
+    Transformer + MO (2024) & 
+    MOEA/DD, GrEA, HypE, KnEA, A-NSGA-III y NMPSO sobre un espacio latente continuo basado en SELFIES. & 
+    Predicción ADMET con MTL-BERT y \textit{docking} con QuickVina2-GPU. & 
+    Continuas: afinidad, SA, $\log P$ y toxicidad aguda ($\text{LD}_{50}$). Binarias: validez, unicidad, novedad y filtros de toxicidad (ClinTox). & 
+    Optimización de solubilidad y biodisponibilidad minimizando toxicidad, SAS y afinidad al receptor LPA1. \\
+    \midrule
+    MOMO (2024) & 
+    Marco de optimización multiobjetivo basado en dominancia de Pareto para guiar la búsqueda evolutiva en el espacio latente de un modelo codificador-decodificador entrenado con secuencias SMILES. & 
+    Población inicial perturbada con ruido gaussiano. Operadores: selección por torneo binario, cruce lineal combinado y mutación ($p = 0.5$). & 
+    Continuas: QED, similitud de Tanimoto, eficiencia del ligando (LE), puntuación de \textit{docking}, actividad DRD2, inhibición de GSK3$\beta$ y SA. & 
+    Optimización simultánea multiobjetivo (de 2 a 4 propiedades). Evaluación contra blancos biológicos 1SYH y 4LDE. \\
+    \midrule
+    MO-LSO (2024) & 
+    Optimización multiobjetivo en el espacio latente continuo de un JT-VAE mediante reentrenamiento iterativo ponderado por eficiencia de Pareto. & 
+    Entrenamiento inicial con ZINC. Reentrenamiento iterativo ajustado por parámetro de peso ($k$). Exploración latente por muestreo aleatorio. & 
+    Continuas: $\log P$, SAS, similitud a productos naturales (NP score) y probabilidad de inhibición de DRD2 mediante aprendizaje automático. & 
+    Optimización multiobjetivo simultánea (hasta 3 propiedades) para maximizar $\log P$, NP score e inhibición de DRD2, y minimizar SAS. \\
+    \midrule
+    Paddy (2025) & 
+    Algoritmo evolutivo basado en el \textit{Paddy field algorithm}, aplicado sobre el espacio latente continuo de un JT-VAE. & 
+    Operadores evolutivos inspirados en la dispersión de plantas de arrozal, con tasa de dispersión adaptativa que regula la proximidad y número de nuevas soluciones. & 
+    Continuas: $\log P$, SA, número de ciclos con más de 6 átomos y similitud de Tversky. & 
+    Optimización de múltiples parámetros integrados en una función objetivo. \\
+\end{xltabular}
+\end{landscape}

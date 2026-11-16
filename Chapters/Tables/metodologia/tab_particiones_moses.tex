@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\caption{Particiones oficiales de \gls{moses} utilizadas en el estudio.}
+\label{tab:particiones_moses}
+\begin{tabular}{llcp{5.5cm}}
+\toprule
+\textbf{Rol} & \textbf{Partición MOSES} & \textbf{Moléculas} & \textbf{Uso en el estudio} \\
+\midrule
+Entrenamiento & \textit{train} & $\sim$1,58 millones & Ajuste de pesos del \gls{vae}. \\
+\midrule
+Validación & \multirow{2}{*}{\textit{test}} & \multirow{2}{*}{$\sim$176 mil} & Selección de configuraciones del \gls{vae}. \\
+Prueba & & & Comparación final frente al estado del arte. \\
+\bottomrule
+\end{tabular}
+\end{table}

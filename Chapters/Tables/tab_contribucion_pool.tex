@@ -1,0 +1,24 @@
+\begin{table}[!htbp]
+\centering
+\caption{Contribución de cada algoritmo y combinación de operadores al frente no dominado conjunto global (32 soluciones).}
+\label{tab:contribucion_pool}
+\begin{tabular}{llrrrrrr}
+\toprule
+Configuración & Operadores & Aporta & Exclusivas & \% & QED $\uparrow$ & SA $\downarrow$ & $\text{Fsp}^3$ \\
+\midrule
+\multirow{2}{*}{\acrshort{nsga2}} & pcx\_pm & 15 & 4 & 46,9 & 0,598 & 1,220 & 0,570 \\
+ & sbx\_gauss & 16 & 6 & 50,0 & 0,874 & 1,590 & 0,338 \\
+\midrule
+\multirow{2}{*}{\acrshort{nsga3}} & pcx\_pm & 15 & 2 & 46,9 & 0,726 & 1,470 & 0,475 \\
+ & sbx\_pm & 9 & 1 & 28,1 & 0,829 & 1,480 & 0,347 \\
+\midrule
+\multirow{2}{*}{\acrshort{moead}} & pcx\_pm & 9 & 0 & 28,1 & 0,841 & 1,410 & 0,343 \\
+ & sbx\_pm & 6 & 0 & 18,8 & 0,828 & 1,370 & 0,359 \\
+\midrule
+\multirow{2}{*}{\acrshort{agemoea}} & pcx\_pm & 11 & 1 & 34,4 & 0,615 & 1,240 & 0,587 \\
+ & sbx\_pm & 7 & 0 & 21,9 & 0,811 & 1,350 & 0,350 \\
+\midrule
+\acrshort{cmopso} & - & 10 & 3 & 31,2 & 0,865 & 1,620 & 0,360 \\
+\bottomrule
+\end{tabular}
+\end{table}

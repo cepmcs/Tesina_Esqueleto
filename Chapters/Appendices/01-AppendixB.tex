@@ -46,7 +46,7 @@ Algoritmo & Operadores & Configuración & Rango medio & $\mu \pm \sigma$ \\
 \section{Comparaciones Estadísticas por Pares (Test de Wilcoxon)}
 \label{sec:apendice_wilcoxon_operadores}
 
-Para cada metaheurística basada en operadores genéticos (\acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3}), se evaluó la significancia estadística sobre el hipervolumen a lo largo de las 20 semillas independientes mediante la prueba de rangos con signo de Wilcoxon con corrección de Holm para comparaciones múltiples ($\alpha = 0,05$). En cada par se reporta el valor $p$ ajustado, el estimador del tamaño del efecto mediante la correlación rango-biserial ($r_{\text{rb}}$) y el operador dominante.
+Para cada metaheurística basada en operadores genéticos (\acrshort{agemoea}, \acrshort{moead}, \acrshort{nsga2} y \acrshort{nsga3}), se evaluó la significancia estadística sobre el hipervolumen a lo largo de las 20 semillas independientes mediante la prueba de rangos con signo de Wilcoxon con corrección de Holm para comparaciones múltiples ($\alpha = 0.05$). En cada par se reporta el valor $p$ ajustado, el estimador del tamaño del efecto mediante la correlación rango-biserial ($r_{\text{rb}}$) y el operador dominante.
 
 \begin{table}[H]
 \centering
@@ -56,12 +56,12 @@ Para cada metaheurística basada en operadores genéticos (\acrshort{agemoea}, \
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0,818 & $-0,219$ & - \\
-pcx\_pm vs sbx\_pm & $<$0,001 & $+0,971$ & pcx\_pm \\
-pcx\_pm vs sbx\_gauss & $<$0,001 & $+0,962$ & pcx\_pm \\
-pcx\_gauss vs sbx\_pm & $<$0,001 & $+1,000$ & pcx\_gauss \\
-pcx\_gauss vs sbx\_gauss & $<$0,001 & $+1,000$ & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0,818 & $-0,190$ & - \\
+pcx\_pm vs pcx\_gauss & 0,818 & $-0.219$ & - \\
+pcx\_pm vs sbx\_pm & $<$0,001 & $+0.971$ & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0,001 & $+0.962$ & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0,001 & $+1.000$ & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0,001 & $+1.000$ & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0,818 & $-0.190$ & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -74,12 +74,12 @@ sbx\_pm vs sbx\_gauss & 0,818 & $-0,190$ & - \\
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0,624 & $-0,200$ & - \\
-pcx\_pm vs sbx\_pm & $<$0,001 & $+0,933$ & pcx\_pm \\
-pcx\_pm vs sbx\_gauss & 0,011 & $+0,714$ & pcx\_pm \\
-pcx\_gauss vs sbx\_pm & $<$0,001 & $+0,886$ & pcx\_gauss \\
-pcx\_gauss vs sbx\_gauss & 0,001 & $+0,848$ & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0,624 & $-0,267$ & - \\
+pcx\_pm vs pcx\_gauss & 0,624 & $-0.200$ & - \\
+pcx\_pm vs sbx\_pm & $<$0,001 & $+0.933$ & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & 0,011 & $+0.714$ & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0,001 & $+0.886$ & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & 0,001 & $+0.848$ & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0,624 & $-0.267$ & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -92,12 +92,12 @@ sbx\_pm vs sbx\_gauss & 0,624 & $-0,267$ & - \\
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0,388 & $-0,229$ & - \\
-pcx\_pm vs sbx\_pm & $<$0,001 & $+1,000$ & pcx\_pm \\
-pcx\_pm vs sbx\_gauss & $<$0,001 & $+1,000$ & pcx\_pm \\
-pcx\_gauss vs sbx\_pm & $<$0,001 & $+1,000$ & pcx\_gauss \\
-pcx\_gauss vs sbx\_gauss & $<$0,001 & $+0,981$ & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0,002 & $-0,800$ & sbx\_gauss \\
+pcx\_pm vs pcx\_gauss & 0,388 & $-0.229$ & - \\
+pcx\_pm vs sbx\_pm & $<$0,001 & $+1.000$ & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0,001 & $+1.000$ & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0,001 & $+1.000$ & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0,001 & $+0.981$ & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0,002 & $-0.800$ & sbx\_gauss \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -110,12 +110,12 @@ sbx\_pm vs sbx\_gauss & 0,002 & $-0,800$ & sbx\_gauss \\
 \toprule
 Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
 \midrule
-pcx\_pm vs pcx\_gauss & 0,729 & $+0,095$ & - \\
-pcx\_pm vs sbx\_pm & $<$0,001 & $+0,971$ & pcx\_pm \\
-pcx\_pm vs sbx\_gauss & $<$0,001 & $+0,914$ & pcx\_pm \\
-pcx\_gauss vs sbx\_pm & $<$0,001 & $+1,000$ & pcx\_gauss \\
-pcx\_gauss vs sbx\_gauss & $<$0,001 & $+0,943$ & pcx\_gauss \\
-sbx\_pm vs sbx\_gauss & 0,286 & $-0,381$ & - \\
+pcx\_pm vs pcx\_gauss & 0,729 & $+0.095$ & - \\
+pcx\_pm vs sbx\_pm & $<$0,001 & $+0.971$ & pcx\_pm \\
+pcx\_pm vs sbx\_gauss & $<$0,001 & $+0.914$ & pcx\_pm \\
+pcx\_gauss vs sbx\_pm & $<$0,001 & $+1.000$ & pcx\_gauss \\
+pcx\_gauss vs sbx\_gauss & $<$0,001 & $+0.943$ & pcx\_gauss \\
+sbx\_pm vs sbx\_gauss & 0,286 & $-0.381$ & - \\
 \bottomrule
 \end{tabular}
 \end{table}

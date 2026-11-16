@@ -265,49 +265,10 @@ En este trabajo se propone un enfoque híbrido, en el que mediante un modelo gen
 En esta subsección se revisan los principales modelos generativos aplicados al diseño de moléculas. La Tabla~\ref{tab:modelos} resume las características de cada uno: el conjunto de datos con el que fue entrenado, la arquitectura sobre la que se construye, la representación molecular que emplea y el año de publicación. La Tabla~\ref{tab:evaluacion} reúne, para esos mismos modelos, las métricas de calidad de generación que reporta cada trabajo, es decir, la validez, la unicidad y la novedad de las moléculas producidas.
 
 % --- TABLA 1 ---
-\begin{table}[htbp]
-    \centering
-    \caption{Modelos generativos para diseño molecular.}
-    \label{tab:modelos}
-    \begin{tabularx}{\textwidth}{l l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X c}
-        \toprule
-        \textbf{Modelo} & \textbf{Dataset} & \textbf{Arquitectura} & \textbf{Representación molecular} & \textbf{Año} \\
-        \midrule
-        Chemical VAE & QM9 / ZINC & VAE (CNN Enc / GRU Dec) & SMILES & 2018 \\
-        MolGAN & QM9 & Implicit GAN (Relational GCN + RL) & Grafo molecular & 2018 \\
-        MOLER & ZINC & Reward shaping sobre JTVAE & Grafo molecular & 2022 \\
-        D-MolVAE & QM9 / ZINC & Graph-based VAE & Grafo molecular & 2022 \\
-        PS-VAE & ZINC250K / QM9 & Junction Tree VAE & Subgrafos (Grafos) & 2022 \\
-        PCF-VAE & MOSES & VAE (RNN) & GenSMILES & 2025 \\
-        FRATTVAE & MOSES & Graph Transformer VAE & Grafo molecular & 2025 \\
-        RGCVAE & QM9 / ZINC & Relational Graph VAE & Grafo molecular & 2025 \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
+\input{Chapters/Tables/marco_teorico/tab_modelos.tex}
 
 % --- TABLA 2 ---
-\begin{table}[htbp]
-    \centering
-    \caption{Métricas de evaluación de los modelos generativos.}
-    \label{tab:evaluacion}
-    \begin{tabular}{l l c c c}
-        \toprule
-        \textbf{Modelo} & \textbf{Dataset} & \textbf{Validez (\%)} & \textbf{Unicidad (\%)} & \textbf{Novedad (\%)} \\
-        \midrule
-        Chemical VAE & ZINC & 73,00--79,00 & -- & -- \\
-        MolGAN & QM9 & 98,10 & 10,40 & 94,20 \\
-        MOLER & ZINC & -- & -- & -- \\
-        D-MolVAE & QM9 & 100,00 & 98,66 & 95,85 \\
-        PS-VAE & ZINC250K & 100,00 & 99,70 & 99,70 \\
-        PCF-VAE & MOSES & 98,01 & 100,00 & 93,77 \\
-        FRATTVAE & MOSES & 100,00 & 99,97 & 97,42 \\
-        RGCVAE & QM9 & 99,90 & 94,00 & 96,40 \\
-        \bottomrule
-    \end{tabular}
-
-    \vspace{0.3cm}
-    \footnotesize \textit{Nota:} los valores corresponden a los protocolos de cada trabajo original y no son comparables directamente entre sí. El guion (--) indica que no se reporta dicha métrica.
-\end{table}
+\input{Chapters/Tables/marco_teorico/tab_evaluacion.tex}
 
 En~\cite{GBWHLDSA18}, Gómez-Bombarelli et al. presentan el \textit{Chemical Variational Autoencoder} (Chemical VAE), uno de los primeros modelos en mapear representaciones moleculares discretas (\gls{smiles}) a un espacio latente continuo. Entrenado con los conjuntos QM9 y ZINC, permitió explorar y optimizar moléculas mediante operaciones continuas en dicho espacio. Aunque introdujo una base sólida para modelos generativos posteriores, su principal limitación radica en la generación de moléculas inválidas debido a la rigidez sintáctica de \gls{smiles}. En sus experimentos, el modelo alcanzó una validez del 73--79\% al decodificar puntos cercanos a moléculas reales.
 
@@ -342,74 +303,7 @@ El modelo \textit{LEOMol}, introducido por Siddartha Reddy et al.~\cite{NGM+24},
 
 Aksamit et al.~\cite{Aksamit2024} proponen un marco de trabajo que integra la arquitectura Transformer con algoritmos metaheurísticos de muchos objetivos (\textit{many-objective optimization}) para el diseño molecular. Este enfoque busca optimizar simultáneamente perfiles farmacocinéticos \gls{admet} y la afinidad de unión estimada mediante acoplamiento molecular. Empleando el modelo ReLSO para proyectar las moléculas en un espacio latente continuo basado en \gls{selfies}, el estudio evalúa y compara el desempeño de diversas metaheurísticas (tales como MOEA/DD, GrEA, HypE, KnEA, A-\acrshort{nsga3} y NMPSO) en la búsqueda de ligandos dirigidos al receptor LPA1. Como principal limitación, los autores destacan el elevado costo computacional derivado de evaluar el acoplamiento molecular en cada evaluación de aptitud, lo que restringe la sintonización exhaustiva de los hiperparámetros del optimizador.
 
-\begin{landscape}
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.25}
-\begin{xltabular}{\linewidth}{@{} l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
-    \caption{Optimización del espacio latente mediante metaheurísticas en diseño de fármacos.}
-    \label{tab:metaheuristicas} \\
-    \toprule
-    \textbf{Método (Año)} & \textbf{Descripción} & \textbf{Configuraciones} & \textbf{Métricas} & \textbf{Target / Objetivo} \\
-    \midrule
-    \endfirsthead
-
-    \multicolumn{5}{c}{\tablename\ \thetable\ -- \textit{Continuación}} \\[4pt]
-    \toprule
-    \textbf{Método (Año)} & \textbf{Descripción} & \textbf{Configuraciones} & \textbf{Métricas} & \textbf{Target / Objetivo} \\
-    \midrule
-    \endhead
-
-    \midrule
-    \multicolumn{5}{r}{\footnotesize\textit{Continúa en la siguiente página...}} \\
-    \endfoot
-
-    \bottomrule
-    \endlastfoot
-
-    MSO (2019) & 
-    \textit{Particle Swarm Optimization} (PSO) sobre un espacio latente continuo construido a partir de representaciones SMILES. & 
-    50 o 200 partículas; 100 o 200 iteraciones. Puntos de inicio: benceno o ChEMBL. & 
-    Continuas: afinidad a blanco, QED, $\log P$ penalizado, SA y solubilidad. Binarias: filtros de toxicidad y peso molecular. & 
-    Optimización mono y multiobjetivo para compuestos contra los blancos EGFR y BACE1. \\
-    \midrule
-    ADEL (2022) & 
-    \textit{Deep Evolutionary Learning} (DEL) sobre el espacio latente continuo de un autoencoder adversarial (AAE) entrenado con secuencias SMILES, con reentrenamiento iterativo incorporando nuevas moléculas generadas. & 
-    Población de 20.000 individuos, 10 generaciones. & 
-    Continuas: QED, $\log P$, SAS y afinidad de unión (\textit{docking}). Binarias: validez, novedad y unicidad. & 
-    Optimización multiobjetivo (QED, $\log P$ y SAS). Filtrado de la última población para cribado virtual contra CA9. \\
-    \midrule
-    LEOMol (2024) & 
-    Algoritmos evolutivos (GA y evolución diferencial) en el espacio latente continuo de un VAE que utiliza representación SELFIES. & 
-    Población de 20 individuos, 20 generaciones, tasa de cruce de 0,8 y mutación de 0,4. & 
-    Continuas: $\log P$, QED, peso molecular y similitud de Tanimoto. Binarias: restricción de toxicidad. & 
-    Optimización maximizando propiedades fisicoquímicas ($\log P$, QED). \\
-    \midrule
-    Transformer + MO (2024) & 
-    MOEA/DD, GrEA, HypE, KnEA, A-NSGA-III y NMPSO sobre un espacio latente continuo basado en SELFIES. & 
-    Predicción ADMET con MTL-BERT y \textit{docking} con QuickVina2-GPU. & 
-    Continuas: afinidad, SA, $\log P$ y toxicidad aguda ($\text{LD}_{50}$). Binarias: validez, unicidad, novedad y filtros de toxicidad (ClinTox). & 
-    Optimización de solubilidad y biodisponibilidad minimizando toxicidad, SAS y afinidad al receptor LPA1. \\
-    \midrule
-    MOMO (2024) & 
-    Marco de optimización multiobjetivo basado en dominancia de Pareto para guiar la búsqueda evolutiva en el espacio latente de un modelo codificador-decodificador entrenado con secuencias SMILES. & 
-    Población inicial perturbada con ruido gaussiano. Operadores: selección por torneo binario, cruce lineal combinado y mutación ($p = 0.5$). & 
-    Continuas: QED, similitud de Tanimoto, eficiencia del ligando (LE), puntuación de \textit{docking}, actividad DRD2, inhibición de GSK3$\beta$ y SA. & 
-    Optimización simultánea multiobjetivo (de 2 a 4 propiedades). Evaluación contra blancos biológicos 1SYH y 4LDE. \\
-    \midrule
-    MO-LSO (2024) & 
-    Optimización multiobjetivo en el espacio latente continuo de un JT-VAE mediante reentrenamiento iterativo ponderado por eficiencia de Pareto. & 
-    Entrenamiento inicial con ZINC. Reentrenamiento iterativo ajustado por parámetro de peso ($k$). Exploración latente por muestreo aleatorio. & 
-    Continuas: $\log P$, SAS, similitud a productos naturales (NP score) y probabilidad de inhibición de DRD2 mediante aprendizaje automático. & 
-    Optimización multiobjetivo simultánea (hasta 3 propiedades) para maximizar $\log P$, NP score e inhibición de DRD2, y minimizar SAS. \\
-    \midrule
-    Paddy (2025) & 
-    Algoritmo evolutivo basado en el \textit{Paddy field algorithm}, aplicado sobre el espacio latente continuo de un JT-VAE. & 
-    Operadores evolutivos inspirados en la dispersión de plantas de arrozal, con tasa de dispersión adaptativa que regula la proximidad y número de nuevas soluciones. & 
-    Continuas: $\log P$, SA, número de ciclos con más de 6 átomos y similitud de Tversky. & 
-    Optimización de múltiples parámetros integrados en una función objetivo. \\
-\end{xltabular}
-\end{landscape}
+\input{Chapters/Tables/marco_teorico/tab_metaheuristicas.tex}
 
 \enlargethispage{2\baselineskip}
 Xia et al.~\cite{XZZ+24} desarrollan \textit{MOMO} (\textit{Multiobjective Molecule Optimization}), un marco metodológico que guía la búsqueda evolutiva en el espacio químico fundamentándose en el principio de dominancia de Pareto. El método utiliza un codificador-decodificador preentrenado sobre secuencias \gls{smiles} para mapear las estructuras moleculares a vectores continuos, sobre los cuales aplica selección por torneo binario, cruce lineal combinado y perturbaciones de mutación. Su fortaleza radica en superar el rendimiento de algoritmos convencionales del estado del arte, reportando mejoras notables en tasa de éxito, novedad e hipervolumen en problemas de optimización de dos a cuatro propiedades simultáneas (incluyendo afinidad contra dianas 1SYH y 4LDE). Como debilidad, el modelo manifiesta susceptibilidad a producir ciertas estructuras químicamente poco realistas si no se imponen restricciones de valencia y filtros estructurales rigurosos durante la fase de decodificación.

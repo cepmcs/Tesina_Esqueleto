@@ -1,0 +1,21 @@
+\begin{table}[!htbp]
+\centering
+\caption{Comparación entre algoritmos sobre hipervolumen. Grupos homogéneos: \{\acrshort{nsga2}\} $>$ \{\acrshort{agemoea}, \acrshort{nsga3}\} $>$ \{\acrshort{moead}\} $>$ \{\acrshort{cmopso}\}.}
+\label{tab:comparacion_grupos}
+\begin{tabular}{lrrl}
+\toprule
+Par & $p$ (Holm) & $r_{\text{rb}}$ & Mejor \\
+\midrule
+\acrshort{nsga2} vs \acrshort{nsga3} & 0,005 & $+0.762$ & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{moead} & $<$0,001 & $+1.000$ & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{agemoea} & 0,004 & $+0.790$ & \acrshort{nsga2} \\
+\acrshort{nsga2} vs \acrshort{cmopso} & $<$0,001 & $+1.000$ & \acrshort{nsga2} \\
+\acrshort{nsga3} vs \acrshort{moead} & $<$0,001 & $+1.000$ & \acrshort{nsga3} \\
+\acrshort{nsga3} vs \acrshort{agemoea} & 0,571 & $+0.152$ & - \\
+\acrshort{nsga3} vs \acrshort{cmopso} & $<$0,001 & $+1.000$ & \acrshort{nsga3} \\
+\acrshort{moead} vs \acrshort{agemoea} & $<$0,001 & $-0.990$ & \acrshort{agemoea} \\
+\acrshort{moead} vs \acrshort{cmopso} & 0,008 & $+0.705$ & \acrshort{moead} \\
+\acrshort{agemoea} vs \acrshort{cmopso} & $<$0,001 & $+1.000$ & \acrshort{agemoea} \\
+\bottomrule
+\end{tabular}
+\end{table}

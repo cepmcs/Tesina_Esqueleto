@@ -1,0 +1,18 @@
+\begin{table}[!htbp]
+\centering
+\caption{Comparación de indicadores multiobjetivo - mejores configuraciones.}
+\label{tab:comparison_multiobjective}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+Algoritmo & Hipervolumen $\uparrow$ & Espaciamiento $\downarrow$ & $\text{IGD}^+$ $\downarrow$ & $\epsilon^+$ $\downarrow$ & Tamaño de Pareto $\uparrow$ & Tiempo (s) $\downarrow$ \\
+\midrule
+\acrshort{nsga2} (PCX+PM) & $\mathbf{1.125 \pm 0.004}$ & $1.228 \pm 0.446$ & $0.038 \pm 0.006$ & $\mathbf{0.101 \pm 0.023}$ & $\mathbf{29.4 \pm 4.7}$ & $99.0 \pm 4.1$ \\
+\acrshort{nsga3} (PCX+PM) & $1.121 \pm 0.003$ & $1.171 \pm 0.390$ & $\mathbf{0.036 \pm 0.006}$ & $0.121 \pm 0.021$ & $22.7 \pm 5.1$ & $108.3 \pm 3.7$ \\
+\acrshort{moead} (PCX+PM) & $1.113 \pm 0.004$ & $\mathbf{1.042 \pm 0.272}$ & $0.057 \pm 0.011$ & $0.173 \pm 0.032$ & $19.9 \pm 3.5$ & $\mathbf{43.9 \pm 2.4}$ \\
+\acrshort{agemoea} (PCX+PM) & $1.121 \pm 0.003$ & $1.170 \pm 0.352$ & $0.040 \pm 0.005$ & $0.118 \pm 0.020$ & $24.1 \pm 4.4$ & $110.7 \pm 5.1$ \\
+\acrshort{cmopso} ($v_{\max}=0.1$) & $1.109 \pm 0.004$ & $1.053 \pm 0.380$ & $0.059 \pm 0.003$ & $0.191 \pm 0.011$ & $17.8 \pm 3.4$ & $50.2 \pm 1.9$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

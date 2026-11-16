@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+\centering
+\caption{Espacio de búsqueda de hiperparámetros del \gls{vae}.}
+\label{tab:espacio_busqueda_vae}
+\begin{tabular}{lllc}
+\toprule
+\textbf{Configuración} & \textbf{Variable} & \textbf{Valores Explorados} & \textbf{Total} \\
+\midrule
+\textbf{Estructura base} & Representación & SMILES, SELFIES & \\
+(Fijos: LR $1 \times 10^{-3}$, & Arquitectura & GRU, LSTM & 48 \\
+Batch 128) & Capas ocultas & 1, 2 & \\
+ & Dimensión Latente & 64, 128, 256 & \\
+ & Épocas de Entrenamiento & 100, 300 & \\
+\midrule
+\textbf{Optimización de entrenamiento} & Tasa de Aprendizaje (LR) & $1 \times 10^{-3}$, $1 \times 10^{-4}$ & \\
+(Mejores 4 Modelos seleccionados) & Tamaño de Lote (Batch) & 64, 128, 192 & 24 \\
+\midrule
+\multicolumn{3}{r}{\textbf{Total de ejecuciones:}} & \textbf{72} \\
+\bottomrule
+\end{tabular}
+\end{table}

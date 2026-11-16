@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\caption{Configuraciones seleccionadas para la optimización del entrenamiento (espacio latente de 256~dimensiones). Métricas calculadas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES.}
+\label{tab:mejores_modelos_vae}
+\begin{tabular}{lccccccccc}
+\toprule
+\textbf{ID} & \textbf{Épocas} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} \\
+\midrule
+SM-G 2 & 100 & 0,945 & 1,000 & 0,969 & 0,982 & 0,470 & 0,859 & 0,115 & \textbf{0,005} \\
+SE-L 2 & 100 & \textbf{1,000} & 1,000 & 0,881 & 0,928 & 0,764 & \textbf{0,861} & 0,201 & 0,020 \\
+SM-L 1 & 300 & 0,946 & 1,000 & \textbf{0,972} & 0,981 & 0,459 & 0,859 & 0,155 & 0,011 \\
+SM-L 2 & 300 & 0,951 & 1,000 & 0,956 & \textbf{0,986} & \textbf{0,321} & 0,858 & \textbf{0,113} & 0,013 \\
+\bottomrule
+\end{tabular}
+\end{table}

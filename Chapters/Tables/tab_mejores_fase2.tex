@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering
+\caption{Mejores configuraciones obtenidas en la optimización del entrenamiento (espacio latente de 256~dimensiones). Métricas calculadas sobre 30.000 moléculas generadas en el \textit{benchmark} MOSES.}
+\label{tab:mejores_fase2}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccccccc}
+\toprule
+\textbf{Modelo} & \textbf{Épocas} & \textbf{LR} & \textbf{Batch} & \textbf{Val $\uparrow$} & \textbf{Uni $\uparrow$} & \textbf{Nov $\uparrow$} & \textbf{Filter $\uparrow$} & \textbf{FCD $\downarrow$} & \textbf{IntDiv $\uparrow$} & \textbf{SA $\downarrow$} & \textbf{QED $\downarrow$} \\
+\midrule
+SM-G 2 & 100 & $1 \times 10^{-4}$ & 64  & 0,950 & 1,000 & 0,966 & 0,984 & 0,301 & 0,858 & 0,111 & \textbf{0,006} \\
+SE-L 2 & 100 & $1 \times 10^{-3}$ & 192 & \textbf{1,000} & 0,999 & 0,868 & 0,936 & 0,675 & \textbf{0,861} & 0,185 & 0,018 \\
+SM-L 1 & 300 & $1 \times 10^{-4}$ & 64  & 0,940 & 1,000 & \textbf{0,973} & 0,980 & 0,424 & 0,859 & 0,159 & 0,013 \\
+SM-L 2 & 300 & $1 \times 10^{-4}$ & 64  & 0,962 & 1,000 & 0,943 & \textbf{0,988} & \textbf{0,179} & 0,859 & \textbf{0,093} & 0,008 \\
+\bottomrule
+\end{tabular}}
+\end{table}

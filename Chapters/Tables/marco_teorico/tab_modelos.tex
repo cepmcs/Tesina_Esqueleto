@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+    \centering
+    \caption{Modelos generativos para diseño molecular.}
+    \label{tab:modelos}
+    \begin{tabularx}{\textwidth}{l l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X c}
+        \toprule
+        \textbf{Modelo} & \textbf{Dataset} & \textbf{Arquitectura} & \textbf{Representación molecular} & \textbf{Año} \\
+        \midrule
+        Chemical VAE & QM9 / ZINC & VAE (CNN Enc / GRU Dec) & SMILES & 2018 \\
+        MolGAN & QM9 & Implicit GAN (Relational GCN + RL) & Grafo molecular & 2018 \\
+        MOLER & ZINC & Reward shaping sobre JTVAE & Grafo molecular & 2022 \\
+        D-MolVAE & QM9 / ZINC & Graph-based VAE & Grafo molecular & 2022 \\
+        PS-VAE & ZINC250K / QM9 & Junction Tree VAE & Subgrafos (Grafos) & 2022 \\
+        PCF-VAE & MOSES & VAE (RNN) & GenSMILES & 2025 \\
+        FRATTVAE & MOSES & Graph Transformer VAE & Grafo molecular & 2025 \\
+        RGCVAE & QM9 / ZINC & Relational Graph VAE & Grafo molecular & 2025 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
