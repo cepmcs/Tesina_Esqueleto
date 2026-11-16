@@ -54,14 +54,14 @@ En la Figura~\ref{fig:distribuciones} se muestran las distribuciones de \gls{qed
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{Figures/distribuciones_qed_sa.png}
+\includegraphics[width=0.85\textwidth]{Figures/distribuciones_qed_sa.png}
 \caption{Distribuciones de QED y SAS de las moléculas válidas generadas por SM-L 2 frente al conjunto de prueba de MOSES.}
 \label{fig:distribuciones}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.65\textwidth]{Figures/pca_latente.pdf}
+\includegraphics[width=0.55\textwidth]{Figures/pca_latente.pdf}
 \caption{Proyección PCA del espacio latente del VAE para 30.000 moléculas de MOSES. Cada punto representa una molécula.}
 \label{fig:pca_latente}
 \end{figure}
@@ -93,7 +93,7 @@ La Figura~\ref{fig:hv_vs_val} muestra el compromiso entre hipervolumen y validez
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{Figures/metaheuristicas/hp/hypervolume_vs_validity.pdf}
+    \includegraphics[width=0.82\textwidth]{Figures/metaheuristicas/hp/hypervolume_vs_validity.pdf}
     \caption{Relación de compromiso entre Hipervolumen y Validez Química para todas las configuraciones evaluadas (mediana de 20 semillas). Con borde negro, la configuración seleccionada para cada combinación de operadores.}
     \label{fig:hv_vs_val}
 \end{figure}
@@ -107,7 +107,7 @@ Este análisis muestra los siguientes comportamientos:
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{Figures/metaheuristicas/hp/efectos_hypervolume.pdf}
+    \includegraphics[width=0.78\textwidth]{Figures/metaheuristicas/hp/efectos_hypervolume.pdf}
     \caption{Efecto de cada hiperparámetro sobre el hipervolumen dentro de cada combinación de operadores en los algoritmos genéticos y en \acrshort{cmopso}.}
     \label{fig:efectos_hypervolume}
 \end{figure}
@@ -248,7 +248,7 @@ La Figura~\ref{fig:convergence_chemical} muestra la dinámica de las propiedades
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{Figures/metaheuristicas/comparacion/pareto_comparison_popfinal.pdf}
+    \includegraphics[width=0.85\textwidth]{Figures/metaheuristicas/comparacion/pareto_comparison_popfinal.pdf}
     \caption{Frentes de Pareto superpuestos de las mejores configuraciones de los cinco algoritmos en el espacio QED--SA.}
     \label{fig:pareto_comparison}
 \end{figure}
@@ -278,7 +278,7 @@ Nuevamente se comprueba la complementariedad entre operadores. Las combinaciones
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{Figures/metaheuristicas/frente_conjunto/frente_conjunto_poppool.pdf}
+    \includegraphics[width=0.82\textwidth]{Figures/metaheuristicas/frente_conjunto/frente_conjunto_poppool.pdf}
     \caption{Frente no dominado conjunto global (32 soluciones) en el espacio QED--SA, coloreado según el algoritmo aportante.}
     \label{fig:frente_conjunto_poppool}
 \end{figure}
@@ -380,7 +380,7 @@ En el hipervolumen se observa un crecimiento rápido durante las primeras 20.000
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.98\textwidth]{Figures/mrp1/2_convergencia_quimica.pdf}
+    \includegraphics[width=\textwidth]{Figures/mrp1/2_convergencia_quimica.pdf}
     \caption{Evolución y convergencia de las propiedades químicas, validez, novedad, afinidad de unión y pChEMBL predicho a lo largo de las evaluaciones, promediada sobre las cinco ejecuciones independientes.}
     \label{fig:convergencia_quimica}
 \end{figure}
@@ -396,7 +396,7 @@ Al analizar la convergencia de los cuatro objetivos, SBX vuelve a presentar un m
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{Figures/mrp1/3_frentes_por_configuracion.pdf}
+    \includegraphics[width=0.82\textwidth]{Figures/mrp1/3_frentes_por_configuracion.pdf}
     \caption{Proyección de los frentes de Pareto en el espacio \gls{qed} vs. SA por configuración para las cinco ejecuciones independientes, con la afinidad de unión indicada mediante la escala de color.}
     \label{fig:frentes_por_configuracion}
 \end{figure}
@@ -409,7 +409,7 @@ Para evaluar la capacidad exploratoria global, se combinan las soluciones obteni
 
 \begin{figure}[!htbp]
     \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.05\textwidth]{Figures/mrp1/5_frente_3d_pchembl_conjunto.pdf}}
+    \includegraphics[width=\textwidth]{Figures/mrp1/5_frente_3d_pchembl_conjunto.pdf}
     \caption{Frente No Dominado Conjunto Global (1.396 soluciones) en el espacio tridimensional de objetivos (\gls{qed}, SA y afinidad de docking en kcal/mol), con el valor de pChEMBL predicho indicado mediante la escala de color, visualizado desde cuatro ángulos tridimensionales distintos.}
     \label{fig:frentes_pareto_3d}
 \end{figure}
@@ -475,7 +475,7 @@ Para evaluar los criterios químicos y geométricos de las conformaciones tridim
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{Figures/mrp1/posebuster.pdf}
+    \includegraphics[width=0.82\textwidth]{Figures/mrp1/posebuster.pdf}
     \caption{Tasa de validez de PoseBusters en el top 100 de moléculas para cada variante algorítmica y modelo de referencia.}
     \label{fig:posebusters}
 \end{figure}
@@ -497,7 +497,7 @@ En cambio, los modelos de referencia (tanto base como con fine-tuning) concentra
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.78\textwidth]{Figures/mrp1/pchembl.pdf}
+    \includegraphics[width=0.82\textwidth]{Figures/mrp1/pchembl.pdf}
     \caption{Distribución de densidad (KDE) del valor pChEMBL predicho para cada algoritmo y modelo de referencia. La línea vertical discontinua indica el umbral de actividad biológica ($\text{pChEMBL} \ge 5.0$).}
     \label{fig:distribucion_pchembl}
 \end{figure}
@@ -509,7 +509,7 @@ El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando AD
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.98\textwidth]{Figures/mrp1/admet_ranks.pdf}
+    \includegraphics[width=\textwidth]{Figures/mrp1/admet_ranks.pdf}
     \caption{Distribuciones de densidad (KDE) de las principales propiedades \gls{admet} predichas por ADMET-AI para cada algoritmo y modelo de referencia.}
     \label{fig:admet_ranks}
 \end{figure}
