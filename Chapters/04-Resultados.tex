@@ -3,7 +3,7 @@
 
 En este capítulo se presentan los resultados obtenidos de las experimentaciones realizadas en este trabajo. En primer lugar, se examinan los resultados del ajuste de hiperparámetros del modelo generativo (\gls{vae}) a través de sus dos fases experimentales y se compara el desempeño de la mejor configuración frente al estado del arte en el benchmark \gls{moses}. A continuación, se describen los resultados de la optimización de moléculas sin diana específica y la evaluación de las metaheurísticas multiobjetivo, analizando el impacto de los diferentes operadores. Finalmente, se evalúa la aplicación del enfoque propuesto en el diseño guiado de inhibidores de la proteína \gls{mrp1}, analizando las puntuaciones de acoplamiento molecular obtenidas y las propiedades fisicoquímicas de las mejores moléculas candidatas.
 
-\section{Etapa 1: Evaluación y Selección del Modelo Generativo \texorpdfstring{\gls{vae}}{VAE}}
+\section{Etapa 1: Evaluación y Selección del Modelo Generativo \texorpdfstring{\acrshort{vae}}{VAE}}
 \label{sec:res_vae}
 
 En esta sección se aborda la evaluación del modelo generativo sobre el conjunto de datos \gls{moses}. Se presentan los resultados de las fases de ajuste de hiperparámetros y se examina el comportamiento del modelo seleccionado en dicho benchmark frente a otros enfoques de la literatura.
@@ -315,7 +315,7 @@ Por otro lado, haber priorizado el hipervolumen como métrica principal tiene as
 
 Finalmente, optimizar únicamente propiedades generales como \gls{qed} y SA bajo la restricción de $\text{Fsp}^3$ presenta limitaciones claras. En esta primera actividad, las funciones objetivo evalúan propiedades fisicoquímicas estimadas computacionalmente sin medir la afinidad frente a una cavidad biológica real, lo que permite a los algoritmos encontrar atajos numéricos como la repetición de combinaciones sencillas de anillos aromáticos y heterociclos que dan puntuaciones altas. Esta limitación justifica el paso a la segunda actividad en la Sección~\ref{sec:res_mrp1}, donde se incorpora el acoplamiento molecular y la predicción de bioactividad sobre \gls{mrp1}, sumando criterios ligados a la diana biológica que modifican la dinámica de búsqueda de los algoritmos.
 
-\section{Etapa 2 -- Actividad 2: Generación de Inhibidores de la Proteína \texorpdfstring{\gls{mrp1}}{MRP1}}
+\section{Etapa 2 -- Actividad 2: Generación de Inhibidores de la Proteína \texorpdfstring{\acrshort{mrp1}}{MRP1}}
 \label{sec:res_mrp1}
 
 En esta sección se aborda la optimización dirigida hacia \gls{mrp1} con los algoritmos seleccionados. Como calcular el acoplamiento molecular tiene un costo de cómputo alto, se descartaron \acrshort{moead} y \acrshort{cmopso}, ya que en la actividad previa se concentraron en zonas de alto \gls{qed}, con menor atención a la facilidad de síntesis y peores indicadores de convergencia. Por esto, se continuó con \acrshort{nsga2}, \acrshort{nsga3} y \acrshort{agemoea} bajo el reparto de 100 individuos y 1.000 generaciones, que dio mejores resultados que poblaciones más grandes. Para los operadores genéticos, se conservaron SBX y PCX combinados con mutación polinomial. Siguiendo los resultados del Apéndice~\ref{ap:mutacion}, se fijó una tasa de 0,1 para SBX y de 0,012 para PCX, ajustando la mutación a las características de cada cruce para no degradar la validez química.
@@ -506,7 +506,7 @@ En cambio, los modelos de referencia (tanto base como con fine-tuning) concentra
     \label{fig:distribucion_pchembl}
 \end{figure}
 
-\subsubsection{Perfil Farmacocinético, Fisicoquímico y Toxicológico (\texorpdfstring{\gls{admet}}{ADMET})}
+\subsubsection{Perfil Farmacocinético, Fisicoquímico y Toxicológico (\texorpdfstring{\acrshort{admet}}{ADMET})}
 \label{subsubsec:perfil_admet}
 
 El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando ADMET-AI \cite{swanson2024admetai}, basado en modelos de aprendizaje automático de Therapeutics Data Commons. Se estudiaron descriptores agrupados en tres dimensiones clave, correspondientes a absorción y permeabilidad, fisicoquímica y toxicidad o seguridad.
@@ -514,7 +514,7 @@ El perfil \gls{admet} de las moléculas candidatas se caracterizó utilizando AD
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\textwidth]{Figures/mrp1/admet_ranks.pdf}
-    \caption{Distribuciones de densidad (KDE) de las principales propiedades \gls{admet} predichas por ADMET-AI para cada algoritmo y modelo de referencia.}
+    \caption{Distribuciones de densidad (KDE) de las principales propiedades \acrshort{admet} predichas por ADMET-AI para cada algoritmo y modelo de referencia.}
     \label{fig:admet_ranks}
 \end{figure}
 
